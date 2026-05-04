@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Explained — Human Agency</title>
+  <meta name="description" content="AI explained for real people. No jargon, no hype — just clear explanations of what AI is, what it can do, and who's building it.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #f9f8f6;
+      --surface: #ffffff;
+      --border:  #ebebeb;
+      --text:    #111111;
+      --muted:   #666666;
+      --subtle:  #999999;
+      --accent:  #4f46e5;
+      --accent2: #7c3aed;
+      --green:   #059669;
+      --amber:   #d97706;
+    }
+
+    body {
+      font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Header ── */
+    header {
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo { font-size: 17px; font-weight: 800; letter-spacing: -0.5px; }
+    .logo .dot { color: var(--accent); }
+    nav { display: flex; gap: 24px; align-items: center; }
+    nav a { font-size: 14px; font-weight: 500; color: var(--muted); transition: color .15s; }
+    nav a:hover { color: var(--text); }
+    .nav-home { font-size: 13px; color: var(--muted); border: 1px solid var(--border); border-radius: 8px; padding: 5px 12px; transition: border-color .15s; }
+    .nav-home:hover { border-color: #ccc; color: var(--text); }
+
+    /* ── Hero ── */
+    .hero {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 56px 24px 48px;
+      text-align: center;
+    }
+    .hero-tag {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(26px, 3.5vw, 42px);
+      font-weight: 900;
+      letter-spacing: -1px;
+      line-height: 1.15;
+      max-width: 640px;
+      margin: 0 auto 16px;
+    }
+    .hero p {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0 auto 36px;
+      line-height: 1.7;
+    }
+
+    /* ── Search ── */
+    .search-wrap {
+      max-width: 560px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .search-wrap input {
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      width: 100%;
+      padding: 14px 48px 14px 48px;
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      outline: none;
+      background: var(--surface);
+      color: var(--text);
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .search-wrap input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(79,70,229,.08);
+    }
+    .search-wrap input::placeholder { color: #aaa; }
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 17px;
+      pointer-events: none;
+    }
+    #search-clear {
+      display: none;
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      color: #aaa;
+      line-height: 1;
+      padding: 0;
+    }
+    #search-count {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--muted);
+      min-height: 20px;
+    }
+
+    /* ── Section ── */
+    .section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px 72px;
+    }
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 28px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-title { font-size: 20px; font-weight: 800; letter-spacing: -0.4px; }
+    .section-sub { font-size: 13px; color: var(--muted); font-weight: 500; }
+    .section-empty {
+      display: none;
+      font-size: 13px;
+      color: var(--subtle);
+      padding: 12px 0;
+      font-style: italic;
+    }
+
+    /* ── Cards grid ── */
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+
+    /* ── Basics card ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      transition: border-color .15s, box-shadow .15s, transform .2s;
+      cursor: default;
+    }
+    .card:hover {
+      border-color: #d4d4d4;
+      box-shadow: 0 8px 32px rgba(0,0,0,.06);
+      transform: translateY(-2px);
+    }
+    .card.hidden { display: none !important; }
+    .card-icon { font-size: 28px; margin-bottom: 14px; }
+    .card-tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+    .card p { font-size: 14px; color: var(--muted); line-height: 1.65; flex: 1; }
+    .card-plain {
+      margin-top: 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      padding: 6px 12px;
+      background: #eef2ff;
+      border-radius: 8px;
+      display: inline-block;
+    }
+
+    /* ── Researcher card ── */
+    .rcard {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      transition: border-color .15s, box-shadow .15s, transform .2s;
+    }
+    .rcard:hover {
+      border-color: #d4d4d4;
+      box-shadow: 0 8px 32px rgba(0,0,0,.06);
+      transform: translateY(-2px);
+    }
+    .rcard.hidden { display: none !important; }
+    .rcard-top { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+    .rcard-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 800;
+      flex-shrink: 0;
+      letter-spacing: -0.5px;
+    }
+    .rcard-name { font-size: 16px; font-weight: 700; letter-spacing: -0.3px; }
+    .rcard-role { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .rcard p { font-size: 13px; color: var(--muted); line-height: 1.65; flex: 1; }
+    .rcard-quote {
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--accent2);
+      font-style: italic;
+      border-left: 2px solid #c4b5fd;
+      padding-left: 10px;
+      line-height: 1.6;
+    }
+    .rcard-links { margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .rcard-link {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      transition: border-color .15s, color .15s;
+    }
+    .rcard-link:hover { border-color: #ccc; color: var(--text); }
+
+    /* ── Use Case card ── */
+    .ucard {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      transition: border-color .15s, box-shadow .15s, transform .2s;
+    }
+    .ucard:hover {
+      border-color: #d4d4d4;
+      box-shadow: 0 8px 32px rgba(0,0,0,.06);
+      transform: translateY(-2px);
+    }
+    .ucard.hidden { display: none !important; }
+    .ucard-icon { font-size: 32px; margin-bottom: 14px; }
+    .ucard h3 { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 10px; }
+    .ucard p { font-size: 14px; color: var(--muted); line-height: 1.65; }
+    .ucard-examples {
+      margin-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .ucard-ex {
+      font-size: 12px;
+      color: #374151;
+      background: var(--bg);
+      border-radius: 8px;
+      padding: 6px 10px;
+      line-height: 1.5;
+    }
+    .ucard-ex strong { color: var(--text); }
+
+    /* ── No results ── */
+    #no-results {
+      display: none;
+      text-align: center;
+      padding: 60px 24px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-inner p { font-size: 13px; color: var(--muted); }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a { font-size: 13px; color: var(--muted); transition: color .15s; }
+    .footer-links a:hover { color: var(--text); }
+
+    mark {
+      background: #fef9c3;
+      border-radius: 3px;
+      padding: 0 2px;
+      color: inherit;
+    }
+
+    @media (max-width: 640px) {
+      .header-inner { padding: 0 16px; }
+      nav { gap: 14px; }
+      .hero { padding: 40px 16px 36px; }
+      .section { padding: 0 16px 56px; }
+      .cards, .rcards, .ucards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">Human<span class="dot">AI</span></div>
+    <nav>
+      <a href="#basics">Basics</a>
+      <a href="#usecases">Use Cases</a>
+      <a href="#researchers">Researchers</a>
+      <a href="https://humanagency.co" class="nav-home">← humanagency.co</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Hero + Search -->
+<section class="hero">
+  <span class="hero-tag">AI for Everyone</span>
+  <h1>Understand AI without the jargon.</h1>
+  <p>No computer science degree needed. Just clear explanations of what AI actually is, what it can do for you, and the people building it.</p>
+
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="search" id="search" placeholder="Search — try 'healthcare', 'Hinton', 'language model'…" oninput="doSearch(this.value)" autocomplete="off" />
+    <button id="search-clear" onclick="clearSearch()">✕</button>
+  </div>
+  <div id="search-count"></div>
+</section>
+
+<div id="no-results">
+  <div style="font-size:40px;margin-bottom:12px">🤔</div>
+  <strong>No results found.</strong><br>Try a different word — or <a href="#" onclick="clearSearch();return false" style="color:var(--accent)">clear the search</a>.
+</div>
+
+<!-- ── BASICS ── -->
+<section class="section" id="basics">
+  <div class="section-header">
+    <span class="section-title">AI Basics</span>
+    <span class="section-sub">8 concepts — no prior knowledge needed</span>
+  </div>
+  <div class="section-empty" id="basics-empty">No basics match your search.</div>
+  <div class="cards" id="basics-cards">
+
+    <div class="card" data-search="artificial intelligence ai what is machine computer learn">
+      <div class="card-icon">🤖</div>
+      <div class="card-tag">Concept 1</div>
+      <h3>What is Artificial Intelligence?</h3>
+      <p>AI is software that can learn from experience rather than following rigid, hand-written rules. Instead of a programmer writing "if it has pointy ears and whiskers, it's a cat," an AI system looks at millions of photos of cats until it figures out the pattern itself.</p>
+      <p style="margin-top:10px">AI isn't magic or a conscious mind — it's pattern recognition at a massive scale. It's very good at certain tasks (spotting tumours in scans, translating languages) and completely hopeless at others (common sense, physical tasks).</p>
+      <span class="card-plain">Plain version: very smart pattern matching</span>
+    </div>
+
+    <div class="card" data-search="machine learning ml training data examples supervised">
+      <div class="card-icon">📚</div>
+      <div class="card-tag">Concept 2</div>
+      <h3>Machine Learning</h3>
+      <p>Machine learning is how most AI is built. Instead of programming every rule, you feed the system thousands (or millions) of examples with correct answers — spam emails labelled "spam," tumour scans labelled "tumour" — and it works out the rules on its own.</p>
+      <p style="margin-top:10px">The catch: it only ever learned from what it's seen. Ask it something truly new and it struggles. This is why AI can beat world champions at chess but can't load a dishwasher.</p>
+      <span class="card-plain">Plain version: learns by example, not by rules</span>
+    </div>
+
+    <div class="card" data-search="neural network brain neurons layers deep learning connections">
+      <div class="card-icon">🧠</div>
+      <div class="card-tag">Concept 3</div>
+      <h3>Neural Networks</h3>
+      <p>A neural network is the mathematical engine inside most modern AI. Loosely inspired by how neurons in the brain connect, it's made of layers of simple calculations that pass information forward, transforming raw input (pixels, words) into a useful output (a label, a sentence, a prediction).</p>
+      <p style="margin-top:10px">"Deep learning" just means a neural network with many layers — the depth lets it learn much more complex patterns. Depth is why AI went from recognising digits to generating photorealistic faces.</p>
+      <span class="card-plain">Plain version: many layers of simple maths, stacked</span>
+    </div>
+
+    <div class="card" data-search="large language model llm gpt chatgpt text words training internet">
+      <div class="card-icon">💬</div>
+      <div class="card-tag">Concept 4</div>
+      <h3>Large Language Models (LLMs)</h3>
+      <p>The technology behind ChatGPT, Claude, and Gemini. An LLM is trained on an enormous amount of text — books, websites, Wikipedia, code — and learns to predict what word comes next, billions of times over, until it can write, explain, translate, and reason with language fluently.</p>
+      <p style="margin-top:10px">It doesn't understand in the way you do. It's a very sophisticated autocomplete — but that autocomplete turns out to be astonishingly useful.</p>
+      <span class="card-plain">Plain version: autocomplete trained on most of the internet</span>
+    </div>
+
+    <div class="card" data-search="generative ai create images music text art dall-e midjourney generate">
+      <div class="card-icon">✨</div>
+      <div class="card-tag">Concept 5</div>
+      <h3>Generative AI</h3>
+      <p>Most older AI was discriminative — it classified things. Generative AI creates new things: text, images, music, video, code, voices. It's trained on vast amounts of human-made content and learns to produce new content in the same style.</p>
+      <p style="margin-top:10px">This is why you can now type "a watercolour painting of a red panda drinking tea" and get a convincing image in seconds. The creativity isn't in the machine — the creativity is in what you ask it for.</p>
+      <span class="card-plain">Plain version: AI that makes things, not just recognises them</span>
+    </div>
+
+    <div class="card" data-search="ai agent autonomous task action tool browse web code execute">
+      <div class="card-icon">⚡</div>
+      <div class="card-tag">Concept 6</div>
+      <h3>AI Agents</h3>
+      <p>Until recently, AI mostly answered questions. Agents take action. An AI agent can be given a goal — "research competitors and write a report" — and will browse the web, read pages, take notes, and draft the report itself, without you doing each step manually.</p>
+      <p style="margin-top:10px">This is the next big shift. Instead of AI being a very smart search box, it becomes something closer to a capable junior colleague that can actually get things done.</p>
+      <span class="card-plain">Plain version: AI that acts, not just answers</span>
+    </div>
+
+    <div class="card" data-search="prompt prompting how to talk chatgpt instructions system input">
+      <div class="card-icon">🗣️</div>
+      <div class="card-tag">Concept 7</div>
+      <h3>Prompting</h3>
+      <p>A prompt is what you type to an AI. It sounds simple but the way you phrase a request makes an enormous difference to the quality of the output. "Summarise this" gives a different result to "Summarise this in 3 bullet points, for someone who has never worked in marketing."</p>
+      <p style="margin-top:10px">Good prompting isn't a secret skill — it's just being specific. Tell the AI who it's for, what format you want, what to avoid, and what you already know.</p>
+      <span class="card-plain">Plain version: how you talk to AI — specificity wins</span>
+    </div>
+
+    <div class="card" data-search="hallucination wrong mistake confabulate false confident error lie">
+      <div class="card-icon">⚠️</div>
+      <div class="card-tag">Concept 8</div>
+      <h3>Hallucinations — When AI Gets It Wrong</h3>
+      <p>AI systems sometimes confidently state things that are completely false — invented citations, made-up statistics, wrong dates. This is called hallucination. It happens because the model generates plausible-sounding text, not necessarily true text.</p>
+      <p style="margin-top:10px">The fix: treat AI output the way you'd treat advice from a brilliant but overconfident friend. Useful for ideas and drafts — always verify facts that actually matter before acting on them.</p>
+      <span class="card-plain">Plain version: AI can be wrong and sound completely certain</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── USE CASES ── -->
+<section class="section" id="usecases">
+  <div class="section-header">
+    <span class="section-title">AI Use Cases</span>
+    <span class="section-sub">Where it's actually making a difference</span>
+  </div>
+  <div class="section-empty" id="usecases-empty">No use cases match your search.</div>
+  <div class="cards ucards" id="usecases-cards">
+
+    <div class="ucard" data-search="health medicine hospital doctor cancer scan diagnosis drug discovery clinical">
+      <div class="ucard-icon">🏥</div>
+      <h3>Health & Medicine</h3>
+      <p>AI can spot patterns in medical images that trained doctors miss — and do it in seconds across thousands of scans. It's also accelerating drug discovery from decades to years.</p>
+      <div class="ucard-examples">
+        <div class="ucard-ex"><strong>Cancer detection:</strong> AI reads mammograms and CT scans with accuracy matching radiologists</div>
+        <div class="ucard-ex"><strong>Drug discovery:</strong> Google's AlphaFold solved a 50-year protein-folding problem — compressing years of biology research</div>
+        <div class="ucard-ex"><strong>Admin:</strong> Automatically transcribes consultations so doctors spend time with patients, not paperwork</div>
+      </div>
+    </div>
+
+    <div class="ucard" data-search="education learning school student tutor personalised feedback teaching">
+      <div class="ucard-icon">📖</div>
+      <h3>Education</h3>
+      <p>Every student learns differently. AI tutors can adapt in real-time — giving harder problems when you're ready, slowing down when you're not, and never making you feel embarrassed for asking the same question twice.</p>
+      <div class="ucard-examples">
+        <div class="ucard-ex"><strong>Personal tutoring:</strong> Khan Academy's Khanmigo gives one-to-one Socratic tutoring at no cost</div>
+        <div class="ucard-ex"><strong>Language learning:</strong> Duolingo uses AI to adapt difficulty and give instant pronunciation feedback</div>
+        <div class="ucard-ex"><strong>Essay feedback:</strong> Immediate, detailed feedback on drafts before a teacher even sees them</div>
+      </div>
+    </div>
+
+    <div class="ucard" data-search="finance banking fraud detection investment credit money fintech">
+      <div class="ucard-icon">💳</div>
+      <h3>Finance & Banking</h3>
+      <p>AI watches every transaction in real-time for fraud patterns it learned from millions of past cases. It can also assess credit risk more fairly and give financial advice at scale.</p>
+      <div class="ucard-examples">
+        <div class="ucard-ex"><strong>Fraud detection:</strong> Visa blocks billions in fraud annually using AI pattern recognition</div>
+        <div class="ucard-ex"><strong>Credit decisions:</strong> AI assesses risk using broader data than traditional credit scores alone</div>
+        <div class="ucard-ex"><strong>Customer service:</strong> Chatbots resolve most banking queries instantly, 24/7</div>
+      </div>
+    </div>
+
+    <div class="ucard" data-search="creative writing design image art music video content generation dall-e midjourney">
+      <div class="ucard-icon">🎨</div>
+      <h3>Creative Work</h3>
+      <p>AI is a creative collaborator, not a replacement. Writers use it to beat blank-page paralysis. Designers generate a hundred variations in the time one used to take. Musicians sketch ideas they'd never have the technical skills to produce.</p>
+      <div class="ucard-examples">
+        <div class="ucard-ex"><strong>Copywriting:</strong> First drafts, taglines, and A/B test variations in minutes</div>
+        <div class="ucard-ex"><strong>Image generation:</strong> Concept art, product mock-ups, marketing visuals from a text description</div>
+        <div class="ucard-ex"><strong>Music:</strong> Generate background tracks, experiment with arrangements, or create fully original compositions</div>
+      </div>
+    </div>
+
+    <div class="ucard" data-search="software code programming developer github copilot debug test build">
+      <div class="ucard-icon">💻</div>
+      <h3>Software Development</h3>
+      <p>AI has changed how code is written more than anything since the internet. Developers now spend more time reviewing and guiding AI output than writing every line from scratch — and they ship faster for it.</p>
+      <div class="ucard-examples">
+        <div class="ucard-ex"><strong>Code completion:</strong> GitHub Copilot suggests entire functions as you type — used by millions of developers</div>
+        <div class="ucard-ex"><strong>Debugging:</strong> Paste an error and get an explanation and fix, instantly</div>
+        <div class="ucard-ex"><strong>Non-developers:</strong> People with no coding background now build working apps by describing what they want</div>
+      </div>
+    </div>
+
+    <div class="ucard" data-search="legal law contract review compliance document summarise lawyer">
+      <div class="ucard-icon">⚖️</div>
+      <h3>Legal & Compliance</h3>
+      <p>Reading and summarising legal documents used to take expensive hours of lawyer time. AI can review a contract in seconds, flag unusual clauses, and explain what you're actually signing in plain English.</p>
+      <div class="ucard-examples">
+        <div class="ucard-ex"><strong>Contract review:</strong> Highlight non-standard terms and compare against templates automatically</div>
+        <div class="ucard-ex"><strong>Research:</strong> Find relevant case law across thousands of documents in seconds</div>
+        <div class="ucard-ex"><strong>Plain English:</strong> "What does this clause actually mean?" — now answerable instantly</div>
+      </div>
+    </div>
+
+    <div class="ucard" data-search="customer service support chatbot helpdesk 24/7 retail ecommerce">
+      <div class="ucard-icon">🎧</div>
+      <h3>Customer Service</h3>
+      <p>Most customer service questions are the same questions, asked thousands of times a day. AI handles these instantly — leaving human agents free for the complex, emotional, or unusual cases where they actually add value.</p>
+      <div class="ucard-examples">
+        <div class="ucard-ex"><strong>Instant resolution:</strong> Order status, returns, FAQs — resolved without any wait</div>
+        <div class="ucard-ex"><strong>Tone matching:</strong> AI detects frustration and adjusts its responses accordingly</div>
+        <div class="ucard-ex"><strong>Multilingual:</strong> Serve customers in any language without needing specialist agents</div>
+      </div>
+    </div>
+
+    <div class="ucard" data-search="science research climate energy protein biology physics discovery">
+      <div class="ucard-icon">🔬</div>
+      <h3>Science & Research</h3>
+      <p>Scientists are drowning in data. AI doesn't get tired, doesn't have biases about what's interesting, and can spot correlations across datasets too large for any human team to analyse.</p>
+      <div class="ucard-examples">
+        <div class="ucard-ex"><strong>Climate:</strong> Weather forecasting and climate modelling at resolutions previously impossible</div>
+        <div class="ucard-ex"><strong>Astronomy:</strong> Classifying millions of galaxies from telescope data automatically</div>
+        <div class="ucard-ex"><strong>Materials:</strong> Discovering new materials for batteries and solar cells by simulating millions of combinations</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── RESEARCHERS ── -->
+<section class="section" id="researchers">
+  <div class="section-header">
+    <span class="section-title">AI Researchers</span>
+    <span class="section-sub">The people who built this — and what they actually did</span>
+  </div>
+  <div class="section-empty" id="researchers-empty">No researchers match your search.</div>
+  <div class="cards rcards" id="researchers-cards">
+
+    <div class="rcard" data-search="alan turing father computer science test thinking machine pioneer 1950">
+      <div class="rcard-top">
+        <div class="rcard-avatar" style="background:#fef3c7;color:#92400e">AT</div>
+        <div>
+          <div class="rcard-name">Alan Turing</div>
+          <div class="rcard-role">Mathematician · 1912–1954</div>
+        </div>
+      </div>
+      <p>Before computers were common, Turing asked: <em>can machines think?</em> He proposed the Turing Test — if you can't tell whether you're chatting with a human or a machine, the machine has passed. He also invented much of the mathematical theory that modern computing runs on.</p>
+      <div class="rcard-quote">"We can only see a short distance ahead, but we can see plenty there that needs to be done."</div>
+      <div class="rcard-links">
+        <a href="https://en.wikipedia.org/wiki/Alan_Turing" target="_blank" rel="noopener" class="rcard-link">Wikipedia →</a>
+      </div>
+    </div>
+
+    <div class="rcard" data-search="geoffrey hinton godfather deep learning neural network backpropagation google brain risk">
+      <div class="rcard-top">
+        <div class="rcard-avatar" style="background:#dbeafe;color:#1e40af">GH</div>
+        <div>
+          <div class="rcard-name">Geoffrey Hinton</div>
+          <div class="rcard-role">Godfather of Deep Learning · Turing Award 2018</div>
+        </div>
+      </div>
+      <p>Spent decades championing neural networks when most researchers thought they were a dead end. He was proved spectacularly right. In 2023, he left Google specifically so he could speak freely about the risks of AI — a rare move from someone who built it.</p>
+      <div class="rcard-quote">"I console myself with the normal excuse: if I hadn't done it, someone else would have."</div>
+      <div class="rcard-links">
+        <a href="https://en.wikipedia.org/wiki/Geoffrey_Hinton" target="_blank" rel="noopener" class="rcard-link">Wikipedia →</a>
+        <a href="https://twitter.com/geoffreyhinton" target="_blank" rel="noopener" class="rcard-link">X →</a>
+      </div>
+    </div>
+
+    <div class="rcard" data-search="yann lecun meta facebook cnn convolutional vision image recognition facial">
+      <div class="rcard-top">
+        <div class="rcard-avatar" style="background:#dcfce7;color:#166534">YL</div>
+        <div>
+          <div class="rcard-name">Yann LeCun</div>
+          <div class="rcard-role">Chief AI Scientist · Meta · Turing Award 2018</div>
+        </div>
+      </div>
+      <p>Invented convolutional neural networks (CNNs) — the technology that made computers able to see. Every photo tag on Facebook, every face unlocking your phone, every medical image scan: CNNs are underneath it. He's now a vocal sceptic of current AI safety concerns.</p>
+      <div class="rcard-quote">"Our intelligence is what makes us human, and AI is an extension of that quality."</div>
+      <div class="rcard-links">
+        <a href="https://en.wikipedia.org/wiki/Yann_LeCun" target="_blank" rel="noopener" class="rcard-link">Wikipedia →</a>
+        <a href="https://twitter.com/ylecun" target="_blank" rel="noopener" class="rcard-link">X →</a>
+      </div>
+    </div>
+
+    <div class="rcard" data-search="yoshua bengio deep learning safety alignment montreal mila turing award">
+      <div class="rcard-top">
+        <div class="rcard-avatar" style="background:#fae8ff;color:#7e22ce">YB</div>
+        <div>
+          <div class="rcard-name">Yoshua Bengio</div>
+          <div class="rcard-role">Founder · Mila · Turing Award 2018</div>
+        </div>
+      </div>
+      <p>One of the three scientists who made deep learning work, he helped establish Montreal as a world AI hub. Unlike some of his peers, Bengio now spends much of his time warning about AI risks and advocating for safety research — signed a letter calling for a pause on the most powerful AI training.</p>
+      <div class="rcard-quote">"AI is not good or evil in itself. It's a tool, like fire. The question is how we use it."</div>
+      <div class="rcard-links">
+        <a href="https://en.wikipedia.org/wiki/Yoshua_Bengio" target="_blank" rel="noopener" class="rcard-link">Wikipedia →</a>
+      </div>
+    </div>
+
+    <div class="rcard" data-search="fei-fei li stanford imagenet vision dataset computer see ai human">
+      <div class="rcard-top">
+        <div class="rcard-avatar" style="background:#fff7ed;color:#c2410c">FL</div>
+        <div>
+          <div class="rcard-name">Fei-Fei Li</div>
+          <div class="rcard-role">Co-Director · Stanford HAI</div>
+        </div>
+      </div>
+      <p>Created ImageNet — a dataset of 14 million labelled images that became the benchmark that sparked the deep learning revolution. When her dataset was released in 2009, computers could barely recognise objects. Within 5 years they were beating humans. She also advocates strongly for AI that serves humanity broadly, not just tech companies.</p>
+      <div class="rcard-quote">"AI is neither good nor evil. It's a tool that amplifies human intent."</div>
+      <div class="rcard-links">
+        <a href="https://en.wikipedia.org/wiki/Fei-Fei_Li" target="_blank" rel="noopener" class="rcard-link">Wikipedia →</a>
+      </div>
+    </div>
+
+    <div class="rcard" data-search="demis hassabis deepmind google alphago alphafold protein science games">
+      <div class="rcard-top">
+        <div class="rcard-avatar" style="background:#e0f2fe;color:#075985">DH</div>
+        <div>
+          <div class="rcard-name">Demis Hassabis</div>
+          <div class="rcard-role">CEO · Google DeepMind · Nobel Prize 2024</div>
+        </div>
+      </div>
+      <p>Co-founded DeepMind with a mission to "solve intelligence, then use it to solve everything else." Built AlphaGo (beat the world champion at Go — considered far harder than chess), then AlphaFold, which solved protein folding — a 50-year biology problem. Won the Nobel Prize in Chemistry in 2024 for this work.</p>
+      <div class="rcard-quote">"Science is the engine of prosperity. AI is the most powerful tool we have to accelerate it."</div>
+      <div class="rcard-links">
+        <a href="https://en.wikipedia.org/wiki/Demis_Hassabis" target="_blank" rel="noopener" class="rcard-link">Wikipedia →</a>
+        <a href="https://twitter.com/demishassabis" target="_blank" rel="noopener" class="rcard-link">X →</a>
+      </div>
+    </div>
+
+    <div class="rcard" data-search="andrej karpathy openai tesla autopilot education youtube tutorial neural network">
+      <div class="rcard-top">
+        <div class="rcard-avatar" style="background:#f0fdf4;color:#166534">AK</div>
+        <div>
+          <div class="rcard-name">Andrej Karpathy</div>
+          <div class="rcard-role">Former OpenAI · Tesla · AI Educator</div>
+        </div>
+      </div>
+      <p>Led AI at Tesla (including Autopilot) and was a founding member of OpenAI. Now perhaps the most popular AI educator in the world — his YouTube tutorials on building neural networks from scratch have been watched by millions and are considered the clearest explanations of how LLMs actually work.</p>
+      <div class="rcard-quote">"The hottest new programming language is English."</div>
+      <div class="rcard-links">
+        <a href="https://karpathy.ai" target="_blank" rel="noopener" class="rcard-link">Website →</a>
+        <a href="https://twitter.com/karpathy" target="_blank" rel="noopener" class="rcard-link">X →</a>
+      </div>
+    </div>
+
+    <div class="rcard" data-search="sam altman openai ceo chatgpt gpt4 agi silicon valley startup">
+      <div class="rcard-top">
+        <div class="rcard-avatar" style="background:#f1f5f9;color:#334155">SA</div>
+        <div>
+          <div class="rcard-name">Sam Altman</div>
+          <div class="rcard-role">CEO · OpenAI</div>
+        </div>
+      </div>
+      <p>Turned OpenAI from a research lab into the company that brought AI to hundreds of millions of people with ChatGPT. One of the most consequential product launches in tech history — 100 million users in 2 months. Simultaneously believes he's building potentially the most dangerous technology ever made, and that it's still the right thing to do.</p>
+      <div class="rcard-quote">"AI will be the greatest tool humanity has ever built."</div>
+      <div class="rcard-links">
+        <a href="https://en.wikipedia.org/wiki/Sam_Altman" target="_blank" rel="noopener" class="rcard-link">Wikipedia →</a>
+        <a href="https://twitter.com/sama" target="_blank" rel="noopener" class="rcard-link">X →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <p>© 2026 Human Agency · <a href="https://humanagency.co" style="color:var(--accent)">humanagency.co</a></p>
+    <div class="footer-links">
+      <a href="https://miru.humanagency.co">Brief Tool</a>
+      <a href="mailto:hello@humanagency.co">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const allCards = Array.from(document.querySelectorAll('[data-search]'));
+  const sections = [
+    { id: 'basics',      cardsId: 'basics-cards',      emptyId: 'basics-empty' },
+    { id: 'usecases',    cardsId: 'usecases-cards',    emptyId: 'usecases-empty' },
+    { id: 'researchers', cardsId: 'researchers-cards', emptyId: 'researchers-empty' },
+  ];
+
+  function doSearch(q) {
+    const raw = q.trim();
+    document.getElementById('search-clear').style.display = raw ? 'block' : 'none';
+
+    if (!raw) {
+      allCards.forEach(c => c.classList.remove('hidden'));
+      sections.forEach(s => {
+        document.getElementById(s.emptyId).style.display = 'none';
+        document.getElementById(s.id).style.display = '';
+      });
+      document.getElementById('no-results').style.display = 'none';
+      document.getElementById('search-count').textContent = '';
+      return;
+    }
+
+    const words = raw.toLowerCase().split(/\s+/).filter(Boolean);
+    let total = 0;
+
+    sections.forEach(s => {
+      const container = document.getElementById(s.cardsId);
+      const cards = Array.from(container.querySelectorAll('[data-search]'));
+      let visible = 0;
+      cards.forEach(card => {
+        const hay = (card.dataset.search + ' ' + card.textContent).toLowerCase();
+        const match = words.every(w => hay.includes(w));
+        card.classList.toggle('hidden', !match);
+        if (match) {
+          visible++;
+          total++;
+          // Highlight matching words in h3
+          const h3 = card.querySelector('h3');
+          if (h3) {
+            let text = h3.textContent;
+            words.forEach(w => {
+              const re = new RegExp(`(${w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+              text = text.replace(re, '<mark>$1</mark>');
+            });
+            h3.innerHTML = text;
+          }
+        } else {
+          const h3 = card.querySelector('h3');
+          if (h3) h3.innerHTML = h3.textContent; // clear marks
+        }
+      });
+      document.getElementById(s.emptyId).style.display = visible === 0 ? 'block' : 'none';
+      document.getElementById(s.id).style.display = '';
+    });
+
+    document.getElementById('no-results').style.display = total === 0 ? 'block' : 'none';
+    document.getElementById('search-count').textContent = total > 0 ? `${total} result${total !== 1 ? 's' : ''}` : '';
+  }
+
+  function clearSearch() {
+    document.getElementById('search').value = '';
+    doSearch('');
+    document.getElementById('search').focus();
+  }
+</script>
+
+</body>
+</html>
