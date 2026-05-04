@@ -587,6 +587,60 @@ const DEFAULT_DATA = {
       tag:'Long read',
       date:'Nov 2023',
       search:'chatgpt openai launch story one year inside'
+    },
+    {
+      title:'AI Index Report 2026',
+      source:'Stanford HAI',
+      url:'https://aiindex.stanford.edu/report/',
+      desc:"The definitive annual snapshot of AI progress: who is publishing, what is getting deployed, where the jobs are going, and how policymakers are responding. 500+ pages of data.",
+      tag:'Annual Report',
+      date:'2026',
+      search:'stanford hai ai index report 2026 annual data policy'
+    },
+    {
+      title:'Competing in the Age of AI',
+      source:'Harvard Business Review',
+      url:'https://hbr.org/2020/01/competing-in-the-age-of-ai',
+      desc:"Every company will eventually be an AI company. This seminal HBR piece explains why AI is not just another technology upgrade — it restructures how firms operate, compete, and win.",
+      tag:'Strategy',
+      date:'Jan 2020',
+      search:'competing age ai business strategy firms hbr marco iansiti'
+    },
+    {
+      title:'Global AI Index',
+      source:'Tortoise Media',
+      url:'https://www.tortoisemedia.com/intelligence/global-ai/',
+      desc:"Which countries are winning the AI race — and why it is not only about compute? Tortoise ranks 62 nations across talent, infrastructure, research output, and government strategy.",
+      tag:'Rankings',
+      date:'2024',
+      search:'global ai index tortoise ranking countries nations talent investment'
+    },
+    {
+      title:'The Balance Sheet Behind the AI Revolution',
+      source:'Economist Impact',
+      url:'https://www.economistimpact.com/',
+      desc:"A rigorous look at where AI investment is actually flowing, which sectors are seeing returns, and how to separate genuine productivity gains from hype-driven spend.",
+      tag:'Economics',
+      date:'2025',
+      search:'ai investment balance sheet economics returns productivity spend economist'
+    },
+    {
+      title:'Teens, AI and the Future of Learning',
+      source:'Pew Research Center',
+      url:'https://www.pewresearch.org/internet/',
+      desc:"A nationally representative survey of US teens 13–17 on how they are already using AI tools, what they fear, what excites them, and what schools are getting wrong.",
+      tag:'Research',
+      date:'2025',
+      search:'teens gen z ai pew research survey school learning future'
+    },
+    {
+      title:'Early Signals of AI Impact on Jobs',
+      source:'jobsdata.ai',
+      url:'https://jobsdata.ai/',
+      desc:"Real hiring data showing which roles are shrinking, which job descriptions now mention AI skills, and which industries are moving fastest. Updated continuously.",
+      tag:'Jobs & Data',
+      date:'2025',
+      search:'ai jobs labor market hiring signals impact data skills roles'
     }
   ]
 };
@@ -604,7 +658,12 @@ function init() {
     try {
       DATA = JSON.parse(saved);
       if (!DATA.dummies  || !DATA.dummies.length)  DATA.dummies  = JSON.parse(JSON.stringify(DEFAULT_DATA.dummies));
-      if (!DATA.articles || !DATA.articles.length) DATA.articles = JSON.parse(JSON.stringify(DEFAULT_DATA.articles));
+      if (!DATA.articles || !DATA.articles.length) {
+        DATA.articles = JSON.parse(JSON.stringify(DEFAULT_DATA.articles));
+      } else {
+        const existingUrls = new Set(DATA.articles.map(a => a.url));
+        DEFAULT_DATA.articles.forEach(a => { if (!existingUrls.has(a.url)) DATA.articles.push(JSON.parse(JSON.stringify(a))); });
+      }
     } catch(e) {}
   }
   renderAll();
