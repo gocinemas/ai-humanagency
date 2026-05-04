@@ -127,10 +127,14 @@
 
     body.edit-mode .card:not(.add-card-btn):hover,
     body.edit-mode .ucard:hover,
-    body.edit-mode .rcard:hover { transform:none; }
+    body.edit-mode .rcard:hover,
+    body.edit-mode .qcard:hover,
+    body.edit-mode .acard:hover { transform:none; }
     body.edit-mode .card:not(.add-card-btn),
     body.edit-mode .ucard,
-    body.edit-mode .rcard { outline:1.5px dashed #c7d2fe; }
+    body.edit-mode .rcard,
+    body.edit-mode .qcard,
+    body.edit-mode .acard { outline:1.5px dashed #c7d2fe; }
 
     .edit-banner { position:fixed; bottom:24px; right:24px; background:#1e293b; color:white; padding:12px 16px; border-radius:14px; font-size:13px; font-weight:600; z-index:200; display:none; align-items:center; gap:8px; box-shadow:0 8px 32px rgba(0,0,0,.25); }
     .edit-banner.visible { display:flex; }
@@ -250,6 +254,7 @@
   <div class="section-header">
     <span class="section-title">AI Articles</span>
     <span class="section-sub" id="articles-sub"></span>
+    <button id="articles-add-btn" onclick="openAdd('articles')" style="display:none;margin-left:auto;padding:5px 14px;border-radius:8px;border:1px solid var(--accent);background:#eef2ff;font-size:12px;font-weight:700;color:var(--accent);cursor:pointer">＋ Add article</button>
   </div>
   <div class="section-empty" id="articles-empty">No articles match your search.</div>
   <div class="cards" id="articles-cards"></div>
@@ -595,7 +600,13 @@ let logoTaps = 0, logoTimer = null;
 /* ━━━━━━━━ INIT ━━━━━━━━ */
 function init() {
   const saved = localStorage.getItem('aiha-data');
-  if (saved) { try { DATA = JSON.parse(saved); } catch(e) {} }
+  if (saved) {
+    try {
+      DATA = JSON.parse(saved);
+      if (!DATA.dummies  || !DATA.dummies.length)  DATA.dummies  = JSON.parse(JSON.stringify(DEFAULT_DATA.dummies));
+      if (!DATA.articles || !DATA.articles.length) DATA.articles = JSON.parse(JSON.stringify(DEFAULT_DATA.articles));
+    } catch(e) {}
+  }
   renderAll();
   document.getElementById('logo-tap').addEventListener('click', () => {
     logoTaps++;
@@ -708,6 +719,7 @@ function toggleEditMode() {
   editMode = !editMode;
   document.body.classList.toggle('edit-mode', editMode);
   document.getElementById('edit-banner').classList.toggle('visible', editMode);
+  document.getElementById('articles-add-btn').style.display = editMode ? 'block' : 'none';
   renderAll();
 }
 
