@@ -92,6 +92,30 @@
 
     mark { background:#fef9c3; border-radius:3px; padding:0 2px; color:inherit; }
 
+    /* ── Dummies Q&A card ── */
+    .qcard { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:24px; display:flex; flex-direction:column; transition:border-color .15s,box-shadow .15s,transform .2s; position:relative; }
+    .qcard:hover { border-color:#d4d4d4; box-shadow:0 8px 32px rgba(0,0,0,.06); transform:translateY(-2px); }
+    .qcard.hidden { display:none !important; }
+    .qcard-emoji { font-size:28px; margin-bottom:12px; }
+    .qcard h3 { font-size:15px; font-weight:700; color:var(--text); margin-bottom:10px; letter-spacing:-0.2px; }
+    .qcard p { font-size:13px; color:var(--muted); line-height:1.7; flex:1; }
+
+    /* ── Article card ── */
+    .acard { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:22px; display:flex; flex-direction:column; transition:border-color .15s,box-shadow .15s,transform .2s; position:relative; }
+    .acard:hover { border-color:#d4d4d4; box-shadow:0 8px 32px rgba(0,0,0,.06); transform:translateY(-2px); }
+    .acard.hidden { display:none !important; }
+    .acard-meta { display:flex; align-items:center; gap:8px; margin-bottom:10px; flex-wrap:wrap; }
+    .acard-source { font-size:11px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; background:#f1f5f9; color:#475569; padding:3px 8px; border-radius:6px; }
+    .acard-tag { font-size:11px; font-weight:600; color:var(--accent); background:#eef2ff; padding:3px 8px; border-radius:6px; }
+    .acard-date { font-size:11px; color:var(--subtle); margin-left:auto; }
+    .acard h3 { font-size:15px; font-weight:700; letter-spacing:-0.2px; color:var(--text); margin-bottom:8px; line-height:1.4; }
+    .acard h3 a { color:inherit; }
+    .acard h3 a:hover { color:var(--accent); }
+    .acard p { font-size:13px; color:var(--muted); line-height:1.65; flex:1; }
+    .acard-read { margin-top:12px; font-size:12px; font-weight:600; color:var(--accent); display:inline-flex; align-items:center; gap:4px; }
+    .paste-area { width:100%; font-family:'Inter',sans-serif; font-size:13px; padding:10px 12px; border:2px dashed #c7d2fe; border-radius:10px; outline:none; color:#111; min-height:60px; background:#f5f3ff; margin-bottom:4px; resize:none; }
+    .paste-area:focus { border-color:var(--accent); background:white; }
+
     /* ── Edit mode ── */
     .card-actions { position:absolute; top:10px; right:10px; display:flex; gap:4px; z-index:10; }
     .card-actions button { background:white; border:1px solid #e5e7eb; border-radius:6px; padding:3px 7px; font-size:13px; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,.08); line-height:1.4; }
@@ -161,6 +185,8 @@
       <a href="#basics">Basics</a>
       <a href="#usecases">Use Cases</a>
       <a href="#researchers">Researchers</a>
+      <a href="#dummies">For Dummies</a>
+      <a href="#articles">Articles</a>
       <a href="https://humanagency.co" class="nav-home">← humanagency.co</a>
     </nav>
   </div>
@@ -209,6 +235,24 @@
   </div>
   <div class="section-empty" id="researchers-empty">No researchers match your search.</div>
   <div class="cards rcards" id="researchers-cards"></div>
+</section>
+
+<section class="section" id="dummies">
+  <div class="section-header">
+    <span class="section-title">AI for Dummies</span>
+    <span class="section-sub">Plain answers to the questions everyone is thinking</span>
+  </div>
+  <div class="section-empty" id="dummies-empty">No results match your search.</div>
+  <div class="cards" id="dummies-cards"></div>
+</section>
+
+<section class="section" id="articles">
+  <div class="section-header">
+    <span class="section-title">AI Articles</span>
+    <span class="section-sub" id="articles-sub"></span>
+  </div>
+  <div class="section-empty" id="articles-empty">No articles match your search.</div>
+  <div class="cards" id="articles-cards"></div>
 </section>
 
 <footer>
@@ -441,6 +485,104 @@ const DEFAULT_DATA = {
       links:[{label:'Wikipedia →',url:'https://en.wikipedia.org/wiki/Sam_Altman'},{label:'X →',url:'https://twitter.com/sama'}],
       search:'sam altman openai ceo chatgpt gpt4 agi silicon valley startup'
     }
+  ],
+  dummies: [
+    {
+      emoji:'🤖', q:'What actually is AI?',
+      a:"Software that learned from millions of examples instead of following a hand-written rulebook. Show it enough cat photos and it learns to spot cats — no programmer needed. It's very good at pattern matching and completely hopeless at common sense.",
+      search:'what is ai artificial intelligence simple explain'
+    },
+    {
+      emoji:'🤔', q:'Why does ChatGPT sound confident even when it\'s wrong?',
+      a:"Because it's predicting likely words, not looking up facts. It's an incredibly sophisticated autocomplete — it generates whatever text sounds most plausible. Plausible isn't the same as true. Always check anything important.",
+      search:'chatgpt wrong hallucination confident mistake'
+    },
+    {
+      emoji:'💼', q:'Is AI going to take my job?',
+      a:"Some tasks, yes. Whole jobs, rarely overnight. AI is better thought of as a very fast junior assistant — it handles the repetitive bits while you handle the judgement, context, and relationships. The jobs most at risk are ones that are almost entirely routine text or data work.",
+      search:'ai jobs work future replace automation'
+    },
+    {
+      emoji:'🔍', q:'What\'s the difference between AI and a Google search?',
+      a:"Google finds pages that probably have your answer — you still have to read and judge. AI synthesises an answer from what it learned during training. Google is a librarian who points you to the shelf. AI is a colleague who just tells you what they know.",
+      search:'google search difference ai chatgpt find'
+    },
+    {
+      emoji:'🧠', q:'What does "training" an AI actually mean?',
+      a:"Feeding it enormous amounts of data and letting it adjust its internal settings billions of times until it gets good at predicting the right output. Training a large AI model can cost millions of pounds and take months — which is why only a handful of companies can do it.",
+      search:'training ai data machine learning how'
+    },
+    {
+      emoji:'💬', q:'Why do I need to give AI so much context?',
+      a:"It has no memory of you and no idea what you already know. Every conversation starts fresh. The more clearly you describe who you are, what you need, and what format you want, the better the output. Garbage in, garbage out — this applies more to AI than almost anything else.",
+      search:'context prompt ai instructions memory how'
+    },
+    {
+      emoji:'⚠️', q:'Can I trust AI with private information?',
+      a:"Treat AI tools like you\'d treat a shared work computer — don\'t paste in passwords, medical records, or anything you wouldn\'t want a stranger to potentially read. Most major providers say they don\'t train on your chats, but terms change. When in doubt, anonymise.",
+      search:'ai private data trust safe security'
+    },
+    {
+      emoji:'🌍', q:'Is AI bad for the environment?',
+      a:"Running and training AI uses significant electricity. Training a large model can have the carbon footprint of several transatlantic flights. Ongoing usage is improving as chips get more efficient and more renewables power data centres. It\'s a real concern, but improving.",
+      search:'ai environment carbon energy climate data centre'
+    }
+  ],
+  articles: [
+    {
+      title:'The Godfather of AI Has Some Regrets',
+      source:'MIT Technology Review',
+      url:'https://www.technologyreview.com/2023/05/02/1072528/geoffrey-hinton-google-why-scared/',
+      desc:"Geoffrey Hinton spent 50 years building AI. Then he quit Google to warn the world about what he'd made. A rare, personal account from the man who made deep learning work.",
+      tag:'Profile',
+      date:'May 2023',
+      search:'hinton google quit warning ai danger regret'
+    },
+    {
+      title:'How Large Language Models Work',
+      source:'Anthropic',
+      url:'https://www.anthropic.com/index/core-views-on-ai-safety',
+      desc:"A clear, accessible explanation of how modern AI systems are built, what they can and cannot do, and why safety matters — from the team behind Claude.",
+      tag:'Explainer',
+      date:'2023',
+      search:'llm language model how works explainer anthropic'
+    },
+    {
+      title:'AlphaFold: The AI That Cracked the Code of Life',
+      source:'The Guardian',
+      url:'https://www.theguardian.com/technology/2022/jul/28/deepmind-ai-protein-database',
+      desc:"DeepMind's AlphaFold predicted the structure of nearly every known protein. Scientists who spent careers on single proteins now get answers in seconds. One of AI\'s most concrete, undeniable victories.",
+      tag:'Breakthrough',
+      date:'Jul 2022',
+      search:'alphafold deepmind protein biology breakthrough science'
+    },
+    {
+      title:'What Can ChatGPT Actually Do?',
+      source:'The Economist',
+      url:'https://www.economist.com/science-and-technology/2023/04/22/large-language-models-ability-to-generate-text-becomes-ever-more-human',
+      desc:"A measured look at what large language models are genuinely good at, where they fail, and why the hype and the fear are both slightly off-target.",
+      tag:'Analysis',
+      date:'Apr 2023',
+      search:'chatgpt what can do ability limits economist'
+    },
+    {
+      title:'AI Is Coming for Your White-Collar Job',
+      source:'Harvard Business Review',
+      url:'https://hbr.org/2023/08/how-generative-ai-can-augment-human-creativity',
+      desc:"Which professions are most exposed, which are protected, and how the smartest knowledge workers are already adapting. Grounded and practical.",
+      tag:'Work & Careers',
+      date:'Aug 2023',
+      search:'ai jobs white collar work future careers hbr'
+    },
+    {
+      title:'The Inside Story of ChatGPT\'s Launch',
+      source:'The Atlantic',
+      url:'https://www.theatlantic.com/technology/archive/2023/11/chatgpt-openai-one-year/675982/',
+      desc:"One year after the most consequential product launch in tech history. What happened inside OpenAI, why it spread so fast, and what nobody anticipated.",
+      tag:'Long read',
+      date:'Nov 2023',
+      search:'chatgpt openai launch story one year inside'
+    }
   ]
 };
 
@@ -483,10 +625,12 @@ function addBtn(section) {
 
 /* ━━━━━━━━ RENDER ━━━━━━━━ */
 function renderAll() {
-  renderBasics(); renderUsecases(); renderResearchers();
+  renderBasics(); renderUsecases(); renderResearchers(); renderDummies(); renderArticles();
   allCards = Array.from(document.querySelectorAll('[data-search]'));
   document.getElementById('basics-sub').textContent =
     DATA.basics.length + ' concept' + (DATA.basics.length !== 1 ? 's' : '') + ' — no prior knowledge needed';
+  document.getElementById('articles-sub').textContent =
+    DATA.articles.length + ' article' + (DATA.articles.length !== 1 ? 's' : '') + ' — curated reading';
 }
 
 function renderBasics() {
@@ -534,6 +678,31 @@ function renderResearchers() {
     </div>`).join('') + addBtn('researchers');
 }
 
+function renderDummies() {
+  document.getElementById('dummies-cards').innerHTML =
+    (DATA.dummies||[]).map((c,i) => `<div class="qcard" data-search="${esc(c.search)}">
+      ${acts('dummies',i)}
+      <div class="qcard-emoji">${esc(c.emoji)}</div>
+      <h3>${esc(c.q)}</h3>
+      <p>${esc(c.a)}</p>
+    </div>`).join('') + addBtn('dummies');
+}
+
+function renderArticles() {
+  document.getElementById('articles-cards').innerHTML =
+    (DATA.articles||[]).map((c,i) => `<div class="acard" data-search="${esc(c.search)}">
+      ${acts('articles',i)}
+      <div class="acard-meta">
+        ${c.source ? `<span class="acard-source">${esc(c.source)}</span>` : ''}
+        ${c.tag    ? `<span class="acard-tag">${esc(c.tag)}</span>` : ''}
+        ${c.date   ? `<span class="acard-date">${esc(c.date)}</span>` : ''}
+      </div>
+      <h3>${c.url ? `<a href="${esc(c.url)}" target="_blank" rel="noopener">${esc(c.title)}</a>` : esc(c.title)}</h3>
+      <p>${esc(c.desc)}</p>
+      ${c.url ? `<a href="${esc(c.url)}" target="_blank" rel="noopener" class="acard-read">Read article →</a>` : ''}
+    </div>`).join('') + addBtn('articles');
+}
+
 /* ━━━━━━━━ EDIT MODE ━━━━━━━━ */
 function toggleEditMode() {
   editMode = !editMode;
@@ -559,6 +728,10 @@ function openAdd(section) {
     ? {icon:'💡',tag:'Concept',title:'',body:'',body2:'',plain:'',search:''}
     : section === 'usecases'
     ? {icon:'🌟',title:'',intro:'',examples:[{label:'',text:''}],search:''}
+    : section === 'dummies'
+    ? {emoji:'💡',q:'',a:'',search:''}
+    : section === 'articles'
+    ? {title:'',source:'',url:'',desc:'',tag:'',date:'',search:''}
     : {initials:'',avatarBg:'#e2e8f0',avatarFg:'#374151',name:'',role:'',bio:'',quote:'',links:[{label:'Wikipedia →',url:''}],search:''};
   openModal(buildForm(section, -1, empty));
 }
@@ -573,6 +746,8 @@ function delCard(section, i) {
 function buildForm(section, i, c) {
   if (section === 'basics')     return basicsForm(section, i, c);
   if (section === 'usecases')   return ucaseForm(section, i, c);
+  if (section === 'dummies')    return dummiesForm(section, i, c);
+  if (section === 'articles')   return articlesForm(section, i, c);
   return researcherForm(section, i, c);
 }
 
@@ -644,6 +819,72 @@ function researcherForm(section, i, c) {
     ${formFooter(section,i,'saveResearcher')}`;
 }
 
+function dummiesForm(section, i, c) {
+  return `<h2>${i===-1?'Add':'Edit'} — AI for Dummies</h2>
+    ${fld('f-emoji','Emoji',c.emoji)}
+    ${fld('f-q','Question',c.q)}
+    ${fld('f-a','Answer',c.a,'ta')}
+    ${fld('f-search','Search keywords',c.search,'','Space-separated words')}
+    ${formFooter(section,i,'saveDummies')}`;
+}
+
+function articlesForm(section, i, c) {
+  return `<h2>${i===-1?'Add':'Edit'} — Article</h2>
+    ${i===-1 ? `
+    <label>Quick paste</label>
+    <textarea class="paste-area" id="f-paste" placeholder="Paste a URL, or paste the article title + URL together — then click Extract…" rows="2" oninput="articleExtract()"></textarea>
+    <button type="button" onclick="articleExtract()" style="margin-bottom:14px;padding:6px 14px;border-radius:8px;border:1px solid #c7d2fe;background:#eef2ff;font-size:12px;font-weight:700;color:var(--accent);cursor:pointer">↓ Extract from paste</button>
+    ` : ''}
+    ${fld('f-title','Title',c.title)}
+    <div class="modal-grid2">
+      <div>${fld('f-source','Source / Publication',c.source)}</div>
+      <div>${fld('f-date','Date',c.date)}</div>
+    </div>
+    ${fld('f-url','URL',c.url)}
+    ${fld('f-desc','Description',c.desc,'ta')}
+    ${fld('f-tag','Tag (e.g. Long read, Explainer, Breakthrough)',c.tag)}
+    ${fld('f-search','Search keywords',c.search,'','Space-separated words')}
+    ${formFooter(section,i,'saveArticle')}`;
+}
+
+function articleExtract() {
+  const raw = (document.getElementById('f-paste')?.value || '').trim();
+  if (!raw) return;
+  const urlMatch = raw.match(/https?:\/\/[^\s]+/);
+  if (urlMatch) {
+    const url = urlMatch[0].replace(/[).,;'"]+$/, '');
+    document.getElementById('f-url').value = url;
+    try {
+      const host = new URL(url).hostname.replace(/^www\./,'');
+      const parts = host.split('.');
+      const source = parts.slice(-2,-1)[0];
+      if (source && !document.getElementById('f-source').value) {
+        document.getElementById('f-source').value = source.charAt(0).toUpperCase() + source.slice(1);
+      }
+    } catch(e) {}
+    const title = raw.replace(urlMatch[0],'').replace(/[|—\-–]+/,' ').trim();
+    if (title && !document.getElementById('f-title').value) {
+      document.getElementById('f-title').value = title.slice(0,120);
+    }
+  } else if (!document.getElementById('f-title').value) {
+    document.getElementById('f-title').value = raw.slice(0,120);
+  }
+}
+
+function saveDummies(section, i) {
+  const d = {emoji:val('f-emoji'),q:val('f-q'),a:val('f-a'),search:val('f-search')};
+  if (!DATA.dummies) DATA.dummies = [];
+  if (i===-1) DATA[section].push(d); else DATA[section][i]=d;
+  persist(); renderAll(); closeModal();
+}
+
+function saveArticle(section, i) {
+  const d = {title:val('f-title'),source:val('f-source'),url:val('f-url'),desc:val('f-desc'),tag:val('f-tag'),date:val('f-date'),search:val('f-search')};
+  if (!DATA.articles) DATA.articles = [];
+  if (i===-1) DATA[section].push(d); else DATA[section][i]=d;
+  persist(); renderAll(); closeModal();
+}
+
 function saveBasics(section, i) {
   const d = {icon:val('f-icon'),tag:val('f-tag'),title:val('f-title'),body:val('f-body'),body2:val('f-body2'),plain:val('f-plain'),search:val('f-search')};
   if (i===-1) DATA[section].push(d); else DATA[section][i]=d;
@@ -694,6 +935,8 @@ function doImport() {
   try {
     const p = JSON.parse(val('import-ta') || document.getElementById('import-ta').value);
     if (!p.basics||!p.usecases||!p.researchers) throw 0;
+    if (!p.dummies)  p.dummies  = JSON.parse(JSON.stringify(DEFAULT_DATA.dummies));
+    if (!p.articles) p.articles = JSON.parse(JSON.stringify(DEFAULT_DATA.articles));
     DATA = p; persist(); renderAll(); closeModal();
   } catch(e) { alert('Invalid JSON — paste the complete export text.'); }
 }
@@ -709,6 +952,8 @@ const SECTIONS = [
   {id:'basics',     cardsId:'basics-cards',     emptyId:'basics-empty'},
   {id:'usecases',   cardsId:'usecases-cards',   emptyId:'usecases-empty'},
   {id:'researchers',cardsId:'researchers-cards',emptyId:'researchers-empty'},
+  {id:'dummies',    cardsId:'dummies-cards',    emptyId:'dummies-empty'},
+  {id:'articles',   cardsId:'articles-cards',   emptyId:'articles-empty'},
 ];
 
 function doSearch(q) {
