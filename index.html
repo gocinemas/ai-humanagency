@@ -272,6 +272,12 @@
     <span class="section-sub" id="jargon-sub"></span>
     <button id="jargon-add-btn" onclick="openAdd('jargon')" style="display:none;margin-left:auto;padding:5px 14px;border-radius:8px;border:1px solid var(--accent);background:#eef2ff;font-size:12px;font-weight:700;color:var(--accent);cursor:pointer">＋ Add term</button>
   </div>
+  <div style="position:relative;max-width:480px;margin-bottom:24px">
+    <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none">🔍</span>
+    <input type="search" id="jargon-search" placeholder="Type LLM, RAG, GPT…" oninput="doJargonSearch(this.value)" autocomplete="off"
+      style="font-family:'Inter',sans-serif;font-size:15px;width:100%;padding:12px 40px 12px 44px;border:2px solid var(--border);border-radius:14px;outline:none;background:#fff;color:var(--text);transition:border-color .15s,box-shadow .15s">
+    <button onclick="doJargonSearch('');document.getElementById('jargon-search').value=''" style="display:none;position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;color:#aaa;padding:0" id="jargon-clear">✕</button>
+  </div>
   <div class="section-empty" id="jargon-empty">No terms match your search.</div>
   <div class="cards" id="jargon-cards"></div>
 </section>
@@ -1053,6 +1059,32 @@ function saveResearcher(section, i) {
   if (i===-1) DATA[section].push(d); else DATA[section][i]=d;
   persist(); renderAll(); closeModal();
 }
+
+function doJargonSearch(q) {
+  const raw = q.trim().toLowerCase();
+  const cards = Array.from(document.getElementById('jargon-cards').querySelectorAll('.jcard'));
+  document.getElementById('jargon-clear').style.display = raw ? 'block' : 'none';
+  let visible = 0;
+  cards.forEach(card => {
+    const hay = card.dataset.search || '';
+    const match = !raw || raw.split(/\s+/).every(w => hay.toLowerCase().includes(w));
+    card.classList.toggle('hidden', !match);
+    if (match) visible++;
+  });
+  document.getElementById('jargon-empty').style.display = visible === 0 && raw ? 'block' : 'none';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const inp = document.getElementById('jargon-search');
+  if (inp) inp.addEventListener('focus', function() {
+    this.style.borderColor = 'var(--accent)';
+    this.style.boxShadow = '0 0 0 4px rgba(79,70,229,.08)';
+  });
+  if (inp) inp.addEventListener('blur', function() {
+    this.style.borderColor = 'var(--border)';
+    this.style.boxShadow = 'none';
+  });
+});
 
 function jargonForm(section, i, c) {
   const cats = ['Model','Technique','Company','Framework','Concept','Other'];
