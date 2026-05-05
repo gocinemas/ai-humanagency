@@ -294,8 +294,10 @@
     🤔 <strong id="jargon-nomatch-q"></strong> isn't in the glossary yet. <a href="#" onclick="openAdd('jargon');return false" style="color:var(--accent);font-weight:600">Add it →</a>
   </div>
 
-  <!-- Chips — all terms as clickable pills -->
-  <div id="jargon-chips" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+  <!-- Hint shown when idle -->
+  <div id="jargon-hint" style="font-size:13px;color:var(--subtle)">Try: <span style="color:var(--muted);font-weight:600">LLM · RAG · Claude · ChatGPT · Perplexity · GPT · RLHF</span></div>
+  <!-- Chips — filtered matches while typing -->
+  <div id="jargon-chips" style="display:none;flex-wrap:wrap;gap:8px;margin-top:16px"></div>
   <div class="cards" id="jargon-cards" style="display:none"></div>
 </section>
 
@@ -1090,14 +1092,18 @@ function saveResearcher(section, i) {
 
 const CAT_CLASS = {Model:'jcat-model',Technique:'jcat-technique',Company:'jcat-company',Framework:'jcat-framework',Concept:'jcat-concept'};
 
-function renderJargonChips(filter) {
+function renderJargonChips(filter, show) {
   const chips = document.getElementById('jargon-chips');
+  const hint  = document.getElementById('jargon-hint');
   if (!chips) return;
+  if (!show) { chips.style.display = 'none'; if (hint) hint.style.display = ''; return; }
   const q = (filter||'').trim().toLowerCase();
   const items = (DATA.jargon||[]).filter(t => !q || (t.term+' '+t.full+' '+(t.search||'')).toLowerCase().includes(q));
   chips.innerHTML = items.map(t =>
     `<button onclick="jargonShow('${esc(t.term)}')" style="font-family:'Inter',sans-serif;padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);background:#fff;font-size:13px;font-weight:700;color:var(--text);cursor:pointer;transition:border-color .15s,background .15s" onmouseover="this.style.borderColor='var(--accent)';this.style.background='#eef2ff'" onmouseout="this.style.borderColor='var(--border)';this.style.background='#fff'">${esc(t.term)}</button>`
   ).join('');
+  chips.style.display = items.length ? 'flex' : 'none';
+  if (hint) hint.style.display = 'none';
 }
 
 function jargonShow(term) {
@@ -1115,7 +1121,7 @@ function jargonShow(term) {
   document.getElementById('jargon-search').value = term;
   document.getElementById('jargon-clear').style.display = 'block';
   document.getElementById('jargon-search').style.borderColor = 'var(--accent)';
-  renderJargonChips(term);
+  renderJargonChips('', false);
 }
 
 function doJargonSearch(q) {
@@ -1127,7 +1133,7 @@ function doJargonSearch(q) {
   if (!raw) {
     document.getElementById('jargon-result').style.display  = 'none';
     document.getElementById('jargon-nomatch').style.display = 'none';
-    renderJargonChips('');
+    renderJargonChips('', false);
     return;
   }
 
@@ -1140,21 +1146,19 @@ function doJargonSearch(q) {
 
   if (exact) {
     jargonShow(exact.term);
-    renderJargonChips(raw);
-    document.getElementById('jargon-search').value = raw;
+    renderJargonChips('', false);
   } else if (partial.length === 1) {
     jargonShow(partial[0].term);
-    renderJargonChips(raw);
-    document.getElementById('jargon-search').value = raw;
+    renderJargonChips('', false);
   } else if (partial.length > 1) {
     document.getElementById('jargon-result').style.display  = 'none';
     document.getElementById('jargon-nomatch').style.display = 'none';
-    renderJargonChips(raw);
+    renderJargonChips(raw, true);
   } else {
     document.getElementById('jargon-result').style.display  = 'none';
     document.getElementById('jargon-nomatch').style.display = 'block';
     document.getElementById('jargon-nomatch-q').textContent = raw;
-    renderJargonChips('');
+    renderJargonChips('', false);
   }
 }
 
