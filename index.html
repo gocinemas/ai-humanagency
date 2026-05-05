@@ -131,6 +131,56 @@
     .jcat-concept   { background:#f3e8ff; color:#7c3aed; }
     .jcat-other     { background:#f1f5f9; color:#475569; }
 
+    /* ── Video cards ── */
+    .vcard { background:var(--surface); border:1px solid var(--border); border-radius:20px; overflow:hidden; display:flex; flex-direction:column; transition:border-color .15s,box-shadow .15s,transform .2s; position:relative; }
+    .vcard:hover { border-color:#d4d4d4; box-shadow:0 8px 32px rgba(0,0,0,.06); transform:translateY(-2px); }
+    .vcard.hidden { display:none !important; }
+    .vcard-thumb { position:relative; width:100%; padding-top:56.25%; background:#0f0f0f; cursor:pointer; overflow:hidden; flex-shrink:0; }
+    .vcard-thumb img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .3s; }
+    .vcard-thumb:hover img { transform:scale(1.03); }
+    .vcard-overlay { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.25); transition:background .15s; }
+    .vcard-thumb:hover .vcard-overlay { background:rgba(0,0,0,.45); }
+    .vcard-play { width:52px; height:52px; background:#ff0000; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 16px rgba(0,0,0,.35); transition:transform .15s; }
+    .vcard-thumb:hover .vcard-play { transform:scale(1.1); }
+    .vcard-fallback { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#1a1a1a; color:#aaa; font-size:13px; gap:8px; cursor:pointer; }
+    .vcard-iframe-wrap { display:none; position:relative; padding-top:56.25%; background:#000; }
+    .vcard-iframe-wrap.active { display:block; }
+    .vcard-iframe-wrap iframe { position:absolute; inset:0; width:100%; height:100%; border:none; }
+    .vcard-close { position:absolute; top:8px; right:8px; z-index:10; background:rgba(0,0,0,.6); color:#fff; border:none; border-radius:6px; padding:3px 8px; font-size:12px; cursor:pointer; }
+    .vcard-body { padding:16px 20px 20px; flex:1; display:flex; flex-direction:column; }
+    .vcard-meta { display:flex; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
+    .vcard-channel { font-size:11px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; background:#fee2e2; color:#991b1b; padding:3px 8px; border-radius:6px; }
+    .vcard-tag { font-size:11px; font-weight:600; color:var(--accent); background:#eef2ff; padding:3px 8px; border-radius:6px; }
+    .vcard-dur { font-size:11px; color:var(--subtle); margin-left:auto; }
+    .vcard h3 { font-size:15px; font-weight:700; letter-spacing:-0.2px; color:var(--text); margin-bottom:6px; line-height:1.4; }
+    .vcard p { font-size:13px; color:var(--muted); line-height:1.6; flex:1; }
+    .vcard-watch { margin-top:12px; font-size:12px; font-weight:600; color:#991b1b; display:inline-flex; align-items:center; gap:4px; }
+
+    /* ── Podcast cards ── */
+    .pcards-list { display:flex; flex-direction:column; gap:14px; }
+    .pcard { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:20px 22px; display:flex; gap:18px; align-items:flex-start; transition:border-color .15s,box-shadow .15s,transform .2s; position:relative; }
+    .pcard:hover { border-color:#d4d4d4; box-shadow:0 4px 20px rgba(0,0,0,.06); transform:translateY(-1px); }
+    .pcard.hidden { display:none !important; }
+    .pcard-art { width:68px; height:68px; border-radius:12px; background:linear-gradient(135deg,#7c3aed,#4f46e5); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:26px; }
+    .pcard-body { flex:1; min-width:0; }
+    .pcard-show { font-size:11px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; color:var(--accent2); margin-bottom:3px; }
+    .pcard h3 { font-size:15px; font-weight:700; letter-spacing:-0.2px; color:var(--text); margin-bottom:6px; line-height:1.4; }
+    .pcard p { font-size:13px; color:var(--muted); line-height:1.6; }
+    .pcard-footer { margin-top:10px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+    .pcard-dur { font-size:11px; color:var(--subtle); }
+    .pcard-listen { font-size:12px; font-weight:700; color:var(--accent2); background:#f3e8ff; padding:5px 12px; border-radius:8px; display:inline-flex; align-items:center; gap:4px; text-decoration:none; transition:background .15s; }
+    .pcard-listen:hover { background:#ede9fe; }
+
+    /* media tab pills */
+    .media-tabs { display:flex; gap:8px; margin-bottom:24px; }
+    .media-tab { padding:8px 20px; border-radius:20px; border:2px solid var(--border); background:transparent; font-size:14px; font-weight:700; color:var(--muted); cursor:pointer; transition:all .15s; }
+    .media-tab.active { border-color:var(--text); background:var(--text); color:white; }
+
+    body.edit-mode .vcard { outline:1.5px dashed #c7d2fe; }
+    body.edit-mode .vcard:hover { transform:none; }
+    body.edit-mode .pcard { outline:1.5px dashed #c7d2fe; }
+    body.edit-mode .pcard:hover { transform:none; }
+
     /* ── Edit mode ── */
     .card-actions { position:absolute; top:10px; right:10px; display:flex; gap:4px; z-index:10; }
     .card-actions button { background:white; border:1px solid #e5e7eb; border-radius:6px; padding:3px 7px; font-size:13px; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,.08); line-height:1.4; }
@@ -309,6 +359,21 @@
   </div>
   <div class="section-empty" id="articles-empty">No articles match your search.</div>
   <div class="cards" id="articles-cards"></div>
+</section>
+
+<section class="section" id="media">
+  <div class="section-header">
+    <span class="section-title">Watch &amp; Listen</span>
+    <span class="section-sub" id="media-sub"></span>
+    <button id="media-add-btn" onclick="openAddMedia()" style="display:none;margin-left:auto;padding:5px 14px;border-radius:8px;border:1px solid var(--accent);background:#eef2ff;font-size:12px;font-weight:700;color:var(--accent);cursor:pointer">＋ Add</button>
+  </div>
+  <div class="media-tabs">
+    <button class="media-tab active" id="tab-videos"   onclick="mediaTab('videos')">▶ Videos</button>
+    <button class="media-tab"        id="tab-podcasts" onclick="mediaTab('podcasts')">🎙 Podcasts</button>
+  </div>
+  <div class="section-empty" id="media-empty" style="display:none">No results match your search.</div>
+  <div class="cards" id="videos-cards"  style="grid-template-columns:repeat(auto-fill,minmax(288px,1fr))"></div>
+  <div class="pcards-list" id="podcasts-cards" style="display:none"></div>
 </section>
 
 <footer>
@@ -735,6 +800,124 @@ const DEFAULT_DATA = {
       date:'2025',
       search:'ai jobs labor market hiring signals impact data skills roles'
     }
+  ],
+  videos: [
+    {
+      videoId:'aircAruvnKk',
+      title:'But what is a neural network?',
+      channel:'3Blue1Brown',
+      desc:'The most-watched visual explainer on how neural networks learn. No maths required — pure intuition through beautiful animations. Start here if you\'re new to AI.',
+      tag:'Explainer',
+      duration:'19 min',
+      search:'neural network 3blue1brown visual explainer basics'
+    },
+    {
+      videoId:'kCc8FmEb1nY',
+      title:'Let\'s build GPT: from scratch, in code, spelled out',
+      channel:'Andrej Karpathy',
+      desc:'Andrej Karpathy (former OpenAI, Tesla) codes a working GPT model from zero in Python. The best deep-dive available — demystifies transformers and token prediction completely.',
+      tag:'Deep Dive',
+      duration:'2 hr 13 min',
+      search:'karpathy gpt build code python transformer deep dive'
+    },
+    {
+      videoId:'wjZofJX0v4M',
+      title:'Transformers (how LLMs work) explained visually',
+      channel:'3Blue1Brown',
+      desc:'The visual companion to understanding how transformers process language using "attention". Part of the Deep Learning series — builds on the neural network video above.',
+      tag:'Explainer',
+      duration:'26 min',
+      search:'transformer attention llm 3blue1brown visual deep learning'
+    },
+    {
+      videoId:'l-CjPuSMgM0',
+      title:'Geoffrey Hinton in conversation — AI risks and his regrets',
+      channel:'CBS Mornings',
+      desc:'The "Godfather of AI" explains in plain English why he quit Google and what he fears most. The interview that launched a global conversation about AI risk.',
+      tag:'Interview',
+      duration:'15 min',
+      search:'hinton google quit warning risk regret godfather interview'
+    },
+    {
+      videoId:'zjkBMFhNj_g',
+      title:'Intro to Large Language Models',
+      channel:'Andrej Karpathy',
+      desc:'A one-hour accessible walk-through of how LLMs work, how they\'re trained (pre-training, fine-tuning, RLHF), what they can and cannot do — and what comes next.',
+      tag:'Overview',
+      duration:'59 min',
+      search:'llm large language model intro karpathy overview training rlhf'
+    },
+    {
+      videoId:'SjhIlw3Iffs',
+      title:'The moment AI became a trillion-dollar industry',
+      channel:'Vox',
+      desc:'The story of ChatGPT\'s launch, why it spread in ways no one predicted, and how it triggered the biggest tech race in decades. Gripping 20-minute documentary.',
+      tag:'Documentary',
+      duration:'20 min',
+      search:'chatgpt launch trillion industry vox documentary history openai'
+    }
+  ],
+  podcasts: [
+    {
+      emoji:'🧠',
+      show:'Lex Fridman Podcast',
+      title:'Andrej Karpathy: Software 2.0, AI, and the Road Ahead',
+      desc:'Karpathy coined the term "Software 2.0" — the idea that neural networks are replacing hand-written code. One of the most technically deep and accessible AI conversations ever recorded.',
+      url:'https://lexfridman.com/andrej-karpathy/',
+      duration:'2 hr 10 min',
+      tag:'Interview',
+      search:'karpathy lex fridman software 2.0 openai tesla deep learning'
+    },
+    {
+      emoji:'📰',
+      show:'Hard Fork — New York Times',
+      title:'Is AI Actually Getting Smarter?',
+      desc:'Kevin Roose and Casey Newton cut through the hype every week. Hard Fork is the best show for understanding what\'s actually happening in AI without needing a CS degree.',
+      url:'https://www.nytimes.com/column/hard-fork',
+      duration:'~50 min',
+      tag:'Weekly',
+      search:'hard fork nyt new york times kevin roose casey newton weekly ai news'
+    },
+    {
+      emoji:'🎙',
+      show:'Dwarkesh Podcast',
+      title:'Dario Amodei (Anthropic CEO) — Scaling, Safety, and Claude',
+      desc:'Dario Amodei on why he believes AI could be the most transformative technology in human history, how Anthropic thinks about safety, and what he\'s most afraid of.',
+      url:'https://www.dwarkeshpatel.com/podcast',
+      duration:'3 hr',
+      tag:'Interview',
+      search:'dario amodei anthropic claude safety scaling alignment dwarkesh'
+    },
+    {
+      emoji:'🔬',
+      show:'The TWIML AI Podcast',
+      title:'Understanding Foundation Models with Percy Liang',
+      desc:'Sam Charrington\'s deep technical interviews with leading researchers. This one covers foundation models, what makes them powerful, and the Stanford CRFM report.',
+      url:'https://twimlai.com/podcast/twimlai/',
+      duration:'1 hr 5 min',
+      tag:'Research',
+      search:'twiml ai podcast percy liang foundation models stanford research'
+    },
+    {
+      emoji:'💼',
+      show:'No Priors — AI, Tech & Business',
+      title:'How AI Agents Will Change Every Business',
+      desc:'Sarah Guo and Elad Gil talk to AI founders and investors every week. No Priors is the best show for understanding how AI is reshaping products and companies right now.',
+      url:'https://www.sequoiacap.com/no-priors/',
+      duration:'~30 min',
+      tag:'Business',
+      search:'no priors sarah guo elad gil business agents startup investing ai'
+    },
+    {
+      emoji:'🌐',
+      show:'AI Explained — Podcast',
+      title:'What Happened in AI This Week',
+      desc:'Short, weekly explainers (20–30 min) on the most important AI developments. Perfect for staying current without spending hours reading research papers.',
+      url:'https://aiexplained-official.com/',
+      duration:'~25 min',
+      tag:'Weekly',
+      search:'ai explained weekly news developments podcast short update'
+    }
   ]
 };
 
@@ -758,6 +941,8 @@ function init() {
         const existingUrls = new Set(DATA.articles.map(a => a.url));
         DEFAULT_DATA.articles.forEach(a => { if (!existingUrls.has(a.url)) DATA.articles.push(JSON.parse(JSON.stringify(a))); });
       }
+      if (!DATA.videos   || !DATA.videos.length)   DATA.videos   = JSON.parse(JSON.stringify(DEFAULT_DATA.videos));
+      if (!DATA.podcasts || !DATA.podcasts.length)  DATA.podcasts = JSON.parse(JSON.stringify(DEFAULT_DATA.podcasts));
     } catch(e) {}
   }
   renderAll();
@@ -789,7 +974,7 @@ function addBtn(section) {
 
 /* ━━━━━━━━ RENDER ━━━━━━━━ */
 function renderAll() {
-  renderBasics(); renderUsecases(); renderResearchers(); renderDummies(); renderJargon(); renderArticles();
+  renderBasics(); renderUsecases(); renderResearchers(); renderDummies(); renderJargon(); renderArticles(); renderMedia();
   allCards = Array.from(document.querySelectorAll('[data-search]'));
   document.getElementById('basics-sub').textContent =
     DATA.basics.length + ' concept' + (DATA.basics.length !== 1 ? 's' : '') + ' — no prior knowledge needed';
@@ -797,6 +982,8 @@ function renderAll() {
     (DATA.jargon||[]).length + ' term' + ((DATA.jargon||[]).length !== 1 ? 's' : '') + ' — type an acronym to decode it';
   document.getElementById('articles-sub').textContent =
     DATA.articles.length + ' article' + (DATA.articles.length !== 1 ? 's' : '') + ' — curated reading';
+  const vn = (DATA.videos||[]).length, pn = (DATA.podcasts||[]).length;
+  document.getElementById('media-sub').textContent = vn + ' video' + (vn!==1?'s':'') + ' · ' + pn + ' podcast' + (pn!==1?'s':'');
 }
 
 function renderJargon() {
@@ -879,6 +1066,172 @@ function renderArticles() {
     </div>`).join('') + addBtn('articles');
 }
 
+/* ━━━━━━━━ MEDIA (Watch & Listen) ━━━━━━━━ */
+let _mediaTab = 'videos';
+
+function mediaTab(tab) {
+  _mediaTab = tab;
+  document.getElementById('tab-videos').classList.toggle('active', tab==='videos');
+  document.getElementById('tab-podcasts').classList.toggle('active', tab==='podcasts');
+  document.getElementById('videos-cards').style.display  = tab==='videos'  ? '' : 'none';
+  document.getElementById('podcasts-cards').style.display = tab==='podcasts' ? '' : 'none';
+}
+
+function _ytId(url) {
+  if (!url) return '';
+  const m = url.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : url;
+}
+
+function playVideo(el, videoId) {
+  const wrap = el.closest('.vcard');
+  const thumb = wrap.querySelector('.vcard-thumb');
+  const iframeWrap = wrap.querySelector('.vcard-iframe-wrap');
+  thumb.style.display = 'none';
+  iframeWrap.classList.add('active');
+  iframeWrap.innerHTML =
+    `<button class="vcard-close" onclick="stopVideo(this)">✕ Close</button>
+     <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0" allow="autoplay;encrypted-media" allowfullscreen></iframe>`;
+}
+
+function stopVideo(btn) {
+  const wrap = btn.closest('.vcard');
+  const thumb = wrap.querySelector('.vcard-thumb');
+  const iframeWrap = wrap.querySelector('.vcard-iframe-wrap');
+  iframeWrap.classList.remove('active');
+  iframeWrap.innerHTML = '';
+  thumb.style.display = '';
+}
+
+function renderMedia() {
+  const videos  = DATA.videos  || [];
+  const podcasts = DATA.podcasts || [];
+
+  // Videos
+  document.getElementById('videos-cards').innerHTML = videos.map((v,i) => {
+    const id = _ytId(v.videoId || v.url || '');
+    const thumb = id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : '';
+    const ytUrl = id ? `https://www.youtube.com/watch?v=${id}` : (v.url || '#');
+    return `<div class="vcard" data-search="${esc((v.search||v.title||'').toLowerCase())}">
+      ${editMode ? `<div class="card-actions"><button onclick="openEdit('videos',${i})" title="Edit">✏️</button><button class="ca-del" onclick="delCard('videos',${i})" title="Delete">🗑️</button></div>` : ''}
+      <div class="vcard-thumb" onclick="playVideo(this,'${id}')">
+        ${thumb
+          ? `<img src="${esc(thumb)}" alt="${esc(v.title)}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'vcard-fallback\\'><span style=\\'font-size:40px\\'>▶</span><span>${esc(v.channel)}</span></div>'">`
+          : `<div class="vcard-fallback"><span style="font-size:40px">▶</span><span>${esc(v.channel)}</span></div>`}
+        <div class="vcard-overlay"><div class="vcard-play"><svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div></div>
+      </div>
+      <div class="vcard-iframe-wrap"></div>
+      <div class="vcard-body">
+        <div class="vcard-meta">
+          ${v.channel ? `<span class="vcard-channel">${esc(v.channel)}</span>` : ''}
+          ${v.tag     ? `<span class="vcard-tag">${esc(v.tag)}</span>` : ''}
+          ${v.duration? `<span class="vcard-dur">⏱ ${esc(v.duration)}</span>` : ''}
+        </div>
+        <h3>${esc(v.title)}</h3>
+        <p>${esc(v.desc)}</p>
+        <a href="${esc(ytUrl)}" target="_blank" rel="noopener" class="vcard-watch">Watch on YouTube ↗</a>
+      </div>
+    </div>`;
+  }).join('') + (editMode ? `<div class="card add-card-btn vcard" onclick="openAddMedia()">＋ Add video</div>` : '');
+
+  // Podcasts
+  document.getElementById('podcasts-cards').innerHTML = podcasts.map((p,i) => `
+    <div class="pcard" data-search="${esc((p.search||p.title||'').toLowerCase())}">
+      ${editMode ? `<div class="card-actions"><button onclick="openEdit('podcasts',${i})" title="Edit">✏️</button><button class="ca-del" onclick="delCard('podcasts',${i})" title="Delete">🗑️</button></div>` : ''}
+      <div class="pcard-art">${esc(p.emoji||'🎙')}</div>
+      <div class="pcard-body">
+        <div class="pcard-show">${esc(p.show)}</div>
+        <h3>${esc(p.title)}</h3>
+        <p>${esc(p.desc)}</p>
+        <div class="pcard-footer">
+          ${p.duration ? `<span class="pcard-dur">⏱ ${esc(p.duration)}</span>` : ''}
+          ${p.tag      ? `<span class="acard-source" style="background:#f3e8ff;color:#6d28d9">${esc(p.tag)}</span>` : ''}
+          ${p.url      ? `<a href="${esc(p.url)}" target="_blank" rel="noopener" class="pcard-listen">🎧 Listen →</a>` : ''}
+        </div>
+      </div>
+    </div>`).join('') + (editMode ? `<div class="pcard" style="border:2px dashed #d1d5db;cursor:pointer;justify-content:center;min-height:80px;color:#9ca3af;font-size:15px;font-weight:700" onclick="openAddMedia()">＋ Add podcast</div>` : '');
+}
+
+function openAddMedia() {
+  // Ask which type then open appropriate form
+  const type = _mediaTab === 'podcasts' ? 'podcasts' : 'videos';
+  const empty = type === 'videos'
+    ? {videoId:'',title:'',channel:'',desc:'',tag:'Explainer',duration:'',search:''}
+    : {emoji:'🎙',show:'',title:'',desc:'',url:'',duration:'',tag:'',search:''};
+  if (!DATA[type]) DATA[type] = [];
+  openModal(buildMediaForm(type, -1, empty));
+}
+
+function buildMediaForm(section, i, c) {
+  const ff = formFooter(section, i, 'saveMedia');
+  if (section === 'videos') {
+    return `<h2>${i===-1?'Add':'Edit'} — Video</h2>
+      <label>YouTube URL or Video ID</label>
+      <input type="text" id="f-videoId" value="${esc(c.videoId||'')}">
+      <label>Title</label>
+      <input type="text" id="f-vtitle" value="${esc(c.title)}">
+      <label>Channel</label>
+      <input type="text" id="f-channel" value="${esc(c.channel||'')}">
+      <label>Description</label>
+      <textarea id="f-vdesc">${esc(c.desc)}</textarea>
+      <div class="modal-grid2">
+        <div><label>Tag (e.g. Explainer)</label><input type="text" id="f-vtag" value="${esc(c.tag||'')}"></div>
+        <div><label>Duration (e.g. 19 min)</label><input type="text" id="f-vdur" value="${esc(c.duration||'')}"></div>
+      </div>
+      <label>Search keywords</label>
+      <input type="text" id="f-vsearch" value="${esc(c.search||'')}">
+      ${ff}`;
+  }
+  return `<h2>${i===-1?'Add':'Edit'} — Podcast Episode</h2>
+    <div class="modal-grid2">
+      <div><label>Emoji</label><input type="text" id="f-pemoji" value="${esc(c.emoji||'🎙')}" maxlength="4"></div>
+      <div><label>Show name</label><input type="text" id="f-pshow" value="${esc(c.show||'')}"></div>
+    </div>
+    <label>Episode title</label>
+    <input type="text" id="f-ptitle" value="${esc(c.title)}">
+    <label>Description</label>
+    <textarea id="f-pdesc">${esc(c.desc)}</textarea>
+    <label>Listen URL</label>
+    <input type="text" id="f-purl" value="${esc(c.url||'')}">
+    <div class="modal-grid2">
+      <div><label>Duration</label><input type="text" id="f-pdur" value="${esc(c.duration||'')}"></div>
+      <div><label>Tag</label><input type="text" id="f-ptag" value="${esc(c.tag||'')}"></div>
+    </div>
+    <label>Search keywords</label>
+    <input type="text" id="f-psearch" value="${esc(c.search||'')}">
+    ${ff}`;
+}
+
+function saveMedia(section, i) {
+  let d;
+  if (section === 'videos') {
+    d = {
+      videoId:  val('f-videoId'),
+      title:    val('f-vtitle'),
+      channel:  val('f-channel'),
+      desc:     val('f-vdesc'),
+      tag:      val('f-vtag'),
+      duration: val('f-vdur'),
+      search:   val('f-vsearch') || val('f-vtitle').toLowerCase(),
+    };
+  } else {
+    d = {
+      emoji:    val('f-pemoji'),
+      show:     val('f-pshow'),
+      title:    val('f-ptitle'),
+      desc:     val('f-pdesc'),
+      url:      val('f-purl'),
+      duration: val('f-pdur'),
+      tag:      val('f-ptag'),
+      search:   val('f-psearch') || val('f-ptitle').toLowerCase(),
+    };
+  }
+  if (!DATA[section]) DATA[section] = [];
+  if (i===-1) DATA[section].push(d); else DATA[section][i] = d;
+  persist(); renderMedia(); closeModal();
+  if (section === 'podcasts') mediaTab('podcasts');
+}
+
 /* ━━━━━━━━ EDIT MODE ━━━━━━━━ */
 function toggleEditMode() {
   editMode = !editMode;
@@ -886,6 +1239,7 @@ function toggleEditMode() {
   document.getElementById('edit-banner').classList.toggle('visible', editMode);
   document.getElementById('articles-add-btn').style.display = editMode ? 'block' : 'none';
   document.getElementById('jargon-add-btn').style.display  = editMode ? 'block' : 'none';
+  document.getElementById('media-add-btn').style.display   = editMode ? 'block' : 'none';
   renderAll();
 }
 
@@ -899,7 +1253,12 @@ function closeModal() {
 }
 
 /* ━━━━━━━━ EDIT / ADD / DELETE ━━━━━━━━ */
-function openEdit(section, i) { openModal(buildForm(section, i, DATA[section][i])); }
+function openEdit(section, i) {
+  if (section === 'videos' || section === 'podcasts') {
+    openModal(buildMediaForm(section, i, DATA[section][i])); return;
+  }
+  openModal(buildForm(section, i, DATA[section][i]));
+}
 
 function openAdd(section) {
   const empty = section === 'basics'
@@ -917,10 +1276,13 @@ function openAdd(section) {
 }
 
 function delCard(section, i) {
-  const name = DATA[section][i].title || DATA[section][i].name || 'this card';
+  const item = DATA[section][i];
+  const name = item.title || item.name || item.term || 'this card';
   if (!confirm('Delete "' + name + '"?')) return;
   DATA[section].splice(i, 1);
-  persist(); renderAll();
+  persist();
+  if (section === 'videos' || section === 'podcasts') { renderMedia(); return; }
+  renderAll();
 }
 
 function buildForm(section, i, c) {
