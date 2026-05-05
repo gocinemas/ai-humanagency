@@ -116,6 +116,21 @@
     .paste-area { width:100%; font-family:'Inter',sans-serif; font-size:13px; padding:10px 12px; border:2px dashed #c7d2fe; border-radius:10px; outline:none; color:#111; min-height:60px; background:#f5f3ff; margin-bottom:4px; resize:none; }
     .paste-area:focus { border-color:var(--accent); background:white; }
 
+    /* ── Jargon card ── */
+    .jcard { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:22px 24px; display:flex; flex-direction:column; transition:border-color .15s,box-shadow .15s,transform .2s; position:relative; }
+    .jcard:hover { border-color:#d4d4d4; box-shadow:0 8px 32px rgba(0,0,0,.06); transform:translateY(-2px); }
+    .jcard.hidden { display:none !important; }
+    .jcard-term { font-size:22px; font-weight:900; letter-spacing:-0.5px; color:var(--text); line-height:1.1; }
+    .jcard-full { font-size:14px; font-weight:600; color:var(--accent); margin-top:3px; margin-bottom:10px; }
+    .jcard-def  { font-size:13px; color:var(--muted); line-height:1.7; flex:1; }
+    .jcard-cat  { display:inline-block; margin-top:12px; font-size:10px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; padding:3px 8px; border-radius:6px; }
+    .jcat-model     { background:#dbeafe; color:#2563eb; }
+    .jcat-technique { background:#d1fae5; color:#059669; }
+    .jcat-company   { background:#fee2e2; color:#dc2626; }
+    .jcat-framework { background:#fef3c7; color:#d97706; }
+    .jcat-concept   { background:#f3e8ff; color:#7c3aed; }
+    .jcat-other     { background:#f1f5f9; color:#475569; }
+
     /* ── Edit mode ── */
     .card-actions { position:absolute; top:10px; right:10px; display:flex; gap:4px; z-index:10; }
     .card-actions button { background:white; border:1px solid #e5e7eb; border-radius:6px; padding:3px 7px; font-size:13px; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,.08); line-height:1.4; }
@@ -190,6 +205,7 @@
       <a href="#usecases">Use Cases</a>
       <a href="#researchers">Researchers</a>
       <a href="#dummies">For Dummies</a>
+      <a href="#jargon">Jargon</a>
       <a href="#articles">Articles</a>
       <a href="https://humanagency.co" class="nav-home">← humanagency.co</a>
     </nav>
@@ -248,6 +264,16 @@
   </div>
   <div class="section-empty" id="dummies-empty">No results match your search.</div>
   <div class="cards" id="dummies-cards"></div>
+</section>
+
+<section class="section" id="jargon">
+  <div class="section-header">
+    <span class="section-title">AI Jargon Decoder</span>
+    <span class="section-sub" id="jargon-sub"></span>
+    <button id="jargon-add-btn" onclick="openAdd('jargon')" style="display:none;margin-left:auto;padding:5px 14px;border-radius:8px;border:1px solid var(--accent);background:#eef2ff;font-size:12px;font-weight:700;color:var(--accent);cursor:pointer">＋ Add term</button>
+  </div>
+  <div class="section-empty" id="jargon-empty">No terms match your search.</div>
+  <div class="cards" id="jargon-cards"></div>
 </section>
 
 <section class="section" id="articles">
@@ -533,6 +559,35 @@ const DEFAULT_DATA = {
       search:'ai environment carbon energy climate data centre'
     }
   ],
+  jargon: [
+    {term:'AI',   full:'Artificial Intelligence', category:'Concept',   definition:'Software that learns from data to perform tasks that previously required human intelligence — recognising images, understanding language, making decisions.',search:'ai artificial intelligence'},
+    {term:'ML',   full:'Machine Learning',         category:'Technique', definition:'A type of AI where the system learns patterns from examples rather than following hand-coded rules. Feed it labelled data and it figures out the rules itself.',search:'ml machine learning training data'},
+    {term:'LLM',  full:'Large Language Model',     category:'Model',     definition:'The technology behind ChatGPT, Claude and Gemini. Trained on vast amounts of text to predict the next word — billions of times — until it can write, reason and converse fluently.',search:'llm large language model gpt chatgpt claude gemini text'},
+    {term:'GPT',  full:'Generative Pre-trained Transformer', category:'Model', definition:"OpenAI's family of large language models (GPT-3, GPT-4, GPT-4o). The architecture behind ChatGPT. Pre-trained on internet text, then fine-tuned to follow instructions.",search:'gpt generative pre-trained transformer openai chatgpt'},
+    {term:'RAG',  full:'Retrieval-Augmented Generation', category:'Technique', definition:'A method to ground LLM answers in real data. Instead of relying only on training knowledge, the model first retrieves relevant documents from a database, then generates an answer using those documents as context.',search:'rag retrieval augmented generation search grounding documents'},
+    {term:'AGI',  full:'Artificial General Intelligence', category:'Concept', definition:"The hypothetical AI that can perform any intellectual task a human can — not just one narrow speciality. We don't have it yet. Debate rages about whether it's 5 years or 50 years away.",search:'agi artificial general intelligence human-level future'},
+    {term:'RLHF', full:'Reinforcement Learning from Human Feedback', category:'Technique', definition:'The key technique that makes LLMs helpful and safe. Human raters score model outputs; the model is then trained to produce outputs humans prefer. How ChatGPT was made to feel like a helpful assistant rather than a raw text predictor.',search:'rlhf reinforcement learning human feedback preference training alignment'},
+    {term:'NLP',  full:'Natural Language Processing', category:'Technique', definition:"The field of AI that deals with understanding and generating human language. Every time an AI reads an email, translates text, or answers a question, it's using NLP.",search:'nlp natural language processing text language understanding'},
+    {term:'CNN',  full:'Convolutional Neural Network', category:'Model', definition:'The neural network architecture that gave AI the ability to see. Used in image recognition, medical scans, facial recognition and self-driving cars. Invented by Yann LeCun.',search:'cnn convolutional neural network vision image recognition lecun'},
+    {term:'API',  full:'Application Programming Interface', category:'Framework', definition:"A way for software to talk to other software. When an app uses GPT-4, it's calling OpenAI's API — sending a request and getting a response back, like ordering from a menu.",search:'api application programming interface integration developer'},
+    {term:'SFT',  full:'Supervised Fine-Tuning',     category:'Technique', definition:'Training a pre-trained model further on a smaller, high-quality labelled dataset to specialise it for a task (e.g. customer service, coding, medical Q&A).',search:'sft supervised fine-tuning training specialise'},
+    {term:'LoRA', full:'Low-Rank Adaptation',        category:'Technique', definition:'A clever way to fine-tune a large model cheaply. Instead of updating all billions of parameters, you only train a small set of additional weights. Much less compute, similar results.',search:'lora low-rank adaptation fine-tuning efficient'},
+    {term:'CoT',  full:'Chain of Thought',           category:'Technique', definition:'A prompting technique where you ask the model to "think step by step" before answering. It dramatically improves accuracy on maths, logic and reasoning tasks.',search:'cot chain of thought prompting reasoning step by step'},
+    {term:'VLM',  full:'Vision Language Model',      category:'Model',     definition:'A model that understands both images and text. You can show it a photo and ask a question about it. GPT-4o, Gemini and Claude are all VLMs.',search:'vlm vision language model image text multimodal'},
+    {term:'MoE',  full:'Mixture of Experts',         category:'Model',     definition:'An architecture where a large model is made up of many specialist sub-models ("experts"). Only the most relevant experts are activated for each input — making very large models efficient.',search:'moe mixture of experts architecture efficient routing'},
+    {term:'DPO',  full:'Direct Preference Optimisation', category:'Technique', definition:'A simpler alternative to RLHF. Rather than training a separate reward model, DPO directly trains the LLM to prefer human-preferred outputs. Faster and more stable than RLHF.',search:'dpo direct preference optimisation alignment training'},
+    {term:'PEFT', full:'Parameter-Efficient Fine-Tuning', category:'Technique', definition:'A family of techniques (including LoRA) for adapting large models to new tasks while only updating a fraction of the parameters — saving significant time and GPU cost.',search:'peft parameter efficient fine-tuning lora'},
+    {term:'BERT', full:'Bidirectional Encoder Representations from Transformers', category:'Model', definition:"Google's 2018 breakthrough model that reads text in both directions simultaneously (not just left-to-right), giving it much better language understanding. Transformed search and NLP.",search:'bert bidirectional encoder representations transformers google language understanding'},
+    {term:'GAN',  full:'Generative Adversarial Network', category:'Model', definition:'Two neural networks in competition: a generator tries to create convincing fake data; a discriminator tries to spot the fakes. The arms race between them produces remarkably realistic images, voices, and video.',search:'gan generative adversarial network images deepfake generator'},
+    {term:'TTS',  full:'Text-to-Speech',             category:'Technique', definition:'AI that converts written text into spoken audio. Modern TTS can clone voices, adjust emotion and pacing, and produce speech almost indistinguishable from a human.',search:'tts text to speech voice synthesis audio clone'},
+    {term:'ASR',  full:'Automatic Speech Recognition', category:'Technique', definition:'AI that converts spoken audio into text. Powers voice assistants, meeting transcription (Otter.ai, Whisper), and live captioning.',search:'asr automatic speech recognition whisper transcription voice'},
+    {term:'SLM',  full:'Small Language Model',       category:'Model',     definition:'A compact LLM designed to run on devices (phones, laptops) rather than data centres. Microsoft Phi, Apple Intelligence and Meta Llama small variants are examples. Slower progress but faster, cheaper, private.',search:'slm small language model on-device phi llama edge'},
+    {term:'KV Cache', full:'Key-Value Cache',        category:'Technique', definition:"A memory optimisation inside transformers. Previously computed attention values are cached so the model doesn't recompute them when generating each new token — making long conversations much faster.",search:'kv cache key value attention transformer memory speed'},
+    {term:'ToT',  full:'Tree of Thoughts',           category:'Technique', definition:'An advanced prompting technique where the model explores multiple reasoning paths simultaneously (like a decision tree) rather than one linear chain of thought. Better for complex problems.',search:'tot tree of thoughts prompting reasoning paths exploration'},
+    {term:'DL',   full:'Deep Learning',              category:'Technique', definition:'Machine learning using neural networks with many layers (deep = many layers). The "deep" in deep learning lets models learn increasingly abstract features — pixels → edges → shapes → objects.',search:'dl deep learning neural network layers features'},
+    {term:'RL',   full:'Reinforcement Learning',     category:'Technique', definition:'Training an AI through trial and error: reward good outcomes, penalise bad ones. The AI learns a strategy that maximises rewards over time. How DeepMind trained AlphaGo and AlphaZero.',search:'rl reinforcement learning reward penalty alphago games strategy'},
+    {term:'GenAI', full:'Generative AI',             category:'Concept',   definition:'AI that creates new content — text, images, video, audio, code — rather than just classifying existing content. The defining AI wave of 2022–present.',search:'genai generative ai create content images text video midjourney dall-e'}
+  ],
   articles: [
     {
       title:'The Godfather of AI Has Some Regrets',
@@ -658,6 +713,7 @@ function init() {
     try {
       DATA = JSON.parse(saved);
       if (!DATA.dummies  || !DATA.dummies.length)  DATA.dummies  = JSON.parse(JSON.stringify(DEFAULT_DATA.dummies));
+      if (!DATA.jargon   || !DATA.jargon.length)   DATA.jargon   = JSON.parse(JSON.stringify(DEFAULT_DATA.jargon));
       if (!DATA.articles || !DATA.articles.length) {
         DATA.articles = JSON.parse(JSON.stringify(DEFAULT_DATA.articles));
       } else {
@@ -695,12 +751,26 @@ function addBtn(section) {
 
 /* ━━━━━━━━ RENDER ━━━━━━━━ */
 function renderAll() {
-  renderBasics(); renderUsecases(); renderResearchers(); renderDummies(); renderArticles();
+  renderBasics(); renderUsecases(); renderResearchers(); renderDummies(); renderJargon(); renderArticles();
   allCards = Array.from(document.querySelectorAll('[data-search]'));
   document.getElementById('basics-sub').textContent =
     DATA.basics.length + ' concept' + (DATA.basics.length !== 1 ? 's' : '') + ' — no prior knowledge needed';
+  document.getElementById('jargon-sub').textContent =
+    (DATA.jargon||[]).length + ' term' + ((DATA.jargon||[]).length !== 1 ? 's' : '') + ' — type an acronym to decode it';
   document.getElementById('articles-sub').textContent =
     DATA.articles.length + ' article' + (DATA.articles.length !== 1 ? 's' : '') + ' — curated reading';
+}
+
+function renderJargon() {
+  const catClass = c => ({Model:'jcat-model',Technique:'jcat-technique',Company:'jcat-company',Framework:'jcat-framework',Concept:'jcat-concept'}[c]||'jcat-other');
+  document.getElementById('jargon-cards').innerHTML =
+    (DATA.jargon||[]).map((c,i) => `<div class="jcard" data-search="${esc(c.term+' '+c.full+' '+c.search)}">
+      ${acts('jargon',i)}
+      <div class="jcard-term">${esc(c.term)}</div>
+      <div class="jcard-full">${esc(c.full)}</div>
+      <div class="jcard-def">${esc(c.definition)}</div>
+      ${c.category ? `<span class="jcard-cat ${catClass(c.category)}">${esc(c.category)}</span>` : ''}
+    </div>`).join('') + addBtn('jargon');
 }
 
 function renderBasics() {
@@ -779,6 +849,7 @@ function toggleEditMode() {
   document.body.classList.toggle('edit-mode', editMode);
   document.getElementById('edit-banner').classList.toggle('visible', editMode);
   document.getElementById('articles-add-btn').style.display = editMode ? 'block' : 'none';
+  document.getElementById('jargon-add-btn').style.display  = editMode ? 'block' : 'none';
   renderAll();
 }
 
@@ -803,6 +874,8 @@ function openAdd(section) {
     ? {emoji:'💡',q:'',a:'',search:''}
     : section === 'articles'
     ? {title:'',source:'',url:'',desc:'',tag:'',date:'',search:''}
+    : section === 'jargon'
+    ? {term:'',full:'',definition:'',category:'',search:''}
     : {initials:'',avatarBg:'#e2e8f0',avatarFg:'#374151',name:'',role:'',bio:'',quote:'',links:[{label:'Wikipedia →',url:''}],search:''};
   openModal(buildForm(section, -1, empty));
 }
@@ -819,6 +892,7 @@ function buildForm(section, i, c) {
   if (section === 'usecases')   return ucaseForm(section, i, c);
   if (section === 'dummies')    return dummiesForm(section, i, c);
   if (section === 'articles')   return articlesForm(section, i, c);
+  if (section === 'jargon')     return jargonForm(section, i, c);
   return researcherForm(section, i, c);
 }
 
@@ -980,6 +1054,39 @@ function saveResearcher(section, i) {
   persist(); renderAll(); closeModal();
 }
 
+function jargonForm(section, i, c) {
+  const cats = ['Model','Technique','Company','Framework','Concept','Other'];
+  const opts = cats.map(o=>`<option value="${o}"${c.category===o?' selected':''}>${o}</option>`).join('');
+  return `<h2>${i===-1?'Add':'Edit'} — Jargon Term</h2>
+    <div class="modal-grid2">
+      <div>${fld('f-term','Acronym / Term (e.g. LLM)',c.term)}</div>
+      <div>
+        <label for="f-cat">Category</label>
+        <select id="f-cat" style="width:100%;font-family:Inter,sans-serif;font-size:14px;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:10px;outline:none;background:white">
+          <option value="">— none —</option>${opts}
+        </select>
+      </div>
+    </div>
+    ${fld('f-full','Full name (e.g. Large Language Model)',c.full)}
+    ${fld('f-def','Definition (plain English)',c.definition,'ta')}
+    ${fld('f-search','Extra search keywords (optional)',c.search,'','Space-separated — the term and full name are always searched')}
+    ${formFooter(section,i,'saveJargon')}`;
+}
+
+function saveJargon(section, i) {
+  if (!DATA.jargon) DATA.jargon = [];
+  const d = {
+    term:       val('f-term'),
+    full:       val('f-full'),
+    definition: val('f-def'),
+    category:   (document.getElementById('f-cat')?.value||'').trim(),
+    search:     val('f-search'),
+  };
+  if (!d.term) { alert('Term is required'); return; }
+  if (i===-1) DATA.jargon.push(d); else DATA.jargon[i]=d;
+  persist(); renderAll(); closeModal();
+}
+
 /* ━━━━━━━━ EXPORT / IMPORT / RESET ━━━━━━━━ */
 function exportData() {
   const json = JSON.stringify(DATA, null, 2);
@@ -1024,6 +1131,7 @@ const SECTIONS = [
   {id:'usecases',   cardsId:'usecases-cards',   emptyId:'usecases-empty'},
   {id:'researchers',cardsId:'researchers-cards',emptyId:'researchers-empty'},
   {id:'dummies',    cardsId:'dummies-cards',    emptyId:'dummies-empty'},
+  {id:'jargon',     cardsId:'jargon-cards',     emptyId:'jargon-empty'},
   {id:'articles',   cardsId:'articles-cards',   emptyId:'articles-empty'},
 ];
 
