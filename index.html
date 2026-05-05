@@ -272,14 +272,31 @@
     <span class="section-sub" id="jargon-sub"></span>
     <button id="jargon-add-btn" onclick="openAdd('jargon')" style="display:none;margin-left:auto;padding:5px 14px;border-radius:8px;border:1px solid var(--accent);background:#eef2ff;font-size:12px;font-weight:700;color:var(--accent);cursor:pointer">＋ Add term</button>
   </div>
-  <div style="position:relative;max-width:480px;margin-bottom:24px">
-    <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none">🔍</span>
-    <input type="search" id="jargon-search" placeholder="Type LLM, RAG, GPT…" oninput="doJargonSearch(this.value)" autocomplete="off"
-      style="font-family:'Inter',sans-serif;font-size:15px;width:100%;padding:12px 40px 12px 44px;border:2px solid var(--border);border-radius:14px;outline:none;background:#fff;color:var(--text);transition:border-color .15s,box-shadow .15s">
-    <button onclick="doJargonSearch('');document.getElementById('jargon-search').value=''" style="display:none;position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;color:#aaa;padding:0" id="jargon-clear">✕</button>
+
+  <!-- Search input -->
+  <div style="position:relative;max-width:520px;margin-bottom:20px">
+    <span style="position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:18px;pointer-events:none">🔍</span>
+    <input type="search" id="jargon-search" placeholder="Type LLM, Claude, RAG, GPT…" oninput="doJargonSearch(this.value)" autocomplete="off"
+      style="font-family:'Inter',sans-serif;font-size:17px;font-weight:500;width:100%;padding:15px 44px 15px 50px;border:2px solid var(--border);border-radius:16px;outline:none;background:#fff;color:var(--text);transition:border-color .15s,box-shadow .15s">
+    <button onclick="doJargonSearch('');document.getElementById('jargon-search').value='';document.getElementById('jargon-search').focus()" id="jargon-clear" style="display:none;position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;color:#bbb;padding:0;line-height:1">✕</button>
   </div>
-  <div class="section-empty" id="jargon-empty">No terms match your search.</div>
-  <div class="cards" id="jargon-cards"></div>
+
+  <!-- Result panel (shown when typing) -->
+  <div id="jargon-result" style="display:none;max-width:600px;margin-bottom:28px;background:#fff;border:2px solid var(--accent);border-radius:20px;padding:24px 28px">
+    <div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:10px">
+      <span id="jr-term" style="font-size:28px;font-weight:900;letter-spacing:-1px;color:var(--text)"></span>
+      <span id="jr-cat" style="align-self:center;font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:3px 9px;border-radius:6px"></span>
+    </div>
+    <div id="jr-full" style="font-size:15px;font-weight:700;color:var(--accent);margin-bottom:10px"></div>
+    <div id="jr-def"  style="font-size:14px;color:#374151;line-height:1.75"></div>
+  </div>
+  <div id="jargon-nomatch" style="display:none;max-width:520px;padding:18px 20px;background:#fef9c3;border-radius:14px;font-size:14px;color:#92400e;margin-bottom:24px">
+    🤔 <strong id="jargon-nomatch-q"></strong> isn't in the glossary yet. <a href="#" onclick="openAdd('jargon');return false" style="color:var(--accent);font-weight:600">Add it →</a>
+  </div>
+
+  <!-- Chips — all terms as clickable pills -->
+  <div id="jargon-chips" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+  <div class="cards" id="jargon-cards" style="display:none"></div>
 </section>
 
 <section class="section" id="articles">
@@ -592,7 +609,20 @@ const DEFAULT_DATA = {
     {term:'ToT',  full:'Tree of Thoughts',           category:'Technique', definition:'An advanced prompting technique where the model explores multiple reasoning paths simultaneously (like a decision tree) rather than one linear chain of thought. Better for complex problems.',search:'tot tree of thoughts prompting reasoning paths exploration'},
     {term:'DL',   full:'Deep Learning',              category:'Technique', definition:'Machine learning using neural networks with many layers (deep = many layers). The "deep" in deep learning lets models learn increasingly abstract features — pixels → edges → shapes → objects.',search:'dl deep learning neural network layers features'},
     {term:'RL',   full:'Reinforcement Learning',     category:'Technique', definition:'Training an AI through trial and error: reward good outcomes, penalise bad ones. The AI learns a strategy that maximises rewards over time. How DeepMind trained AlphaGo and AlphaZero.',search:'rl reinforcement learning reward penalty alphago games strategy'},
-    {term:'GenAI', full:'Generative AI',             category:'Concept',   definition:'AI that creates new content — text, images, video, audio, code — rather than just classifying existing content. The defining AI wave of 2022–present.',search:'genai generative ai create content images text video midjourney dall-e'}
+    {term:'GenAI', full:'Generative AI',             category:'Concept',   definition:'AI that creates new content — text, images, video, audio, code — rather than just classifying existing content. The defining AI wave of 2022–present.',search:'genai generative ai create content images text video midjourney dall-e'},
+    {term:'Claude',      full:'Claude — Anthropic\'s AI Assistant', category:'Model', definition:'An AI assistant made by Anthropic, designed with safety and helpfulness as core principles. Built using "Constitutional AI" — a method that trains the model to be honest and harmless. Known for nuanced writing, long-context reasoning, and admitting uncertainty. Available at claude.ai.',search:'claude anthropic assistant safe constitutional ai helpful harmless honest'},
+    {term:'ChatGPT',     full:'Chat Generative Pre-trained Transformer', category:'Model', definition:'OpenAI\'s AI assistant — the product that launched the generative AI era in November 2022. Reached 100 million users in 2 months, faster than any app in history. Powered by GPT-4o. Available at chat.openai.com.',search:'chatgpt openai gpt-4 assistant launch 2022 100 million users'},
+    {term:'Gemini',      full:'Gemini — Google\'s AI Model Family',  category:'Model', definition:'Google DeepMind\'s family of multimodal AI models (Ultra, Pro, Flash, Nano). Competes with GPT-4 and Claude. Built into Google Search, Docs, Gmail and Android. Can understand text, images, audio and video.',search:'gemini google deepmind multimodal pro flash search docs gmail'},
+    {term:'Perplexity',  full:'Perplexity AI — AI-Powered Search',   category:'Model', definition:'An AI search engine that answers questions with cited, real-time sources from the web — unlike ChatGPT which relies on training data. Ask it anything and it searches, reads and summarises relevant pages, with footnotes. Available at perplexity.ai.',search:'perplexity ai search engine citations sources real-time web answers'},
+    {term:'Copilot',     full:'Microsoft Copilot',                    category:'Model', definition:'Microsoft\'s AI assistant, powered by GPT-4o. Built into Windows, Office 365 (Word, Excel, Outlook), GitHub and Bing. GitHub Copilot suggests code as you type and is used by millions of developers.',search:'copilot microsoft github office word excel windows gpt-4 code developer'},
+    {term:'Grok',        full:'Grok — xAI\'s AI Assistant',          category:'Model', definition:'AI assistant built by Elon Musk\'s company xAI. Integrated into X (Twitter). Has access to real-time posts on X. Known for fewer content restrictions and a more direct style.',search:'grok xai elon musk x twitter real-time assistant'},
+    {term:'Mistral',     full:'Mistral AI',                           category:'Company', definition:'French AI company known for building highly efficient open-weight models that punch above their size. Mistral 7B outperformed models twice its size. Also offers Mistral Large — a frontier model competing with GPT-4. Strong in European AI.',search:'mistral french ai open weight efficient small model europe'},
+    {term:'Llama',       full:'Llama — Meta\'s Open Language Models', category:'Model', definition:'Meta\'s family of open-weight language models (Llama 2, Llama 3). Free to download and run locally. The foundation for thousands of fine-tuned specialist models. Llama 3.1 405B rivals GPT-4 on many benchmarks.',search:'llama meta open source local download fine-tune facebook'},
+    {term:'Anthropic',   full:'Anthropic — AI Safety Company',        category:'Company', definition:'AI safety company founded in 2021 by former OpenAI researchers including Dario and Daniela Amodei. Makes Claude. Focuses on building AI that is safe, honest and beneficial. Pioneered Constitutional AI and interpretability research.',search:'anthropic claude dario amodei safety research constitutional ai'},
+    {term:'OpenAI',      full:'OpenAI',                               category:'Company', definition:'The company behind ChatGPT, GPT-4, DALL-E and Sora. Founded in 2015 as a non-profit; now a "capped profit" company. The most influential AI lab in the world, responsible for making AI mainstream. Sam Altman is CEO.',search:'openai chatgpt gpt-4 sam altman sora dall-e lab company'},
+    {term:'DeepMind',    full:'Google DeepMind',                      category:'Company', definition:'Google\'s AI research lab, founded in London in 2010 and acquired by Google in 2014. Created AlphaGo, AlphaFold (solved protein folding), and Gemini. Led by Demis Hassabis, who won the 2024 Nobel Prize in Chemistry for AlphaFold.',search:'deepmind google london alphago alphafold gemini demis hassabis nobel'},
+    {term:'Transformer', full:'Transformer Architecture',             category:'Model', definition:'The neural network architecture that powers virtually all modern AI. Introduced in the 2017 Google paper "Attention Is All You Need." The "T" in GPT and BERT. Transformers use a mechanism called "attention" to understand relationships between words.',search:'transformer architecture attention neural network 2017 google bert gpt'},
+    {term:'Prompt',      full:'Prompt — Instructions to an AI',       category:'Concept', definition:'The text you give an AI to get a response. Everything you type in ChatGPT, Claude or Gemini is a prompt. The way you write it matters enormously — specific, contextual prompts produce far better results than vague ones.',search:'prompt input instruction text query ask ai chatgpt what to type'}
   ],
   articles: [
     {
@@ -768,15 +798,13 @@ function renderAll() {
 }
 
 function renderJargon() {
-  const catClass = c => ({Model:'jcat-model',Technique:'jcat-technique',Company:'jcat-company',Framework:'jcat-framework',Concept:'jcat-concept'}[c]||'jcat-other');
-  document.getElementById('jargon-cards').innerHTML =
-    (DATA.jargon||[]).map((c,i) => `<div class="jcard" data-search="${esc(c.term+' '+c.full+' '+c.search)}">
-      ${acts('jargon',i)}
-      <div class="jcard-term">${esc(c.term)}</div>
-      <div class="jcard-full">${esc(c.full)}</div>
-      <div class="jcard-def">${esc(c.definition)}</div>
-      ${c.category ? `<span class="jcard-cat ${catClass(c.category)}">${esc(c.category)}</span>` : ''}
-    </div>`).join('') + addBtn('jargon');
+  document.getElementById('jargon-sub').textContent =
+    (DATA.jargon||[]).length + ' terms — type or click to decode';
+  // Reset result panel and clear search on re-render
+  doJargonSearch('');
+  const inp = document.getElementById('jargon-search');
+  if (inp) inp.value = '';
+  renderJargonChips('');
 }
 
 function renderBasics() {
@@ -1060,31 +1088,75 @@ function saveResearcher(section, i) {
   persist(); renderAll(); closeModal();
 }
 
-function doJargonSearch(q) {
-  const raw = q.trim().toLowerCase();
-  const cards = Array.from(document.getElementById('jargon-cards').querySelectorAll('.jcard'));
-  document.getElementById('jargon-clear').style.display = raw ? 'block' : 'none';
-  let visible = 0;
-  cards.forEach(card => {
-    const hay = card.dataset.search || '';
-    const match = !raw || raw.split(/\s+/).every(w => hay.toLowerCase().includes(w));
-    card.classList.toggle('hidden', !match);
-    if (match) visible++;
-  });
-  document.getElementById('jargon-empty').style.display = visible === 0 && raw ? 'block' : 'none';
+const CAT_CLASS = {Model:'jcat-model',Technique:'jcat-technique',Company:'jcat-company',Framework:'jcat-framework',Concept:'jcat-concept'};
+
+function renderJargonChips(filter) {
+  const chips = document.getElementById('jargon-chips');
+  if (!chips) return;
+  const q = (filter||'').trim().toLowerCase();
+  const items = (DATA.jargon||[]).filter(t => !q || (t.term+' '+t.full+' '+(t.search||'')).toLowerCase().includes(q));
+  chips.innerHTML = items.map(t =>
+    `<button onclick="jargonShow('${esc(t.term)}')" style="font-family:'Inter',sans-serif;padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);background:#fff;font-size:13px;font-weight:700;color:var(--text);cursor:pointer;transition:border-color .15s,background .15s" onmouseover="this.style.borderColor='var(--accent)';this.style.background='#eef2ff'" onmouseout="this.style.borderColor='var(--border)';this.style.background='#fff'">${esc(t.term)}</button>`
+  ).join('');
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  const inp = document.getElementById('jargon-search');
-  if (inp) inp.addEventListener('focus', function() {
-    this.style.borderColor = 'var(--accent)';
-    this.style.boxShadow = '0 0 0 4px rgba(79,70,229,.08)';
-  });
-  if (inp) inp.addEventListener('blur', function() {
-    this.style.borderColor = 'var(--border)';
-    this.style.boxShadow = 'none';
-  });
-});
+function jargonShow(term) {
+  const t = (DATA.jargon||[]).find(x => x.term.toLowerCase() === term.toLowerCase());
+  if (!t) return;
+  document.getElementById('jr-term').textContent = t.term;
+  document.getElementById('jr-full').textContent = t.full;
+  document.getElementById('jr-def').textContent  = t.definition;
+  const catEl = document.getElementById('jr-cat');
+  catEl.textContent  = t.category || '';
+  catEl.className    = 'jcard-cat ' + (CAT_CLASS[t.category] || 'jcat-other');
+  catEl.style.display = t.category ? 'inline-block' : 'none';
+  document.getElementById('jargon-result').style.display   = 'block';
+  document.getElementById('jargon-nomatch').style.display  = 'none';
+  document.getElementById('jargon-search').value = term;
+  document.getElementById('jargon-clear').style.display = 'block';
+  document.getElementById('jargon-search').style.borderColor = 'var(--accent)';
+  renderJargonChips(term);
+}
+
+function doJargonSearch(q) {
+  const raw = q.trim();
+  document.getElementById('jargon-clear').style.display = raw ? 'block' : 'none';
+  document.getElementById('jargon-search').style.borderColor = raw ? 'var(--accent)' : 'var(--border)';
+  document.getElementById('jargon-search').style.boxShadow  = raw ? '0 0 0 4px rgba(79,70,229,.08)' : 'none';
+
+  if (!raw) {
+    document.getElementById('jargon-result').style.display  = 'none';
+    document.getElementById('jargon-nomatch').style.display = 'none';
+    renderJargonChips('');
+    return;
+  }
+
+  const lower = raw.toLowerCase();
+  // Exact match on term first, then partial
+  const exact   = (DATA.jargon||[]).find(t => t.term.toLowerCase() === lower);
+  const partial = (DATA.jargon||[]).filter(t =>
+    (t.term+' '+t.full+' '+(t.search||'')).toLowerCase().includes(lower)
+  );
+
+  if (exact) {
+    jargonShow(exact.term);
+    renderJargonChips(raw);
+    document.getElementById('jargon-search').value = raw;
+  } else if (partial.length === 1) {
+    jargonShow(partial[0].term);
+    renderJargonChips(raw);
+    document.getElementById('jargon-search').value = raw;
+  } else if (partial.length > 1) {
+    document.getElementById('jargon-result').style.display  = 'none';
+    document.getElementById('jargon-nomatch').style.display = 'none';
+    renderJargonChips(raw);
+  } else {
+    document.getElementById('jargon-result').style.display  = 'none';
+    document.getElementById('jargon-nomatch').style.display = 'block';
+    document.getElementById('jargon-nomatch-q').textContent = raw;
+    renderJargonChips('');
+  }
+}
 
 function jargonForm(section, i, c) {
   const cats = ['Model','Technique','Company','Framework','Concept','Other'];
@@ -1163,7 +1235,6 @@ const SECTIONS = [
   {id:'usecases',   cardsId:'usecases-cards',   emptyId:'usecases-empty'},
   {id:'researchers',cardsId:'researchers-cards',emptyId:'researchers-empty'},
   {id:'dummies',    cardsId:'dummies-cards',    emptyId:'dummies-empty'},
-  {id:'jargon',     cardsId:'jargon-cards',     emptyId:'jargon-empty'},
   {id:'articles',   cardsId:'articles-cards',   emptyId:'articles-empty'},
 ];
 
