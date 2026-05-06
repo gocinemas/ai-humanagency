@@ -1201,43 +1201,19 @@ async function ytAutoFill() {
   const status = document.getElementById('yt-fetch-status');
   if (status) status.textContent = 'Fetching video info…';
 
-  const titleEl   = document.getElementById('f-vtitle');
-  const channelEl = document.getElementById('f-channel');
-  const descEl    = document.getElementById('f-vdesc');
-  const searchEl  = document.getElementById('f-vsearch');
-
   try {
-    // Step 1: oEmbed → title + channel (always overwrite — user pasted a new URL)
-    const oembed = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`);
-    if (!oembed.ok) throw new Error('oembed failed');
-    const d = await oembed.json();
-    if (titleEl)   titleEl.value   = d.title       || '';
-    if (channelEl) channelEl.value = d.author_name || '';
-    if (status) status.textContent = 'Got title — fetching description…';
+    const r = await fetch(`https://miru.humanagency.co/api/yt/info?id=${encodeURIComponent(id)}`);
+    const d = await r.json();
+    if (d.error) throw new Error(d.error);
 
-    // Step 2: CORS proxy → description from YouTube page meta tags
-    try {
-      const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent('https://www.youtube.com/watch?v=' + id)}`;
-      const pr  = await fetch(proxyUrl);
-      const pd  = await pr.json();
-      const html = pd.contents || '';
-      // og:description is richer than the plain meta description
-      const desc =
-        html.match(/property="og:description"\s+content="([^"]+)"/)?.[1] ||
-        html.match(/content="([^"]+)"\s+property="og:description"/)?.[1] ||
-        html.match(/<meta\s+name="description"\s+content="([^"]+)"/i)?.[1] || '';
-      if (desc && descEl) {
-        // Decode HTML entities
-        descEl.value = desc.replace(/&#(\d+);/g, (_, n) => String.fromCharCode(n))
-                           .replace(/&amp;/g,'&').replace(/&quot;/g,'"')
-                           .replace(/&#39;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>');
-      }
-    } catch(_) { /* description just won't fill — not a blocker */ }
+    const set = (elId, val) => { const el = document.getElementById(elId); if (el && val) el.value = val; };
+    set('f-vtitle',   d.title);
+    set('f-channel',  d.channel);
+    set('f-vdesc',    d.desc);
+    set('f-vdur',     d.duration);
+    set('f-vsearch',  d.keywords);
 
-    if (searchEl)
-      searchEl.value = ((d.title || '') + ' ' + (d.author_name || '')).toLowerCase();
-
-    if (status) status.textContent = '✓ Title, channel and description filled in';
+    if (status) status.textContent = '✓ Title, channel, description, duration and keywords filled in';
     setTimeout(() => { if (status) status.textContent = ''; }, 3000);
   } catch(e) {
     if (status) status.textContent = 'Could not fetch — fill in manually';
