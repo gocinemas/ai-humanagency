@@ -1204,17 +1204,18 @@ async function ytAutoFill() {
   try {
     const r = await fetch(`https://miru.humanagency.co/api/yt/info?id=${encodeURIComponent(id)}`);
     const d = await r.json();
-    if (d.error) throw new Error(d.error);
+    if (d.error && !d.title) throw new Error(d.error);
 
     const set = (elId, val) => { const el = document.getElementById(elId); if (el && val) el.value = val; };
-    set('f-vtitle',   d.title);
-    set('f-channel',  d.channel);
-    set('f-vdesc',    d.desc);
-    set('f-vdur',     d.duration);
-    set('f-vsearch',  d.keywords);
+    set('f-vtitle',  d.title);
+    set('f-channel', d.channel);
+    set('f-vdesc',   d.desc);
+    set('f-vdur',    d.duration);
+    set('f-vsearch', d.keywords);
 
-    if (status) status.textContent = '✓ Title, channel, description, duration and keywords filled in';
-    setTimeout(() => { if (status) status.textContent = ''; }, 3000);
+    const filled = [d.title && 'title', d.desc && 'description', d.duration && 'duration'].filter(Boolean);
+    if (status) status.textContent = `✓ Filled: ${filled.join(', ')}${!d.desc ? ' — description: fill manually or ✨ Summarise' : ''}`;
+    setTimeout(() => { if (status) status.textContent = ''; }, 5000);
   } catch(e) {
     if (status) status.textContent = 'Could not fetch — fill in manually';
   }
