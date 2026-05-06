@@ -150,9 +150,9 @@
     .vid-box { position:relative; width:100%; max-width:900px; }
     .vid-box-inner { position:relative; padding-top:56.25%; background:#000; border-radius:12px; overflow:hidden; box-shadow:0 32px 80px rgba(0,0,0,.6); }
     .vid-box-inner iframe { position:absolute; inset:0; width:100%; height:100%; border:none; }
-    .vid-close { position:absolute; top:-44px; right:0; background:none; border:none; color:rgba(255,255,255,.7); font-size:28px; cursor:pointer; line-height:1; padding:4px; transition:color .15s; }
-    .vid-close:hover { color:#fff; }
-    .vid-title { position:absolute; bottom:-40px; left:0; color:rgba(255,255,255,.6); font-size:13px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; }
+    .vid-close { position:absolute; top:12px; right:12px; z-index:10; background:rgba(0,0,0,.55); border:none; color:rgba(255,255,255,.85); font-size:18px; cursor:pointer; line-height:1; padding:5px 10px; border-radius:7px; transition:background .15s; }
+    .vid-close:hover { background:rgba(0,0,0,.8); color:#fff; }
+    .vid-title { position:absolute; bottom:-36px; left:0; color:rgba(255,255,255,.55); font-size:13px; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; }
     .vcard-body { padding:16px 20px 20px; flex:1; display:flex; flex-direction:column; }
     .vcard-meta { display:flex; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
     .vcard-channel { font-size:11px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; background:#fee2e2; color:#991b1b; padding:3px 8px; border-radius:6px; }
@@ -250,7 +250,15 @@
       .hero { padding:40px 16px 36px; }
       .section { padding:0 16px 56px; }
       .cards { grid-template-columns:1fr; }
+      #videos-cards { grid-template-columns:1fr !important; }
       .modal-grid2 { grid-template-columns:1fr; }
+      /* Podcast card: stack art above body on very small screens */
+      .pcard { flex-direction:column; gap:12px; padding:16px; }
+      .pcard-art { width:52px; height:52px; font-size:20px; }
+      /* Lightbox: close button inside the frame on mobile */
+      .vid-close { top:8px; right:8px; background:rgba(0,0,0,.55); font-size:20px; border-radius:6px; padding:4px 10px; }
+      .vid-title { display:none; }
+      .vid-lightbox { padding:12px; align-items:center; }
     }
   </style>
 </head>
@@ -410,8 +418,9 @@
 
 <div class="vid-lightbox" id="vid-lightbox" onclick="if(event.target===this)closeVideo()">
   <div class="vid-box">
-    <button class="vid-close" onclick="closeVideo()" aria-label="Close">✕</button>
-    <div class="vid-box-inner" id="vid-box-inner"></div>
+    <div class="vid-box-inner" id="vid-box-inner">
+      <button class="vid-close" onclick="closeVideo()" aria-label="Close">✕</button>
+    </div>
     <div class="vid-title" id="vid-lightbox-title"></div>
   </div>
 </div>
@@ -1105,7 +1114,9 @@ function playVideo(el, videoId, title) {
   const lb = document.getElementById('vid-lightbox');
   const inner = document.getElementById('vid-box-inner');
   document.getElementById('vid-lightbox-title').textContent = title || '';
-  inner.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0" allow="autoplay;encrypted-media" allowfullscreen></iframe>`;
+  inner.innerHTML = `
+    <button class="vid-close" onclick="closeVideo()" aria-label="Close">✕</button>
+    <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0" allow="autoplay;encrypted-media" allowfullscreen></iframe>`;
   lb.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
