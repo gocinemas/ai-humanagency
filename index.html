@@ -143,10 +143,16 @@
     .vcard-play { width:52px; height:52px; background:#ff0000; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 16px rgba(0,0,0,.35); transition:transform .15s; }
     .vcard-thumb:hover .vcard-play { transform:scale(1.1); }
     .vcard-fallback { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#1a1a1a; color:#aaa; font-size:13px; gap:8px; cursor:pointer; }
-    .vcard-iframe-wrap { display:none; position:relative; padding-top:56.25%; background:#000; }
-    .vcard-iframe-wrap.active { display:block; }
-    .vcard-iframe-wrap iframe { position:absolute; inset:0; width:100%; height:100%; border:none; }
-    .vcard-close { position:absolute; top:8px; right:8px; z-index:10; background:rgba(0,0,0,.6); color:#fff; border:none; border-radius:6px; padding:3px 8px; font-size:12px; cursor:pointer; }
+
+    /* ── Video lightbox ── */
+    .vid-lightbox { display:none; position:fixed; inset:0; z-index:1000; background:rgba(0,0,0,.88); align-items:center; justify-content:center; padding:20px; }
+    .vid-lightbox.open { display:flex; }
+    .vid-box { position:relative; width:100%; max-width:900px; }
+    .vid-box-inner { position:relative; padding-top:56.25%; background:#000; border-radius:12px; overflow:hidden; box-shadow:0 32px 80px rgba(0,0,0,.6); }
+    .vid-box-inner iframe { position:absolute; inset:0; width:100%; height:100%; border:none; }
+    .vid-close { position:absolute; top:-44px; right:0; background:none; border:none; color:rgba(255,255,255,.7); font-size:28px; cursor:pointer; line-height:1; padding:4px; transition:color .15s; }
+    .vid-close:hover { color:#fff; }
+    .vid-title { position:absolute; bottom:-40px; left:0; color:rgba(255,255,255,.6); font-size:13px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; }
     .vcard-body { padding:16px 20px 20px; flex:1; display:flex; flex-direction:column; }
     .vcard-meta { display:flex; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
     .vcard-channel { font-size:11px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; background:#fee2e2; color:#991b1b; padding:3px 8px; border-radius:6px; }
@@ -400,6 +406,14 @@
 
 <div class="modal-backdrop" id="modal-backdrop" onclick="if(event.target===this)closeModal()">
   <div class="modal" id="modal-box"></div>
+</div>
+
+<div class="vid-lightbox" id="vid-lightbox" onclick="if(event.target===this)closeVideo()">
+  <div class="vid-box">
+    <button class="vid-close" onclick="closeVideo()" aria-label="Close">✕</button>
+    <div class="vid-box-inner" id="vid-box-inner"></div>
+    <div class="vid-title" id="vid-lightbox-title"></div>
+  </div>
 </div>
 
 <script>
@@ -1087,24 +1101,20 @@ function _ytId(url) {
   return m ? m[1] : url;
 }
 
-function playVideo(el, videoId) {
-  const wrap = el.closest('.vcard');
-  const thumb = wrap.querySelector('.vcard-thumb');
-  const iframeWrap = wrap.querySelector('.vcard-iframe-wrap');
-  thumb.style.display = 'none';
-  iframeWrap.classList.add('active');
-  iframeWrap.innerHTML =
-    `<button class="vcard-close" onclick="stopVideo(this)">✕ Close</button>
-     <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0" allow="autoplay;encrypted-media" allowfullscreen></iframe>`;
+function playVideo(el, videoId, title) {
+  const lb = document.getElementById('vid-lightbox');
+  const inner = document.getElementById('vid-box-inner');
+  document.getElementById('vid-lightbox-title').textContent = title || '';
+  inner.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0" allow="autoplay;encrypted-media" allowfullscreen></iframe>`;
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
 
-function stopVideo(btn) {
-  const wrap = btn.closest('.vcard');
-  const thumb = wrap.querySelector('.vcard-thumb');
-  const iframeWrap = wrap.querySelector('.vcard-iframe-wrap');
-  iframeWrap.classList.remove('active');
-  iframeWrap.innerHTML = '';
-  thumb.style.display = '';
+function closeVideo() {
+  const lb = document.getElementById('vid-lightbox');
+  lb.classList.remove('open');
+  document.getElementById('vid-box-inner').innerHTML = '';
+  document.body.style.overflow = '';
 }
 
 function renderMedia() {
@@ -1118,13 +1128,12 @@ function renderMedia() {
     const ytUrl = id ? `https://www.youtube.com/watch?v=${id}` : (v.url || '#');
     return `<div class="vcard" data-search="${esc((v.search||v.title||'').toLowerCase())}">
       ${editMode ? `<div class="card-actions"><button onclick="openEdit('videos',${i})" title="Edit">✏️</button><button class="ca-del" onclick="delCard('videos',${i})" title="Delete">🗑️</button></div>` : ''}
-      <div class="vcard-thumb" onclick="playVideo(this,'${id}')">
+      <div class="vcard-thumb" onclick="playVideo(this,'${id}','${esc(v.title)}')">
         ${thumb
           ? `<img src="${esc(thumb)}" alt="${esc(v.title)}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'vcard-fallback\\'><span style=\\'font-size:40px\\'>▶</span><span>${esc(v.channel)}</span></div>'">`
           : `<div class="vcard-fallback"><span style="font-size:40px">▶</span><span>${esc(v.channel)}</span></div>`}
         <div class="vcard-overlay"><div class="vcard-play"><svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div></div>
       </div>
-      <div class="vcard-iframe-wrap"></div>
       <div class="vcard-body">
         <div class="vcard-meta">
           ${v.channel ? `<span class="vcard-channel">${esc(v.channel)}</span>` : ''}
@@ -1667,6 +1676,8 @@ function clearSearch() {
   doSearch('');
   document.getElementById('search').focus();
 }
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeVideo(); });
 
 init();
 </script>
