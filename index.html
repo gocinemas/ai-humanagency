@@ -22,7 +22,7 @@
     .header-inner { max-width:1100px; margin:0 auto; padding:0 24px; height:60px; display:flex; align-items:center; justify-content:space-between; }
     .logo { font-size:17px; font-weight:800; letter-spacing:-0.5px; cursor:pointer; user-select:none; }
     .logo .dot { color:var(--accent); }
-    nav { display:flex; gap:24px; align-items:center; }
+    nav { display:flex; gap:20px; align-items:center; }
     nav a { font-size:14px; font-weight:500; color:var(--muted); transition:color .15s; }
     nav a:hover { color:var(--text); }
     .nav-home { font-size:13px; color:var(--muted); border:1px solid var(--border); border-radius:8px; padding:5px 12px; transition:border-color .15s; }
@@ -236,8 +236,11 @@
     .color-row input[type=text] { flex:1; }
 
     @media (max-width:640px) {
-      .header-inner { padding:0 16px; }
-      nav { gap:14px; }
+      .header-inner { padding:0 12px; height:auto; flex-wrap:wrap; gap:0; }
+      nav { gap:0; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; width:100%; padding:6px 0 8px; border-top:1px solid var(--border); }
+      nav::-webkit-scrollbar { display:none; }
+      nav a { flex-shrink:0; font-size:12px; padding:4px 10px; white-space:nowrap; }
+      .nav-home { display:none; }
       .hero { padding:40px 16px 36px; }
       .section { padding:0 16px 56px; }
       .cards { grid-template-columns:1fr; }
@@ -372,7 +375,7 @@
     <button class="media-tab active" id="tab-videos"   onclick="mediaTab('videos')">▶ Videos</button>
     <button class="media-tab"        id="tab-podcasts" onclick="mediaTab('podcasts')">🎙 Podcasts</button>
   </div>
-  <div class="section-empty" id="media-empty" style="display:none">No results match your search.</div>
+  <div class="section-empty" id="media-empty">No results match your search.</div>
   <div class="cards" id="videos-cards"  style="grid-template-columns:repeat(auto-fill,minmax(288px,1fr))"></div>
   <div class="pcards-list" id="podcasts-cards" style="display:none"></div>
 </section>
@@ -1603,6 +1606,7 @@ const SECTIONS = [
   {id:'researchers',cardsId:'researchers-cards',emptyId:'researchers-empty'},
   {id:'dummies',    cardsId:'dummies-cards',    emptyId:'dummies-empty'},
   {id:'articles',   cardsId:'articles-cards',   emptyId:'articles-empty'},
+  {id:'media',      cardsId:'videos-cards',     emptyId:'media-empty', extra:'podcasts-cards'},
 ];
 
 function doSearch(q) {
@@ -1613,6 +1617,11 @@ function doSearch(q) {
     SECTIONS.forEach(s=>{
       document.getElementById(s.emptyId).style.display='none';
       document.getElementById(s.id).style.display='';
+      // Restore media tab state
+      if (s.extra) {
+        document.getElementById(s.cardsId).style.display = _mediaTab==='videos' ? '' : 'none';
+        document.getElementById(s.extra).style.display   = _mediaTab==='podcasts' ? '' : 'none';
+      }
     });
     document.getElementById('no-results').style.display='none';
     document.getElementById('search-count').textContent='';
@@ -1621,21 +1630,30 @@ function doSearch(q) {
   const words = raw.toLowerCase().split(/\s+/).filter(Boolean);
   let total = 0;
   SECTIONS.forEach(s=>{
-    const cards = Array.from(document.getElementById(s.cardsId).querySelectorAll('[data-search]'));
+    // For media section, search both videos and podcasts containers simultaneously
+    const containers = s.extra
+      ? [document.getElementById(s.cardsId), document.getElementById(s.extra)]
+      : [document.getElementById(s.cardsId)];
+    // When searching, show both media containers so results are visible
+    if (s.extra) {
+      containers.forEach(c => c.style.display = '');
+    }
     let visible = 0;
-    cards.forEach(card=>{
-      const hay = (card.dataset.search+' '+card.textContent).toLowerCase();
-      const match = words.every(w=>hay.includes(w));
-      card.classList.toggle('hidden',!match);
-      if (match) {
-        visible++; total++;
-        const h3=card.querySelector('h3');
-        if (h3) {
-          let t=h3.textContent;
-          words.forEach(w=>{ t=t.replace(new RegExp('('+w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<mark>$1</mark>'); });
-          h3.innerHTML=t;
-        }
-      } else { const h3=card.querySelector('h3'); if(h3) h3.innerHTML=h3.textContent; }
+    containers.forEach(container=>{
+      Array.from(container.querySelectorAll('[data-search]')).forEach(card=>{
+        const hay = (card.dataset.search+' '+card.textContent).toLowerCase();
+        const match = words.every(w=>hay.includes(w));
+        card.classList.toggle('hidden',!match);
+        if (match) {
+          visible++; total++;
+          const h3=card.querySelector('h3');
+          if (h3) {
+            let t=h3.textContent;
+            words.forEach(w=>{ t=t.replace(new RegExp('('+w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<mark>$1</mark>'); });
+            h3.innerHTML=t;
+          }
+        } else { const h3=card.querySelector('h3'); if(h3) h3.innerHTML=h3.textContent; }
+      });
     });
     document.getElementById(s.emptyId).style.display = visible===0?'block':'none';
     document.getElementById(s.id).style.display='';
