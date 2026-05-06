@@ -1192,7 +1192,7 @@ async function ytAutoFill() {
   const id = _ytId(raw) || raw;
   if (id.length < 11) return;
 
-  // Show thumbnail immediately from ID
+  // Show thumbnail immediately
   const thumbWrap = document.getElementById('yt-thumb-preview');
   if (thumbWrap) {
     thumbWrap.style.display = 'block';
@@ -1202,26 +1202,46 @@ async function ytAutoFill() {
   const status = document.getElementById('yt-fetch-status');
   if (status) status.textContent = 'Fetching video info…';
 
+  const titleEl   = document.getElementById('f-vtitle');
+  const channelEl = document.getElementById('f-channel');
+  const descEl    = document.getElementById('f-vdesc');
+  const searchEl  = document.getElementById('f-vsearch');
+
   try {
-    const url = `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`;
-    const r = await fetch(url);
-    if (!r.ok) throw new Error('not found');
-    const d = await r.json();
+    // Step 1: oEmbed → title + channel (always overwrite — user pasted a new URL)
+    const oembed = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`);
+    if (!oembed.ok) throw new Error('oembed failed');
+    const d = await oembed.json();
+    if (titleEl)   titleEl.value   = d.title       || '';
+    if (channelEl) channelEl.value = d.author_name || '';
+    if (status) status.textContent = 'Got title — fetching description…';
 
-    const titleEl   = document.getElementById('f-vtitle');
-    const channelEl = document.getElementById('f-channel');
-    const searchEl  = document.getElementById('f-vsearch');
+    // Step 2: CORS proxy → description from YouTube page meta tags
+    try {
+      const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent('https://www.youtube.com/watch?v=' + id)}`;
+      const pr  = await fetch(proxyUrl);
+      const pd  = await pr.json();
+      const html = pd.contents || '';
+      // og:description is richer than the plain meta description
+      const desc =
+        html.match(/property="og:description"\s+content="([^"]+)"/)?.[1] ||
+        html.match(/content="([^"]+)"\s+property="og:description"/)?.[1] ||
+        html.match(/<meta\s+name="description"\s+content="([^"]+)"/i)?.[1] || '';
+      if (desc && descEl) {
+        // Decode HTML entities
+        descEl.value = desc.replace(/&#(\d+);/g, (_, n) => String.fromCharCode(n))
+                           .replace(/&amp;/g,'&').replace(/&quot;/g,'"')
+                           .replace(/&#39;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>');
+      }
+    } catch(_) { /* description just won't fill — not a blocker */ }
 
-    // Only overwrite if the field is currently empty
-    if (titleEl   && !titleEl.value.trim())   titleEl.value   = d.title       || '';
-    if (channelEl && !channelEl.value.trim())  channelEl.value = d.author_name || '';
-    if (searchEl  && !searchEl.value.trim())
+    if (searchEl)
       searchEl.value = ((d.title || '') + ' ' + (d.author_name || '')).toLowerCase();
 
-    if (status) status.textContent = '✓ Title and channel filled in';
-    setTimeout(() => { if (status) status.textContent = ''; }, 2500);
+    if (status) status.textContent = '✓ Title, channel and description filled in';
+    setTimeout(() => { if (status) status.textContent = ''; }, 3000);
   } catch(e) {
-    if (status) status.textContent = 'Could not fetch info — fill in manually';
+    if (status) status.textContent = 'Could not fetch — fill in manually';
   }
 }
 
