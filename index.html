@@ -260,6 +260,10 @@
       .vid-title { display:none; }
       .vid-lightbox { padding:12px; align-items:center; }
     }
+
+    .ai-sum-btn { font-size:11px;font-weight:600;color:#6d28d9;background:#f3e8ff;border:none;border-radius:6px;padding:3px 8px;cursor:pointer;margin-top:8px;display:inline-block; }
+    .ai-sum-btn:hover { background:#ede9fe; }
+    .ai-sum-box { font-size:12px;color:#4b5563;background:#faf5ff;border-left:3px solid #a78bfa;padding:8px 10px;border-radius:0 8px 8px 0;margin-top:8px;line-height:1.5;display:none; }
   </style>
 </head>
 <body>
@@ -1077,6 +1081,27 @@ function renderDummies() {
     </div>`).join('') + addBtn('dummies');
 }
 
+const _aiSumCache = {};
+async function aiSumCard(btn, text, boxId) {
+  const box = document.getElementById(boxId);
+  if (!box) return;
+  if (_aiSumCache[boxId]) { box.textContent = _aiSumCache[boxId]; box.style.display = 'block'; btn.style.display = 'none'; return; }
+  btn.textContent = '…';
+  btn.disabled = true;
+  try {
+    const r = await fetch('https://miru.humanagency.co/api/ai/summarize', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({text})
+    });
+    const d = await r.json();
+    const s = d.summary || d.error || 'Could not summarise';
+    _aiSumCache[boxId] = s;
+    box.textContent = s;
+    box.style.display = 'block';
+    btn.style.display = 'none';
+  } catch(e) { btn.textContent = '✨ AI'; btn.disabled = false; }
+}
+
 function renderArticles() {
   document.getElementById('articles-cards').innerHTML =
     (DATA.articles||[]).map((c,i) => `<div class="acard" data-search="${esc(c.search)}">
@@ -1088,6 +1113,7 @@ function renderArticles() {
       </div>
       <h3>${c.url ? `<a href="${esc(c.url)}" target="_blank" rel="noopener">${esc(c.title)}</a>` : esc(c.title)}</h3>
       <p>${esc(c.desc)}</p>
+      ${c.desc ? `<button class="ai-sum-btn" onclick="aiSumCard(this,this.closest('.acard').querySelector('p').textContent,'asum-a-${i}')">✨ AI</button><div class="ai-sum-box" id="asum-a-${i}"></div>` : ''}
       ${c.url ? `<a href="${esc(c.url)}" target="_blank" rel="noopener" class="acard-read">Read article →</a>` : ''}
     </div>`).join('') + addBtn('articles');
 }
@@ -1152,6 +1178,7 @@ function renderMedia() {
         </div>
         <h3>${esc(v.title)}</h3>
         <p>${esc(v.desc)}</p>
+        ${v.desc ? `<button class="ai-sum-btn" onclick="aiSumCard(this,this.closest('.vcard').querySelector('p').textContent,'asum-v-${i}')">✨ AI</button><div class="ai-sum-box" id="asum-v-${i}"></div>` : ''}
         <a href="${esc(ytUrl)}" target="_blank" rel="noopener" class="vcard-watch">Watch on YouTube ↗</a>
       </div>
     </div>`;
@@ -1166,6 +1193,7 @@ function renderMedia() {
         <div class="pcard-show">${esc(p.show)}</div>
         <h3>${esc(p.title)}</h3>
         <p>${esc(p.desc)}</p>
+        ${p.desc ? `<button class="ai-sum-btn" onclick="aiSumCard(this,this.closest('.pcard').querySelector('p').textContent,'asum-p-${i}')">✨ AI</button><div class="ai-sum-box" id="asum-p-${i}"></div>` : ''}
         <div class="pcard-footer">
           ${p.duration ? `<span class="pcard-dur">⏱ ${esc(p.duration)}</span>` : ''}
           ${p.tag      ? `<span class="acard-source" style="background:#f3e8ff;color:#6d28d9">${esc(p.tag)}</span>` : ''}
