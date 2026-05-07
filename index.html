@@ -264,6 +264,39 @@
     .ai-sum-btn { font-size:11px;font-weight:600;color:#6d28d9;background:#f3e8ff;border:none;border-radius:6px;padding:3px 8px;cursor:pointer;margin-top:8px;display:inline-block; }
     .ai-sum-btn:hover { background:#ede9fe; }
     .ai-sum-box { font-size:12px;color:#4b5563;background:#faf5ff;border-left:3px solid #a78bfa;padding:8px 10px;border-radius:0 8px 8px 0;margin-top:8px;line-height:1.5;display:none; }
+
+    /* ── My Saves ── */
+    .save-btn { font-size:11px; font-weight:700; color:#7c3aed; background:#f5f3ff; border:1px solid #ddd6fe; border-radius:7px; padding:3px 9px; cursor:pointer; display:inline-flex; align-items:center; gap:3px; transition:background .15s, color .15s; white-space:nowrap; }
+    .save-btn:hover { background:#ede9fe; }
+    .save-btn.saved { background:#7c3aed; color:white; border-color:#7c3aed; }
+    body.edit-mode .save-btn { display:none; }
+
+    .saves-nav-btn { font-size:14px; font-weight:700; color:#7c3aed !important; display:none; }
+    .saves-badge { background:#7c3aed; color:white; font-size:10px; font-weight:800; padding:1px 5px; border-radius:99px; margin-left:3px; }
+
+    .saves-panel { display:none; position:fixed; inset:0; z-index:600; }
+    .saves-panel.open { display:flex; }
+    .saves-backdrop { position:absolute; inset:0; background:rgba(15,23,42,.5); }
+    .saves-drawer { position:absolute; right:0; top:0; bottom:0; width:100%; max-width:420px; background:white; box-shadow:-8px 0 40px rgba(0,0,0,.15); display:flex; flex-direction:column; }
+    .saves-header { padding:20px 20px 16px; border-bottom:1px solid #f1f5f9; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
+    .saves-header h2 { font-size:17px; font-weight:800; letter-spacing:-0.3px; }
+    .saves-close { background:none; border:none; font-size:20px; cursor:pointer; color:#94a3b8; padding:0; line-height:1; }
+    .saves-list { flex:1; overflow-y:auto; padding:14px; display:flex; flex-direction:column; gap:10px; }
+    .saves-empty { text-align:center; padding:48px 16px; color:#94a3b8; font-size:14px; line-height:1.6; }
+    .saves-item { background:#f8fafc; border:1px solid #e2e8f0; border-radius:14px; padding:12px 14px; display:flex; align-items:flex-start; gap:10px; }
+    .saves-item-icon { font-size:22px; flex-shrink:0; margin-top:1px; }
+    .saves-item-body { flex:1; min-width:0; }
+    .saves-item-type { font-size:10px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; color:#94a3b8; margin-bottom:2px; }
+    .saves-item-title { font-size:13px; font-weight:600; color:#111; line-height:1.4; }
+    .saves-item-actions { display:flex; gap:5px; margin-top:8px; flex-wrap:wrap; }
+    .saves-item-btn { font-size:11px; font-weight:700; padding:4px 10px; border-radius:7px; border:none; cursor:pointer; }
+    .saves-btn-open { background:#eef2ff; color:#4f46e5; }
+    .saves-btn-wa { background:#dcfce7; color:#166534; }
+    .saves-btn-del { background:#fee2e2; color:#dc2626; }
+    .saves-footer { padding:14px; border-top:1px solid #f1f5f9; flex-shrink:0; display:flex; gap:8px; }
+    .saves-share-all { flex:1; padding:11px; background:#25d366; color:white; border:none; border-radius:10px; font-size:13px; font-weight:700; cursor:pointer; }
+    .saves-share-all:hover { background:#22c55e; }
+    .saves-clear-btn { padding:11px 14px; background:#f1f5f9; color:#64748b; border:none; border-radius:10px; font-size:12px; font-weight:600; cursor:pointer; }
   </style>
 </head>
 <body>
@@ -279,6 +312,7 @@
       <a href="#jargon">Jargon</a>
       <a href="#articles">Articles</a>
       <a href="#media">Watch &amp; Listen</a>
+      <a href="#" class="saves-nav-btn" id="saves-nav-btn" onclick="openSaves();return false">🔖 Saves <span class="saves-badge" id="saves-badge">0</span></a>
     </nav>
   </div>
 </header>
@@ -1004,6 +1038,84 @@ function addBtn(section) {
 }
 
 /* ━━━━━━━━ RENDER ━━━━━━━━ */
+// ── My Saves ──────────────────────────────────────────────────────────────
+let _saves = [];
+function _loadSaves() {
+  try { _saves = JSON.parse(localStorage.getItem('ha_saves')) || []; } catch { _saves = []; }
+}
+function _persistSaves() {
+  localStorage.setItem('ha_saves', JSON.stringify(_saves));
+  _updateSavesBadge();
+}
+function _updateSavesBadge() {
+  const n = _saves.length;
+  const btn = document.getElementById('saves-nav-btn');
+  if (btn) { btn.style.display = n > 0 ? '' : 'none'; document.getElementById('saves-badge').textContent = n; }
+}
+function isSaved(id) { return _saves.some(s => s.id === id); }
+function toggleSave(id, type, title, url, emoji) {
+  _loadSaves();
+  if (isSaved(id)) { _saves = _saves.filter(s => s.id !== id); }
+  else { _saves.push({ id, type, title, url: url || '', emoji: emoji || '📄', savedAt: Date.now() }); }
+  _persistSaves();
+  document.querySelectorAll(`[data-save-id="${id}"]`).forEach(btn => {
+    btn.classList.toggle('saved', isSaved(id));
+    btn.title = isSaved(id) ? 'Remove from saves' : 'Save for later';
+    btn.textContent = isSaved(id) ? '🔖 Saved' : '🔖 Save';
+  });
+}
+function openSaves() {
+  _loadSaves(); renderSavesPanel();
+  document.getElementById('saves-panel').classList.add('open');
+}
+function closeSaves() { document.getElementById('saves-panel').classList.remove('open'); }
+function renderSavesPanel() {
+  const list = document.getElementById('saves-list');
+  const footer = document.getElementById('saves-footer');
+  if (!_saves.length) {
+    list.innerHTML = `<div class="saves-empty">Nothing saved yet.<br><span style="font-size:12px">Tap 🔖 Save on any article, video or podcast.</span></div>`;
+    footer.style.display = 'none'; return;
+  }
+  footer.style.display = '';
+  list.innerHTML = _saves.map(s => `
+    <div class="saves-item">
+      <div class="saves-item-icon">${s.emoji}</div>
+      <div class="saves-item-body">
+        <div class="saves-item-type">${s.type}</div>
+        <div class="saves-item-title">${esc(s.title)}</div>
+        <div class="saves-item-actions">
+          ${s.url ? `<button class="saves-item-btn saves-btn-open" onclick="window.open('${s.url.replace(/'/g,"\\'")}','_blank')">▶ Open</button>` : ''}
+          ${s.url ? `<button class="saves-item-btn saves-btn-wa" onclick="shareOneToWhatsApp('${s.title.replace(/'/g,"\\'")}','${s.url.replace(/'/g,"\\'")}')">💬 WhatsApp</button>` : ''}
+          <button class="saves-item-btn saves-btn-del" onclick="removeSave('${s.id}')">✕ Remove</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+function removeSave(id) {
+  _saves = _saves.filter(s => s.id !== id);
+  _persistSaves(); renderSavesPanel();
+  document.querySelectorAll(`[data-save-id="${id}"]`).forEach(btn => {
+    btn.classList.remove('saved'); btn.textContent = '🔖 Save'; btn.title = 'Save for later';
+  });
+}
+function clearAllSaves() {
+  if (!confirm('Clear all saves?')) return;
+  _saves = []; _persistSaves(); renderSavesPanel();
+  document.querySelectorAll('.save-btn.saved').forEach(btn => {
+    btn.classList.remove('saved'); btn.textContent = '🔖 Save';
+  });
+}
+function shareOneToWhatsApp(title, url) {
+  window.open('https://wa.me/?text=' + encodeURIComponent(title + '\n' + url), '_blank');
+}
+function shareAllToWhatsApp() {
+  const icons = { Video:'▶', Article:'📄', Podcast:'🎙' };
+  const lines = _saves.map(s => (icons[s.type]||'📄') + ' ' + s.title + (s.url ? '\n' + s.url : ''));
+  const text = '📚 My AI Saves from ai.humanagency.co\n\n' + lines.join('\n\n');
+  window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+}
+_loadSaves(); _updateSavesBadge();
+
 function renderAll() {
   renderBasics(); renderUsecases(); renderResearchers(); renderDummies(); renderJargon(); renderArticles(); renderMedia();
   allCards = Array.from(document.querySelectorAll('[data-search]'));
@@ -1115,7 +1227,10 @@ function renderArticles() {
       <h3>${c.url ? `<a href="${esc(c.url)}" target="_blank" rel="noopener">${esc(c.title)}</a>` : esc(c.title)}</h3>
       <p>${esc(c.desc)}</p>
       ${c.desc ? `<button class="ai-sum-btn" onclick="aiSumCard(this,this.closest('.acard').querySelector('p').textContent,'asum-a-${i}')">✨ AI</button><div class="ai-sum-box" id="asum-a-${i}"></div>` : ''}
-      ${c.url ? `<a href="${esc(c.url)}" target="_blank" rel="noopener" class="acard-read">Read article →</a>` : ''}
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;gap:8px">
+        ${c.url ? `<a href="${esc(c.url)}" target="_blank" rel="noopener" class="acard-read" style="margin-top:0">Read article →</a>` : '<span></span>'}
+        <button class="save-btn" data-save-id="a_${i}" onclick="toggleSave('a_${i}','Article',${JSON.stringify(c.title||'')},${JSON.stringify(c.url||'')},'📄')" title="Save for later">🔖 Save</button>
+      </div>
     </div>`).join('') + addBtn('articles');
 }
 
@@ -1180,7 +1295,10 @@ function renderMedia() {
         <h3>${esc(v.title)}</h3>
         <p>${esc(v.desc)}</p>
         ${v.desc ? `<button class="ai-sum-btn" onclick="aiSumCard(this,this.closest('.vcard').querySelector('p').textContent,'asum-v-${i}')">✨ AI</button><div class="ai-sum-box" id="asum-v-${i}"></div>` : ''}
-        <a href="${esc(ytUrl)}" target="_blank" rel="noopener" class="vcard-watch">Watch on YouTube ↗</a>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;gap:8px">
+          <a href="${esc(ytUrl)}" target="_blank" rel="noopener" class="vcard-watch" style="margin-top:0">Watch on YouTube ↗</a>
+          <button class="save-btn" data-save-id="v_${i}" onclick="event.stopPropagation();toggleSave('v_${i}','Video',${JSON.stringify(v.title||'')},${JSON.stringify(ytUrl)},'▶')" title="Save for later">🔖 Save</button>
+        </div>
       </div>
     </div>`;
   }).join('') + (editMode ? `<div class="card add-card-btn vcard" onclick="openAddMedia()">＋ Add video</div>` : '');
@@ -1199,6 +1317,7 @@ function renderMedia() {
           ${p.duration ? `<span class="pcard-dur">⏱ ${esc(p.duration)}</span>` : ''}
           ${p.tag      ? `<span class="acard-source" style="background:#f3e8ff;color:#6d28d9">${esc(p.tag)}</span>` : ''}
           ${p.url      ? `<a href="${esc(p.url)}" target="_blank" rel="noopener" class="pcard-listen">🎧 Listen →</a>` : ''}
+          <button class="save-btn" data-save-id="p_${i}" onclick="toggleSave('p_${i}','Podcast',${JSON.stringify(p.title||'')},${JSON.stringify(p.url||'')},'🎙')" title="Save for later">🔖 Save</button>
         </div>
       </div>
     </div>`).join('') + (editMode ? `<div class="pcard" style="border:2px dashed #d1d5db;cursor:pointer;justify-content:center;min-height:80px;color:#9ca3af;font-size:15px;font-weight:700" onclick="openAddMedia()">＋ Add podcast</div>` : '');
@@ -1781,5 +1900,22 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeVideo()
 
 init();
 </script>
+
+<!-- ── My Saves Panel ── -->
+<div class="saves-panel" id="saves-panel">
+  <div class="saves-backdrop" onclick="closeSaves()"></div>
+  <div class="saves-drawer">
+    <div class="saves-header">
+      <h2>🔖 My Saves</h2>
+      <button class="saves-close" onclick="closeSaves()">✕</button>
+    </div>
+    <div class="saves-list" id="saves-list"></div>
+    <div class="saves-footer" id="saves-footer" style="display:none">
+      <button class="saves-share-all" onclick="shareAllToWhatsApp()">💬 Share all to WhatsApp</button>
+      <button class="saves-clear-btn" onclick="clearAllSaves()">Clear all</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
