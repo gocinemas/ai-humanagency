@@ -426,6 +426,10 @@
     <button class="media-tab active" id="tab-videos"   onclick="mediaTab('videos')">▶ Videos</button>
     <button class="media-tab"        id="tab-podcasts" onclick="mediaTab('podcasts')">🎙 Podcasts</button>
   </div>
+  <div id="videos-actions" style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+    <button onclick="watchAll()" style="padding:7px 14px;border-radius:9px;border:1.5px solid #e5e7eb;background:white;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:5px">▶ Watch All on YouTube</button>
+    <button onclick="saveAllVideos()" style="padding:7px 14px;border-radius:9px;border:1.5px solid #ddd6fe;background:#f5f3ff;color:#7c3aed;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:5px">🔖 Save All Videos</button>
+  </div>
   <div class="section-empty" id="media-empty">No results match your search.</div>
   <div class="cards" id="videos-cards"  style="grid-template-columns:repeat(auto-fill,minmax(288px,1fr))"></div>
   <div class="pcards-list" id="podcasts-cards" style="display:none"></div>
@@ -1241,8 +1245,9 @@ function mediaTab(tab) {
   _mediaTab = tab;
   document.getElementById('tab-videos').classList.toggle('active', tab==='videos');
   document.getElementById('tab-podcasts').classList.toggle('active', tab==='podcasts');
-  document.getElementById('videos-cards').style.display  = tab==='videos'  ? '' : 'none';
+  document.getElementById('videos-cards').style.display   = tab==='videos'   ? '' : 'none';
   document.getElementById('podcasts-cards').style.display = tab==='podcasts' ? '' : 'none';
+  document.getElementById('videos-actions').style.display = tab==='videos'   ? '' : 'none';
 }
 
 function _ytId(url) {
@@ -1321,6 +1326,30 @@ function renderMedia() {
         </div>
       </div>
     </div>`).join('') + (editMode ? `<div class="pcard" style="border:2px dashed #d1d5db;cursor:pointer;justify-content:center;min-height:80px;color:#9ca3af;font-size:15px;font-weight:700" onclick="openAddMedia()">＋ Add podcast</div>` : '');
+}
+
+function watchAll() {
+  const ids = (DATA.videos||[]).map(v => _ytId(v.videoId||v.url||'')).filter(Boolean);
+  if (!ids.length) return;
+  window.open('https://www.youtube.com/watch_videos?video_ids=' + ids.join(','), '_blank');
+}
+function saveAllVideos() {
+  _loadSaves();
+  let added = 0;
+  (DATA.videos||[]).forEach((v, i) => {
+    const id = 'v_' + i;
+    if (!isSaved(id)) {
+      const ytUrl = _ytId(v.videoId||v.url||'') ? 'https://www.youtube.com/watch?v=' + _ytId(v.videoId||v.url||'') : (v.url||'');
+      _saves.push({ id, type:'Video', title:v.title||'', url:ytUrl, emoji:'▶', savedAt:Date.now() });
+      added++;
+    }
+  });
+  _persistSaves();
+  document.querySelectorAll('.save-btn[data-save-id^="v_"]').forEach(btn => {
+    btn.classList.add('saved'); btn.textContent = '🔖 Saved';
+  });
+  if (added) alert(added + ' video' + (added>1?'s':'') + ' added to My Saves.');
+  else alert('All videos already saved.');
 }
 
 function openAddMedia() {
