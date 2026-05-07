@@ -1231,10 +1231,7 @@ function renderArticles() {
       <h3>${c.url ? `<a href="${esc(c.url)}" target="_blank" rel="noopener">${esc(c.title)}</a>` : esc(c.title)}</h3>
       <p>${esc(c.desc)}</p>
       ${c.desc ? `<button class="ai-sum-btn" onclick="aiSumCard(this,this.closest('.acard').querySelector('p').textContent,'asum-a-${i}')">✨ AI</button><div class="ai-sum-box" id="asum-a-${i}"></div>` : ''}
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;gap:8px">
-        ${c.url ? `<a href="${esc(c.url)}" target="_blank" rel="noopener" class="acard-read" style="margin-top:0">Read article →</a>` : '<span></span>'}
-        <button class="save-btn" data-save-id="a_${i}" onclick="toggleSave('a_${i}','Article',${JSON.stringify(c.title||'')},${JSON.stringify(c.url||'')},'📄')" title="Save for later">🔖 Save</button>
-      </div>
+      ${c.url ? `<a href="${esc(c.url)}" target="_blank" rel="noopener" class="acard-read">Read article →</a>` : ''}
     </div>`).join('') + addBtn('articles');
 }
 
@@ -1300,10 +1297,7 @@ function renderMedia() {
         <h3>${esc(v.title)}</h3>
         <p>${esc(v.desc)}</p>
         ${v.desc ? `<button class="ai-sum-btn" onclick="aiSumCard(this,this.closest('.vcard').querySelector('p').textContent,'asum-v-${i}')">✨ AI</button><div class="ai-sum-box" id="asum-v-${i}"></div>` : ''}
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;gap:8px">
-          <a href="${esc(ytUrl)}" target="_blank" rel="noopener" class="vcard-watch" style="margin-top:0">Watch on YouTube ↗</a>
-          <button class="save-btn" data-save-id="v_${i}" onclick="event.stopPropagation();toggleSave('v_${i}','Video',${JSON.stringify(v.title||'')},${JSON.stringify(ytUrl)},'▶')" title="Save for later">🔖 Save</button>
-        </div>
+        <a href="${esc(ytUrl)}" target="_blank" rel="noopener" class="vcard-watch">Watch on YouTube ↗</a>
       </div>
     </div>`;
   }).join('') + (editMode ? `<div class="card add-card-btn vcard" onclick="openAddMedia()">＋ Add video</div>` : '');
@@ -1322,7 +1316,6 @@ function renderMedia() {
           ${p.duration ? `<span class="pcard-dur">⏱ ${esc(p.duration)}</span>` : ''}
           ${p.tag      ? `<span class="acard-source" style="background:#f3e8ff;color:#6d28d9">${esc(p.tag)}</span>` : ''}
           ${p.url      ? `<a href="${esc(p.url)}" target="_blank" rel="noopener" class="pcard-listen">🎧 Listen →</a>` : ''}
-          <button class="save-btn" data-save-id="p_${i}" onclick="toggleSave('p_${i}','Podcast',${JSON.stringify(p.title||'')},${JSON.stringify(p.url||'')},'🎙')" title="Save for later">🔖 Save</button>
         </div>
       </div>
     </div>`).join('') + (editMode ? `<div class="pcard" style="border:2px dashed #d1d5db;cursor:pointer;justify-content:center;min-height:80px;color:#9ca3af;font-size:15px;font-weight:700" onclick="openAddMedia()">＋ Add podcast</div>` : '');
