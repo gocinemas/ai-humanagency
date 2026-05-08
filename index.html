@@ -20,7 +20,7 @@
 
     header { border-bottom:1px solid var(--border); background:var(--surface); position:sticky; top:0; z-index:100; }
     .header-inner { max-width:1100px; margin:0 auto; padding:0 24px; height:60px; display:flex; align-items:center; justify-content:space-between; }
-    .logo { cursor:pointer; user-select:none; display:flex; align-items:center; flex-shrink:0; }
+    .logo { font-size:17px; font-weight:800; letter-spacing:-0.5px; cursor:pointer; user-select:none; }
     .logo .dot { color:var(--accent); }
     nav { display:flex; gap:20px; align-items:center; }
     nav a { font-size:14px; font-weight:500; color:var(--muted); transition:color .15s; }
@@ -270,9 +270,7 @@
 
 <header>
   <div class="header-inner">
-    <div class="logo" id="logo-tap" title="Tap 5× to edit">
-      <img src="logo.png" alt="Human Agency" style="height:32px;width:auto;display:block">
-    </div>
+    <div class="logo" id="logo-tap" title="Tap 5× to edit">Human Agency<span class="dot"> + AI</span></div>
     <nav>
       <a href="#basics">Basics</a>
       <a href="#usecases">Use Cases</a>
