@@ -311,7 +311,7 @@
 
 <header>
   <div class="header-inner">
-    <a href="https://humanagency.co" class="logo" id="logo-tap">Human Agency<span class="dot"> + AI</span></a>
+    <a href="https://ai.humanagency.co" class="logo" id="logo-tap">Human Agency<span class="dot"> + AI</span></a>
     <nav>
       <a href="#basics">Basics</a>
       <a href="#usecases">Use Cases</a>
@@ -1192,7 +1192,7 @@ function _setupLogo() {
     if (logoTaps >= 5) { logoTaps = 0; toggleEditMode(); return; }
     logoTimer = setTimeout(() => { logoTaps = 0; }, 1500);
     if (logoTaps === 1) {
-      navTimer = setTimeout(() => { window.location.href = 'https://humanagency.co'; }, 320);
+      navTimer = setTimeout(() => { window.location.href = 'https://ai.humanagency.co'; }, 320);
     }
   });
 }
@@ -1385,7 +1385,7 @@ function renderMedia() {
     const id = _ytId(v.videoId || v.url || '');
     const thumb = id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : '';
     const ytUrl = id ? `https://www.youtube.com/watch?v=${id}` : (v.url || '#');
-    return `<div class="vcard" data-search="${esc((v.search||v.title||'').toLowerCase())}">
+    return `<div class="vcard" data-search="${esc(((v.search||'') + ' ' + (v.title||'')).toLowerCase())}">
       ${editMode ? `<div class="card-actions"><button onclick="openEdit('videos',${i})" title="Edit">✏️</button><button class="ca-del" onclick="delCard('videos',${i})" title="Delete">🗑️</button></div>` : ''}
       <div class="vcard-thumb" onclick="playVideo(this,'${id}','${esc(v.title)}')">
         ${thumb
@@ -1409,7 +1409,7 @@ function renderMedia() {
 
   // Podcasts
   document.getElementById('podcasts-cards').innerHTML = podcasts.map((p,i) => `
-    <div class="pcard" data-search="${esc((p.search||p.title||'').toLowerCase())}">
+    <div class="pcard" data-search="${esc(((p.search||'') + ' ' + (p.title||'')).toLowerCase())}">
       ${editMode ? `<div class="card-actions"><button onclick="openEdit('podcasts',${i})" title="Edit">✏️</button><button class="ca-del" onclick="delCard('podcasts',${i})" title="Delete">🗑️</button></div>` : ''}
       <div class="pcard-art">${esc(p.emoji||'🎙')}</div>
       <div class="pcard-body">
