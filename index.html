@@ -336,11 +336,11 @@
   <div class="role-chips" id="role-chips">
     <span class="role-chips-label">I work in:</span>
     <button class="role-chip" onclick="setRole(this,'business')">Business</button>
-    <button class="role-chip" onclick="setRole(this,'healthcare')">Healthcare</button>
-    <button class="role-chip" onclick="setRole(this,'education student')">Education</button>
-    <button class="role-chip" onclick="setRole(this,'creative design')">Creative</button>
-    <button class="role-chip" onclick="setRole(this,'software developer')">Tech</button>
-    <button class="role-chip" onclick="setRole(this,'legal finance')">Legal / Finance</button>
+    <button class="role-chip" onclick="setRole(this,'health')">Healthcare</button>
+    <button class="role-chip" onclick="setRole(this,'education')">Education</button>
+    <button class="role-chip" onclick="setRole(this,'creative')">Creative</button>
+    <button class="role-chip" onclick="setRole(this,'software')">Tech</button>
+    <button class="role-chip" onclick="setRole(this,'legal')">Legal</button>
   </div>
 </section>
 
@@ -439,7 +439,7 @@
   <div class="section-empty" id="examples-empty">No examples match your search.</div>
   <div class="cards" id="examples-cards" style="grid-template-columns:repeat(auto-fill,minmax(320px,1fr))">
 
-    <div class="excard" data-search="meeting summary minutes transcript decisions action owners productivity">
+    <div class="excard" data-search="meeting summary minutes transcript decisions action owners productivity business">
       <div class="ex-prompt">
         <div class="ex-prompt-lbl">Your prompt</div>
         <p>"Here's a 40-minute meeting transcript. Give me a 5-bullet summary. For each bullet, note the key decision and who owns the next step."</p>
@@ -457,7 +457,7 @@
       <div class="ex-meta"><span class="ex-task">📝 Summarise a meeting</span><span class="ex-tool">Claude / ChatGPT</span></div>
     </div>
 
-    <div class="excard" data-search="medical blood test health result explain plain english doctor questions GP HbA1c">
+    <div class="excard" data-search="medical blood test health result explain plain english doctor questions GP HbA1c healthcare">
       <div class="ex-prompt">
         <div class="ex-prompt-lbl">Your prompt</div>
         <p>"My GP says my HbA1c is 48 mmol/mol. Explain what this means in plain English, what it indicates about my health, and give me three specific questions to ask at my next appointment."</p>
@@ -475,7 +475,7 @@
       <div class="ex-meta"><span class="ex-task">🏥 Understand a health result</span><span class="ex-tool">Claude / ChatGPT</span></div>
     </div>
 
-    <div class="excard" data-search="contract legal clause plain english non-exclusive licence software understand">
+    <div class="excard" data-search="contract legal clause plain english non-exclusive licence software understand business">
       <div class="ex-prompt">
         <div class="ex-prompt-lbl">Your prompt</div>
         <p>"Explain this contract clause in plain English: 'The Licensor grants the Licensee a non-exclusive, non-transferable, revocable licence…' What am I not allowed to do?"</p>
@@ -489,7 +489,7 @@
       <div class="ex-meta"><span class="ex-task">⚖️ Decode a legal clause</span><span class="ex-tool">Claude / ChatGPT</span></div>
     </div>
 
-    <div class="excard" data-search="job description write marketing manager fintech draft hiring recruitment">
+    <div class="excard" data-search="job description write marketing manager fintech draft hiring recruitment business creative">
       <div class="ex-prompt">
         <div class="ex-prompt-lbl">Your prompt</div>
         <p>"Write a job description for a Head of Marketing at a 45-person UK fintech startup. Salary £80–95k. Remote-first. We value clarity over jargon and care more about what you've shipped than where you've worked."</p>
@@ -589,14 +589,14 @@ const DEFAULT_DATA = {
       body:'AI is software that can learn from experience rather than following rigid, hand-written rules. Instead of a programmer writing "if it has pointy ears and whiskers, it\'s a cat," an AI system looks at millions of photos of cats until it figures out the pattern itself.',
       body2:'AI isn\'t magic or a conscious mind — it\'s pattern recognition at a massive scale. It\'s very good at certain tasks (spotting tumours in scans, translating languages) and completely hopeless at others (common sense, physical tasks).',
       plain:'Plain version: very smart pattern matching',
-      search:'artificial intelligence ai what is machine computer learn'
+      search:'artificial intelligence ai what is machine computer learn business health education creative software legal'
     },
     {
       icon:'📚', tag:'Concept 2', title:'Machine Learning',
       body:'Machine learning is how most AI is built. Instead of programming every rule, you feed the system thousands (or millions) of examples with correct answers — spam emails labelled "spam," tumour scans labelled "tumour" — and it works out the rules on its own.',
       body2:'The catch: it only ever learned from what it\'s seen. Ask it something truly new and it struggles. This is why AI can beat world champions at chess but can\'t load a dishwasher.',
       plain:'Plain version: learns by example, not by rules',
-      search:'machine learning ml training data examples supervised'
+      search:'machine learning ml training data examples supervised business health software education'
     },
     {
       icon:'🧠', tag:'Concept 3', title:'Neural Networks',
@@ -610,35 +610,35 @@ const DEFAULT_DATA = {
       body:'The technology behind ChatGPT, Claude, and Gemini. An LLM is trained on an enormous amount of text — books, websites, Wikipedia, code — and learns to predict what word comes next, billions of times over, until it can write, explain, translate, and reason with language fluently.',
       body2:'It doesn\'t understand in the way you do. It\'s a very sophisticated autocomplete — but that autocomplete turns out to be astonishingly useful.',
       plain:'Plain version: autocomplete trained on most of the internet',
-      search:'large language model llm gpt chatgpt text words training internet'
+      search:'large language model llm gpt chatgpt text words training internet business health education creative software legal'
     },
     {
       icon:'✨', tag:'Concept 5', title:'Generative AI',
       body:'Most older AI was discriminative — it classified things. Generative AI creates new things: text, images, music, video, code, voices. It\'s trained on vast amounts of human-made content and learns to produce new content in the same style.',
       body2:'This is why you can now type "a watercolour painting of a red panda drinking tea" and get a convincing image in seconds. The creativity isn\'t in the machine — the creativity is in what you ask it for.',
       plain:'Plain version: AI that makes things, not just recognises them',
-      search:'generative ai create images music text art dall-e midjourney generate'
+      search:'generative ai create images music text art dall-e midjourney generate creative business education'
     },
     {
       icon:'⚡', tag:'Concept 6', title:'AI Agents',
       body:'Until recently, AI mostly answered questions. Agents take action. An AI agent can be given a goal — "research competitors and write a report" — and will browse the web, read pages, take notes, and draft the report itself, without you doing each step manually.',
       body2:'This is the next big shift. Instead of AI being a very smart search box, it becomes something closer to a capable junior colleague that can actually get things done.',
       plain:'Plain version: AI that acts, not just answers',
-      search:'ai agent autonomous task action tool browse web code execute'
+      search:'ai agent autonomous task action tool browse web code execute business software'
     },
     {
       icon:'🗣️', tag:'Concept 7', title:'Prompting',
       body:'A prompt is what you type to an AI. It sounds simple but the way you phrase a request makes an enormous difference to the quality of the output. "Summarise this" gives a different result to "Summarise this in 3 bullet points, for someone who has never worked in marketing."',
       body2:'Good prompting isn\'t a secret skill — it\'s just being specific. Tell the AI who it\'s for, what format you want, what to avoid, and what you already know.',
       plain:'Plain version: how you talk to AI — specificity wins',
-      search:'prompt prompting how to talk chatgpt instructions system input'
+      search:'prompt prompting how to talk chatgpt instructions system input business health education creative software legal'
     },
     {
       icon:'⚠️', tag:'Concept 8', title:'Hallucinations — When AI Gets It Wrong',
       body:'AI systems sometimes confidently state things that are completely false — invented citations, made-up statistics, wrong dates. This is called hallucination. It happens because the model generates plausible-sounding text, not necessarily true text.',
       body2:'The fix: treat AI output the way you\'d treat advice from a brilliant but overconfident friend. Useful for ideas and drafts — always verify facts that actually matter before acting on them.',
       plain:'Plain version: AI can be wrong and sound completely certain',
-      search:'hallucination wrong mistake confabulate false confident error lie'
+      search:'hallucination wrong mistake confabulate false confident error lie business health education legal creative software'
     }
   ],
   usecases: [
@@ -650,7 +650,7 @@ const DEFAULT_DATA = {
         {label:'Drug discovery',text:"Google's AlphaFold solved a 50-year protein-folding problem — compressing years of biology research"},
         {label:'Admin',text:'Automatically transcribes consultations so doctors spend time with patients, not paperwork'}
       ],
-      search:'health medicine hospital doctor cancer scan diagnosis drug discovery clinical'
+      search:'health medicine hospital doctor cancer scan diagnosis drug discovery clinical healthcare'
     },
     {
       icon:'📖', title:'Education',
@@ -670,7 +670,7 @@ const DEFAULT_DATA = {
         {label:'Credit decisions',text:'AI assesses risk using broader data than traditional credit scores alone'},
         {label:'Customer service',text:'Chatbots resolve most banking queries instantly, 24/7'}
       ],
-      search:'finance banking fraud detection investment credit money fintech'
+      search:'finance banking fraud detection investment credit money fintech business legal'
     },
     {
       icon:'🎨', title:'Creative Work',
@@ -690,7 +690,7 @@ const DEFAULT_DATA = {
         {label:'Debugging',text:'Paste an error and get an explanation and fix, instantly'},
         {label:'Non-developers',text:'People with no coding background now build working apps by describing what they want'}
       ],
-      search:'software code programming developer github copilot debug test build'
+      search:'software code programming developer github copilot debug test build tech'
     },
     {
       icon:'⚖️', title:'Legal & Compliance',
@@ -700,7 +700,7 @@ const DEFAULT_DATA = {
         {label:'Research',text:'Find relevant case law across thousands of documents in seconds'},
         {label:'Plain English',text:'"What does this clause actually mean?" — now answerable instantly'}
       ],
-      search:'legal law contract review compliance document summarise lawyer'
+      search:'legal law contract review compliance document summarise lawyer business'
     },
     {
       icon:'🎧', title:'Customer Service',
@@ -710,7 +710,7 @@ const DEFAULT_DATA = {
         {label:'Tone matching',text:'AI detects frustration and adjusts its responses accordingly'},
         {label:'Multilingual',text:'Serve customers in any language without needing specialist agents'}
       ],
-      search:'customer service support chatbot helpdesk retail ecommerce'
+      search:'customer service support chatbot helpdesk retail ecommerce business'
     },
     {
       icon:'🔬', title:'Science & Research',
@@ -881,7 +881,7 @@ const DEFAULT_DATA = {
       desc:"Geoffrey Hinton spent 50 years building AI. Then he quit Google to warn the world about what he'd made. A rare, personal account from the man who made deep learning work.",
       tag:'Profile',
       date:'May 2023',
-      search:'hinton google quit warning ai danger regret'
+      search:'hinton google quit warning ai danger regret education business'
     },
     {
       title:'How Large Language Models Work',
@@ -890,7 +890,7 @@ const DEFAULT_DATA = {
       desc:"A clear, accessible explanation of how modern AI systems are built, what they can and cannot do, and why safety matters — from the team behind Claude.",
       tag:'Explainer',
       date:'2023',
-      search:'llm language model how works explainer anthropic'
+      search:'llm language model how works explainer anthropic software education business'
     },
     {
       title:'AlphaFold: The AI That Cracked the Code of Life',
@@ -899,7 +899,7 @@ const DEFAULT_DATA = {
       desc:"DeepMind's AlphaFold predicted the structure of nearly every known protein. Scientists who spent careers on single proteins now get answers in seconds. One of AI\'s most concrete, undeniable victories.",
       tag:'Breakthrough',
       date:'Jul 2022',
-      search:'alphafold deepmind protein biology breakthrough science'
+      search:'alphafold deepmind protein biology breakthrough science health healthcare'
     },
     {
       title:'What Can ChatGPT Actually Do?',
@@ -908,7 +908,7 @@ const DEFAULT_DATA = {
       desc:"A measured look at what large language models are genuinely good at, where they fail, and why the hype and the fear are both slightly off-target.",
       tag:'Analysis',
       date:'Apr 2023',
-      search:'chatgpt what can do ability limits economist'
+      search:'chatgpt what can do ability limits economist business education creative'
     },
     {
       title:'AI Is Coming for Your White-Collar Job',
@@ -917,7 +917,7 @@ const DEFAULT_DATA = {
       desc:"Which professions are most exposed, which are protected, and how the smartest knowledge workers are already adapting. Grounded and practical.",
       tag:'Work & Careers',
       date:'Aug 2023',
-      search:'ai jobs white collar work future careers hbr'
+      search:'ai jobs white collar work future careers hbr business legal education'
     },
     {
       title:'The Inside Story of ChatGPT\'s Launch',
@@ -926,7 +926,7 @@ const DEFAULT_DATA = {
       desc:"One year after the most consequential product launch in tech history. What happened inside OpenAI, why it spread so fast, and what nobody anticipated.",
       tag:'Long read',
       date:'Nov 2023',
-      search:'chatgpt openai launch story one year inside'
+      search:'chatgpt openai launch story one year inside business software'
     },
     {
       title:'AI Index Report 2026',
@@ -935,7 +935,7 @@ const DEFAULT_DATA = {
       desc:"The definitive annual snapshot of AI progress: who is publishing, what is getting deployed, where the jobs are going, and how policymakers are responding. 500+ pages of data.",
       tag:'Annual Report',
       date:'2026',
-      search:'stanford hai ai index report 2026 annual data policy'
+      search:'stanford hai ai index report 2026 annual data policy business education'
     },
     {
       title:'Competing in the Age of AI',
@@ -1009,7 +1009,7 @@ const DEFAULT_DATA = {
       desc:'The most-watched visual explainer on how neural networks learn. No maths required — pure intuition through beautiful animations. Start here if you\'re new to AI.',
       tag:'Explainer',
       duration:'19 min',
-      search:'neural network 3blue1brown visual explainer basics'
+      search:'neural network 3blue1brown visual explainer basics education software'
     },
     {
       videoId:'kCc8FmEb1nY',
@@ -1018,7 +1018,7 @@ const DEFAULT_DATA = {
       desc:'Andrej Karpathy (former OpenAI, Tesla) codes a working GPT model from zero in Python. The best deep-dive available — demystifies transformers and token prediction completely.',
       tag:'Deep Dive',
       duration:'2 hr 13 min',
-      search:'karpathy gpt build code python transformer deep dive'
+      search:'karpathy gpt build code python transformer deep dive software education'
     },
     {
       videoId:'wjZofJX0v4M',
@@ -1027,7 +1027,7 @@ const DEFAULT_DATA = {
       desc:'The visual companion to understanding how transformers process language using "attention". Part of the Deep Learning series — builds on the neural network video above.',
       tag:'Explainer',
       duration:'26 min',
-      search:'transformer attention llm 3blue1brown visual deep learning'
+      search:'transformer attention llm 3blue1brown visual deep learning software education business'
     },
     {
       videoId:'l-CjPuSMgM0',
@@ -1036,7 +1036,7 @@ const DEFAULT_DATA = {
       desc:'The "Godfather of AI" explains in plain English why he quit Google and what he fears most. The interview that launched a global conversation about AI risk.',
       tag:'Interview',
       duration:'15 min',
-      search:'hinton google quit warning risk regret godfather interview'
+      search:'hinton google quit warning risk regret godfather interview education business health'
     },
     {
       videoId:'zjkBMFhNj_g',
@@ -1045,7 +1045,7 @@ const DEFAULT_DATA = {
       desc:'A one-hour accessible walk-through of how LLMs work, how they\'re trained (pre-training, fine-tuning, RLHF), what they can and cannot do — and what comes next.',
       tag:'Overview',
       duration:'59 min',
-      search:'llm large language model intro karpathy overview training rlhf'
+      search:'llm large language model intro karpathy overview training rlhf software education business'
     },
     {
       videoId:'SjhIlw3Iffs',
@@ -1054,7 +1054,7 @@ const DEFAULT_DATA = {
       desc:'The story of ChatGPT\'s launch, why it spread in ways no one predicted, and how it triggered the biggest tech race in decades. Gripping 20-minute documentary.',
       tag:'Documentary',
       duration:'20 min',
-      search:'chatgpt launch trillion industry vox documentary history openai'
+      search:'chatgpt launch trillion industry vox documentary history openai business education'
     },
     {
       videoId:'giT0ytynSqg',
@@ -1063,7 +1063,7 @@ const DEFAULT_DATA = {
       desc:'Geoffrey Hinton shares his concerns about AI dangers — including a 20% chance of human extinction — and the regret he feels for helping create it. Covers six threats AI poses and its potential benefits in healthcare and education.',
       tag:'Interview',
       duration:'',
-      search:'godfather silencing warn diary ceo hinton extinction danger regret'
+      search:'godfather silencing warn diary ceo hinton extinction danger regret education business health'
     }
   ],
   podcasts: [
@@ -1075,7 +1075,7 @@ const DEFAULT_DATA = {
       url:'https://lexfridman.com/andrej-karpathy/',
       duration:'2 hr 10 min',
       tag:'Interview',
-      search:'karpathy lex fridman software 2.0 openai tesla deep learning'
+      search:'karpathy lex fridman software 2.0 openai tesla deep learning education software'
     },
     {
       emoji:'📰',
@@ -1085,7 +1085,7 @@ const DEFAULT_DATA = {
       url:'https://www.nytimes.com/column/hard-fork',
       duration:'~50 min',
       tag:'Weekly',
-      search:'hard fork nyt new york times kevin roose casey newton weekly ai news'
+      search:'hard fork nyt new york times kevin roose casey newton weekly ai news business education creative'
     },
     {
       emoji:'🎙',
@@ -1095,7 +1095,7 @@ const DEFAULT_DATA = {
       url:'https://www.dwarkeshpatel.com/podcast',
       duration:'3 hr',
       tag:'Interview',
-      search:'dario amodei anthropic claude safety scaling alignment dwarkesh'
+      search:'dario amodei anthropic claude safety scaling alignment dwarkesh business education'
     },
     {
       emoji:'🔬',
@@ -1115,7 +1115,7 @@ const DEFAULT_DATA = {
       url:'https://www.sequoiacap.com/no-priors/',
       duration:'~30 min',
       tag:'Business',
-      search:'no priors sarah guo elad gil business agents startup investing ai'
+      search:'no priors sarah guo elad gil business agents startup investing ai software'
     },
     {
       emoji:'🌐',
