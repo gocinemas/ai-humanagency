@@ -983,30 +983,56 @@ const DEFAULT_DATA = {
 };
 
 /* ━━━━━━━━ STATE ━━━━━━━━ */
+const _API = "https://fuelwatch-production.up.railway.app";
+const _EDIT_TOKEN = "aiha-2026-edit";
 let DATA = JSON.parse(JSON.stringify(DEFAULT_DATA));
 let editMode = false;
 let allCards = [];
 let logoTaps = 0, logoTimer = null;
 
 /* ━━━━━━━━ INIT ━━━━━━━━ */
-function init() {
-  const saved = localStorage.getItem('aiha-data');
-  if (saved) {
-    try {
-      DATA = JSON.parse(saved);
-      if (!DATA.dummies  || !DATA.dummies.length)  DATA.dummies  = JSON.parse(JSON.stringify(DEFAULT_DATA.dummies));
-      if (!DATA.jargon   || !DATA.jargon.length)   DATA.jargon   = JSON.parse(JSON.stringify(DEFAULT_DATA.jargon));
-      if (!DATA.articles || !DATA.articles.length) {
-        DATA.articles = JSON.parse(JSON.stringify(DEFAULT_DATA.articles));
-      } else {
-        const existingUrls = new Set(DATA.articles.map(a => a.url));
-        DEFAULT_DATA.articles.forEach(a => { if (!existingUrls.has(a.url)) DATA.articles.push(JSON.parse(JSON.stringify(a))); });
-      }
-      if (!DATA.videos   || !DATA.videos.length)   DATA.videos   = JSON.parse(JSON.stringify(DEFAULT_DATA.videos));
-      if (!DATA.podcasts || !DATA.podcasts.length)  DATA.podcasts = JSON.parse(JSON.stringify(DEFAULT_DATA.podcasts));
-    } catch(e) {}
+function _mergeDefaults(d) {
+  if (!d.dummies  || !d.dummies.length)  d.dummies  = JSON.parse(JSON.stringify(DEFAULT_DATA.dummies));
+  if (!d.jargon   || !d.jargon.length)   d.jargon   = JSON.parse(JSON.stringify(DEFAULT_DATA.jargon));
+  if (!d.basics   || !d.basics.length)   d.basics   = JSON.parse(JSON.stringify(DEFAULT_DATA.basics));
+  if (!d.usecases || !d.usecases.length) d.usecases = JSON.parse(JSON.stringify(DEFAULT_DATA.usecases));
+  if (!d.researchers||!d.researchers.length) d.researchers = JSON.parse(JSON.stringify(DEFAULT_DATA.researchers));
+  if (!d.articles || !d.articles.length) {
+    d.articles = JSON.parse(JSON.stringify(DEFAULT_DATA.articles));
+  } else {
+    const seen = new Set(d.articles.map(a => a.url));
+    DEFAULT_DATA.articles.forEach(a => { if (!seen.has(a.url)) d.articles.push(JSON.parse(JSON.stringify(a))); });
   }
+  if (!d.videos   || !d.videos.length)   d.videos   = JSON.parse(JSON.stringify(DEFAULT_DATA.videos));
+  if (!d.podcasts || !d.podcasts.length)  d.podcasts = JSON.parse(JSON.stringify(DEFAULT_DATA.podcasts));
+  return d;
+}
+
+async function init() {
+  // Try server first, fall back to localStorage, then DEFAULT_DATA
+  try {
+    const r = await fetch(_API + "/api/aiha/content");
+    if (r.ok) {
+      const server = await r.json();
+      if (server && Object.keys(server).length) {
+        DATA = _mergeDefaults(server);
+        renderAll();
+        _setupLogo();
+        return;
+      }
+    }
+  } catch(e) {}
+
+  // Fallback: localStorage
+  try {
+    const saved = localStorage.getItem('aiha-data');
+    if (saved) { DATA = _mergeDefaults(JSON.parse(saved)); }
+  } catch(e) {}
   renderAll();
+  _setupLogo();
+}
+
+function _setupLogo() {
   document.getElementById('logo-tap').addEventListener('click', () => {
     logoTaps++;
     clearTimeout(logoTimer);
@@ -1020,7 +1046,15 @@ function esc(s) {
   return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 function val(id) { return (document.getElementById(id)?.value ?? '').trim(); }
-function persist() { localStorage.setItem('aiha-data', JSON.stringify(DATA)); }
+function persist() {
+  localStorage.setItem('aiha-data', JSON.stringify(DATA));
+  // Save to server so all visitors see it
+  fetch(_API + "/api/aiha/content", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-Edit-Token": _EDIT_TOKEN },
+    body: JSON.stringify(DATA)
+  }).catch(() => {});
+}
 
 function acts(section, i) {
   if (!editMode) return '';
