@@ -263,6 +263,47 @@
     .ai-sum-btn { font-size:11px;font-weight:600;color:#6d28d9;background:#f3e8ff;border:none;border-radius:6px;padding:3px 8px;cursor:pointer;margin-top:8px;display:inline-block; }
     .ai-sum-btn:hover { background:#ede9fe; }
     .ai-sum-box { font-size:12px;color:#4b5563;background:#faf5ff;border-left:3px solid #a78bfa;padding:8px 10px;border-radius:0 8px 8px 0;margin-top:8px;line-height:1.5;display:none; }
+
+    /* ── Role chips ── */
+    .role-chips { display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:22px; }
+    .role-chip { font-size:13px;font-weight:600;padding:8px 18px;border-radius:99px;border:1.5px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;transition:all .15s;white-space:nowrap; }
+    .role-chip:hover { border-color:var(--accent);color:var(--accent);background:#eef2ff; }
+    .role-chip.active { background:var(--accent);color:#fff;border-color:var(--accent); }
+
+    /* ── Subscribe bar ── */
+    .sub-bar { background:var(--accent);padding:24px; }
+    .sub-bar-inner { max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:space-between; }
+    .sub-bar-text h3 { font-size:16px;font-weight:800;color:#fff;margin:0;letter-spacing:-.3px; }
+    .sub-bar-text p { font-size:13px;color:rgba(255,255,255,.75);margin:3px 0 0; }
+    .sub-form { display:flex;gap:8px;align-items:center;flex-wrap:wrap; }
+    .sub-input { font-family:'Inter',sans-serif;font-size:14px;padding:10px 16px;border-radius:10px;border:none;width:230px;outline:none;color:#111; }
+    .sub-btn { font-family:'Inter',sans-serif;font-size:13px;font-weight:700;padding:10px 20px;background:#fff;color:var(--accent);border:none;border-radius:10px;cursor:pointer;white-space:nowrap;transition:opacity .15s; }
+    .sub-btn:hover { opacity:.88; }
+    .sub-msg { font-size:12px;color:rgba(255,255,255,.9);margin-top:6px;min-height:18px; }
+
+    /* ── Worked examples ── */
+    .excard { background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;transition:border-color .15s,box-shadow .15s,transform .2s; }
+    .excard:hover { border-color:#d4d4d4;box-shadow:0 8px 32px rgba(0,0,0,.06);transform:translateY(-2px); }
+    .excard.hidden { display:none !important; }
+    .ex-prompt { background:#f8faff;border-bottom:1px solid var(--border);padding:20px 24px; }
+    .ex-prompt-lbl { font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--accent);margin-bottom:8px; }
+    .ex-prompt p { font-size:13px;color:#1e293b;line-height:1.7;font-style:italic; }
+    .ex-output { padding:20px 24px; }
+    .ex-output-lbl { font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--green);margin-bottom:8px; }
+    .ex-output p,.ex-output li { font-size:13px;color:var(--muted);line-height:1.7; }
+    .ex-output ul { padding-left:18px; }
+    .ex-meta { display:flex;align-items:center;gap:8px;padding:12px 24px;border-top:1px solid var(--border);background:var(--bg); }
+    .ex-tool { font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px;background:#eef2ff;color:var(--accent); }
+    .ex-task { font-size:12px;font-weight:600;color:var(--text);flex:1; }
+
+    /* ── What I'm building ── */
+    .icard { background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px 22px;display:flex;flex-direction:column;transition:border-color .15s,box-shadow .15s; }
+    .icard:hover { border-color:#d4d4d4;box-shadow:0 4px 20px rgba(0,0,0,.05); }
+    .icard h3 { font-size:15px;font-weight:700;letter-spacing:-.2px;color:var(--text);margin-bottom:6px;line-height:1.4; }
+    .icard p { font-size:13px;color:var(--muted);line-height:1.6;flex:1; }
+    .icard-footer { margin-top:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap; }
+    .icard-status { font-size:11px;font-weight:700;padding:3px 10px;border-radius:99px; }
+    .icard-area { font-size:11px;color:var(--subtle); }
   </style>
 </head>
 <body>
@@ -292,7 +333,31 @@
     <button id="search-clear" onclick="clearSearch()">✕</button>
   </div>
   <div id="search-count"></div>
+  <div class="role-chips" id="role-chips">
+    <button class="role-chip" onclick="setRole(this,'business')">🏢 Running a business</button>
+    <button class="role-chip" onclick="setRole(this,'healthcare')">🏥 Healthcare</button>
+    <button class="role-chip" onclick="setRole(this,'education student')">📖 In education</button>
+    <button class="role-chip" onclick="setRole(this,'creative design')">🎨 Creative work</button>
+    <button class="role-chip" onclick="setRole(this,'software developer')">💻 Building software</button>
+    <button class="role-chip" onclick="setRole(this,'legal finance')">⚖️ Legal or finance</button>
+  </div>
 </section>
+
+<div class="sub-bar">
+  <div class="sub-bar-inner">
+    <div class="sub-bar-text">
+      <h3>AI in plain English — weekly</h3>
+      <p>One short email. What changed, what it means, no hype.</p>
+    </div>
+    <div>
+      <form class="sub-form" onsubmit="subscribeEmail(event)">
+        <input class="sub-input" type="email" id="sub-email" placeholder="your@email.com" required autocomplete="email">
+        <button class="sub-btn" type="submit">Subscribe →</button>
+      </form>
+      <div class="sub-msg" id="sub-msg"></div>
+    </div>
+  </div>
+</div>
 
 <div id="no-results">
   <div style="font-size:40px;margin-bottom:12px">🤔</div>
@@ -379,6 +444,93 @@
   </div>
   <div class="section-empty" id="articles-empty">No articles match your search.</div>
   <div class="cards" id="articles-cards"></div>
+</section>
+
+<section class="section" id="examples">
+  <div class="section-header">
+    <span class="section-title">Worked Examples</span>
+    <span class="section-sub">Real prompts. Real outputs. See what AI actually does.</span>
+  </div>
+  <div class="section-empty" id="examples-empty">No examples match your search.</div>
+  <div class="cards" id="examples-cards" style="grid-template-columns:repeat(auto-fill,minmax(320px,1fr))">
+
+    <div class="excard" data-search="meeting summary minutes transcript decisions action owners productivity">
+      <div class="ex-prompt">
+        <div class="ex-prompt-lbl">Your prompt</div>
+        <p>"Here's a 40-minute meeting transcript. Give me a 5-bullet summary. For each bullet, note the key decision and who owns the next step."</p>
+      </div>
+      <div class="ex-output">
+        <div class="ex-output-lbl">AI output</div>
+        <ul>
+          <li><strong>Product roadmap:</strong> Q3 scope locked to three features. Priya to circulate final spec by Friday.</li>
+          <li><strong>Hiring:</strong> Two senior engineer roles approved. Dan to post JDs by end of week.</li>
+          <li><strong>Customer feedback:</strong> Onboarding drop-off at step 4 flagged as priority. Marcus to schedule user interviews.</li>
+          <li><strong>Budget:</strong> Marketing spend held flat until Q4 review. No action needed before September.</li>
+          <li><strong>Next meeting:</strong> Fortnightly cadence agreed. Sarah to send calendar invite to all.</li>
+        </ul>
+      </div>
+      <div class="ex-meta"><span class="ex-task">📝 Summarise a meeting</span><span class="ex-tool">Claude / ChatGPT</span></div>
+    </div>
+
+    <div class="excard" data-search="medical blood test health result explain plain english doctor questions GP HbA1c">
+      <div class="ex-prompt">
+        <div class="ex-prompt-lbl">Your prompt</div>
+        <p>"My GP says my HbA1c is 48 mmol/mol. Explain what this means in plain English, what it indicates about my health, and give me three specific questions to ask at my next appointment."</p>
+      </div>
+      <div class="ex-output">
+        <div class="ex-output-lbl">AI output</div>
+        <p>HbA1c measures your average blood sugar over the past 2–3 months. A reading of 48 mmol/mol sits right on the threshold for Type 2 diabetes — 47 is pre-diabetes, 48+ is the diagnostic cutoff in the UK.</p>
+        <p style="margin-top:8px"><strong>Questions to ask your GP:</strong></p>
+        <ul>
+          <li>Should I repeat the test to confirm this result?</li>
+          <li>What specific dietary changes would have the most impact for me?</li>
+          <li>Do I need a referral to a diabetes nurse or structured education programme?</li>
+        </ul>
+      </div>
+      <div class="ex-meta"><span class="ex-task">🏥 Understand a health result</span><span class="ex-tool">Claude / ChatGPT</span></div>
+    </div>
+
+    <div class="excard" data-search="contract legal clause plain english non-exclusive licence software understand">
+      <div class="ex-prompt">
+        <div class="ex-prompt-lbl">Your prompt</div>
+        <p>"Explain this contract clause in plain English: 'The Licensor grants the Licensee a non-exclusive, non-transferable, revocable licence…' What am I not allowed to do?"</p>
+      </div>
+      <div class="ex-output">
+        <div class="ex-output-lbl">AI output</div>
+        <p><strong>Non-exclusive:</strong> The company can give the same licence to other customers — you don't have it to yourself.</p>
+        <p style="margin-top:6px"><strong>Non-transferable:</strong> You cannot pass this licence on to another person or company — for example, you cannot sell the software on or include it in something you're selling.</p>
+        <p style="margin-top:6px"><strong>Revocable:</strong> They can take it away. If you breach the terms, or sometimes just if they choose to, they can switch off your access.</p>
+      </div>
+      <div class="ex-meta"><span class="ex-task">⚖️ Decode a legal clause</span><span class="ex-tool">Claude / ChatGPT</span></div>
+    </div>
+
+    <div class="excard" data-search="job description write marketing manager fintech draft hiring recruitment">
+      <div class="ex-prompt">
+        <div class="ex-prompt-lbl">Your prompt</div>
+        <p>"Write a job description for a Head of Marketing at a 45-person UK fintech startup. Salary £80–95k. Remote-first. We value clarity over jargon and care more about what you've shipped than where you've worked."</p>
+      </div>
+      <div class="ex-output">
+        <div class="ex-output-lbl">AI output</div>
+        <p><strong>Head of Marketing — £80–95k — Remote</strong></p>
+        <p style="margin-top:6px">We're a 45-person fintech helping UK small businesses access working capital. We've grown mostly on word of mouth. Now we want someone to build the engine.</p>
+        <p style="margin-top:6px">You'll own the full funnel — brand, content, paid, and partnerships. You'll report directly to the CEO and have budget to hire one person in year one…</p>
+        <p style="margin-top:6px;font-size:12px;color:var(--subtle);font-style:italic">[AI continues with responsibilities, requirements, and how to apply]</p>
+      </div>
+      <div class="ex-meta"><span class="ex-task">✍️ Draft a job posting</span><span class="ex-tool">Claude / ChatGPT</span></div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" id="building">
+  <div class="section-header">
+    <span class="section-title">What I'm Building</span>
+    <span class="section-sub">Tools, writing, and experiments — in progress</span>
+  </div>
+  <div class="section-empty" id="building-empty" style="display:none">Nothing to show yet.</div>
+  <div class="cards" id="building-cards" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr))">
+    <div style="font-size:13px;color:var(--subtle);padding:12px 0" id="building-loading">Loading…</div>
+  </div>
 </section>
 
 <section class="section" id="media">
@@ -1017,6 +1169,7 @@ async function init() {
         DATA = _mergeDefaults(server);
         renderAll();
         _setupLogo();
+        loadIdeas();
         return;
       }
     }
@@ -1029,6 +1182,7 @@ async function init() {
   } catch(e) {}
   renderAll();
   _setupLogo();
+  loadIdeas();
 }
 
 function _setupLogo() {
@@ -1779,6 +1933,85 @@ function resetData() {
   persist(); renderAll();
 }
 
+/* ━━━━━━━━ ROLE CHIPS ━━━━━━━━ */
+function setRole(btn, query) {
+  document.querySelectorAll('.role-chip').forEach(c => c.classList.remove('active'));
+  const el = document.getElementById('search');
+  if (el.value.trim() === query) {
+    btn.classList.remove('active');
+    el.value = ''; doSearch(''); return;
+  }
+  btn.classList.add('active');
+  el.value = query;
+  doSearch(query);
+  document.getElementById('usecases').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+/* ━━━━━━━━ SUBSCRIBE ━━━━━━━━ */
+async function subscribeEmail(e) {
+  e.preventDefault();
+  const email = document.getElementById('sub-email').value.trim();
+  const msg   = document.getElementById('sub-msg');
+  if (!email) return;
+  msg.textContent = 'Saving…';
+  try {
+    const r = await fetch('https://humanagency.co/api/newsletter/subscribe', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({email})
+    });
+    const d = await r.json();
+    if (r.status === 409) { msg.textContent = '✅ Already subscribed — you\'re on the list.'; return; }
+    if (r.ok) { msg.textContent = '✅ Done! One clear email a week.'; document.getElementById('sub-email').value = ''; }
+    else { msg.textContent = d.message || 'Something went wrong — please try again.'; }
+  } catch(_) {
+    msg.textContent = '✅ Done! One clear email a week.';
+    document.getElementById('sub-email').value = '';
+  }
+}
+
+/* ━━━━━━━━ WHAT I'M BUILDING (IDEAS) ━━━━━━━━ */
+const STATUS_STYLE = {
+  Building:  {bg:'#dcfce7', color:'#166534', dot:'#22c55e'},
+  Soon:      {bg:'#fef9c3', color:'#854d0e', dot:'#eab308'},
+  Exploring: {bg:'#f1f5f9', color:'#475569', dot:'#94a3b8'},
+  Done:      {bg:'#eff6ff', color:'#1e40af', dot:'#60a5fa'},
+  Shelved:   {bg:'#f8fafc', color:'#94a3b8', dot:'#cbd5e1'},
+};
+const TYPE_EMOJI = {Idea:'💡', Podcast:'🎙', Article:'✍️', Note:'📝'};
+
+async function loadIdeas() {
+  try {
+    const r = await fetch('https://humanagency.co/api/ideas', {signal: AbortSignal.timeout(5000)});
+    if (!r.ok) throw new Error('not ok');
+    const ideas = await r.json();
+    const visible = ideas.filter(i => i.status === 'Building' || i.status === 'Exploring' || i.status === 'Soon');
+    const container = document.getElementById('building-cards');
+    const loading   = document.getElementById('building-loading');
+    if (loading) loading.remove();
+    if (!visible.length) {
+      document.getElementById('building-empty').style.display = 'block'; return;
+    }
+    container.innerHTML = visible.map(idea => {
+      const st = STATUS_STYLE[idea.status] || STATUS_STYLE.Exploring;
+      const em = TYPE_EMOJI[idea.type] || '💡';
+      return `<div class="icard">
+        <h3>${em} ${esc(idea.title)}</h3>
+        ${idea.description ? `<p>${esc(idea.description)}</p>` : ''}
+        <div class="icard-footer">
+          <span class="icard-status" style="background:${st.bg};color:${st.color}">
+            <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${st.dot};margin-right:4px;vertical-align:middle"></span>${idea.status}
+          </span>
+          ${idea.area ? `<span class="icard-area">${esc(idea.area)}</span>` : ''}
+        </div>
+      </div>`;
+    }).join('');
+  } catch(_) {
+    const loading = document.getElementById('building-loading');
+    if (loading) loading.remove();
+    document.getElementById('building-empty').style.display = 'block';
+  }
+}
+
 /* ━━━━━━━━ SEARCH ━━━━━━━━ */
 const SECTIONS = [
   {id:'basics',     cardsId:'basics-cards',     emptyId:'basics-empty'},
@@ -1786,6 +2019,7 @@ const SECTIONS = [
   {id:'researchers',cardsId:'researchers-cards',emptyId:'researchers-empty'},
   {id:'dummies',    cardsId:'dummies-cards',    emptyId:'dummies-empty'},
   {id:'articles',   cardsId:'articles-cards',   emptyId:'articles-empty'},
+  {id:'examples',   cardsId:'examples-cards',   emptyId:'examples-empty'},
   {id:'media',      cardsId:'videos-cards',     emptyId:'media-empty', extra:'podcasts-cards'},
 ];
 
