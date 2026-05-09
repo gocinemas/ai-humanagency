@@ -305,6 +305,27 @@
     .icard-footer { margin-top:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap; }
     .icard-status { font-size:11px;font-weight:700;padding:3px 10px;border-radius:99px; }
     .icard-area { font-size:11px;color:var(--subtle); }
+
+    /* ── Role grid ── */
+    .role-grid-label { font-size:12px;color:var(--subtle);display:block;margin-bottom:12px; }
+    .role-grid { display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:18px; }
+    .role-btn { display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 14px;border-radius:14px;border:1.5px solid var(--border);background:var(--surface);cursor:pointer;transition:all .15s;min-width:72px;font-family:'Inter',sans-serif; }
+    .role-btn:hover { border-color:var(--accent);background:#f5f3ff; }
+    .role-btn.active { border-color:var(--accent);background:var(--accent);color:#fff; }
+    .role-btn-icon { font-size:22px;line-height:1; }
+    .role-btn-label { font-size:11px;font-weight:700;color:inherit;line-height:1.2;text-align:center; }
+    .role-btn.active .role-btn-label { color:#fff; }
+    /* ── Role spotlight ── */
+    .role-spotlight { background:linear-gradient(135deg,#eef2ff 0%,#f5f3ff 100%);border:1.5px solid #c7d2fe;border-radius:20px;padding:22px 24px;margin-bottom:24px;display:none; }
+    .role-spotlight-head { display:flex;align-items:center;gap:12px;margin-bottom:10px; }
+    .role-spotlight-icon { font-size:32px;line-height:1; }
+    .role-spotlight h3 { font-size:18px;font-weight:800;letter-spacing:-.4px;color:var(--text); }
+    .role-spotlight p { font-size:14px;color:var(--muted);line-height:1.65; }
+    .role-spotlight-examples { margin-top:14px;display:flex;flex-direction:column;gap:6px; }
+    .role-spotlight-ex { font-size:12px;color:#374151;background:rgba(255,255,255,.7);border-radius:8px;padding:7px 11px;line-height:1.5; }
+    .role-spotlight-ex strong { color:var(--text); }
+    .role-clear { margin-top:14px;font-size:12px;font-weight:600;color:var(--accent);background:none;border:none;cursor:pointer;padding:0;text-decoration:underline; }
+    @media(max-width:640px){.role-btn{min-width:60px;padding:8px 10px;}.role-btn-icon{font-size:20px;}.role-btn-label{font-size:10px;}}
   </style>
 </head>
 <body>
@@ -333,14 +354,22 @@
     <button id="search-clear" onclick="clearSearch()">✕</button>
   </div>
   <div id="search-count"></div>
-  <div class="role-chips" id="role-chips">
-    <span class="role-chips-label">I work in:</span>
-    <button class="role-chip" onclick="setRole(this,'business')">Business</button>
-    <button class="role-chip" onclick="setRole(this,'health')">Healthcare</button>
-    <button class="role-chip" onclick="setRole(this,'education')">Education</button>
-    <button class="role-chip" onclick="setRole(this,'creative')">Creative</button>
-    <button class="role-chip" onclick="setRole(this,'software')">Tech</button>
-    <button class="role-chip" onclick="setRole(this,'legal')">Legal</button>
+  <p style="font-size:13px;color:var(--subtle);margin-top:20px;margin-bottom:10px">Or pick your role to see what AI does for <em>you specifically</em>:</p>
+  <div class="role-grid" id="role-grid">
+    <button class="role-btn" onclick="setRole(this,'teacher')"><span class="role-btn-icon">🏫</span><span class="role-btn-label">Teacher</span></button>
+    <button class="role-btn" onclick="setRole(this,'gp')"><span class="role-btn-icon">👨‍⚕️</span><span class="role-btn-label">GP / Doctor</span></button>
+    <button class="role-btn" onclick="setRole(this,'dentist')"><span class="role-btn-icon">🦷</span><span class="role-btn-label">Dentist</span></button>
+    <button class="role-btn" onclick="setRole(this,'nurse')"><span class="role-btn-icon">👩‍⚕️</span><span class="role-btn-label">Nurse</span></button>
+    <button class="role-btn" onclick="setRole(this,'plumber')"><span class="role-btn-icon">🔧</span><span class="role-btn-label">Plumber</span></button>
+    <button class="role-btn" onclick="setRole(this,'electrician')"><span class="role-btn-icon">⚡</span><span class="role-btn-label">Electrician</span></button>
+    <button class="role-btn" onclick="setRole(this,'chef')"><span class="role-btn-icon">👨‍🍳</span><span class="role-btn-label">Chef / Restaurant</span></button>
+    <button class="role-btn" onclick="setRole(this,'estate-agent')"><span class="role-btn-icon">🏘️</span><span class="role-btn-label">Estate Agent</span></button>
+    <button class="role-btn" onclick="setRole(this,'accountant')"><span class="role-btn-icon">📊</span><span class="role-btn-label">Accountant</span></button>
+    <button class="role-btn" onclick="setRole(this,'solicitor')"><span class="role-btn-icon">⚖️</span><span class="role-btn-label">Solicitor</span></button>
+    <button class="role-btn" onclick="setRole(this,'retailer')"><span class="role-btn-icon">🛒</span><span class="role-btn-label">Retailer</span></button>
+    <button class="role-btn" onclick="setRole(this,'farmer')"><span class="role-btn-icon">🌾</span><span class="role-btn-label">Farmer</span></button>
+    <button class="role-btn" onclick="setRole(this,'business')"><span class="role-btn-icon">💼</span><span class="role-btn-label">Office / Business</span></button>
+    <button class="role-btn" onclick="setRole(this,'parent')"><span class="role-btn-icon">👨‍👩‍👧</span><span class="role-btn-label">Parent</span></button>
   </div>
 </section>
 
@@ -365,6 +394,7 @@
     <span class="section-sub">Where it's actually making a difference</span>
   </div>
   <div class="section-empty" id="usecases-empty">No use cases match your search.</div>
+  <div class="role-spotlight" id="role-spotlight"></div>
   <div class="cards ucards" id="usecases-cards"></div>
 </section>
 
@@ -644,6 +674,7 @@ const DEFAULT_DATA = {
   usecases: [
     {
       icon:'🏥', title:'Health & Medicine',
+      roles:['gp','nurse','dentist'],
       intro:'AI can spot patterns in medical images that trained doctors miss — and do it in seconds across thousands of scans. It\'s also accelerating drug discovery from decades to years.',
       examples:[
         {label:'Cancer detection',text:'AI reads mammograms and CT scans with accuracy matching radiologists'},
@@ -654,6 +685,7 @@ const DEFAULT_DATA = {
     },
     {
       icon:'📖', title:'Education',
+      roles:['teacher'],
       intro:"Every student learns differently. AI tutors can adapt in real-time — giving harder problems when you're ready, slowing down when you're not, and never making you feel embarrassed for asking the same question twice.",
       examples:[
         {label:'Personal tutoring',text:"Khan Academy's Khanmigo gives one-to-one Socratic tutoring at no cost"},
@@ -694,6 +726,7 @@ const DEFAULT_DATA = {
     },
     {
       icon:'⚖️', title:'Legal & Compliance',
+      roles:['solicitor','accountant'],
       intro:"Reading and summarising legal documents used to take expensive hours of lawyer time. AI can review a contract in seconds, flag unusual clauses, and explain what you're actually signing in plain English.",
       examples:[
         {label:'Contract review',text:'Highlight non-standard terms and compare against templates automatically'},
@@ -704,6 +737,7 @@ const DEFAULT_DATA = {
     },
     {
       icon:'🎧', title:'Customer Service',
+      roles:['retailer','chef','plumber','electrician','dentist','estate-agent'],
       intro:'Most customer service questions are the same questions, asked thousands of times a day. AI handles these instantly — leaving human agents free for the complex, emotional, or unusual cases where they actually add value.',
       examples:[
         {label:'Instant resolution',text:'Order status, returns, FAQs — resolved without any wait'},
@@ -734,6 +768,7 @@ const DEFAULT_DATA = {
     },
     {
       icon:'🏪', title:'Small Business Owners',
+      roles:['plumber','electrician','chef','retailer','dentist','estate-agent','accountant','farmer'],
       intro:"Running a small business means wearing every hat. AI is the one that handles the writing. Product descriptions, customer emails, social posts, Google Business responses — all done in a fraction of the time.",
       examples:[
         {label:'Product copy',text:'Turn a product spec sheet into compelling, SEO-friendly descriptions for your website'},
@@ -744,6 +779,7 @@ const DEFAULT_DATA = {
     },
     {
       icon:'👨‍👩‍👧', title:'Parents & Families',
+      roles:['parent'],
       intro:"Whether it's explaining quadratic equations, writing a letter to the school, or planning what to cook for the week — AI handles the admin of family life so you can focus on the actual living.",
       examples:[
         {label:'Homework help',text:'Explain any topic at the right level — without just giving the answer'},
@@ -754,6 +790,7 @@ const DEFAULT_DATA = {
     },
     {
       icon:'📣', title:'Marketing Professionals',
+      roles:['estate-agent','retailer','chef','business'],
       intro:"Marketing output has doubled in demand while budgets stay flat. AI is the only way to keep up — writing first drafts, generating ad variations, researching audiences, and turning raw data into campaign insights.",
       examples:[
         {label:'Ad copy',text:'Generate 20 headline and description variations for an A/B test in the time it used to take to write two'},
@@ -764,6 +801,7 @@ const DEFAULT_DATA = {
     },
     {
       icon:'🧑‍💼', title:'HR & People Teams',
+      roles:['business'],
       intro:"The most time-consuming parts of HR are also the most repetitive — writing job descriptions, onboarding documents, and performance review templates. AI handles the drafting so HR teams can focus on the conversations that matter.",
       examples:[
         {label:'Job descriptions',text:'Inclusive, accurate job specs in minutes — with bias-checking built in'},
@@ -774,6 +812,7 @@ const DEFAULT_DATA = {
     },
     {
       icon:'🚀', title:'Founders & Entrepreneurs',
+      roles:['business'],
       intro:"Speed is the one advantage startups have over big companies. AI accelerates everything — turning a rough idea into a structured pitch, synthesising a competitive landscape in minutes, and drafting investor updates without breaking flow.",
       examples:[
         {label:'Pitch decks',text:"Structure your narrative, sharpen your problem statement, and stress-test your assumptions before you're in the room"},
@@ -784,6 +823,7 @@ const DEFAULT_DATA = {
     },
     {
       icon:'📞', title:'Sales Professionals',
+      roles:['estate-agent','business'],
       intro:"The best salespeople spend time building relationships — not writing follow-up emails. AI handles the research, the outreach, and the post-call admin so reps can do more of the work that actually closes deals.",
       examples:[
         {label:'Prospect research',text:'Summarise a company before a call — news, pain points, leadership — in two minutes'},
@@ -794,6 +834,7 @@ const DEFAULT_DATA = {
     },
     {
       icon:'🏫', title:'Teachers & Educators',
+      roles:['teacher'],
       intro:"Teachers spend as much time on planning and admin as they do in the classroom. AI drafts lesson plans, creates differentiated materials for different ability levels, and writes parent communications — reclaiming hours every week.",
       examples:[
         {label:'Lesson plans',text:'A full lesson plan with objectives, activities, and timings for any topic in any year group'},
@@ -804,6 +845,7 @@ const DEFAULT_DATA = {
     },
     {
       icon:'📰', title:'Journalists & Researchers',
+      roles:['solicitor'],
       intro:"Research that used to take a day now takes an hour. AI transcribes interviews, finds patterns across thousands of documents, surfaces background on sources, and helps reporters get from raw notes to a structured story faster.",
       examples:[
         {label:'Transcription',text:'Hour-long interview transcribed, cleaned, and summarised with key quotes pulled out'},
@@ -814,6 +856,7 @@ const DEFAULT_DATA = {
     },
     {
       icon:'⚙️', title:'Operations & Supply Chain',
+      roles:['electrician','farmer','business'],
       intro:"Operations runs on documentation — SOPs, supplier emails, audit reports, compliance checklists. AI drafts all of it faster and more consistently than any individual, and can translate it into any language for global teams.",
       examples:[
         {label:'SOPs',text:'Standard operating procedures written from a rough description of the process — ready to review, not start from scratch'},
@@ -824,6 +867,7 @@ const DEFAULT_DATA = {
     },
     {
       icon:'🧠', title:'Mental Health & Wellbeing',
+      roles:['nurse','gp'],
       intro:"Therapists are oversubscribed and the waitlists are long. AI is stepping in as a first layer of support — tracking mood patterns, running evidence-based CBT exercises, and giving people a way to process difficult emotions at 2am when no human is available.",
       examples:[
         {label:'Mood tracking',text:'Youper identifies patterns in how you feel over weeks — things you would never notice yourself'},
@@ -834,6 +878,7 @@ const DEFAULT_DATA = {
     },
     {
       icon:'⚡', title:'Personal Productivity',
+      roles:['business','teacher','gp','parent'],
       intro:"The biggest productivity gains from AI are not in big enterprise tools — they are in eliminating the small daily friction: the overflowing inbox, the calendar chaos, the things you meant to read but never did.",
       examples:[
         {label:'Calendar AI',text:'Reclaim and Mayday automatically protect focus time, reschedule around priorities, and block the meetings that should be emails'},
@@ -871,6 +916,78 @@ const DEFAULT_DATA = {
         {label:'Real-time P&L',text:'Quanta gives SaaS companies a live accounting layer — no waiting for month-end close to know where you stand'}
       ],
       search:'accounting tax bookkeeping deductions reconciliation finance P&L small business'
+    },
+    {
+      icon:'🔧', title:'Trades & Skilled Workers',
+      roles:['plumber','electrician'],
+      intro:"Whether you're a plumber, electrician, or builder — AI handles the written work that eats your evenings. Quotes, customer messages, and website copy that look professional without costing you time.",
+      examples:[
+        {label:'Instant quotes',text:'Turn your site-visit notes into a clear, itemised professional quote ready to email'},
+        {label:'Customer messages',text:'Follow-up texts, booking confirmations, and job completion messages — polite and prompt'},
+        {label:'Review replies',text:'Thoughtful responses to Google and Checkatrade reviews that build your reputation'},
+        {label:'Website copy',text:'Local service pages that show up when someone searches for a tradesperson near them'}
+      ],
+      search:'plumber electrician builder tradesperson quote customer message website local'
+    },
+    {
+      icon:'🦷', title:'Dental & Medical Practices',
+      roles:['dentist','gp','nurse'],
+      intro:"Patient communications, treatment explanations, after-care documents — AI drafts them clearly and professionally so your team spends less time at the keyboard and more time with patients.",
+      examples:[
+        {label:'Treatment explanations',text:'Translate a crown, implant, or diagnosis into clear, reassuring language a patient will understand'},
+        {label:'After-care docs',text:'Post-procedure instructions tailored to the treatment — ready to print or email'},
+        {label:'Referral letters',text:'Draft referral letters from your notes in seconds — formatted and ready to review'},
+        {label:'Practice content',text:'Website FAQs, patient leaflets, and appointment prep guides'}
+      ],
+      search:'dentist GP doctor nurse clinic patient letter referral treatment explanation healthcare practice'
+    },
+    {
+      icon:'👨‍🍳', title:'Hospitality & Restaurants',
+      roles:['chef'],
+      intro:"Menu descriptions, social media, staff training, review responses — the written side of running a restaurant, handled so you can focus on the food.",
+      examples:[
+        {label:'Menu copy',text:'Evocative, mouth-watering descriptions for every dish — from a name or a list of ingredients'},
+        {label:'Social content',text:'Instagram captions and stories for new dishes, specials, or events'},
+        {label:'Review responses',text:'Warm, professional replies to TripAdvisor and Google reviews that win repeat customers'},
+        {label:'Staff documents',text:'Allergen guides, onboarding checklists, and kitchen SOPs from your rough notes'}
+      ],
+      search:'chef restaurant hospitality menu food social media review staff kitchen'
+    },
+    {
+      icon:'🏘️', title:'Estate Agents & Property',
+      roles:['estate-agent'],
+      intro:"Property listings, vendor letters, area guides, viewing follow-ups — written to your standard in a fraction of the time.",
+      examples:[
+        {label:'Property listings',text:'Compelling property descriptions from your viewing notes — accurate, engaging, ready to publish'},
+        {label:'Vendor letters',text:'Market appraisal follow-ups and instruction letters in a persuasive, professional tone'},
+        {label:'Area guides',text:'Hyper-local area content for your website that genuinely helps buyers and ranks in search'},
+        {label:'Applicant updates',text:'Viewing feedback, price reduction letters, and offer updates — prompt and professional'}
+      ],
+      search:'estate agent property listing vendor buyer area guide valuation viewing'
+    },
+    {
+      icon:'📊', title:'Accountants & Bookkeepers',
+      roles:['accountant'],
+      intro:"Client letters, report narratives, HMRC correspondence, and plain-English explanations — the writing around your numbers, handled.",
+      examples:[
+        {label:'Management accounts',text:'Narrative commentary on monthly figures that clients actually read and understand'},
+        {label:'Client letters',text:'Tax planning letters, year-end summaries, and advice notes in clear, accurate language'},
+        {label:'HMRC correspondence',text:'Draft responses to enquiries and explanations of filing positions — ready to review and sign'},
+        {label:'Plain English',text:'Turn a complex tax position into a clear client explanation without oversimplifying'}
+      ],
+      search:'accountant bookkeeper tax HMRC client letter management accounts finance'
+    },
+    {
+      icon:'🌾', title:'Farmers & Rural Businesses',
+      roles:['farmer'],
+      intro:"Grant applications, environmental statements, farm assurance documents, and supplier emails — the paperwork side of farming, without the pain.",
+      examples:[
+        {label:'Grant applications',text:'Well-argued, structured applications from your project notes — for Countryside Stewardship and beyond'},
+        {label:'Supplier emails',text:'Quotation requests, complaint letters, and negotiation correspondence in the right tone'},
+        {label:'Farm diversification',text:'Website copy, visitor information, and booking pages for farm shops, events, or B&B'},
+        {label:'Compliance docs',text:'Risk assessments, farm assurance documentation, and environmental statements'}
+      ],
+      search:'farmer farming rural agricultural grant compliance diversification environment supply chain'
     }
   ],
   researchers: [
@@ -1485,7 +1602,7 @@ function renderBasics() {
 
 function renderUsecases() {
   document.getElementById('usecases-cards').innerHTML =
-    DATA.usecases.map((c,i) => `<div class="ucard" data-search="${esc(c.search)}">
+    DATA.usecases.map((c,i) => `<div class="ucard" data-search="${esc(c.search)}" data-roles="${esc((c.roles||[]).join(' '))}">
       ${acts('usecases',i)}
       <div class="ucard-icon">${esc(c.icon)}</div>
       <h3>${esc(c.title)}</h3>
@@ -2158,18 +2275,86 @@ function resetData() {
   persist(); renderAll();
 }
 
-/* ━━━━━━━━ ROLE CHIPS ━━━━━━━━ */
-function setRole(btn, query) {
-  document.querySelectorAll('.role-chip').forEach(c => c.classList.remove('active'));
-  const el = document.getElementById('search');
-  if (el.value.trim() === query) {
-    btn.classList.remove('active');
-    el.value = ''; doSearch(''); return;
+/* ━━━━━━━━ ROLE PICKER ━━━━━━━━ */
+const ROLE_SPOTLIGHTS = {
+  teacher: { icon:'🏫', title:'AI for Teachers', intro:'From lesson planning to parent letters, AI handles the preparation and admin so you can focus on teaching — not paperwork.', examples:[{label:'Lesson plans',text:'Full plans with objectives, activities, and timings for any topic and year group in minutes'},{label:'Differentiation',text:'The same material written three ways — for struggling, on-track, and advanced learners'},{label:'Parent comms',text:'End-of-term letters, trip permissions, and behaviour communications drafted instantly'},{label:'Report comments',text:'Tailored, specific report card comments that don\'t sound copy-pasted'}] },
+  gp: { icon:'👨‍⚕️', title:'AI for GPs & Doctors', intro:'Referral letters, patient information, consultation summaries — AI reduces the admin load that follows every appointment.', examples:[{label:'Referral letters',text:'Draft referral letters from structured notes in seconds — formatted and ready to review'},{label:'Patient explanations',text:'Translate a diagnosis or test result into clear, plain English for the patient'},{label:'Care instructions',text:'Personalised post-appointment advice and medication instructions patients will actually understand'},{label:'Practice comms',text:'Patient newsletters, health campaigns, and appointment reminders'}] },
+  dentist: { icon:'🦷', title:'AI for Dental Practices', intro:'Patient communications, treatment plan explanations, and practice marketing — all drafted professionally in seconds.', examples:[{label:'Treatment explanations',text:'Explain a crown, implant, or root canal to a nervous patient in plain, reassuring language'},{label:'After-care instructions',text:'Clear post-procedure care docs tailored to the treatment — ready to hand out'},{label:'Patient recall letters',text:'Personalised recall and reminder letters that don\'t sound like mail-merge'},{label:'Website content',text:'Service descriptions, FAQs, and practice pages that answer what patients actually search for'}] },
+  nurse: { icon:'👩‍⚕️', title:'AI for Nurses', intro:'Patient education, handover notes, care plan summaries — AI reduces the written work without reducing the quality.', examples:[{label:'Patient education',text:'Clear written explanations of conditions, treatments, and self-care for patients and families'},{label:'Handover notes',text:'Structured, thorough handover summaries from brief bullet points'},{label:'Care plan drafts',text:'Initial care plan templates tailored to the patient\'s presenting needs'},{label:'Incident reports',text:'Accurate, professional incident documentation drafted from your account of events'}] },
+  plumber: { icon:'🔧', title:'AI for Plumbers', intro:'Quotes, customer messages, website copy, review responses — the written work that used to eat your evenings now takes two minutes.', examples:[{label:'Professional quotes',text:'Turn a job description into a clear, itemised quote that looks professional and wins work'},{label:'Customer messages',text:'Follow-up texts, job completion messages, and booking confirmations — polite and prompt'},{label:'Review responses',text:'Thoughtful, professional replies to Google and Checkatrade reviews — good and bad'},{label:'Website copy',text:'Service descriptions and local landing pages that show up in search results'}] },
+  electrician: { icon:'⚡', title:'AI for Electricians', intro:'Job quotes, NICEIC documentation descriptions, customer follow-ups, and your website — handled in minutes not hours.', examples:[{label:'Detailed quotes',text:'Professional, itemised quotations from your site visit notes — ready to email'},{label:'Handover packs',text:'Completion certificates and client handover documentation drafted clearly'},{label:'Customer updates',text:'Job progress updates, completion messages, and follow-up booking prompts'},{label:'Local SEO pages',text:'Website service pages that appear when someone searches for an electrician near them'}] },
+  chef: { icon:'👨‍🍳', title:'AI for Chefs & Restaurants', intro:'Menu descriptions, social content, staff training docs, review replies — the words around your food, sorted.', examples:[{label:'Menu writing',text:'Evocative, appetising descriptions for dishes that make people want to order'},{label:'Social content',text:'Instagram captions, stories, and posts from a photo or a dish name'},{label:'Review responses',text:'Warm, professional replies to TripAdvisor and Google reviews — building your reputation'},{label:'Staff training docs',text:'Allergen guides, onboarding checklists, and kitchen SOPs from your notes'}] },
+  'estate-agent': { icon:'🏘️', title:'AI for Estate Agents', intro:'Property descriptions, vendor letters, area guides, and valuation follow-ups — written to your standard in a fraction of the time.', examples:[{label:'Property listings',text:'Compelling, accurate property descriptions from your viewing notes — ready to publish'},{label:'Vendor letters',text:'Market appraisal follow-ups and instruction letters in a professional, persuasive tone'},{label:'Area guides',text:'Hyper-local area guides for your website that rank in search and inform buyers'},{label:'Applicant follow-ups',text:'Viewing feedback, price reduction letters, and offer updates drafted instantly'}] },
+  accountant: { icon:'📊', title:'AI for Accountants', intro:'Client letters, report summaries, HMRC correspondence, and plain-English explanations — the writing around your numbers, handled.', examples:[{label:'Client reports',text:'Narrative summaries of management accounts that make the numbers make sense'},{label:'Client letters',text:'Tax planning letters, year-end summaries, and advice notes in clear, professional language'},{label:'HMRC correspondence',text:'Draft responses to enquiries and explanations of filing positions'},{label:'Plain English',text:'Translate a complex tax issue into language a client will actually understand'}] },
+  solicitor: { icon:'⚖️', title:'AI for Solicitors', intro:'Research summaries, client letters, clause explanations, and first-draft correspondence — without replacing your judgement.', examples:[{label:'Client care letters',text:'Engagement and scope letters drafted from your instructions — ready to review'},{label:'Contract summaries',text:'Plain-English summary of a contract\'s key terms and any unusual clauses'},{label:'Research briefs',text:'Structured legal research summaries from case law and statute searches'},{label:'Client updates',text:'Matter update letters and completion reports drafted professionally'}] },
+  retailer: { icon:'🛒', title:'AI for Retailers', intro:'Product descriptions, social posts, promotional emails, and review replies — more output with less time at the keyboard.', examples:[{label:'Product copy',text:'SEO-friendly product descriptions that sell — from a spec sheet or a product name'},{label:'Promotional emails',text:'Sale announcements, new arrival emails, and abandoned cart sequences'},{label:'Social content',text:'A week of Instagram and Facebook posts planned and written from a single prompt'},{label:'Review responses',text:'Friendly, professional replies to reviews on Google, Trustpilot, or your platform'}] },
+  farmer: { icon:'🌾', title:'AI for Farmers', intro:'Grant applications, supplier emails, farm website content, and regulatory documents — the paperwork side of farming, handled.', examples:[{label:'Grant applications',text:'Structured, well-argued grant applications from your notes on the project or investment'},{label:'Supplier comms',text:'Quotation requests, complaint letters, and negotiation correspondence'},{label:'Diversification content',text:'Website copy, visitor descriptions, and booking info for farm shops or B&B conversions'},{label:'Compliance docs',text:'Risk assessments, environmental statements, and farm assurance documentation'}] },
+  business: { icon:'💼', title:'AI for Business', intro:'From meeting summaries to board reports — AI handles the writing so your team focuses on the decisions.', examples:[{label:'Meeting summaries',text:'Decisions, actions, and owners extracted from any transcript in under a minute'},{label:'Board reports',text:'Structured board packs and management reports from raw data and bullet points'},{label:'Proposals',text:'Client proposals and tender responses that are well-structured and persuasive'},{label:'Policies',text:'HR policies, procedures, and employee handbooks drafted from a brief'}] },
+  parent: { icon:'👨‍👩‍👧', title:'AI for Parents', intro:'Homework help, school letters, meal planning, complaint emails — the mental load of family admin, lightened.', examples:[{label:'Homework help',text:'Explain any school topic at the right level — without just handing over the answer'},{label:'School letters',text:'Polite but firm letters to headteachers, complaint escalations, and EHCP correspondence'},{label:'Meal planning',text:'Weekly meal plans with a full shopping list, accounting for every fussy eater in the house'},{label:'Holiday planning',text:'Trip itineraries, activity ideas, and packing lists for any destination'}] },
+};
+
+const ROLE_SEARCH_TERMS = {
+  teacher:'teacher classroom lesson plan education school differentiation',
+  gp:'health medicine hospital doctor diagnosis clinical healthcare',
+  dentist:'health medicine small business customer service',
+  nurse:'health medicine mental health wellbeing',
+  plumber:'small business owner customer service marketing productivity',
+  electrician:'small business owner operations customer service',
+  chef:'small business owner marketing customer service operations',
+  'estate-agent':'marketing sales customer service business',
+  accountant:'legal compliance finance operations business',
+  solicitor:'legal law contract research compliance',
+  retailer:'small business retail ecommerce marketing customer service finance',
+  farmer:'operations science research supply chain compliance',
+  business:'business productivity marketing hr operations sales',
+  parent:'parent family home productivity',
+};
+
+let _activeRole = null;
+
+function setRole(btn, role) {
+  if (_activeRole === role) {
+    _activeRole = null;
+    document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+    filterByRole(null);
+    return;
   }
+  _activeRole = role;
+  document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  el.value = query;
-  doSearch(query);
+  filterByRole(role);
   document.getElementById('usecases').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function filterByRole(role) {
+  const spotlight = document.getElementById('role-spotlight');
+  if (!role) {
+    spotlight.style.display = 'none';
+    spotlight.innerHTML = '';
+    document.querySelectorAll('.ucard:not(.add-card-btn)').forEach(c => c.classList.remove('hidden'));
+    const empty = document.getElementById('usecases-empty');
+    if (empty) empty.style.display = 'none';
+    return;
+  }
+  const sd = ROLE_SPOTLIGHTS[role];
+  if (sd) {
+    spotlight.innerHTML = `<div class="role-spotlight-head"><span class="role-spotlight-icon">${sd.icon}</span><h3>${sd.title}</h3></div>
+      <p>${sd.intro}</p>
+      <div class="role-spotlight-examples">${sd.examples.map(e=>`<div class="role-spotlight-ex"><strong>${e.label}:</strong> ${e.text}</div>`).join('')}</div>
+      <button class="role-clear" onclick="setRole(document.querySelector('.role-btn.active'),_activeRole)">&#x2715; Clear role filter</button>`;
+    spotlight.style.display = 'block';
+  }
+  const terms = (ROLE_SEARCH_TERMS[role] || role).toLowerCase().split(' ');
+  let any = false;
+  document.querySelectorAll('.ucard:not(.add-card-btn)').forEach(c => {
+    const roles = (c.dataset.roles || '').toLowerCase();
+    const search = (c.dataset.search || '').toLowerCase();
+    const match = roles.includes(role) || terms.some(t => t.length > 3 && search.includes(t));
+    c.classList.toggle('hidden', !match);
+    if (match) any = true;
+  });
+  const empty = document.getElementById('usecases-empty');
+  if (empty) empty.style.display = any ? 'none' : 'block';
 }
 
 /* ━━━━━━━━ SUBSCRIBE ━━━━━━━━ */
