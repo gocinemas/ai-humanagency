@@ -25,8 +25,7 @@
     nav { display:flex; gap:20px; align-items:center; }
     nav a { font-size:14px; font-weight:500; color:var(--muted); transition:color .15s; }
     nav a:hover { color:var(--text); }
-    .nav-home { font-size:13px; color:var(--muted); border:1px solid var(--border); border-radius:8px; padding:5px 12px; transition:border-color .15s; }
-    .nav-home:hover { border-color:#ccc; color:var(--text); }
+    .nav-home { }
 
     .hero { max-width:1100px; margin:0 auto; padding:52px 24px 40px; text-align:center; }
     .hero h1 { font-size:clamp(28px,3.8vw,46px); font-weight:900; letter-spacing:-1.2px; line-height:1.12; max-width:580px; margin:0 auto 14px; }
@@ -244,7 +243,7 @@
       .header-inner { padding:0 12px; height:auto; flex-wrap:wrap; gap:0; }
       nav { display:flex; flex-wrap:wrap; gap:2px 0; width:100%; padding:6px 0 10px; border-top:1px solid var(--border); }
       nav a { font-size:12px; padding:5px 10px; white-space:nowrap; }
-      .nav-home { display:none; }
+
       .hero { padding:40px 16px 36px; }
       .section { padding:0 16px 56px; }
       .cards { grid-template-columns:1fr; }
@@ -334,7 +333,7 @@
   <div class="header-inner">
     <a href="https://ai.humanagency.co" class="logo" id="logo-tap">Human Agency<span class="dot"> + AI</span></a>
     <nav>
-      <a href="https://humanagency.co" class="nav-home">🏠 Home</a>
+      <a href="https://ai.humanagency.co" class="nav-home">🏠 Home</a>
       <a href="#basics">Basics</a>
       <a href="#usecases">Use Cases</a>
       <a href="#researchers">People</a>
