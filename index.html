@@ -399,13 +399,6 @@
   <div id="search-count"></div>
 
   <div id="hero-extras">
-    <div id="hero-decode" class="hero-decode">
-      <span class="hd-term" id="hd-term">LLM</span>
-      <span class="hd-arrow">→</span>
-      <span class="hd-def" id="hd-def">Autocomplete trained on most of the internet — this is what ChatGPT and Claude are</span>
-    </div>
-    <a href="#jargon" class="hero-decode-link">Decode any AI term →</a>
-
     <p style="font-size:13px;color:var(--subtle);margin-top:28px;margin-bottom:10px">Or pick your role to see what AI does for <em>you specifically</em>:</p>
     <div class="role-grid" id="role-grid">
       <button class="role-btn" onclick="setRole(this,'teacher')"><span class="role-btn-icon">🏫</span><span class="role-btn-label">Teacher</span></button>
@@ -467,6 +460,12 @@
     <span class="section-title">Jargon Decoder</span>
     <span class="section-sub" id="jargon-sub"></span>
     <button id="jargon-add-btn" onclick="openAdd('jargon')" style="display:none;margin-left:auto;padding:5px 14px;border-radius:8px;border:1px solid var(--accent);background:#eef2ff;font-size:12px;font-weight:700;color:var(--accent);cursor:pointer">＋ Add term</button>
+  </div>
+
+  <div id="hero-decode" class="hero-decode" style="max-width:600px;margin:0 0 20px">
+    <span class="hd-term" id="hd-term">LLM</span>
+    <span class="hd-arrow">→</span>
+    <span class="hd-def" id="hd-def">Autocomplete trained on most of the internet — this is what ChatGPT and Claude are</span>
   </div>
 
   <div style="position:relative;max-width:520px;margin-bottom:20px">
@@ -2668,7 +2667,7 @@ function _startDecoder() {
       defEl.textContent  = _DECODE[_di].def;
       wrap.classList.remove('hd-fade');
     }, 350);
-  }, 6000);
+  }, 12000);
 }
 _startDecoder();
 
