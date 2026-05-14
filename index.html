@@ -336,6 +336,33 @@
     .role-spotlight-ex strong { color:var(--text); }
     .role-clear { margin-top:14px;font-size:12px;font-weight:600;color:var(--accent);background:none;border:none;cursor:pointer;padding:0;text-decoration:underline; }
     @media(max-width:640px){.role-btn{min-width:60px;padding:8px 10px;}.role-btn-icon{font-size:20px;}.role-btn-label{font-size:10px;}}
+  /* ── Models directory ── */
+  .models-filters { display:flex; flex-wrap:wrap; gap:16px; margin-bottom:20px; }
+  .mfilter-group { display:flex; gap:6px; flex-wrap:wrap; }
+  .mfilter-label { font-size:11px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; color:var(--muted); align-self:center; margin-right:2px; }
+  .mfilter-btn { font-size:12px; font-weight:600; padding:5px 13px; border-radius:99px; border:1.5px solid var(--border); background:var(--surface); color:var(--muted); cursor:pointer; transition:all .15s; font-family:inherit; }
+  .mfilter-btn.active, .mfilter-btn:hover { border-color:var(--accent); color:var(--accent); background:rgba(99,102,241,.06); }
+  .models-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px; }
+  .mcard { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:18px 20px; display:flex; flex-direction:column; gap:8px; transition:border-color .15s, box-shadow .15s; }
+  .mcard:hover { border-color:#d4d4d4; box-shadow:0 4px 16px rgba(0,0,0,.06); }
+  .mcard-top { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
+  .mcard-name { font-size:15px; font-weight:800; letter-spacing:-.3px; color:var(--text); }
+  .mcard-company { font-size:11px; font-weight:700; color:var(--muted); margin-top:1px; }
+  .mcard-badges { display:flex; flex-wrap:wrap; gap:5px; }
+  .mbadge { font-size:10px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; padding:3px 8px; border-radius:5px; }
+  .mbadge-text    { background:#eff6ff; color:#1d4ed8; }
+  .mbadge-image   { background:#f5f3ff; color:#6d28d9; }
+  .mbadge-video   { background:#fff7ed; color:#c2410c; }
+  .mbadge-audio   { background:#f0fdf4; color:#15803d; }
+  .mbadge-free    { background:#f0fdf4; color:#15803d; }
+  .mbadge-freemium{ background:#fefce8; color:#a16207; }
+  .mbadge-paid    { background:#fef2f2; color:#b91c1c; }
+  .mbadge-open    { background:#f0f9ff; color:#0369a1; }
+  .mcard-best { font-size:13px; color:var(--muted); line-height:1.55; flex:1; }
+  .mcard-link { font-size:12px; font-weight:700; color:var(--accent); text-decoration:none; margin-top:4px; width:fit-content; }
+  .mcard-link:hover { text-decoration:underline; }
+  .mcard.hidden { display:none; }
+  @media(max-width:640px){ .models-grid { grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
@@ -346,6 +373,7 @@
     <nav>
       <a href="#usecases">Use Cases</a>
       <a href="#jargon">Jargon</a>
+      <a href="#models">Models</a>
       <a href="#basics">Basics</a>
       <a href="#articles">Articles</a>
       <a href="#examples">Examples</a>
@@ -438,6 +466,33 @@
   <div id="jargon-hint" style="font-size:13px;color:var(--subtle)">49 terms · Try: <span style="color:var(--muted);font-weight:600">LLM · Hallucination · AI Agent · Vector DB · Diffusion Model · RAG · Token · Alignment</span></div>
   <div id="jargon-chips" style="display:none;flex-wrap:wrap;gap:8px;margin-top:16px"></div>
   <div class="cards" id="jargon-cards" style="display:none"></div>
+</section>
+
+<section class="section" id="models">
+  <div class="section-header">
+    <span class="section-title">AI Models</span>
+    <span class="section-sub">Every major model — who made it, what it does, free or paid</span>
+  </div>
+
+  <div class="models-filters">
+    <div class="mfilter-group">
+      <span class="mfilter-label">Type</span>
+      <button class="mfilter-btn active" onclick="filterModels('type','all',this)">All</button>
+      <button class="mfilter-btn" onclick="filterModels('type','text',this)">Text</button>
+      <button class="mfilter-btn" onclick="filterModels('type','image',this)">Image</button>
+      <button class="mfilter-btn" onclick="filterModels('type','video',this)">Video</button>
+      <button class="mfilter-btn" onclick="filterModels('type','audio',this)">Audio</button>
+    </div>
+    <div class="mfilter-group">
+      <span class="mfilter-label">Access</span>
+      <button class="mfilter-btn active" onclick="filterModels('access','all',this)">All</button>
+      <button class="mfilter-btn" onclick="filterModels('access','free',this)">Free</button>
+      <button class="mfilter-btn" onclick="filterModels('access','freemium',this)">Free tier</button>
+      <button class="mfilter-btn" onclick="filterModels('access','paid',this)">Paid only</button>
+    </div>
+  </div>
+
+  <div class="models-grid" id="models-grid"></div>
 </section>
 
 <section class="section" id="basics">
@@ -2519,6 +2574,82 @@ function _startDecoder() {
   }, 6000);
 }
 _startDecoder();
+
+// ── Models directory ───────────────────────────────────────────────────────────
+const MODELS = [
+  // Text / Multimodal
+  { name:'Claude 3.5 Sonnet', company:'Anthropic', type:'text', access:'freemium', open:false, best:'Writing, analysis, coding and long documents. Known for nuance and honesty.', url:'https://claude.ai' },
+  { name:'Claude 3.5 Haiku',  company:'Anthropic', type:'text', access:'paid',     open:false, best:'Fast and cheap. Best for high-volume tasks via API.', url:'https://claude.ai' },
+  { name:'GPT-4o',            company:'OpenAI',    type:'text', access:'freemium', open:false, best:'General purpose. Handles text, images and voice. The default ChatGPT model.', url:'https://chat.openai.com' },
+  { name:'GPT-4o mini',       company:'OpenAI',    type:'text', access:'free',     open:false, best:'Quick everyday tasks. Free, fast, surprisingly capable.', url:'https://chat.openai.com' },
+  { name:'o1',                company:'OpenAI',    type:'text', access:'paid',     open:false, best:'Thinks step by step before answering. Far better at maths, logic and complex problems.', url:'https://chat.openai.com' },
+  { name:'o3',                company:'OpenAI',    type:'text', access:'paid',     open:false, best:'Frontier reasoning. OpenAI\'s most capable model for hard problems.', url:'https://chat.openai.com' },
+  { name:'Gemini 1.5 Pro',    company:'Google',    type:'text', access:'freemium', open:false, best:'Massive context window. Deep Google Workspace integration — Docs, Gmail, Drive.', url:'https://gemini.google.com' },
+  { name:'Gemini Flash',      company:'Google',    type:'text', access:'free',     open:false, best:'Fast, free, built into Google Search and Android. Good for quick answers.', url:'https://gemini.google.com' },
+  { name:'Llama 3.1 405B',    company:'Meta',      type:'text', access:'free',     open:true,  best:'Best open-weight model. Download and run it yourself — no API costs, fully private.', url:'https://llama.meta.com' },
+  { name:'Llama 3.2',         company:'Meta',      type:'text', access:'free',     open:true,  best:'Smaller, faster Llama. Runs on laptops and phones. Great for on-device AI.', url:'https://llama.meta.com' },
+  { name:'Mistral Large',     company:'Mistral',   type:'text', access:'paid',     open:false, best:'Strong European model. Efficient, multilingual, built with privacy in mind.', url:'https://mistral.ai' },
+  { name:'Mistral 7B',        company:'Mistral',   type:'text', access:'free',     open:true,  best:'Small open-weight model. Runs locally. Foundation for thousands of specialist models.', url:'https://mistral.ai' },
+  { name:'Grok 2',            company:'xAI',       type:'text', access:'paid',     open:false, best:'Built into X (Twitter). Real-time access to posts. Fewer content restrictions.', url:'https://x.ai' },
+  { name:'Perplexity',        company:'Perplexity',type:'text', access:'freemium', open:false, best:'AI search engine. Answers questions with cited, real-time sources — not just training data.', url:'https://perplexity.ai' },
+  { name:'Copilot',           company:'Microsoft', type:'text', access:'freemium', open:false, best:'Built into Windows, Word, Excel and Outlook. GitHub Copilot writes code as you type.', url:'https://copilot.microsoft.com' },
+  { name:'Command R+',        company:'Cohere',    type:'text', access:'paid',     open:false, best:'Built for enterprise RAG. Retrieves and reasons over your company\'s own documents.', url:'https://cohere.com' },
+  // Image
+  { name:'Midjourney v6',     company:'Midjourney',type:'image',access:'paid',     open:false, best:'Best quality artistic images. Painterly, beautiful outputs. Runs through Discord.', url:'https://midjourney.com' },
+  { name:'DALL-E 3',          company:'OpenAI',    type:'image',access:'freemium', open:false, best:'Built into ChatGPT. Ask it to draw something and this runs. Great at following precise instructions.', url:'https://chat.openai.com' },
+  { name:'Stable Diffusion 3',company:'Stability AI',type:'image',access:'free',  open:true,  best:'Open-weight image generation. Run locally for free. The foundation for thousands of custom image models.', url:'https://stability.ai' },
+  { name:'Adobe Firefly',     company:'Adobe',     type:'image',access:'freemium', open:false, best:'Safe for commercial use — trained on licensed content. Built into Photoshop and Illustrator.', url:'https://firefly.adobe.com' },
+  { name:'Ideogram',          company:'Ideogram',  type:'image',access:'freemium', open:false, best:'Excellent at putting text inside images — something most image AIs struggle with.', url:'https://ideogram.ai' },
+  // Video
+  { name:'Sora',              company:'OpenAI',    type:'video',access:'paid',     open:false, best:'Realistic video from a text description. Up to a minute long, consistent physics and lighting.', url:'https://sora.com' },
+  { name:'Runway Gen-3',      company:'Runway',    type:'video',access:'freemium', open:false, best:'Film-quality video generation. Used by real directors and studios for visual effects.', url:'https://runwayml.com' },
+  { name:'Pika 2.0',          company:'Pika Labs', type:'video',access:'freemium', open:false, best:'Video generation and effects. Good for short clips, transitions and product animations.', url:'https://pika.art' },
+  // Audio
+  { name:'Whisper',           company:'OpenAI',    type:'audio',access:'free',     open:true,  best:'Transcribes speech to text in 100+ languages. Powers most meeting tools. Works on accented speech.', url:'https://openai.com/research/whisper' },
+  { name:'ElevenLabs',        company:'ElevenLabs',type:'audio',access:'freemium', open:false, best:'Voice cloning and text-to-speech. Sounds almost human. Used in podcasts, audiobooks and apps.', url:'https://elevenlabs.io' },
+  { name:'Suno',              company:'Suno',      type:'audio',access:'freemium', open:false, best:'Music generation from a text description. Full songs with vocals, instruments and lyrics.', url:'https://suno.com' },
+];
+
+let _mTypeFilter   = 'all';
+let _mAccessFilter = 'all';
+
+function renderModels() {
+  const grid = document.getElementById('models-grid');
+  if (!grid) return;
+  const typeLabels   = { text:'Text', image:'Image', video:'Video', audio:'Audio' };
+  const accessLabels = { free:'Free', freemium:'Free tier', paid:'Paid only' };
+  const typeCls      = { text:'mbadge-text', image:'mbadge-image', video:'mbadge-video', audio:'mbadge-audio' };
+  const accessCls    = { free:'mbadge-free', freemium:'mbadge-freemium', paid:'mbadge-paid' };
+  grid.innerHTML = MODELS.map(m => {
+    const hidden = (_mTypeFilter !== 'all' && m.type !== _mTypeFilter) ||
+                   (_mAccessFilter !== 'all' && m.access !== _mAccessFilter);
+    return `<div class="mcard${hidden?' hidden':''}">
+      <div class="mcard-top">
+        <div>
+          <div class="mcard-name">${m.name}</div>
+          <div class="mcard-company">${m.company}</div>
+        </div>
+        ${m.open ? '<span class="mbadge mbadge-open">Open weight</span>' : ''}
+      </div>
+      <div class="mcard-badges">
+        <span class="mbadge ${typeCls[m.type]}">${typeLabels[m.type]}</span>
+        <span class="mbadge ${accessCls[m.access]}">${accessLabels[m.access]}</span>
+      </div>
+      <div class="mcard-best">${m.best}</div>
+      <a class="mcard-link" href="${m.url}" target="_blank" rel="noopener">Try it →</a>
+    </div>`;
+  }).join('');
+}
+
+function filterModels(dimension, value, btn) {
+  if (dimension === 'type')   _mTypeFilter   = value;
+  if (dimension === 'access') _mAccessFilter = value;
+  btn.closest('.mfilter-group').querySelectorAll('.mfilter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderModels();
+}
+
+renderModels();
 
 init();
 </script>
