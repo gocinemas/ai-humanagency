@@ -1625,6 +1625,15 @@ function _mergeDefaults(d) {
 }
 
 async function init() {
+  // Render immediately so search works right away
+  try {
+    const saved = localStorage.getItem('aiha-data');
+    if (saved) DATA = _mergeDefaults(JSON.parse(saved));
+  } catch(_) {}
+  renderAll();
+  _setupLogo();
+
+  // Then fetch from Supabase and silently refresh
   try {
     const sb = getSb();
     const [b,u,r,d,j,a,v,p,m] = await Promise.all([
@@ -1646,16 +1655,11 @@ async function init() {
     DATA = _sbToData({b:b.data,u:u.data,r:r.data,d:d.data,j:j.data,a:a.data,v:v.data,p:p.data});
     if (m.data && m.data.length) {
       MODELS = m.data.map(x=>({name:x.name,company:x.company,type:x.type,access:x.access,open:x.open_weight,best:x.best_for,url:x.url}));
+      renderModels();
     }
     localStorage.setItem('aiha-data', JSON.stringify(DATA));
-  } catch(e) {
-    try {
-      const saved = localStorage.getItem('aiha-data');
-      if (saved) DATA = JSON.parse(saved);
-    } catch(_) {}
-  }
-  renderAll();
-  _setupLogo();
+    renderAll();
+  } catch(e) {}
 }
 
 function _setupLogo() {
