@@ -90,6 +90,10 @@
 
     mark { background:#fef9c3; border-radius:3px; padding:0 2px; color:inherit; }
 
+    #hero-extras { transition:opacity .2s,max-height .3s; max-height:600px; overflow:hidden; opacity:1; }
+    body.search-active #hero-extras { max-height:0; opacity:0; pointer-events:none; }
+    body.search-active .hero h1 { display:none; }
+
     /* ── Dummies Q&A card ── */
     .qcard { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:24px; display:flex; flex-direction:column; transition:border-color .15s,box-shadow .15s,transform .2s; position:relative; }
     .qcard:hover { border-color:#d4d4d4; box-shadow:0 8px 32px rgba(0,0,0,.06); transform:translateY(-2px); }
@@ -393,32 +397,34 @@
   </div>
   <div id="search-count"></div>
 
-  <div id="hero-decode" class="hero-decode">
-    <span class="hd-term" id="hd-term">LLM</span>
-    <span class="hd-arrow">→</span>
-    <span class="hd-def" id="hd-def">Autocomplete trained on most of the internet — this is what ChatGPT and Claude are</span>
-  </div>
-  <a href="#jargon" class="hero-decode-link">Decode any AI term →</a>
+  <div id="hero-extras">
+    <div id="hero-decode" class="hero-decode">
+      <span class="hd-term" id="hd-term">LLM</span>
+      <span class="hd-arrow">→</span>
+      <span class="hd-def" id="hd-def">Autocomplete trained on most of the internet — this is what ChatGPT and Claude are</span>
+    </div>
+    <a href="#jargon" class="hero-decode-link">Decode any AI term →</a>
 
-  <p style="font-size:13px;color:var(--subtle);margin-top:28px;margin-bottom:10px">Or pick your role to see what AI does for <em>you specifically</em>:</p>
-  <div class="role-grid" id="role-grid">
-    <button class="role-btn" onclick="setRole(this,'teacher')"><span class="role-btn-icon">🏫</span><span class="role-btn-label">Teacher</span></button>
-    <button class="role-btn" onclick="setRole(this,'gp')"><span class="role-btn-icon">👨‍⚕️</span><span class="role-btn-label">GP / Doctor</span></button>
-    <button class="role-btn" onclick="setRole(this,'dentist')"><span class="role-btn-icon">🦷</span><span class="role-btn-label">Dentist</span></button>
-    <button class="role-btn" onclick="setRole(this,'nurse')"><span class="role-btn-icon">👩‍⚕️</span><span class="role-btn-label">Nurse</span></button>
-    <button class="role-btn" onclick="setRole(this,'plumber')"><span class="role-btn-icon">🔧</span><span class="role-btn-label">Plumber</span></button>
-    <button class="role-btn" onclick="setRole(this,'electrician')"><span class="role-btn-icon">⚡</span><span class="role-btn-label">Electrician</span></button>
-    <button class="role-btn" onclick="setRole(this,'chef')"><span class="role-btn-icon">👨‍🍳</span><span class="role-btn-label">Chef / Restaurant</span></button>
-    <button class="role-btn" onclick="setRole(this,'estate-agent')"><span class="role-btn-icon">🏘️</span><span class="role-btn-label">Estate Agent</span></button>
-    <button class="role-btn" onclick="setRole(this,'accountant')"><span class="role-btn-icon">📊</span><span class="role-btn-label">Accountant</span></button>
-    <button class="role-btn" onclick="setRole(this,'solicitor')"><span class="role-btn-icon">⚖️</span><span class="role-btn-label">Solicitor</span></button>
-    <button class="role-btn" onclick="setRole(this,'retailer')"><span class="role-btn-icon">🛒</span><span class="role-btn-label">Retailer</span></button>
-    <button class="role-btn" onclick="setRole(this,'farmer')"><span class="role-btn-icon">🌾</span><span class="role-btn-label">Farmer</span></button>
-    <button class="role-btn" onclick="setRole(this,'business')"><span class="role-btn-icon">💼</span><span class="role-btn-label">Office / Business</span></button>
-    <button class="role-btn" onclick="setRole(this,'parent')"><span class="role-btn-icon">👨‍👩‍👧</span><span class="role-btn-label">Parent</span></button>
-  </div>
+    <p style="font-size:13px;color:var(--subtle);margin-top:28px;margin-bottom:10px">Or pick your role to see what AI does for <em>you specifically</em>:</p>
+    <div class="role-grid" id="role-grid">
+      <button class="role-btn" onclick="setRole(this,'teacher')"><span class="role-btn-icon">🏫</span><span class="role-btn-label">Teacher</span></button>
+      <button class="role-btn" onclick="setRole(this,'gp')"><span class="role-btn-icon">👨‍⚕️</span><span class="role-btn-label">GP / Doctor</span></button>
+      <button class="role-btn" onclick="setRole(this,'dentist')"><span class="role-btn-icon">🦷</span><span class="role-btn-label">Dentist</span></button>
+      <button class="role-btn" onclick="setRole(this,'nurse')"><span class="role-btn-icon">👩‍⚕️</span><span class="role-btn-label">Nurse</span></button>
+      <button class="role-btn" onclick="setRole(this,'plumber')"><span class="role-btn-icon">🔧</span><span class="role-btn-label">Plumber</span></button>
+      <button class="role-btn" onclick="setRole(this,'electrician')"><span class="role-btn-icon">⚡</span><span class="role-btn-label">Electrician</span></button>
+      <button class="role-btn" onclick="setRole(this,'chef')"><span class="role-btn-icon">👨‍🍳</span><span class="role-btn-label">Chef / Restaurant</span></button>
+      <button class="role-btn" onclick="setRole(this,'estate-agent')"><span class="role-btn-icon">🏘️</span><span class="role-btn-label">Estate Agent</span></button>
+      <button class="role-btn" onclick="setRole(this,'accountant')"><span class="role-btn-icon">📊</span><span class="role-btn-label">Accountant</span></button>
+      <button class="role-btn" onclick="setRole(this,'solicitor')"><span class="role-btn-icon">⚖️</span><span class="role-btn-label">Solicitor</span></button>
+      <button class="role-btn" onclick="setRole(this,'retailer')"><span class="role-btn-icon">🛒</span><span class="role-btn-label">Retailer</span></button>
+      <button class="role-btn" onclick="setRole(this,'farmer')"><span class="role-btn-icon">🌾</span><span class="role-btn-label">Farmer</span></button>
+      <button class="role-btn" onclick="setRole(this,'business')"><span class="role-btn-icon">💼</span><span class="role-btn-label">Office / Business</span></button>
+      <button class="role-btn" onclick="setRole(this,'parent')"><span class="role-btn-icon">👨‍👩‍👧</span><span class="role-btn-label">Parent</span></button>
+    </div>
 
-  <p class="hero-skip" style="margin-top:32px">Already know how AI works? <a href="#examples">See it in action →</a></p>
+    <p class="hero-skip" style="margin-top:32px">Already know how AI works? <a href="#examples">See it in action →</a></p>
+  </div>
 </section>
 
 <div id="no-results">
@@ -2571,6 +2577,7 @@ const SECTIONS = [
 
 function doSearch(q) {
   const raw = q.trim();
+  document.body.classList.toggle('search-active', !!raw);
   document.getElementById('search-clear').style.display = raw ? 'block' : 'none';
   if (!raw) {
     allCards.forEach(c=>c.classList.remove('hidden'));
