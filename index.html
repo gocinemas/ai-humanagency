@@ -1575,14 +1575,14 @@ function getSb() {
 
 function _sbToData(r) {
   return {
-    basics:      (r.b||[]).map(x=>({icon:x.icon,tag:x.tag,title:x.title,body:x.body,body2:x.body2,plain:x.plain,search:x.search_kw})),
-    usecases:    (r.u||[]).map(x=>({icon:x.icon,title:x.title,roles:x.roles,intro:x.intro,examples:x.examples,search:x.search_kw})),
-    researchers: (r.r||[]).map(x=>({initials:x.initials,avatarBg:x.avatar_bg,avatarFg:x.avatar_fg,name:x.name,role:x.role,bio:x.bio,quote:x.quote,links:x.links,search:x.search_kw})),
-    dummies:     (r.d||[]).map(x=>({emoji:x.emoji,q:x.question,a:x.answer,search:x.search_kw})),
-    jargon:      (r.j||[]).map(x=>({term:x.term,full:x.full_name,category:x.category,definition:x.definition,search:x.search_kw})),
-    articles:    (r.a||[]).map(x=>({title:x.title,source:x.source,url:x.url,desc:x.description,tag:x.tag,date:x.date,search:x.search_kw})),
-    videos:      (r.v||[]).map(x=>({videoId:x.video_id,title:x.title,channel:x.channel,desc:x.description,tag:x.tag,duration:x.duration,search:x.search_kw})),
-    podcasts:    (r.p||[]).map(x=>({emoji:x.emoji,show:x.show_name,title:x.title,desc:x.description,url:x.url,search:x.search_kw})),
+    basics:      (r.b||[]).map(x=>({_id:x.id,icon:x.icon,tag:x.tag,title:x.title,body:x.body,body2:x.body2,plain:x.plain,search:x.search_kw})),
+    usecases:    (r.u||[]).map(x=>({_id:x.id,icon:x.icon,title:x.title,roles:x.roles,intro:x.intro,examples:x.examples,search:x.search_kw})),
+    researchers: (r.r||[]).map(x=>({_id:x.id,initials:x.initials,avatarBg:x.avatar_bg,avatarFg:x.avatar_fg,name:x.name,role:x.role,bio:x.bio,quote:x.quote,links:x.links,search:x.search_kw})),
+    dummies:     (r.d||[]).map(x=>({_id:x.id,emoji:x.emoji,q:x.question,a:x.answer,search:x.search_kw})),
+    jargon:      (r.j||[]).map(x=>({_id:x.id,term:x.term,full:x.full_name,category:x.category,definition:x.definition,search:x.search_kw})),
+    articles:    (r.a||[]).map(x=>({_id:x.id,title:x.title,source:x.source,url:x.url,desc:x.description,tag:x.tag,date:x.date,search:x.search_kw})),
+    videos:      (r.v||[]).map(x=>({_id:x.id,videoId:x.video_id,title:x.title,channel:x.channel,desc:x.description,tag:x.tag,duration:x.duration,search:x.search_kw})),
+    podcasts:    (r.p||[]).map(x=>({_id:x.id,emoji:x.emoji,show:x.show_name,title:x.title,desc:x.description,url:x.url,search:x.search_kw})),
   };
 }
 
@@ -1685,6 +1685,41 @@ function esc(s) {
 function val(id) { return (document.getElementById(id)?.value ?? '').trim(); }
 function persist() {
   localStorage.setItem('aiha-data', JSON.stringify(DATA));
+}
+
+const _SB_TABLE = {basics:'ai_basics',usecases:'ai_usecases',researchers:'ai_researchers',dummies:'ai_dummies',jargon:'ai_jargon',articles:'ai_articles',videos:'ai_videos',podcasts:'ai_podcasts'};
+
+function _toSbRow(section, x) {
+  if (section==='basics')      return {icon:x.icon,tag:x.tag,title:x.title,body:x.body,body2:x.body2,plain:x.plain,search_kw:x.search};
+  if (section==='usecases')    return {icon:x.icon,title:x.title,roles:x.roles||[],intro:x.intro,examples:x.examples||[],search_kw:x.search};
+  if (section==='researchers') return {initials:x.initials,avatar_bg:x.avatarBg,avatar_fg:x.avatarFg,name:x.name,role:x.role,bio:x.bio,quote:x.quote,links:x.links||[],search_kw:x.search};
+  if (section==='dummies')     return {emoji:x.emoji,question:x.q,answer:x.a,search_kw:x.search};
+  if (section==='jargon')      return {term:x.term,full_name:x.full,category:x.category,definition:x.definition,search_kw:x.search};
+  if (section==='articles')    return {title:x.title,source:x.source,url:x.url,description:x.desc,tag:x.tag,date:x.date,search_kw:x.search};
+  if (section==='videos')      return {video_id:x.videoId,title:x.title,channel:x.channel,description:x.desc,tag:x.tag,duration:x.duration,search_kw:x.search};
+  if (section==='podcasts')    return {emoji:x.emoji,show_name:x.show,title:x.title,description:x.desc,url:x.url,search_kw:x.search};
+}
+
+async function _sbSync(section, item) {
+  try {
+    const sb = getSb();
+    const table = _SB_TABLE[section];
+    if (!table) return;
+    const row = _toSbRow(section, item);
+    if (item._id) {
+      await sb.from(table).update(row).eq('id', item._id);
+    } else {
+      const {data} = await sb.from(table).insert(row).select('id').single();
+      if (data?.id) item._id = data.id;
+    }
+  } catch(e) {}
+}
+
+async function _sbDelete(section, item) {
+  try {
+    if (!item._id) return;
+    await getSb().from(_SB_TABLE[section]).delete().eq('id', item._id);
+  } catch(e) {}
 }
 
 function acts(section, i) {
@@ -2043,8 +2078,9 @@ function saveMedia(section, i) {
     };
   }
   if (!DATA[section]) DATA[section] = [];
+  if (i!==-1 && DATA[section][i]?._id) d._id = DATA[section][i]._id;
   if (i===-1) DATA[section].push(d); else DATA[section][i] = d;
-  persist(); renderMedia(); closeModal();
+  persist(); _sbSync(section,d); renderMedia(); closeModal();
   if (section === 'podcasts') mediaTab('podcasts');
 }
 
@@ -2095,6 +2131,7 @@ function delCard(section, i) {
   const item = DATA[section][i];
   const name = item.title || item.name || item.term || 'this card';
   if (!confirm('Delete "' + name + '"?')) return;
+  _sbDelete(section, item);
   DATA[section].splice(i, 1);
   persist();
   if (section === 'videos' || section === 'podcasts') { renderMedia(); return; }
@@ -2233,30 +2270,34 @@ function articleExtract() {
 function saveDummies(section, i) {
   const d = {emoji:val('f-emoji'),q:val('f-q'),a:val('f-a'),search:val('f-search')};
   if (!DATA.dummies) DATA.dummies = [];
+  if (i!==-1 && DATA[section][i]?._id) d._id = DATA[section][i]._id;
   if (i===-1) DATA[section].push(d); else DATA[section][i]=d;
-  persist(); renderAll(); closeModal();
+  persist(); _sbSync(section,d); renderAll(); closeModal();
 }
 
 function saveArticle(section, i) {
   const d = {title:val('f-title'),source:val('f-source'),url:val('f-url'),desc:val('f-desc'),tag:val('f-tag'),date:val('f-date'),search:val('f-search')};
   if (!DATA.articles) DATA.articles = [];
+  if (i!==-1 && DATA[section][i]?._id) d._id = DATA[section][i]._id;
   if (i===-1) DATA[section].push(d); else DATA[section][i]=d;
-  persist(); renderAll(); closeModal();
+  persist(); _sbSync(section,d); renderAll(); closeModal();
 }
 
 function saveBasics(section, i) {
   const d = {icon:val('f-icon'),tag:val('f-tag'),title:val('f-title'),body:val('f-body'),body2:val('f-body2'),plain:val('f-plain'),search:val('f-search')};
+  if (i!==-1 && DATA[section][i]?._id) d._id = DATA[section][i]._id;
   if (i===-1) DATA[section].push(d); else DATA[section][i]=d;
-  persist(); renderAll(); closeModal();
+  persist(); _sbSync(section,d); renderAll(); closeModal();
 }
 
 function saveUcase(section, i) {
   const examples = val('f-ex').split('\n').filter(l=>l.trim()).map(l=>{
     const [label,...rest]=l.split('|'); return {label:label.trim(),text:rest.join('|').trim()};
   });
-  const d = {icon:val('f-icon'),title:val('f-title'),intro:val('f-intro'),examples,search:val('f-search')};
+  const d = {icon:val('f-icon'),title:val('f-title'),intro:val('f-intro'),examples,roles:DATA[section][i]?.roles||[],search:val('f-search')};
+  if (i!==-1 && DATA[section][i]?._id) d._id = DATA[section][i]._id;
   if (i===-1) DATA[section].push(d); else DATA[section][i]=d;
-  persist(); renderAll(); closeModal();
+  persist(); _sbSync(section,d); renderAll(); closeModal();
 }
 
 function saveResearcher(section, i) {
@@ -2264,8 +2305,9 @@ function saveResearcher(section, i) {
     const [label,...rest]=l.split('|'); return {label:label.trim(),url:rest.join('|').trim()};
   });
   const d = {initials:val('f-initials'),avatarBg:val('f-abg'),avatarFg:val('f-afg'),name:val('f-name'),role:val('f-role'),bio:val('f-bio'),quote:val('f-quote'),links,search:val('f-search')};
+  if (i!==-1 && DATA[section][i]?._id) d._id = DATA[section][i]._id;
   if (i===-1) DATA[section].push(d); else DATA[section][i]=d;
-  persist(); renderAll(); closeModal();
+  persist(); _sbSync(section,d); renderAll(); closeModal();
 }
 
 const CAT_CLASS = {Model:'jcat-model',Technique:'jcat-technique',Company:'jcat-company',Framework:'jcat-framework',Concept:'jcat-concept'};
@@ -2369,8 +2411,9 @@ function saveJargon(section, i) {
     search:     val('f-search'),
   };
   if (!d.term) { alert('Term is required'); return; }
+  if (i!==-1 && DATA.jargon[i]?._id) d._id = DATA.jargon[i]._id;
   if (i===-1) DATA.jargon.push(d); else DATA.jargon[i]=d;
-  persist(); renderAll(); closeModal();
+  persist(); _sbSync('jargon',d); renderAll(); closeModal();
 }
 
 /* ━━━━━━━━ EXPORT / IMPORT / RESET ━━━━━━━━ */
