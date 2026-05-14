@@ -1658,6 +1658,8 @@ async function init() {
     }
     localStorage.setItem('aiha-data', JSON.stringify(DATA));
     renderAll();
+    const q = document.getElementById('search')?.value;
+    if (q) doSearch(q);
   } catch(e) {}
 }
 
