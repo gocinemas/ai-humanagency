@@ -40,9 +40,9 @@
     #search-count { margin-top:10px; font-size:13px; color:var(--muted); min-height:20px; }
 
     .section { max-width:1100px; margin:0 auto; padding:0 24px 72px; }
-    .section-header { display:flex; align-items:baseline; gap:12px; margin-bottom:28px; padding-bottom:16px; border-bottom:1px solid var(--border); }
-    .section-title { font-size:20px; font-weight:800; letter-spacing:-0.4px; }
-    .section-sub { font-size:13px; color:var(--muted); font-weight:500; }
+    .section-header { display:flex; align-items:baseline; gap:10px; margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid var(--border); flex-wrap:wrap; }
+    .section-title { font-size:16px; font-weight:800; letter-spacing:-0.3px; }
+    .section-sub { font-size:12px; color:var(--muted); font-weight:500; }
     .section-empty { display:none; font-size:13px; color:var(--subtle); padding:12px 0; font-style:italic; }
 
     .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:18px; }
@@ -357,12 +357,6 @@
 <section class="hero">
   <h1>Understand AI without the jargon.</h1>
   <p>Clear explanations of what AI is, what it can do, and the people building it — no degree needed.</p>
-  <div id="hero-decode" class="hero-decode">
-    <span class="hd-term" id="hd-term">LLM</span>
-    <span class="hd-arrow">→</span>
-    <span class="hd-def" id="hd-def">Autocomplete trained on most of the internet — this is what ChatGPT and Claude are</span>
-  </div>
-  <a href="#jargon" class="hero-decode-link">Decode any AI term →</a>
 
   <div class="search-wrap">
     <span class="search-icon">🔍</span>
@@ -370,7 +364,15 @@
     <button id="search-clear" onclick="clearSearch()">✕</button>
   </div>
   <div id="search-count"></div>
-  <p style="font-size:13px;color:var(--subtle);margin-top:20px;margin-bottom:10px">Or pick your role to see what AI does for <em>you specifically</em>:</p>
+
+  <div id="hero-decode" class="hero-decode">
+    <span class="hd-term" id="hd-term">LLM</span>
+    <span class="hd-arrow">→</span>
+    <span class="hd-def" id="hd-def">Autocomplete trained on most of the internet — this is what ChatGPT and Claude are</span>
+  </div>
+  <a href="#jargon" class="hero-decode-link">Decode any AI term →</a>
+
+  <p style="font-size:13px;color:var(--subtle);margin-top:28px;margin-bottom:10px">Or pick your role to see what AI does for <em>you specifically</em>:</p>
   <div class="role-grid" id="role-grid">
     <button class="role-btn" onclick="setRole(this,'teacher')"><span class="role-btn-icon">🏫</span><span class="role-btn-label">Teacher</span></button>
     <button class="role-btn" onclick="setRole(this,'gp')"><span class="role-btn-icon">👨‍⚕️</span><span class="role-btn-label">GP / Doctor</span></button>
@@ -387,7 +389,8 @@
     <button class="role-btn" onclick="setRole(this,'business')"><span class="role-btn-icon">💼</span><span class="role-btn-label">Office / Business</span></button>
     <button class="role-btn" onclick="setRole(this,'parent')"><span class="role-btn-icon">👨‍👩‍👧</span><span class="role-btn-label">Parent</span></button>
   </div>
-  <p class="hero-skip">Already know the basics? <a href="#jargon">Jump to Jargon Decoder →</a></p>
+
+  <p class="hero-skip" style="margin-top:32px">Already know how AI works? <a href="#examples">See it in action →</a></p>
 </section>
 
 <div id="no-results">
@@ -2513,7 +2516,7 @@ function _startDecoder() {
       defEl.textContent  = _DECODE[_di].def;
       wrap.classList.remove('hd-fade');
     }, 350);
-  }, 3800);
+  }, 6000);
 }
 _startDecoder();
 
