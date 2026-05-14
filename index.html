@@ -364,6 +364,7 @@
   .mcard.hidden { display:none; }
   @media(max-width:640px){ .models-grid { grid-template-columns:1fr; } }
   </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
 
@@ -1563,6 +1564,43 @@ const DEFAULT_DATA = {
 /* ━━━━━━━━ STATE ━━━━━━━━ */
 const _API = "https://miru.humanagency.co";
 const _EDIT_TOKEN = "aiha-2026-edit";
+
+// ── Supabase ───────────────────────────────────────────────────
+const _SURL = "https://uqwidlptkgmbxgaivafi.supabase.co";
+const _SKEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVxd2lkbHB0a2dtYnhnYWl2YWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5MzQ5MTAsImV4cCI6MjA5MjUxMDkxMH0._sNpPZgjpZ6kUCNfv6_wAB2ilmsFa8JnzM2EBXLKBlE";
+let _sb = null;
+function getSb() {
+  if (!_sb) _sb = supabase.createClient(_SURL, _SKEY);
+  return _sb;
+}
+
+function _sbToData(r) {
+  return {
+    basics:      (r.b||[]).map(x=>({icon:x.icon,tag:x.tag,title:x.title,body:x.body,body2:x.body2,plain:x.plain,search:x.search_kw})),
+    usecases:    (r.u||[]).map(x=>({icon:x.icon,title:x.title,roles:x.roles,intro:x.intro,examples:x.examples,search:x.search_kw})),
+    researchers: (r.r||[]).map(x=>({initials:x.initials,avatarBg:x.avatar_bg,avatarFg:x.avatar_fg,name:x.name,role:x.role,bio:x.bio,quote:x.quote,links:x.links,search:x.search_kw})),
+    dummies:     (r.d||[]).map(x=>({emoji:x.emoji,q:x.question,a:x.answer,search:x.search_kw})),
+    jargon:      (r.j||[]).map(x=>({term:x.term,full:x.full_name,category:x.category,definition:x.definition,search:x.search_kw})),
+    articles:    (r.a||[]).map(x=>({title:x.title,source:x.source,url:x.url,desc:x.description,tag:x.tag,date:x.date,search:x.search_kw})),
+    videos:      (r.v||[]).map(x=>({videoId:x.video_id,title:x.title,channel:x.channel,desc:x.description,tag:x.tag,duration:x.duration,search:x.search_kw})),
+    podcasts:    (r.p||[]).map(x=>({emoji:x.emoji,show:x.show_name,title:x.title,desc:x.description,url:x.url,search:x.search_kw})),
+  };
+}
+
+async function _seedSupabase(sb) {
+  const d = DEFAULT_DATA;
+  await Promise.all([
+    sb.from('ai_basics').insert(d.basics.map((x,i)=>({icon:x.icon,tag:x.tag,title:x.title,body:x.body,body2:x.body2,plain:x.plain,search_kw:x.search,sort_order:i}))),
+    sb.from('ai_usecases').insert(d.usecases.map(x=>({icon:x.icon,title:x.title,roles:x.roles,intro:x.intro,examples:x.examples,search_kw:x.search}))),
+    sb.from('ai_researchers').insert(d.researchers.map((x,i)=>({initials:x.initials,avatar_bg:x.avatarBg,avatar_fg:x.avatarFg,name:x.name,role:x.role,bio:x.bio,quote:x.quote,links:x.links,search_kw:x.search,sort_order:i}))),
+    sb.from('ai_dummies').insert(d.dummies.map((x,i)=>({emoji:x.emoji,question:x.q,answer:x.a,search_kw:x.search,sort_order:i}))),
+    sb.from('ai_jargon').insert(d.jargon.map(x=>({term:x.term,full_name:x.full,category:x.category,definition:x.definition,search_kw:x.search}))),
+    sb.from('ai_articles').insert(d.articles.map(x=>({title:x.title,source:x.source,url:x.url,description:x.desc,tag:x.tag,date:x.date,search_kw:x.search}))),
+    sb.from('ai_videos').insert(d.videos.map(x=>({video_id:x.videoId,title:x.title,channel:x.channel,description:x.desc,tag:x.tag,duration:x.duration,search_kw:x.search}))),
+    sb.from('ai_podcasts').insert(d.podcasts.map(x=>({emoji:x.emoji,show_name:x.show,title:x.title,description:x.desc,url:x.url,search_kw:x.search}))),
+    sb.from('ai_models').insert(MODELS.map((x,i)=>({name:x.name,company:x.company,type:x.type,access:x.access,open_weight:x.open,best_for:x.best,url:x.url,sort_order:i}))),
+  ]);
+}
 let DATA = JSON.parse(JSON.stringify(DEFAULT_DATA));
 let editMode = false;
 let allCards = [];
@@ -1587,25 +1625,35 @@ function _mergeDefaults(d) {
 }
 
 async function init() {
-  // Try server first, fall back to localStorage, then DEFAULT_DATA
   try {
-    const r = await fetch(_API + "/api/aiha/content");
-    if (r.ok) {
-      const server = await r.json();
-      if (server && Object.keys(server).length) {
-        DATA = _mergeDefaults(server);
-        renderAll();
-        _setupLogo();
-        return;
-      }
+    const sb = getSb();
+    const [b,u,r,d,j,a,v,p,m] = await Promise.all([
+      sb.from('ai_basics').select('*').eq('active',true).order('sort_order'),
+      sb.from('ai_usecases').select('*').eq('active',true),
+      sb.from('ai_researchers').select('*').eq('active',true).order('sort_order'),
+      sb.from('ai_dummies').select('*').eq('active',true).order('sort_order'),
+      sb.from('ai_jargon').select('*').eq('active',true),
+      sb.from('ai_articles').select('*').eq('active',true),
+      sb.from('ai_videos').select('*').eq('active',true),
+      sb.from('ai_podcasts').select('*').eq('active',true),
+      sb.from('ai_models').select('*').eq('active',true).order('sort_order'),
+    ]);
+    const empty = !j.data || j.data.length === 0;
+    if (empty) {
+      await _seedSupabase(sb);
+      return init();
     }
-  } catch(e) {}
-
-  // Fallback: localStorage
-  try {
-    const saved = localStorage.getItem('aiha-data');
-    if (saved) { DATA = _mergeDefaults(JSON.parse(saved)); }
-  } catch(e) {}
+    DATA = _sbToData({b:b.data,u:u.data,r:r.data,d:d.data,j:j.data,a:a.data,v:v.data,p:p.data});
+    if (m.data && m.data.length) {
+      MODELS = m.data.map(x=>({name:x.name,company:x.company,type:x.type,access:x.access,open:x.open_weight,best:x.best_for,url:x.url}));
+    }
+    localStorage.setItem('aiha-data', JSON.stringify(DATA));
+  } catch(e) {
+    try {
+      const saved = localStorage.getItem('aiha-data');
+      if (saved) DATA = JSON.parse(saved);
+    } catch(_) {}
+  }
   renderAll();
   _setupLogo();
 }
@@ -1632,12 +1680,6 @@ function esc(s) {
 function val(id) { return (document.getElementById(id)?.value ?? '').trim(); }
 function persist() {
   localStorage.setItem('aiha-data', JSON.stringify(DATA));
-  // Save to server so all visitors see it
-  fetch(_API + "/api/aiha/content", {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "X-Edit-Token": _EDIT_TOKEN },
-    body: JSON.stringify(DATA)
-  }).catch(() => {});
 }
 
 function acts(section, i) {
@@ -2576,7 +2618,7 @@ function _startDecoder() {
 _startDecoder();
 
 // ── Models directory ───────────────────────────────────────────────────────────
-const MODELS = [
+let MODELS = [
   // Text / Multimodal
   { name:'Claude 3.5 Sonnet', company:'Anthropic', type:'text', access:'freemium', open:false, best:'Writing, analysis, coding and long documents. Known for nuance and honesty.', url:'https://claude.ai' },
   { name:'Claude 3.5 Haiku',  company:'Anthropic', type:'text', access:'paid',     open:false, best:'Fast and cheap. Best for high-volume tasks via API.', url:'https://claude.ai' },
