@@ -344,12 +344,11 @@
   <div class="header-inner">
     <a href="https://ai.humanagency.co" class="logo" id="logo-tap">Human Agency<span class="dot"> + AI</span></a>
     <nav>
-      <a href="https://ai.humanagency.co" class="nav-home">🏠 Home</a>
       <a href="#usecases">Use Cases</a>
-      <a href="#basics">Basics</a>
       <a href="#jargon">Jargon</a>
-      <a href="#examples">See it in action</a>
+      <a href="#basics">Basics</a>
       <a href="#articles">Articles</a>
+      <a href="#examples">Examples</a>
       <a href="#media">Watch</a>
     </nav>
   </div>
@@ -407,6 +406,37 @@
   <div class="cards ucards" id="usecases-cards"></div>
 </section>
 
+<section class="section" id="jargon">
+  <div class="section-header">
+    <span class="section-title">Jargon Decoder</span>
+    <span class="section-sub" id="jargon-sub"></span>
+    <button id="jargon-add-btn" onclick="openAdd('jargon')" style="display:none;margin-left:auto;padding:5px 14px;border-radius:8px;border:1px solid var(--accent);background:#eef2ff;font-size:12px;font-weight:700;color:var(--accent);cursor:pointer">＋ Add term</button>
+  </div>
+
+  <div style="position:relative;max-width:520px;margin-bottom:20px">
+    <span style="position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:18px;pointer-events:none">🔍</span>
+    <input type="search" id="jargon-search" placeholder="Type any AI term — LLM, Hallucination, Agent…" oninput="doJargonSearch(this.value)" autocomplete="off"
+      style="font-family:'Inter',sans-serif;font-size:17px;font-weight:500;width:100%;padding:15px 44px 15px 50px;border:2px solid var(--border);border-radius:16px;outline:none;background:#fff;color:var(--text);transition:border-color .15s,box-shadow .15s">
+    <button onclick="doJargonSearch('');document.getElementById('jargon-search').value='';document.getElementById('jargon-search').focus()" id="jargon-clear" style="display:none;position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;color:#bbb;padding:0;line-height:1">✕</button>
+  </div>
+
+  <div id="jargon-result" style="display:none;max-width:600px;margin-bottom:28px;background:#fff;border:2px solid var(--accent);border-radius:20px;padding:24px 28px">
+    <div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:10px">
+      <span id="jr-term" style="font-size:28px;font-weight:900;letter-spacing:-1px;color:var(--text)"></span>
+      <span id="jr-cat" style="align-self:center;font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:3px 9px;border-radius:6px"></span>
+    </div>
+    <div id="jr-full" style="font-size:15px;font-weight:700;color:var(--accent);margin-bottom:10px"></div>
+    <div id="jr-def"  style="font-size:14px;color:#374151;line-height:1.75"></div>
+  </div>
+  <div id="jargon-nomatch" style="display:none;max-width:520px;padding:18px 20px;background:#fef9c3;border-radius:14px;font-size:14px;color:#92400e;margin-bottom:24px">
+    🤔 <strong id="jargon-nomatch-q"></strong> isn't in the glossary yet. <a href="#" onclick="openAdd('jargon');return false" style="color:var(--accent);font-weight:600">Add it →</a>
+  </div>
+
+  <div id="jargon-hint" style="font-size:13px;color:var(--subtle)">49 terms · Try: <span style="color:var(--muted);font-weight:600">LLM · Hallucination · AI Agent · Vector DB · Diffusion Model · RAG · Token · Alignment</span></div>
+  <div id="jargon-chips" style="display:none;flex-wrap:wrap;gap:8px;margin-top:16px"></div>
+  <div class="cards" id="jargon-cards" style="display:none"></div>
+</section>
+
 <section class="section" id="basics">
   <div class="section-header">
     <span class="section-title">Basics</span>
@@ -432,41 +462,6 @@
   </div>
   <div class="section-empty" id="dummies-empty">No results match your search.</div>
   <div class="cards" id="dummies-cards"></div>
-</section>
-
-<section class="section" id="jargon">
-  <div class="section-header">
-    <span class="section-title">Jargon Decoder</span>
-    <span class="section-sub" id="jargon-sub"></span>
-    <button id="jargon-add-btn" onclick="openAdd('jargon')" style="display:none;margin-left:auto;padding:5px 14px;border-radius:8px;border:1px solid var(--accent);background:#eef2ff;font-size:12px;font-weight:700;color:var(--accent);cursor:pointer">＋ Add term</button>
-  </div>
-
-  <!-- Search input -->
-  <div style="position:relative;max-width:520px;margin-bottom:20px">
-    <span style="position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:18px;pointer-events:none">🔍</span>
-    <input type="search" id="jargon-search" placeholder="Type LLM, Claude, RAG, GPT…" oninput="doJargonSearch(this.value)" autocomplete="off"
-      style="font-family:'Inter',sans-serif;font-size:17px;font-weight:500;width:100%;padding:15px 44px 15px 50px;border:2px solid var(--border);border-radius:16px;outline:none;background:#fff;color:var(--text);transition:border-color .15s,box-shadow .15s">
-    <button onclick="doJargonSearch('');document.getElementById('jargon-search').value='';document.getElementById('jargon-search').focus()" id="jargon-clear" style="display:none;position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;color:#bbb;padding:0;line-height:1">✕</button>
-  </div>
-
-  <!-- Result panel (shown when typing) -->
-  <div id="jargon-result" style="display:none;max-width:600px;margin-bottom:28px;background:#fff;border:2px solid var(--accent);border-radius:20px;padding:24px 28px">
-    <div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:10px">
-      <span id="jr-term" style="font-size:28px;font-weight:900;letter-spacing:-1px;color:var(--text)"></span>
-      <span id="jr-cat" style="align-self:center;font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:3px 9px;border-radius:6px"></span>
-    </div>
-    <div id="jr-full" style="font-size:15px;font-weight:700;color:var(--accent);margin-bottom:10px"></div>
-    <div id="jr-def"  style="font-size:14px;color:#374151;line-height:1.75"></div>
-  </div>
-  <div id="jargon-nomatch" style="display:none;max-width:520px;padding:18px 20px;background:#fef9c3;border-radius:14px;font-size:14px;color:#92400e;margin-bottom:24px">
-    🤔 <strong id="jargon-nomatch-q"></strong> isn't in the glossary yet. <a href="#" onclick="openAdd('jargon');return false" style="color:var(--accent);font-weight:600">Add it →</a>
-  </div>
-
-  <!-- Hint shown when idle -->
-  <div id="jargon-hint" style="font-size:13px;color:var(--subtle)">Try: <span style="color:var(--muted);font-weight:600">LLM · RAG · Claude · ChatGPT · Perplexity · GPT · RLHF</span></div>
-  <!-- Chips — filtered matches while typing -->
-  <div id="jargon-chips" style="display:none;flex-wrap:wrap;gap:8px;margin-top:16px"></div>
-  <div class="cards" id="jargon-cards" style="display:none"></div>
 </section>
 
 <section class="section" id="articles">
@@ -592,6 +587,9 @@
     <p style="font-size:13px;color:var(--muted);margin-top:4px">Made by <a href="https://mekalav.com" style="color:var(--accent);font-weight:600">Vikram Mekala</a></p>
     <div class="footer-links">
       <a href="https://miru.humanagency.co">Miru</a>
+      <a href="https://intel.humanagency.co">Intel</a>
+      <a href="https://miru.humanagency.co/space">Space</a>
+      <a href="https://mekalav.com" target="_blank" rel="noopener">mekalav.com</a>
       <a href="mailto:hello@humanagency.co">Contact</a>
     </div>
   </div>
@@ -2486,14 +2484,20 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeVideo()
 
 /* ── Hero live decoder ── */
 const _DECODE = [
-  { term:'LLM',         def:'Autocomplete trained on most of the internet — this is what ChatGPT and Claude are' },
-  { term:'RAG',         def:'The AI checks real documents before answering, so it gives facts not guesses' },
-  { term:'Hallucination',def:'When AI confidently says something completely wrong — sounds convincing but isn\'t' },
-  { term:'Prompt',      def:'The instruction you give the AI — better instructions get better answers' },
-  { term:'Fine-tuning', def:'Training an AI on your specific data so it becomes an expert in your field' },
-  { term:'AI Agent',    def:'AI that takes action — browses the web, runs code, books things — not just answers' },
-  { term:'Token',       def:'The small chunks (roughly words) that AI processes — you pay per token on most APIs' },
-  { term:'Context window',def:'How much text an AI can hold in mind at once — like its short-term memory' },
+  { term:'LLM',           def:'Autocomplete trained on most of the internet — this is what ChatGPT and Claude are' },
+  { term:'RAG',           def:'The AI checks real documents before answering, so it gives facts not guesses' },
+  { term:'Hallucination', def:'When AI confidently says something completely wrong — sounds convincing but isn\'t' },
+  { term:'Prompt',        def:'The instruction you give the AI — better instructions get better answers' },
+  { term:'Fine-tuning',   def:'Training an AI on your specific data so it becomes an expert in your field' },
+  { term:'AI Agent',      def:'AI that takes action — browses the web, runs code, books things — not just answers' },
+  { term:'Token',         def:'The small chunks (roughly words) that AI processes — you pay per token on most APIs' },
+  { term:'Context Window',def:'How much text an AI can hold in mind at once — like its short-term memory' },
+  { term:'Vector DB',     def:'A database that finds things by meaning, not exact words — powers AI memory and search' },
+  { term:'Alignment',     def:'Making sure AI does what humans actually want — the core AI safety problem' },
+  { term:'Multimodal',    def:'AI that understands text, images and audio — not just words' },
+  { term:'Diffusion Model',def:'The AI engine behind Midjourney and DALL-E — starts with noise and refines it into an image' },
+  { term:'Open Weight',   def:'A model you can download and run yourself for free — Llama is the main example' },
+  { term:'Benchmark',     def:'The standardised tests used to compare AI models — like school exams, but for AI' },
 ];
 let _di = 0;
 function _startDecoder() {
