@@ -133,7 +133,7 @@
 <div class="level-section" id="level-section">
   <div class="level-grid">
 
-    <div class="level-card novice" onclick="selectLevel('novice')">
+    <div class="level-card novice" id="lc-novice" onclick="selectLevel('novice')">
       <div class="level-icon">🌱</div>
       <div class="level-tag">Novice</div>
       <div class="level-title">AI is new to me</div>
@@ -143,10 +143,11 @@
         <span class="level-chip">5-min reads</span>
         <span class="level-chip">Real examples</span>
       </div>
-      <button class="level-cta">Start here →</button>
+      <div id="lp-novice" style="font-size:11px;font-weight:700;color:#059669;margin-bottom:8px;display:none"></div>
+      <button class="level-cta" id="lcta-novice">Start here →</button>
     </div>
 
-    <div class="level-card inter" onclick="selectLevel('intermediate')">
+    <div class="level-card inter" id="lc-intermediate" onclick="selectLevel('intermediate')">
       <div class="level-icon">⚡</div>
       <div class="level-tag">Intermediate</div>
       <div class="level-title">I use AI, want to use it better</div>
@@ -156,10 +157,11 @@
         <span class="level-chip">Role templates</span>
         <span class="level-chip">Playground</span>
       </div>
-      <button class="level-cta">Level up →</button>
+      <div id="lp-intermediate" style="font-size:11px;font-weight:700;color:#d97706;margin-bottom:8px;display:none"></div>
+      <button class="level-cta" id="lcta-intermediate">Level up →</button>
     </div>
 
-    <div class="level-card expert" onclick="selectLevel('expert')">
+    <div class="level-card expert" id="lc-expert" onclick="selectLevel('expert')">
       <div class="level-icon">🚀</div>
       <div class="level-tag">Expert</div>
       <div class="level-title">I want to build with AI</div>
@@ -169,7 +171,8 @@
         <span class="level-chip">Agents</span>
         <span class="level-chip">Cost models</span>
       </div>
-      <button class="level-cta">Go deep →</button>
+      <div id="lp-expert" style="font-size:11px;font-weight:700;color:#4f46e5;margin-bottom:8px;display:none"></div>
+      <button class="level-cta" id="lcta-expert">Go deep →</button>
     </div>
 
   </div>
@@ -185,25 +188,25 @@
   </div>
   <div class="progress-bar"><div class="progress-fill" id="progress-novice" style="width:0%"></div></div>
   <div class="modules-grid">
-    <div class="module-card" onclick="openLesson('novice',0)">
+    <div class="module-card" id="mc-novice-0" onclick="openLesson('novice',0)">
       <div class="module-num">Module 1</div>
       <div class="module-title">What actually is AI?</div>
       <div class="module-desc">Not robots, not magic. What AI actually does under the hood — in plain English.</div>
       <div class="module-meta"><span>📖 5 min</span><span>Free</span></div>
     </div>
-    <div class="module-card" onclick="openLesson('novice',1)">
+    <div class="module-card" id="mc-novice-1" onclick="openLesson('novice',1)">
       <div class="module-num">Module 2</div>
       <div class="module-title">ChatGPT, Claude, Gemini — what's the difference?</div>
       <div class="module-desc">The big AI assistants explained and compared. Which one is actually best for what.</div>
       <div class="module-meta"><span>📖 5 min</span><span>Free</span></div>
     </div>
-    <div class="module-card" onclick="openLesson('novice',2)">
+    <div class="module-card" id="mc-novice-2" onclick="openLesson('novice',2)">
       <div class="module-num">Module 3</div>
       <div class="module-title">What can AI do for my job?</div>
       <div class="module-desc">Concrete examples for 10 different professions — not hype, just what's actually useful today.</div>
       <div class="module-meta"><span>📖 6 min</span><span>Free</span></div>
     </div>
-    <div class="module-card" onclick="openLesson('novice',3)">
+    <div class="module-card" id="mc-novice-3" onclick="openLesson('novice',3)">
       <div class="module-num">Module 4</div>
       <div class="module-title">What AI can't do (yet)</div>
       <div class="module-desc">Hallucinations, bias, limitations — understanding where AI falls flat so you don't get caught out.</div>
@@ -238,19 +241,19 @@
   </div>
   <div class="progress-bar"><div class="progress-fill" id="progress-intermediate" style="width:0%"></div></div>
   <div class="modules-grid">
-    <div class="module-card" onclick="openLesson('intermediate',0)">
+    <div class="module-card" id="mc-intermediate-0" onclick="openLesson('intermediate',0)">
       <div class="module-num">Module 1</div>
       <div class="module-title">Why your prompts aren't working</div>
       <div class="module-desc">The most common mistakes people make when talking to AI — and how to fix them immediately.</div>
       <div class="module-meta"><span>📖 6 min</span><span>Free</span></div>
     </div>
-    <div class="module-card" onclick="openLesson('intermediate',1)">
+    <div class="module-card" id="mc-intermediate-1" onclick="openLesson('intermediate',1)">
       <div class="module-num">Module 2</div>
       <div class="module-title">The prompt formula that works every time</div>
       <div class="module-desc">Role + Task + Context + Format. A simple structure that dramatically improves every response.</div>
       <div class="module-meta"><span>📖 7 min</span><span>Free</span></div>
     </div>
-    <div class="module-card" onclick="openLesson('intermediate',2)">
+    <div class="module-card" id="mc-intermediate-2" onclick="openLesson('intermediate',2)">
       <div class="module-num">Module 3</div>
       <div class="module-title">Building a workflow — AI as your assistant</div>
       <div class="module-desc">How to integrate AI into your daily work. Real workflows for writing, research, and decision-making.</div>
@@ -291,13 +294,13 @@
   </div>
   <div class="progress-bar"><div class="progress-fill" id="progress-expert" style="width:0%"></div></div>
   <div class="modules-grid">
-    <div class="module-card" onclick="openLesson('expert',0)">
+    <div class="module-card" id="mc-expert-0" onclick="openLesson('expert',0)">
       <div class="module-num">Module 1</div>
       <div class="module-title">How LLMs actually work</div>
       <div class="module-desc">Tokens, attention, training — a technically honest explanation without the PhD. Know what's happening inside the black box.</div>
       <div class="module-meta"><span>📖 10 min</span><span>Free</span></div>
     </div>
-    <div class="module-card" onclick="openLesson('expert',1)">
+    <div class="module-card" id="mc-expert-1" onclick="openLesson('expert',1)">
       <div class="module-num">Module 2</div>
       <div class="module-title">Calling AI via API</div>
       <div class="module-desc">Your first API call to Claude or OpenAI. Authentication, parameters, costs — from zero to working code.</div>
@@ -542,8 +545,64 @@ system="You are a concise assistant. Always respond in 5 bullet points or fewer.
   ]
 };
 
+// ── Progress persistence ────────────────────────────────────────────────────
+var _UNLOCK_COUNT = { novice: 4, intermediate: 3, expert: 2 };
+var _LEVEL_COLORS = { novice: '#059669', intermediate: '#d97706', expert: '#4f46e5' };
+
+function _pLoad() {
+  try { return JSON.parse(localStorage.getItem('aiha-learn') || '{}'); } catch(e) { return {}; }
+}
+function _pSave(p) { localStorage.setItem('aiha-learn', JSON.stringify(p)); }
+
+function _pMarkDone(level, idx) {
+  var p = _pLoad();
+  if (!p.done) p.done = {};
+  if (!p.done[level]) p.done[level] = [];
+  if (p.done[level].indexOf(idx) === -1) p.done[level].push(idx);
+  p.lastLevel = level;
+  _pSave(p);
+}
+
+function _pRefreshUI() {
+  var p = _pLoad();
+  ['novice', 'intermediate', 'expert'].forEach(function(level) {
+    var done  = (p.done && p.done[level]) ? p.done[level] : [];
+    var total = _UNLOCK_COUNT[level];
+    var color = _LEVEL_COLORS[level];
+
+    // Progress bar
+    var pct = total ? Math.round((done.length / total) * 100) : 0;
+    var bar = document.getElementById('progress-' + level);
+    if (bar) bar.style.width = pct + '%';
+
+    // Module card checkmarks
+    for (var i = 0; i < total; i++) {
+      var card = document.getElementById('mc-' + level + '-' + i);
+      if (!card) continue;
+      if (done.indexOf(i) !== -1) {
+        card.style.borderColor = color;
+        var numEl = card.querySelector('.module-num');
+        if (numEl && numEl.innerHTML.indexOf('✓') === -1) {
+          numEl.innerHTML += ' <span style="color:' + color + ';font-weight:800">✓</span>';
+        }
+      }
+    }
+
+    // Level picker note
+    var note = document.getElementById('lp-' + level);
+    var cta  = document.getElementById('lcta-' + level);
+    if (note && done.length > 0) {
+      note.textContent = done.length + ' / ' + total + ' modules done';
+      note.style.display = 'block';
+      if (cta) cta.textContent = done.length === total ? 'Completed ✓' : 'Continue →';
+    }
+  });
+}
+
+// ── Navigation ───────────────────────────────────────────────────────────────
 function selectLevel(level) {
   _currentLevel = level;
+  var p = _pLoad(); p.lastLevel = level; _pSave(p);
   document.getElementById('level-section').style.display = 'none';
   document.querySelectorAll('.content-panel').forEach(function(p){ p.classList.remove('visible'); });
   document.getElementById('panel-' + level).classList.add('visible');
@@ -555,6 +614,7 @@ function goBack() {
   document.querySelectorAll('.content-panel').forEach(function(p){ p.classList.remove('visible'); });
   document.getElementById('lesson-view').classList.remove('visible');
   document.getElementById('level-section').style.display = 'block';
+  _pRefreshUI();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -564,15 +624,19 @@ function openLesson(level, idx) {
   var lesson = lessons[idx];
   _currentLevel = level;
 
+  _pMarkDone(level, idx);
+  _pRefreshUI();
+
   document.querySelectorAll('.content-panel').forEach(function(p){ p.classList.remove('visible'); });
-  var lv = document.getElementById('lesson-view');
-  lv.classList.add('visible');
+  document.getElementById('lesson-view').classList.add('visible');
 
   document.getElementById('lesson-title').textContent = lesson.title;
   document.getElementById('lesson-meta').textContent = lesson.meta;
   document.getElementById('lesson-body').innerHTML = lesson.body;
 
-  var pct = Math.round(((idx + 1) / lessons.length) * 100);
+  var total = _UNLOCK_COUNT[level];
+  var done  = (_pLoad().done || {})[level] || [];
+  var pct   = total ? Math.round((done.length / total) * 100) : 0;
   document.getElementById('progress-lesson').style.width = pct + '%';
 
   var nextBtn = document.getElementById('lesson-next-btn');
@@ -592,6 +656,13 @@ function closeLesson() {
   document.getElementById('panel-' + _currentLevel).classList.add('visible');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+// ── Init: restore last state ─────────────────────────────────────────────────
+(function() {
+  _pRefreshUI();
+  var p = _pLoad();
+  if (p.lastLevel) selectLevel(p.lastLevel);
+})();
 </script>
 </body>
 </html>
