@@ -379,11 +379,6 @@
     <nav>
       <a href="#usecases">Use Cases</a>
       <a href="#jargon">Jargon</a>
-      <a href="#models">Models</a>
-      <a href="#basics">Basics</a>
-      <a href="#articles">Articles</a>
-      <a href="#examples">Examples</a>
-      <a href="#media">Watch</a>
       <a href="/learn/">Learn</a>
       <a href="/tools/" style="color:var(--accent);font-weight:600">Tools</a>
     </nav>
@@ -401,25 +396,17 @@
   <div id="search-count"></div>
 
   <div id="hero-extras">
-    <p style="font-size:13px;color:var(--subtle);margin-top:28px;margin-bottom:10px">Or pick your role to see what AI does for <em>you specifically</em>:</p>
+    <p style="font-size:13px;color:var(--subtle);margin-top:28px;margin-bottom:10px">Pick your role to see what AI does for <em>you specifically</em>:</p>
     <div class="role-grid" id="role-grid">
       <button class="role-btn" onclick="setRole(this,'teacher')"><span class="role-btn-icon">🏫</span><span class="role-btn-label">Teacher</span></button>
       <button class="role-btn" onclick="setRole(this,'gp')"><span class="role-btn-icon">👨‍⚕️</span><span class="role-btn-label">GP / Doctor</span></button>
-      <button class="role-btn" onclick="setRole(this,'dentist')"><span class="role-btn-icon">🦷</span><span class="role-btn-label">Dentist</span></button>
       <button class="role-btn" onclick="setRole(this,'nurse')"><span class="role-btn-icon">👩‍⚕️</span><span class="role-btn-label">Nurse</span></button>
-      <button class="role-btn" onclick="setRole(this,'plumber')"><span class="role-btn-icon">🔧</span><span class="role-btn-label">Plumber</span></button>
-      <button class="role-btn" onclick="setRole(this,'electrician')"><span class="role-btn-icon">⚡</span><span class="role-btn-label">Electrician</span></button>
+      <button class="role-btn" onclick="setRole(this,'plumber')"><span class="role-btn-icon">🔧</span><span class="role-btn-label">Trades</span></button>
       <button class="role-btn" onclick="setRole(this,'chef')"><span class="role-btn-icon">👨‍🍳</span><span class="role-btn-label">Chef / Restaurant</span></button>
-      <button class="role-btn" onclick="setRole(this,'estate-agent')"><span class="role-btn-icon">🏘️</span><span class="role-btn-label">Estate Agent</span></button>
-      <button class="role-btn" onclick="setRole(this,'accountant')"><span class="role-btn-icon">📊</span><span class="role-btn-label">Accountant</span></button>
-      <button class="role-btn" onclick="setRole(this,'solicitor')"><span class="role-btn-icon">⚖️</span><span class="role-btn-label">Solicitor</span></button>
       <button class="role-btn" onclick="setRole(this,'retailer')"><span class="role-btn-icon">🛒</span><span class="role-btn-label">Retailer</span></button>
-      <button class="role-btn" onclick="setRole(this,'farmer')"><span class="role-btn-icon">🌾</span><span class="role-btn-label">Farmer</span></button>
       <button class="role-btn" onclick="setRole(this,'business')"><span class="role-btn-icon">💼</span><span class="role-btn-label">Office / Business</span></button>
       <button class="role-btn" onclick="setRole(this,'parent')"><span class="role-btn-icon">👨‍👩‍👧</span><span class="role-btn-label">Parent</span></button>
     </div>
-
-    <p class="hero-skip" style="margin-top:32px">Already know how AI works? <a href="#examples">See it in action →</a></p>
   </div>
 </section>
 
@@ -439,35 +426,11 @@
   <div class="cards ucards" id="usecases-cards"></div>
 </section>
 
-<section class="section" id="media">
-  <div class="section-header">
-    <span class="section-title">Watch &amp; Listen</span>
-    <span class="section-sub" id="media-sub"></span>
-    <button id="media-add-btn" onclick="openAddMedia()" style="display:none;margin-left:auto;padding:5px 14px;border-radius:8px;border:1px solid var(--accent);background:#eef2ff;font-size:12px;font-weight:700;color:var(--accent);cursor:pointer">＋ Add</button>
-  </div>
-  <div class="media-tabs">
-    <button class="media-tab active" id="tab-videos"   onclick="mediaTab('videos')">▶ Videos</button>
-    <button class="media-tab"        id="tab-podcasts" onclick="mediaTab('podcasts')">🎙 Podcasts</button>
-  </div>
-  <div id="videos-actions" style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
-    <button onclick="watchAll()" style="padding:7px 14px;border-radius:9px;border:1.5px solid #e5e7eb;background:white;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:5px">▶ Watch All on YouTube</button>
-  </div>
-  <div class="section-empty" id="media-empty">No results match your search.</div>
-  <div class="cards" id="videos-cards"  style="grid-template-columns:repeat(auto-fill,minmax(288px,1fr))"></div>
-  <div class="pcards-list" id="podcasts-cards" style="display:none"></div>
-</section>
-
 <section class="section" id="jargon">
   <div class="section-header">
     <span class="section-title">Jargon Decoder</span>
     <span class="section-sub" id="jargon-sub"></span>
     <button id="jargon-add-btn" onclick="openAdd('jargon')" style="display:none;margin-left:auto;padding:5px 14px;border-radius:8px;border:1px solid var(--accent);background:#eef2ff;font-size:12px;font-weight:700;color:var(--accent);cursor:pointer">＋ Add term</button>
-  </div>
-
-  <div id="hero-decode" class="hero-decode" style="max-width:600px;margin:0 0 20px">
-    <span class="hd-term" id="hd-term">LLM</span>
-    <span class="hd-arrow">→</span>
-    <span class="hd-def" id="hd-def">Autocomplete trained on most of the internet — this is what ChatGPT and Claude are</span>
   </div>
 
   <div style="position:relative;max-width:520px;margin-bottom:20px">
@@ -523,20 +486,11 @@
 
 <section class="section" id="basics">
   <div class="section-header">
-    <span class="section-title">Basics</span>
-    <span class="section-sub" id="basics-sub"></span>
+    <span class="section-title">Understand AI</span>
+    <span class="section-sub" id="basics-sub">The concepts, in plain language</span>
   </div>
   <div class="section-empty" id="basics-empty">No basics match your search.</div>
   <div class="cards" id="basics-cards"></div>
-</section>
-
-<section class="section" id="researchers">
-  <div class="section-header">
-    <span class="section-title">People</span>
-    <span class="section-sub">The people who built this — and what they actually did</span>
-  </div>
-  <div class="section-empty" id="researchers-empty">No researchers match your search.</div>
-  <div class="cards rcards" id="researchers-cards"></div>
 </section>
 
 <section class="section" id="dummies">
@@ -546,16 +500,6 @@
   </div>
   <div class="section-empty" id="dummies-empty">No results match your search.</div>
   <div class="cards" id="dummies-cards"></div>
-</section>
-
-<section class="section" id="articles">
-  <div class="section-header">
-    <span class="section-title">Articles</span>
-    <span class="section-sub" id="articles-sub"></span>
-    <button id="articles-add-btn" onclick="openAdd('articles')" style="display:none;margin-left:auto;padding:5px 14px;border-radius:8px;border:1px solid var(--accent);background:#eef2ff;font-size:12px;font-weight:700;color:var(--accent);cursor:pointer">＋ Add article</button>
-  </div>
-  <div class="section-empty" id="articles-empty">No articles match your search.</div>
-  <div class="cards" id="articles-cards"></div>
 </section>
 
 <section class="section" id="examples">
@@ -632,6 +576,43 @@
     </div>
 
   </div>
+</section>
+
+<section class="section" id="articles">
+  <div class="section-header">
+    <span class="section-title">Articles</span>
+    <span class="section-sub" id="articles-sub"></span>
+    <button id="articles-add-btn" onclick="openAdd('articles')" style="display:none;margin-left:auto;padding:5px 14px;border-radius:8px;border:1px solid var(--accent);background:#eef2ff;font-size:12px;font-weight:700;color:var(--accent);cursor:pointer">＋ Add article</button>
+  </div>
+  <div class="section-empty" id="articles-empty">No articles match your search.</div>
+  <div class="cards" id="articles-cards"></div>
+</section>
+
+<section class="section" id="media">
+  <div class="section-header">
+    <span class="section-title">Watch &amp; Listen</span>
+    <span class="section-sub" id="media-sub"></span>
+    <button id="media-add-btn" onclick="openAddMedia()" style="display:none;margin-left:auto;padding:5px 14px;border-radius:8px;border:1px solid var(--accent);background:#eef2ff;font-size:12px;font-weight:700;color:var(--accent);cursor:pointer">＋ Add</button>
+  </div>
+  <div class="media-tabs">
+    <button class="media-tab active" id="tab-videos"   onclick="mediaTab('videos')">▶ Videos</button>
+    <button class="media-tab"        id="tab-podcasts" onclick="mediaTab('podcasts')">🎙 Podcasts</button>
+  </div>
+  <div id="videos-actions" style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+    <button onclick="watchAll()" style="padding:7px 14px;border-radius:9px;border:1.5px solid #e5e7eb;background:white;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:5px">▶ Watch All on YouTube</button>
+  </div>
+  <div class="section-empty" id="media-empty">No results match your search.</div>
+  <div class="cards" id="videos-cards"  style="grid-template-columns:repeat(auto-fill,minmax(288px,1fr))"></div>
+  <div class="pcards-list" id="podcasts-cards" style="display:none"></div>
+</section>
+
+<section class="section" id="researchers">
+  <div class="section-header">
+    <span class="section-title">People</span>
+    <span class="section-sub">The people who built this — and what they actually did</span>
+  </div>
+  <div class="section-empty" id="researchers-empty">No researchers match your search.</div>
+  <div class="cards rcards" id="researchers-cards"></div>
 </section>
 
 <div class="sub-section">
