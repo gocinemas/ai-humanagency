@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learn AI — Human Agency</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:#f9f8f6; --surface:#ffffff; --border:#ebebeb; --text:#111111;
+      --muted:#666666; --subtle:#999999; --accent:#4f46e5; --accent2:#7c3aed;
+      --green:#059669; --amber:#d97706; --red:#dc2626;
+    }
+    body { font-family:'Inter',ui-sans-serif,system-ui,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; -webkit-font-smoothing:antialiased; }
+    a { color:inherit; text-decoration:none; }
+
+    /* ── Header ── */
+    header { border-bottom:1px solid var(--border); background:var(--surface); position:sticky; top:0; z-index:100; }
+    .header-inner { max-width:1100px; margin:0 auto; padding:0 24px; height:60px; display:flex; align-items:center; justify-content:space-between; }
+    .logo { font-size:17px; font-weight:800; letter-spacing:-0.5px; color:var(--text); }
+    .logo .dot { color:var(--accent); }
+    .back-link { font-size:13px; font-weight:600; color:var(--muted); display:flex; align-items:center; gap:6px; }
+    .back-link:hover { color:var(--text); }
+
+    /* ── Hero ── */
+    .hero { max-width:720px; margin:0 auto; padding:56px 24px 40px; text-align:center; }
+    .hero-badge { display:inline-flex; align-items:center; gap:8px; background:#eef2ff; color:var(--accent); font-size:12px; font-weight:700; padding:5px 14px; border-radius:99px; letter-spacing:.4px; text-transform:uppercase; margin-bottom:20px; }
+    .hero h1 { font-size:38px; font-weight:900; letter-spacing:-1px; line-height:1.15; margin-bottom:14px; }
+    @media(max-width:640px){ .hero h1 { font-size:28px; } }
+    .hero p { font-size:16px; color:var(--muted); max-width:520px; margin:0 auto; line-height:1.7; }
+
+    /* ── Level picker ── */
+    .level-section { max-width:1000px; margin:0 auto; padding:0 24px 60px; }
+    .level-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:40px; }
+    @media(max-width:760px){ .level-grid { grid-template-columns:1fr; } }
+
+    .level-card {
+      background:var(--surface); border:2px solid var(--border); border-radius:20px;
+      padding:28px 24px; cursor:pointer; transition:border-color .2s, box-shadow .2s, transform .15s;
+      position:relative; overflow:hidden;
+    }
+    .level-card:hover { box-shadow:0 8px 32px rgba(0,0,0,.08); transform:translateY(-2px); }
+    .level-card.novice:hover   { border-color:#059669; }
+    .level-card.inter:hover    { border-color:#d97706; }
+    .level-card.expert:hover   { border-color:#4f46e5; }
+    .level-card.active.novice  { border-color:#059669; box-shadow:0 0 0 4px rgba(5,150,105,.1); }
+    .level-card.active.inter   { border-color:#d97706; box-shadow:0 0 0 4px rgba(217,119,6,.1); }
+    .level-card.active.expert  { border-color:#4f46e5; box-shadow:0 0 0 4px rgba(79,70,229,.1); }
+
+    .level-icon { font-size:36px; margin-bottom:14px; }
+    .level-tag { font-size:11px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; margin-bottom:8px; }
+    .novice  .level-tag { color:#059669; }
+    .inter   .level-tag { color:#d97706; }
+    .expert  .level-tag { color:#4f46e5; }
+    .level-title { font-size:20px; font-weight:800; letter-spacing:-.4px; margin-bottom:8px; }
+    .level-desc  { font-size:14px; color:var(--muted); line-height:1.65; margin-bottom:16px; }
+    .level-chips { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px; }
+    .level-chip  { font-size:11px; font-weight:600; padding:4px 10px; border-radius:99px; background:var(--bg); border:1px solid var(--border); color:var(--muted); }
+    .level-cta   { display:inline-flex; align-items:center; gap:6px; font-size:14px; font-weight:700; padding:10px 18px; border-radius:12px; border:none; cursor:pointer; width:100%; justify-content:center; transition:opacity .15s; }
+    .novice  .level-cta { background:#ecfdf5; color:#059669; }
+    .inter   .level-cta { background:#fffbeb; color:#d97706; }
+    .expert  .level-cta { background:#eef2ff; color:#4f46e5; }
+    .level-cta:hover { opacity:.85; }
+
+    /* ── Content panel ── */
+    .content-panel { display:none; max-width:1000px; margin:0 auto; padding:0 24px 80px; }
+    .content-panel.visible { display:block; }
+
+    .panel-header { display:flex; align-items:center; gap:14px; margin-bottom:32px; padding-bottom:20px; border-bottom:2px solid var(--border); }
+    .panel-back { font-size:13px; font-weight:600; color:var(--muted); cursor:pointer; margin-right:auto; display:flex; align-items:center; gap:6px; border:1px solid var(--border); background:var(--surface); padding:7px 14px; border-radius:99px; }
+    .panel-back:hover { color:var(--text); border-color:var(--text); }
+
+    /* ── Modules grid ── */
+    .modules-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px; margin-bottom:36px; }
+    .module-card { background:var(--surface); border:1.5px solid var(--border); border-radius:16px; padding:20px; cursor:pointer; transition:border-color .15s, box-shadow .15s; }
+    .module-card:hover { border-color:var(--accent); box-shadow:0 4px 16px rgba(0,0,0,.06); }
+    .module-card.locked { opacity:.5; cursor:default; }
+    .module-card.locked:hover { border-color:var(--border); box-shadow:none; }
+    .module-num { font-size:11px; font-weight:700; color:var(--subtle); letter-spacing:.5px; text-transform:uppercase; margin-bottom:8px; }
+    .module-title { font-size:15px; font-weight:700; letter-spacing:-.3px; margin-bottom:6px; }
+    .module-desc { font-size:13px; color:var(--muted); line-height:1.55; margin-bottom:12px; }
+    .module-meta { display:flex; align-items:center; gap:10px; font-size:11px; color:var(--subtle); font-weight:600; }
+    .module-lock { margin-left:auto; font-size:14px; }
+
+    /* ── Playground teaser ── */
+    .playground-teaser { background:linear-gradient(135deg,#1e1b4b,#312e81); border-radius:20px; padding:32px; color:#fff; margin-top:8px; }
+    .pg-label { font-size:11px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; color:#a5b4fc; margin-bottom:10px; }
+    .pg-title { font-size:22px; font-weight:800; letter-spacing:-.5px; margin-bottom:8px; }
+    .pg-desc  { font-size:14px; color:#c7d2fe; line-height:1.65; margin-bottom:20px; }
+    .pg-btn   { display:inline-flex; align-items:center; gap:8px; background:#4f46e5; color:#fff; font-size:14px; font-weight:700; padding:11px 20px; border-radius:12px; border:none; cursor:pointer; transition:background .15s; }
+    .pg-btn:hover { background:#4338ca; }
+    .pg-locked { display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,.1); color:#a5b4fc; font-size:13px; font-weight:600; padding:8px 16px; border-radius:99px; margin-top:8px; }
+
+    /* ── Lesson view ── */
+    .lesson-view { display:none; max-width:680px; margin:0 auto; padding:0 24px 80px; }
+    .lesson-view.visible { display:block; }
+    .lesson-title { font-size:28px; font-weight:900; letter-spacing:-.6px; margin-bottom:8px; }
+    .lesson-meta  { font-size:13px; color:var(--muted); margin-bottom:28px; }
+    .lesson-body  { font-size:16px; line-height:1.8; color:var(--text); }
+    .lesson-body p { margin-bottom:16px; }
+    .lesson-body h3 { font-size:18px; font-weight:800; margin:28px 0 10px; }
+    .lesson-body .callout { background:#eef2ff; border-left:4px solid var(--accent); border-radius:0 12px 12px 0; padding:14px 18px; margin:20px 0; font-size:14px; color:var(--text); line-height:1.65; }
+    .lesson-body .example { background:#f0fdf4; border:1.5px solid #bbf7d0; border-radius:12px; padding:16px 18px; margin:20px 0; font-size:14px; font-family:monospace; line-height:1.65; white-space:pre-wrap; }
+    .lesson-nav { display:flex; gap:10px; margin-top:36px; padding-top:24px; border-top:1px solid var(--border); }
+    .lesson-nav button { flex:1; padding:12px; border-radius:12px; font-size:14px; font-weight:700; cursor:pointer; border:1.5px solid var(--border); background:var(--surface); color:var(--text); }
+    .lesson-nav .next-btn { background:var(--accent); color:#fff; border-color:var(--accent); }
+
+    /* ── Progress bar ── */
+    .progress-bar { height:4px; background:var(--border); border-radius:99px; margin-bottom:32px; }
+    .progress-fill { height:100%; border-radius:99px; background:var(--accent); transition:width .4s; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="index.html">Human<span class="dot">.</span>Agency</a>
+    <a class="back-link" href="index.html">← Back to AI Explained</a>
+  </div>
+</header>
+
+<!-- ── Hero ── -->
+<div class="hero">
+  <div class="hero-badge">🎓 Learning Paths</div>
+  <h1>Learn AI at your pace</h1>
+  <p>Pick your level. Get a curated path — plain-English modules, real examples, and a playground to try things yourself.</p>
+</div>
+
+<!-- ── Level picker ── -->
+<div class="level-section" id="level-section">
+  <div class="level-grid">
+
+    <div class="level-card novice" onclick="selectLevel('novice')">
+      <div class="level-icon">🌱</div>
+      <div class="level-tag">Novice</div>
+      <div class="level-title">AI is new to me</div>
+      <div class="level-desc">You've heard the words — ChatGPT, AI, LLM — but want to understand what it actually means and how it affects your life and work.</div>
+      <div class="level-chips">
+        <span class="level-chip">No jargon</span>
+        <span class="level-chip">5-min reads</span>
+        <span class="level-chip">Real examples</span>
+      </div>
+      <button class="level-cta">Start here →</button>
+    </div>
+
+    <div class="level-card inter" onclick="selectLevel('intermediate')">
+      <div class="level-icon">⚡</div>
+      <div class="level-tag">Intermediate</div>
+      <div class="level-title">I use AI, want to use it better</div>
+      <div class="level-desc">You've tried ChatGPT or Copilot. You want to get dramatically better results — smarter prompts, real workflows, tools that actually save time.</div>
+      <div class="level-chips">
+        <span class="level-chip">Prompt techniques</span>
+        <span class="level-chip">Role templates</span>
+        <span class="level-chip">Playground</span>
+      </div>
+      <button class="level-cta">Level up →</button>
+    </div>
+
+    <div class="level-card expert" onclick="selectLevel('expert')">
+      <div class="level-icon">🚀</div>
+      <div class="level-tag">Expert</div>
+      <div class="level-title">I want to build with AI</div>
+      <div class="level-desc">You understand the basics and want to go further — APIs, agents, automation pipelines, and what's genuinely possible with today's models.</div>
+      <div class="level-chips">
+        <span class="level-chip">APIs & SDKs</span>
+        <span class="level-chip">Agents</span>
+        <span class="level-chip">Cost models</span>
+      </div>
+      <button class="level-cta">Go deep →</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── Content panels ── -->
+
+<!-- NOVICE -->
+<div class="content-panel" id="panel-novice">
+  <div class="panel-header">
+    <button class="panel-back" onclick="goBack()">← Choose level</button>
+    <div style="font-size:13px;font-weight:700;color:var(--green)">🌱 Novice path</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-novice" style="width:0%"></div></div>
+  <div class="modules-grid">
+    <div class="module-card" onclick="openLesson('novice',0)">
+      <div class="module-num">Module 1</div>
+      <div class="module-title">What actually is AI?</div>
+      <div class="module-desc">Not robots, not magic. What AI actually does under the hood — in plain English.</div>
+      <div class="module-meta"><span>📖 5 min</span><span>Free</span></div>
+    </div>
+    <div class="module-card" onclick="openLesson('novice',1)">
+      <div class="module-num">Module 2</div>
+      <div class="module-title">ChatGPT, Claude, Gemini — what's the difference?</div>
+      <div class="module-desc">The big AI assistants explained and compared. Which one is actually best for what.</div>
+      <div class="module-meta"><span>📖 5 min</span><span>Free</span></div>
+    </div>
+    <div class="module-card" onclick="openLesson('novice',2)">
+      <div class="module-num">Module 3</div>
+      <div class="module-title">What can AI do for my job?</div>
+      <div class="module-desc">Concrete examples for 10 different professions — not hype, just what's actually useful today.</div>
+      <div class="module-meta"><span>📖 6 min</span><span>Free</span></div>
+    </div>
+    <div class="module-card" onclick="openLesson('novice',3)">
+      <div class="module-num">Module 4</div>
+      <div class="module-title">What AI can't do (yet)</div>
+      <div class="module-desc">Hallucinations, bias, limitations — understanding where AI falls flat so you don't get caught out.</div>
+      <div class="module-meta"><span>📖 5 min</span><span>Free</span></div>
+    </div>
+    <div class="module-card locked">
+      <div class="module-num">Module 5</div>
+      <div class="module-title">Is my job at risk?</div>
+      <div class="module-desc">An honest, evidence-based look at which roles AI will change and which it won't.</div>
+      <div class="module-meta"><span>📖 7 min</span><div class="module-lock">🔒 Coming soon</div></div>
+    </div>
+    <div class="module-card locked">
+      <div class="module-num">Module 6</div>
+      <div class="module-title">Staying safe — what not to share with AI</div>
+      <div class="module-desc">Privacy, data, and what to be careful about when using AI tools at work or home.</div>
+      <div class="module-meta"><span>📖 5 min</span><div class="module-lock">🔒 Coming soon</div></div>
+    </div>
+  </div>
+  <div class="playground-teaser">
+    <div class="pg-label">✨ Playground</div>
+    <div class="pg-title">Try it yourself</div>
+    <div class="pg-desc">Ask an AI a question and see how it responds. We've pre-loaded some starter prompts for complete beginners — no setup needed.</div>
+    <div class="pg-locked">🔒 Unlocks after Module 2</div>
+  </div>
+</div>
+
+<!-- INTERMEDIATE -->
+<div class="content-panel" id="panel-intermediate">
+  <div class="panel-header">
+    <button class="panel-back" onclick="goBack()">← Choose level</button>
+    <div style="font-size:13px;font-weight:700;color:var(--amber)">⚡ Intermediate path</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-intermediate" style="width:0%"></div></div>
+  <div class="modules-grid">
+    <div class="module-card" onclick="openLesson('intermediate',0)">
+      <div class="module-num">Module 1</div>
+      <div class="module-title">Why your prompts aren't working</div>
+      <div class="module-desc">The most common mistakes people make when talking to AI — and how to fix them immediately.</div>
+      <div class="module-meta"><span>📖 6 min</span><span>Free</span></div>
+    </div>
+    <div class="module-card" onclick="openLesson('intermediate',1)">
+      <div class="module-num">Module 2</div>
+      <div class="module-title">The prompt formula that works every time</div>
+      <div class="module-desc">Role + Task + Context + Format. A simple structure that dramatically improves every response.</div>
+      <div class="module-meta"><span>📖 7 min</span><span>Free</span></div>
+    </div>
+    <div class="module-card" onclick="openLesson('intermediate',2)">
+      <div class="module-num">Module 3</div>
+      <div class="module-title">Building a workflow — AI as your assistant</div>
+      <div class="module-desc">How to integrate AI into your daily work. Real workflows for writing, research, and decision-making.</div>
+      <div class="module-meta"><span>📖 8 min</span><span>Free</span></div>
+    </div>
+    <div class="module-card locked">
+      <div class="module-num">Module 4</div>
+      <div class="module-title">Templates for your role</div>
+      <div class="module-desc">Pre-built prompt templates for 12 professions — just fill in the blanks and go.</div>
+      <div class="module-meta"><span>📖 10 min</span><div class="module-lock">🔒 Coming soon</div></div>
+    </div>
+    <div class="module-card locked">
+      <div class="module-num">Module 5</div>
+      <div class="module-title">Chaining prompts — multi-step tasks</div>
+      <div class="module-desc">How to break complex tasks into steps and get AI to work through them systematically.</div>
+      <div class="module-meta"><span>📖 7 min</span><div class="module-lock">🔒 Coming soon</div></div>
+    </div>
+    <div class="module-card locked">
+      <div class="module-num">Module 6</div>
+      <div class="module-title">Verifying AI output — don't get caught out</div>
+      <div class="module-desc">How to fact-check AI responses and know when to trust them.</div>
+      <div class="module-meta"><span>📖 5 min</span><div class="module-lock">🔒 Coming soon</div></div>
+    </div>
+  </div>
+  <div class="playground-teaser">
+    <div class="pg-label">✨ Playground</div>
+    <div class="pg-title">Practice your prompts</div>
+    <div class="pg-desc">A sandboxed environment with pre-loaded exercises. Try the prompt formula, compare results, and see the difference good prompting makes.</div>
+    <button class="pg-btn">Open playground →</button>
+  </div>
+</div>
+
+<!-- EXPERT -->
+<div class="content-panel" id="panel-expert">
+  <div class="panel-header">
+    <button class="panel-back" onclick="goBack()">← Choose level</button>
+    <div style="font-size:13px;font-weight:700;color:var(--accent)">🚀 Expert path</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-expert" style="width:0%"></div></div>
+  <div class="modules-grid">
+    <div class="module-card" onclick="openLesson('expert',0)">
+      <div class="module-num">Module 1</div>
+      <div class="module-title">How LLMs actually work</div>
+      <div class="module-desc">Tokens, attention, training — a technically honest explanation without the PhD. Know what's happening inside the black box.</div>
+      <div class="module-meta"><span>📖 10 min</span><span>Free</span></div>
+    </div>
+    <div class="module-card" onclick="openLesson('expert',1)">
+      <div class="module-num">Module 2</div>
+      <div class="module-title">Calling AI via API</div>
+      <div class="module-desc">Your first API call to Claude or OpenAI. Authentication, parameters, costs — from zero to working code.</div>
+      <div class="module-meta"><span>💻 15 min</span><span>Free</span></div>
+    </div>
+    <div class="module-card locked">
+      <div class="module-num">Module 3</div>
+      <div class="module-title">Building an AI agent</div>
+      <div class="module-desc">What agents are, how they loop, and how to build one that actually does useful work.</div>
+      <div class="module-meta"><span>💻 20 min</span><div class="module-lock">🔒 Coming soon</div></div>
+    </div>
+    <div class="module-card locked">
+      <div class="module-num">Module 4</div>
+      <div class="module-title">RAG — giving AI your own data</div>
+      <div class="module-desc">How to build a system that answers questions using your own documents, databases, or knowledge base.</div>
+      <div class="module-meta"><span>💻 20 min</span><div class="module-lock">🔒 Coming soon</div></div>
+    </div>
+    <div class="module-card locked">
+      <div class="module-num">Module 5</div>
+      <div class="module-title">Fine-tuning vs prompting vs RAG</div>
+      <div class="module-desc">When to use each approach, cost tradeoffs, and what actually makes sense for most real projects.</div>
+      <div class="module-meta"><span>📖 12 min</span><div class="module-lock">🔒 Coming soon</div></div>
+    </div>
+    <div class="module-card locked">
+      <div class="module-num">Module 6</div>
+      <div class="module-title">Understanding AI cost models</div>
+      <div class="module-desc">Tokens, pricing, context windows — how to build AI products that don't bankrupt you.</div>
+      <div class="module-meta"><span>📖 10 min</span><div class="module-lock">🔒 Coming soon</div></div>
+    </div>
+  </div>
+  <div class="playground-teaser">
+    <div class="pg-label">✨ Playground</div>
+    <div class="pg-title">Full API sandbox</div>
+    <div class="pg-desc">Live code environment. Experiment with prompts, parameters, and multi-turn conversations. Compare models side by side.</div>
+    <button class="pg-btn">Open sandbox →</button>
+  </div>
+</div>
+
+<!-- ── Lesson view ── -->
+<div class="lesson-view" id="lesson-view">
+  <button class="panel-back" onclick="closeLesson()" style="margin-bottom:24px">← Back to modules</button>
+  <div class="progress-bar"><div class="progress-fill" id="progress-lesson" style="width:0%"></div></div>
+  <div class="lesson-title" id="lesson-title"></div>
+  <div class="lesson-meta" id="lesson-meta"></div>
+  <div class="lesson-body" id="lesson-body"></div>
+  <div class="lesson-nav">
+    <button onclick="closeLesson()">← All modules</button>
+    <button class="next-btn" id="lesson-next-btn">Next module →</button>
+  </div>
+</div>
+
+<script>
+var _currentLevel = null;
+
+var _LESSONS = {
+  novice: [
+    {
+      title: "What actually is AI?",
+      meta: "📖 5 min · Module 1 of 6",
+      body: `
+        <p>You've heard the term a thousand times. But what is AI — artificial intelligence — actually doing?</p>
+        <h3>Not what Hollywood told you</h3>
+        <p>AI isn't a robot brain trying to take over. It's a pattern-matching system trained on enormous amounts of text, images, or data to predict what comes next.</p>
+        <p>When you ask ChatGPT "what's the capital of France?" it isn't looking it up in a database. It's predicting, based on everything it was trained on, that the word "Paris" should follow your question. Incredibly sophisticated autocomplete — but autocomplete nonetheless.</p>
+        <div class="callout">💡 The key insight: AI doesn't know things the way you do. It predicts the most likely response based on patterns in its training data.</div>
+        <h3>Three types you'll actually encounter</h3>
+        <p><strong>Language models</strong> (ChatGPT, Claude, Gemini) — generate and understand text. Most of what people mean when they say "AI" right now.</p>
+        <p><strong>Image generators</strong> (Midjourney, DALL·E, Stable Diffusion) — create images from text descriptions. Trained on millions of images.</p>
+        <p><strong>Specialist AI</strong> — tools trained for one specific job: transcription, translation, code completion, medical diagnosis support.</p>
+        <h3>Why it suddenly got this good</h3>
+        <p>Three things converged around 2020–2022: vastly more training data, much bigger models, and the discovery of "transformers" — a new architecture that changed how AI processes language. The result: a step-change in quality that surprised even the researchers building it.</p>
+        <div class="callout">🎯 <strong>What to remember:</strong> AI is a prediction machine trained on human-generated content. It's genuinely useful, genuinely limited, and not magic.</div>
+      `
+    },
+    {
+      title: "ChatGPT, Claude, Gemini — what's the difference?",
+      meta: "📖 5 min · Module 2 of 6",
+      body: `
+        <p>There are now dozens of AI assistants. The big three you'll encounter most are ChatGPT (OpenAI), Claude (Anthropic), and Gemini (Google). Here's an honest comparison.</p>
+        <h3>ChatGPT</h3>
+        <p>The one that started the mainstream wave. Made by OpenAI. The free version (GPT-4o mini) is good for everyday tasks. The paid version (GPT-4o) is excellent for complex reasoning, writing, and code. Has a huge ecosystem of plugins and integrations.</p>
+        <h3>Claude</h3>
+        <p>Made by Anthropic, a company focused on AI safety. Tends to give longer, more nuanced answers. Often preferred for writing, analysis, and tasks requiring careful reasoning. Less likely to make things up than some alternatives. This site was largely built with Claude.</p>
+        <h3>Gemini</h3>
+        <p>Google's offering. Deeply integrated with Google Docs, Gmail, and Search. If you live in Google's ecosystem, it can access your actual documents and emails. Strong at tasks that benefit from live Google Search results.</p>
+        <div class="callout">🎯 <strong>Honest take:</strong> For most everyday tasks, the differences are smaller than the marketing suggests. Pick one, learn it well, and you'll get 90% of the value.</div>
+        <h3>Free vs paid — is it worth it?</h3>
+        <p>Free tiers are genuinely useful. Paid tiers (usually £15–20/month) give you faster responses, smarter models, and no usage limits. If you're using AI for work more than 30 minutes a day, paid is worth it.</p>
+      `
+    },
+    {
+      title: "What can AI do for my job?",
+      meta: "📖 6 min · Module 3 of 6",
+      body: `
+        <p>Forget the hype. Here's what AI is actually useful for today — with real examples across different jobs.</p>
+        <h3>Writing and communication (almost everyone)</h3>
+        <p>First drafts of emails, reports, proposals. AI is excellent at getting something on the page — you edit and refine. Most people spend 40% less time writing once they build this habit.</p>
+        <div class="example">Prompt example:
+"Write a professional email declining a meeting invite. Keep it brief, friendly, and suggest we connect another way."</div>
+        <h3>Research and summarising</h3>
+        <p>Paste in a long document and ask for a summary. Ask for pros and cons of a decision. Get a quick overview of a topic. AI is faster than Google for many research tasks — you just need to verify what it tells you.</p>
+        <h3>Teachers</h3>
+        <p>Lesson planning, generating quiz questions, differentiating materials for different ability levels, writing parent communications, creating mark schemes.</p>
+        <h3>Healthcare professionals</h3>
+        <p>Summarising clinical notes, drafting patient letters, explaining medical concepts in plain language, staying current on guidelines.</p>
+        <h3>Tradespeople</h3>
+        <p>Writing quotes and invoices, responding to customer messages professionally, troubleshooting problems, understanding regulations and compliance requirements.</p>
+        <div class="callout">💡 The pattern: AI is best at the parts of your job that involve writing, summarising, or explaining — and worst at anything requiring real-world action, up-to-date facts, or genuine expertise.</div>
+      `
+    },
+    {
+      title: "What AI can't do (yet)",
+      meta: "📖 5 min · Module 4 of 6",
+      body: `
+        <p>AI gets a lot right. It also fails in ways that can catch you off guard if you don't know what to watch for.</p>
+        <h3>Hallucination</h3>
+        <p>The single most important limitation. AI will confidently tell you things that are completely false — made-up statistics, fake citations, incorrect dates, wrong names. It doesn't know it's wrong. It's still just predicting what sounds right.</p>
+        <div class="callout">⚠️ <strong>Rule:</strong> Never use an AI-generated fact without checking it from another source. This applies to statistics, legal details, medical information, and anything else consequential.</div>
+        <h3>No real-time information</h3>
+        <p>Most AI models have a knowledge cutoff — they don't know what happened after a certain date. ChatGPT can search the web now, but basic language models have no idea what happened last month.</p>
+        <h3>It can't take real-world actions (mostly)</h3>
+        <p>Standard AI assistants can write, explain, and analyse — but they can't book your calendar, send emails on your behalf, or interact with other systems unless they've been specifically set up with those tools.</p>
+        <h3>No genuine understanding</h3>
+        <p>AI doesn't understand in the way you do. It has no common sense, no lived experience, no ability to actually reason from first principles. It's very good at mimicking understanding — which is useful — but it's not the same thing.</p>
+        <h3>Privacy concerns</h3>
+        <p>What you type into a commercial AI service may be used to train future models. Don't share patient data, client confidential information, or sensitive personal details with AI tools unless you're using an enterprise version with data protection agreements.</p>
+      `
+    }
+  ],
+  intermediate: [
+    {
+      title: "Why your prompts aren't working",
+      meta: "📖 6 min · Module 1 of 6",
+      body: `
+        <p>If AI keeps giving you vague, generic, or wrong answers — the problem is almost certainly the prompt, not the AI. Here are the most common mistakes.</p>
+        <h3>Mistake 1: Too vague</h3>
+        <p>Asking "write me an email" gives you a generic email. Asking "write a firm but polite email to a client who hasn't paid their invoice after 30 days, from a small UK plumbing business, keep it under 100 words" gives you something actually useful.</p>
+        <div class="callout">🎯 Specificity is everything. The more context you give, the better the output.</div>
+        <h3>Mistake 2: Not giving a role</h3>
+        <p>AI responds differently depending on what role you assign it. "Explain inflation" gets a textbook answer. "Explain inflation as if I'm a 12-year-old who just got their first job" gets something you can actually use.</p>
+        <h3>Mistake 3: Not specifying format</h3>
+        <p>Want bullet points? Ask for bullet points. Want three paragraphs? Say so. Want it under 200 words? Include that. AI will match whatever format you specify.</p>
+        <h3>Mistake 4: Accepting the first answer</h3>
+        <p>Treat AI like a colleague, not a vending machine. If the first response isn't right, push back. "Make it shorter." "More formal." "The third point isn't relevant — remove it." Iteration dramatically improves results.</p>
+        <h3>Mistake 5: One massive ask</h3>
+        <p>Breaking complex tasks into steps gets much better results than asking AI to do everything at once. Ask for an outline first. Review it. Then ask for the full content.</p>
+      `
+    },
+    {
+      title: "The prompt formula that works every time",
+      meta: "📖 7 min · Module 2 of 6",
+      body: `
+        <p>There's a simple structure behind almost every effective AI prompt: <strong>Role + Task + Context + Format</strong>. Master this and you'll get dramatically better results from every AI interaction.</p>
+        <h3>Role — who should the AI be?</h3>
+        <p>Set the persona. "You are an experienced UK employment solicitor." "You are a secondary school science teacher." "You are a direct, no-nonsense business coach." This shapes tone, vocabulary, and expertise level.</p>
+        <h3>Task — what exactly do you need?</h3>
+        <p>Be specific about the action. Not "write something about X" but "write a 200-word introduction explaining X for people who have never encountered it before."</p>
+        <h3>Context — what does the AI need to know?</h3>
+        <p>Background information that changes what good output looks like. Who's the audience? What's the purpose? What constraints exist? What's already been tried?</p>
+        <h3>Format — how should it be presented?</h3>
+        <p>Bullet points, numbered list, table, paragraphs, email format, code block. Be explicit.</p>
+        <div class="example">Full example:
+Role: You are an experienced GP writing patient communications.
+Task: Write a letter explaining a new repeat prescription process.
+Context: The patient is elderly, not tech-savvy, and previously collected prescriptions in person. The new process requires ordering online or by phone.
+Format: Friendly letter, under 150 words, no jargon, clear action steps at the end.</div>
+        <div class="callout">💡 You don't need all four every time — but the more you include, the better the result.</div>
+      `
+    },
+    {
+      title: "Building a workflow — AI as your assistant",
+      meta: "📖 8 min · Module 3 of 6",
+      body: `
+        <p>The biggest productivity gains from AI don't come from one-off prompts — they come from building it into how you work every day.</p>
+        <h3>The shift in mindset</h3>
+        <p>Stop thinking of AI as a search engine you ask questions. Think of it as a capable junior assistant who's fast, available 24/7, and needs clear instructions. Your job is to brief, review, and refine.</p>
+        <h3>Morning briefing workflow</h3>
+        <p>Paste your agenda, emails, or to-do list and ask: "What are the three most important things I need to address today and why?" A useful frame when you're overwhelmed.</p>
+        <h3>Writing workflow</h3>
+        <p>1. Ask AI for an outline. 2. Review and adjust the structure. 3. Ask AI to draft each section. 4. Edit in your own voice. 5. Ask AI to proofread for clarity and tone. This is faster than writing from scratch and produces better results than asking AI to write everything at once.</p>
+        <h3>Research workflow</h3>
+        <p>Paste a document or topic. Ask: "What are the key points?" Then: "What questions should I be asking about this?" Then: "What are the risks or concerns?" Iterative questioning surfaces things you'd miss.</p>
+        <div class="callout">🎯 <strong>One habit that changes everything:</strong> Before you start any writing task, spend 2 minutes briefing AI on what you need. You'll spend less total time and get a better result.</div>
+        <h3>What to still do yourself</h3>
+        <p>Relationships. Decisions that require real-world judgment. Anything where being wrong has serious consequences. AI is a tool for speed and drafting — not a replacement for your expertise and accountability.</p>
+      `
+    }
+  ],
+  expert: [
+    {
+      title: "How LLMs actually work",
+      meta: "📖 10 min · Module 1 of 6",
+      body: `
+        <p>Large Language Models (LLMs) are the foundation of every major AI assistant. Here's what's actually happening — without the handwaving.</p>
+        <h3>Tokens, not words</h3>
+        <p>LLMs don't process text word by word — they work with <em>tokens</em>, which are roughly 3–4 characters each. "unbelievable" might be split into ["un", "believ", "able"]. This matters because model costs and limits are measured in tokens, not words.</p>
+        <h3>The transformer architecture</h3>
+        <p>The "T" in GPT stands for transformer — an architecture introduced by Google in 2017 that revolutionised AI. The key innovation: <em>attention</em>. Rather than processing words sequentially, transformers look at all words simultaneously and learn which ones are most relevant to each other. This is why they handle long-range dependencies in text far better than previous models.</p>
+        <h3>Pre-training: learning from the internet</h3>
+        <p>An LLM is first trained on enormous amounts of text — books, websites, code, academic papers — to predict the next token given all previous tokens. This "pre-training" builds a general model of language and knowledge. GPT-4 was trained on an estimated 13 trillion tokens.</p>
+        <div class="callout">💡 Pre-training is unsupervised and expensive. GPT-4's training run is estimated to have cost over $100M in compute.</div>
+        <h3>RLHF: making it actually useful</h3>
+        <p>A raw pre-trained model is hard to use — it'll complete your prompt in unexpected ways. Reinforcement Learning from Human Feedback (RLHF) fine-tunes the model to be helpful, harmless, and honest. Human raters compare outputs and the model learns to produce responses they prefer.</p>
+        <h3>Context window</h3>
+        <p>The maximum amount of text an LLM can "see" at once is its context window. Early models: 4K tokens (~3K words). GPT-4: 128K tokens. Claude 3: 200K tokens. Larger context = can handle longer documents, but also costs more per API call.</p>
+      `
+    },
+    {
+      title: "Calling AI via API",
+      meta: "💻 15 min · Module 2 of 6",
+      body: `
+        <p>Moving from the chat interface to the API is the step that opens up everything else — custom apps, automation, integrations. Here's how it works.</p>
+        <h3>What the API gives you</h3>
+        <p>Instead of typing into a chat box, you send requests programmatically. This means you can: build your own interface, process thousands of items automatically, integrate AI into existing tools, and control exactly what the model receives.</p>
+        <h3>The basics — a real API call</h3>
+        <div class="example">import anthropic
+
+client = anthropic.Anthropic(api_key="your-key-here")
+
+message = client.messages.create(
+    model="claude-sonnet-4-6",
+    max_tokens=1024,
+    messages=[
+        {"role": "user", "content": "Explain quantum entanglement in 3 sentences."}
+    ]
+)
+
+print(message.content[0].text)</div>
+        <h3>Key parameters</h3>
+        <p><strong>model</strong> — which model to use. Cheaper/faster models for simple tasks, expensive/capable models for complex ones.</p>
+        <p><strong>max_tokens</strong> — the maximum response length. Controls cost. Don't set it higher than you need.</p>
+        <p><strong>temperature</strong> — randomness. 0 = deterministic/consistent. 1 = more creative/varied. Use low temperature for factual tasks, higher for creative ones.</p>
+        <h3>System prompts</h3>
+        <p>A system prompt sets the context before the user's message — it's where you define the AI's role, constraints, and behaviour for your specific use case.</p>
+        <div class="example">messages=[
+    {"role": "user", "content": "Summarise this in bullet points: [text]"}
+],
+system="You are a concise assistant. Always respond in 5 bullet points or fewer. Never use jargon."</div>
+        <div class="callout">💡 <strong>Cost rule of thumb:</strong> Input tokens are cheaper than output tokens. Keep system prompts efficient and limit max_tokens to what you actually need.</div>
+      `
+    }
+  ]
+};
+
+function selectLevel(level) {
+  _currentLevel = level;
+  document.getElementById('level-section').style.display = 'none';
+  document.querySelectorAll('.content-panel').forEach(function(p){ p.classList.remove('visible'); });
+  document.getElementById('panel-' + level).classList.add('visible');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goBack() {
+  _currentLevel = null;
+  document.querySelectorAll('.content-panel').forEach(function(p){ p.classList.remove('visible'); });
+  document.getElementById('lesson-view').classList.remove('visible');
+  document.getElementById('level-section').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function openLesson(level, idx) {
+  var lessons = _LESSONS[level];
+  if (!lessons || !lessons[idx]) return;
+  var lesson = lessons[idx];
+  _currentLevel = level;
+
+  document.querySelectorAll('.content-panel').forEach(function(p){ p.classList.remove('visible'); });
+  var lv = document.getElementById('lesson-view');
+  lv.classList.add('visible');
+
+  document.getElementById('lesson-title').textContent = lesson.title;
+  document.getElementById('lesson-meta').textContent = lesson.meta;
+  document.getElementById('lesson-body').innerHTML = lesson.body;
+
+  var pct = Math.round(((idx + 1) / lessons.length) * 100);
+  document.getElementById('progress-lesson').style.width = pct + '%';
+
+  var nextBtn = document.getElementById('lesson-next-btn');
+  if (idx + 1 < lessons.length) {
+    nextBtn.textContent = 'Next module →';
+    nextBtn.onclick = function(){ openLesson(level, idx + 1); };
+  } else {
+    nextBtn.textContent = 'Back to modules';
+    nextBtn.onclick = function(){ closeLesson(); };
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function closeLesson() {
+  document.getElementById('lesson-view').classList.remove('visible');
+  document.getElementById('panel-' + _currentLevel).classList.add('visible');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
