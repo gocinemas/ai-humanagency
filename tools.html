@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Tools — Human Agency</title>
+  <meta name="description" content="The best AI tools for marketers, HR professionals, small business owners and executives — explained in plain English.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:#f9f8f6; --surface:#ffffff; --border:#ebebeb; --text:#111111;
+      --muted:#666666; --subtle:#999999; --accent:#4f46e5; --accent2:#7c3aed;
+      --green:#059669; --amber:#d97706; --red:#dc2626;
+    }
+    body { font-family:'Inter',ui-sans-serif,system-ui,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; -webkit-font-smoothing:antialiased; }
+    a { color:inherit; text-decoration:none; }
+
+    header { border-bottom:1px solid var(--border); background:var(--surface); position:sticky; top:0; z-index:100; }
+    .header-inner { max-width:1100px; margin:0 auto; padding:0 24px; height:60px; display:flex; align-items:center; justify-content:space-between; }
+    .logo { font-size:17px; font-weight:800; letter-spacing:-0.5px; cursor:pointer; user-select:none; text-decoration:none; color:var(--text); }
+    .logo .dot { color:var(--accent); }
+    nav { display:flex; gap:20px; align-items:center; }
+    nav a { font-size:14px; font-weight:500; color:var(--muted); transition:color .15s; }
+    nav a:hover, nav a.active { color:var(--text); }
+
+    .hero { max-width:1100px; margin:0 auto; padding:36px 24px 28px; text-align:center; }
+    .hero h1 { font-size:32px; font-weight:900; letter-spacing:-0.8px; max-width:560px; margin:0 auto 14px; line-height:1.2; }
+    @media(max-width:640px){ .hero h1 { font-size:24px; } }
+    .hero p { font-size:15px; color:var(--muted); max-width:460px; margin:0 auto 28px; line-height:1.7; }
+
+    .search-wrap { max-width:520px; margin:0 auto 20px; position:relative; }
+    .search-wrap input { font-family:'Inter',sans-serif; font-size:15px; width:100%; padding:13px 46px; border:2px solid var(--border); border-radius:14px; outline:none; background:var(--surface); color:var(--text); transition:border-color .15s,box-shadow .15s; }
+    .search-wrap input:focus { border-color:var(--accent); box-shadow:0 0 0 4px rgba(79,70,229,.08); }
+    .search-wrap input::placeholder { color:#aaa; }
+    .search-icon { position:absolute; left:15px; top:50%; transform:translateY(-50%); font-size:16px; pointer-events:none; }
+
+    .filters { max-width:1100px; margin:0 auto; padding:0 24px 28px; display:flex; gap:8px; flex-wrap:wrap; justify-content:center; }
+    .pill { font-size:13px; font-weight:600; padding:7px 16px; border-radius:20px; border:1.5px solid var(--border); background:var(--surface); color:var(--muted); cursor:pointer; transition:all .15s; user-select:none; }
+    .pill:hover { border-color:#ccc; color:var(--text); }
+    .pill.active { background:var(--accent); border-color:var(--accent); color:#fff; }
+
+    .count-bar { max-width:1100px; margin:0 auto; padding:0 24px 18px; }
+    #tool-count { font-size:13px; color:var(--muted); }
+
+    .grid-wrap { max-width:1100px; margin:0 auto; padding:0 24px 80px; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; }
+
+    .tool-card { background:var(--surface); border:1.5px solid var(--border); border-radius:18px; padding:22px; display:flex; flex-direction:column; gap:0; transition:border-color .15s,box-shadow .15s,transform .2s; position:relative; }
+    .tool-card:hover { border-color:#d4d4d4; box-shadow:0 8px 28px rgba(0,0,0,.07); transform:translateY(-2px); }
+    .tool-card.hidden { display:none !important; }
+
+    .card-top { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:12px; gap:10px; }
+    .card-emoji { font-size:26px; line-height:1; }
+    .price-badge { font-size:10px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; padding:3px 8px; border-radius:6px; flex-shrink:0; margin-top:2px; }
+    .price-free { background:#dcfce7; color:#166534; }
+    .price-freemium { background:#fef3c7; color:#92400e; }
+    .price-paid { background:#fee2e2; color:#991b1b; }
+    .price-enterprise { background:#ede9fe; color:#5b21b6; }
+
+    .start-here { position:absolute; top:-1px; left:20px; font-size:10px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; background:var(--accent); color:#fff; padding:3px 10px; border-radius:0 0 8px 8px; }
+
+    .card-name { font-size:16px; font-weight:700; letter-spacing:-0.3px; margin-bottom:8px; }
+    .card-desc { font-size:13.5px; color:var(--muted); line-height:1.65; flex:1; }
+
+    .card-bottom { margin-top:14px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+    .persona-tags { display:flex; gap:5px; flex-wrap:wrap; }
+    .ptag { font-size:10px; font-weight:600; letter-spacing:.03em; text-transform:uppercase; padding:3px 7px; border-radius:5px; background:var(--bg); color:var(--muted); border:1px solid var(--border); }
+    .try-btn { font-size:12px; font-weight:600; color:var(--accent); padding:6px 12px; border:1.5px solid #c7d2fe; border-radius:8px; background:#eef2ff; transition:all .15s; white-space:nowrap; }
+    .try-btn:hover { background:var(--accent); color:#fff; border-color:var(--accent); }
+
+    .no-results { display:none; text-align:center; padding:60px 24px; color:var(--muted); font-size:15px; }
+    .no-results.show { display:block; }
+
+    footer { border-top:1px solid var(--border); padding:24px; text-align:center; }
+    footer span { font-size:13px; color:var(--muted); }
+    footer a { color:var(--accent); font-weight:500; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="https://ai.humanagency.co" class="logo">human<span class="dot">.</span>agency</a>
+    <nav>
+      <a href="https://ai.humanagency.co">Home</a>
+      <a href="https://ai.humanagency.co/learn.html">Learn</a>
+      <a href="https://ai.humanagency.co/tools.html" class="active">Tools</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <h1>Find the right AI tool — no jargon</h1>
+  <p>Curated picks for real work. Filtered by who you are, not by what's trending on tech Twitter.</p>
+</div>
+
+<div class="search-wrap" style="max-width:520px;margin:0 auto 20px;position:relative;padding:0 24px">
+  <span class="search-icon">🔍</span>
+  <input type="text" id="search" placeholder="Search tools…" oninput="filterTools()" autocomplete="off">
+</div>
+
+<div class="filters">
+  <span class="pill active" data-persona="all" onclick="setPersona(this)">All tools</span>
+  <span class="pill" data-persona="marketer" onclick="setPersona(this)">📣 Marketer</span>
+  <span class="pill" data-persona="hr" onclick="setPersona(this)">👥 HR</span>
+  <span class="pill" data-persona="smallbiz" onclick="setPersona(this)">🏪 Small Business</span>
+  <span class="pill" data-persona="executive" onclick="setPersona(this)">💼 Executive</span>
+</div>
+
+<div class="count-bar"><span id="tool-count"></span></div>
+
+<div class="grid-wrap">
+  <div class="grid" id="tool-grid"></div>
+  <div class="no-results" id="no-results">No tools match — try a different search or filter.</div>
+</div>
+
+<footer>
+  <span>Part of <a href="https://ai.humanagency.co">ai.humanagency.co</a> — AI explained for real people.</span>
+</footer>
+
+<script>
+var TOOLS = [
+  {
+    id: 'chatgpt',
+    name: 'ChatGPT',
+    emoji: '🤖',
+    desc: 'The most versatile AI tool available. Write emails, summarise long documents, brainstorm ideas, draft job postings, answer questions. If you only use one tool — start here.',
+    price: 'free',
+    priceLabel: 'Free tier',
+    personas: ['marketer','hr','smallbiz','executive'],
+    link: 'https://chat.openai.com',
+    startHere: true
+  },
+  {
+    id: 'claude',
+    name: 'Claude',
+    emoji: '🧠',
+    desc: 'Better than ChatGPT for long documents, nuanced analysis and careful writing. Reads entire reports, contracts or strategy decks and gives you a clear summary or critique.',
+    price: 'free',
+    priceLabel: 'Free tier',
+    personas: ['marketer','hr','executive'],
+    link: 'https://claude.ai'
+  },
+  {
+    id: 'grammarly',
+    name: 'Grammarly',
+    emoji: '✍️',
+    desc: 'Checks your writing for grammar, tone and clarity as you type. Works inside Gmail, Word, LinkedIn and most websites. The simplest AI upgrade you can make today.',
+    price: 'freemium',
+    priceLabel: 'Freemium',
+    personas: ['marketer','hr','smallbiz','executive'],
+    link: 'https://grammarly.com'
+  },
+  {
+    id: 'perplexity',
+    name: 'Perplexity',
+    emoji: '🔎',
+    desc: 'AI-powered search that actually reads the web pages for you and gives you a direct answer with sources. Faster than Google for research questions where you need a real answer, not ten blue links.',
+    price: 'free',
+    priceLabel: 'Free tier',
+    personas: ['marketer','executive'],
+    link: 'https://perplexity.ai'
+  },
+  {
+    id: 'notebooklm',
+    name: 'NotebookLM',
+    emoji: '📓',
+    desc: 'Upload your own documents — reports, contracts, meeting notes — and ask questions about them in plain English. Built by Google and completely free. Brilliant for making sense of long files.',
+    price: 'free',
+    priceLabel: 'Free',
+    personas: ['hr','executive','marketer'],
+    link: 'https://notebooklm.google.com'
+  },
+  {
+    id: 'canva',
+    name: 'Canva AI',
+    emoji: '🎨',
+    desc: 'Design social posts, presentations, flyers and marketing materials without design skills. AI suggests layouts, generates images and writes copy. The easiest way to look professional without a designer.',
+    price: 'freemium',
+    priceLabel: 'Freemium',
+    personas: ['marketer','smallbiz'],
+    link: 'https://canva.com'
+  },
+  {
+    id: 'gamma',
+    name: 'Gamma',
+    emoji: '📊',
+    desc: 'Type a topic or paste your notes and it builds a complete presentation in under a minute. Looks polished without any formatting work. Much faster than starting from a blank PowerPoint.',
+    price: 'freemium',
+    priceLabel: 'Freemium',
+    personas: ['marketer','executive','smallbiz'],
+    link: 'https://gamma.app'
+  },
+  {
+    id: 'otter',
+    name: 'Otter.ai',
+    emoji: '🎙️',
+    desc: 'Records your meetings and gives you a full transcript and summary within minutes of the call ending. Works with Zoom, Teams and Google Meet. No more frantic note-taking.',
+    price: 'freemium',
+    priceLabel: 'Freemium',
+    personas: ['executive','hr','marketer'],
+    link: 'https://otter.ai'
+  },
+  {
+    id: 'fireflies',
+    name: 'Fireflies.ai',
+    emoji: '🔥',
+    desc: 'An AI bot joins your calls automatically, takes notes and flags action points. Sends a summary to everyone after. Good for teams who want meeting notes without anyone having to write them.',
+    price: 'freemium',
+    priceLabel: 'Freemium',
+    personas: ['executive','hr'],
+    link: 'https://fireflies.ai'
+  },
+  {
+    id: 'copilot',
+    name: 'Microsoft Copilot',
+    emoji: '🪟',
+    desc: 'AI built directly into Word, Excel, Teams and Outlook. Writes documents, summarises email threads, analyses spreadsheets. If your company already uses Microsoft 365, this is worth enabling.',
+    price: 'paid',
+    priceLabel: 'M365 add-on',
+    personas: ['executive','hr','marketer'],
+    link: 'https://copilot.microsoft.com'
+  },
+  {
+    id: 'copyai',
+    name: 'Copy.ai',
+    emoji: '📝',
+    desc: 'Generates social media posts, ad copy, email subject lines and product descriptions in seconds. Good for marketers who need lots of content variations quickly without a big copywriting budget.',
+    price: 'freemium',
+    priceLabel: 'Freemium',
+    personas: ['marketer','smallbiz'],
+    link: 'https://copy.ai'
+  },
+  {
+    id: 'jasper',
+    name: 'Jasper',
+    emoji: '🖊️',
+    desc: 'Enterprise AI writing tool for marketing teams. Learns your brand voice and generates on-brand content at scale across campaigns, blogs and social. Built for teams rather than individuals.',
+    price: 'paid',
+    priceLabel: 'Paid',
+    personas: ['marketer'],
+    link: 'https://jasper.ai'
+  },
+  {
+    id: 'midjourney',
+    name: 'Midjourney',
+    emoji: '🖼️',
+    desc: 'Produces the most visually impressive AI images available. Type a description and get a stunning result. Needs a bit of practice to get the prompts right, but worth it for visual marketing work.',
+    price: 'paid',
+    priceLabel: 'Paid',
+    personas: ['marketer'],
+    link: 'https://midjourney.com'
+  },
+  {
+    id: 'firefly',
+    name: 'Adobe Firefly',
+    emoji: '🦋',
+    desc: 'AI image generation built into Adobe tools — Photoshop, Illustrator, Express. Commercially safe (trained on licensed content). Best if you already use Adobe and need AI images for client work.',
+    price: 'paid',
+    priceLabel: 'Adobe sub',
+    personas: ['marketer'],
+    link: 'https://firefly.adobe.com'
+  },
+  {
+    id: 'heygen',
+    name: 'HeyGen',
+    emoji: '🎬',
+    desc: 'Create a professional video with an AI avatar presenting your script — no camera, no studio, no presenting on camera. Useful for product demos, training videos and announcements.',
+    price: 'paid',
+    priceLabel: 'Paid',
+    personas: ['marketer','smallbiz'],
+    link: 'https://heygen.com'
+  },
+  {
+    id: 'descript',
+    name: 'Descript',
+    emoji: '✂️',
+    desc: 'Edit video by editing the transcript — delete a sentence of text and the video removes that clip. Removes filler words automatically. Makes video editing accessible without technical skills.',
+    price: 'freemium',
+    priceLabel: 'Freemium',
+    personas: ['marketer'],
+    link: 'https://descript.com'
+  },
+  {
+    id: 'hubspot',
+    name: 'HubSpot AI',
+    emoji: '🧲',
+    desc: 'AI features inside HubSpot CRM — writes sales emails, scores leads, summarises call transcripts. If you already use HubSpot, turn these on first before paying for anything new.',
+    price: 'freemium',
+    priceLabel: 'Freemium',
+    personas: ['marketer','smallbiz'],
+    link: 'https://hubspot.com'
+  },
+  {
+    id: 'tidio',
+    name: 'Tidio',
+    emoji: '💬',
+    desc: 'Add a smart AI chatbot to your website in a few minutes. Handles common customer questions automatically around the clock. Good first step for small businesses before investing in full customer service software.',
+    price: 'freemium',
+    priceLabel: 'Freemium',
+    personas: ['smallbiz'],
+    link: 'https://tidio.com'
+  },
+  {
+    id: 'mailchimp',
+    name: 'Mailchimp AI',
+    emoji: '📧',
+    desc: 'AI features inside Mailchimp that write email subject lines, suggest send times and predict which customers are most likely to buy. If you already use Mailchimp, these are included.',
+    price: 'freemium',
+    priceLabel: 'Freemium',
+    personas: ['smallbiz','marketer'],
+    link: 'https://mailchimp.com'
+  },
+  {
+    id: 'notion',
+    name: 'Notion AI',
+    emoji: '📋',
+    desc: 'AI assistant built into Notion — summarises pages, rewrites drafts, fills in templates and answers questions about your notes. Useful if your team already uses Notion for documentation.',
+    price: 'paid',
+    priceLabel: 'Add-on',
+    personas: ['executive','hr','marketer'],
+    link: 'https://notion.so'
+  },
+  {
+    id: 'textio',
+    name: 'Textio',
+    emoji: '⚖️',
+    desc: 'Rewrites job descriptions to remove biased language and predict the kinds of candidates you will attract. Shows you which phrases put off certain groups before you post. Built specifically for HR teams.',
+    price: 'paid',
+    priceLabel: 'Paid',
+    personas: ['hr'],
+    link: 'https://textio.com'
+  },
+  {
+    id: 'hirevue',
+    name: 'HireVue',
+    emoji: '🎥',
+    desc: 'Candidates record video answers to your interview questions in their own time. AI scores responses on structured criteria. Useful for high-volume screening before you commit to live interviews.',
+    price: 'paid',
+    priceLabel: 'Paid',
+    personas: ['hr'],
+    link: 'https://hirevue.com'
+  },
+  {
+    id: 'consensus',
+    name: 'Consensus',
+    emoji: '🎓',
+    desc: 'Searches thousands of academic research papers and gives you a plain-English summary of what the evidence says. Good for HR and executives who need to back decisions with research without reading journals.',
+    price: 'free',
+    priceLabel: 'Free tier',
+    personas: ['hr','executive'],
+    link: 'https://consensus.app'
+  },
+  {
+    id: 'eleven',
+    name: 'ElevenLabs',
+    emoji: '🔊',
+    desc: 'Converts text into realistic-sounding speech. Use it to add voiceover to videos, create audio versions of content or build voice assistants. Free tier lets you try it without committing.',
+    price: 'freemium',
+    priceLabel: 'Freemium',
+    personas: ['marketer','smallbiz'],
+    link: 'https://elevenlabs.io'
+  },
+  {
+    id: 'zapier',
+    name: 'Zapier AI',
+    emoji: '⚡',
+    desc: 'Connects your apps and automates repetitive tasks without any coding. AI helps you build the automations in plain English. "When I get an email with an invoice, save it to Google Drive" — that kind of thing.',
+    price: 'freemium',
+    priceLabel: 'Freemium',
+    personas: ['smallbiz','marketer','executive'],
+    link: 'https://zapier.com'
+  }
+];
+
+var _activePersona = 'all';
+
+function setPersona(el) {
+  document.querySelectorAll('.pill').forEach(function(p){ p.classList.remove('active'); });
+  el.classList.add('active');
+  _activePersona = el.getAttribute('data-persona');
+  filterTools();
+}
+
+function filterTools() {
+  var q = document.getElementById('search').value.toLowerCase().trim();
+  var cards = document.querySelectorAll('.tool-card');
+  var visible = 0;
+
+  cards.forEach(function(card) {
+    var id = card.getAttribute('data-id');
+    var tool = TOOLS.find(function(t){ return t.id === id; });
+    if (!tool) return;
+
+    var personaMatch = _activePersona === 'all' || tool.personas.indexOf(_activePersona) >= 0;
+    var searchMatch = !q || tool.name.toLowerCase().indexOf(q) >= 0 || tool.desc.toLowerCase().indexOf(q) >= 0;
+
+    if (personaMatch && searchMatch) {
+      card.classList.remove('hidden');
+      visible++;
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+
+  var countEl = document.getElementById('tool-count');
+  countEl.textContent = visible + ' tool' + (visible !== 1 ? 's' : '');
+
+  var noRes = document.getElementById('no-results');
+  noRes.classList.toggle('show', visible === 0);
+}
+
+function renderTools() {
+  var grid = document.getElementById('tool-grid');
+  grid.innerHTML = '';
+
+  TOOLS.forEach(function(tool) {
+    var priceClass = 'price-' + tool.price;
+    var startBadge = tool.startHere ? '<div class="start-here">⭐ Start here</div>' : '';
+
+    var personaTags = tool.personas.map(function(p) {
+      var labels = { marketer:'Marketer', hr:'HR', smallbiz:'Small Biz', executive:'Executive' };
+      return '<span class="ptag">' + (labels[p] || p) + '</span>';
+    }).join('');
+
+    var card = document.createElement('div');
+    card.className = 'tool-card';
+    card.setAttribute('data-id', tool.id);
+    card.innerHTML =
+      startBadge +
+      '<div class="card-top">' +
+        '<span class="card-emoji">' + tool.emoji + '</span>' +
+        '<span class="price-badge ' + priceClass + '">' + tool.priceLabel + '</span>' +
+      '</div>' +
+      '<div class="card-name">' + tool.name + '</div>' +
+      '<div class="card-desc">' + tool.desc + '</div>' +
+      '<div class="card-bottom">' +
+        '<div class="persona-tags">' + personaTags + '</div>' +
+        '<a href="' + tool.link + '" target="_blank" rel="noopener" class="try-btn">Try it →</a>' +
+      '</div>';
+
+    grid.appendChild(card);
+  });
+
+  filterTools();
+}
+
+renderTools();
+</script>
+</body>
+</html>
