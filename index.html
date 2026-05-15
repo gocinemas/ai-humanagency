@@ -91,6 +91,21 @@
 
     mark { background:#fef9c3; border-radius:3px; padding:0 2px; color:inherit; }
 
+    @media(max-width:520px){
+      .header-inner { padding:0 16px; }
+      nav { gap:10px; }
+      nav a[href="#usecases"],
+      nav a[href="#jargon"],
+      nav a[href="#articles"],
+      nav a[href="#media"] { display:none; }
+      .hero { padding:20px 16px 20px; }
+      .hero p { font-size:14px; }
+      .search-wrap input { font-size:16px; } /* prevent iOS auto-zoom */
+      .section { padding:0 16px 48px; }
+      .footer-inner { padding:18px 16px; flex-direction:column; align-items:flex-start; gap:10px; }
+      .footer-links { gap:14px; }
+    }
+
     #hero-extras { transition:opacity .2s,max-height .3s; max-height:600px; overflow:hidden; opacity:1; }
     body.search-active #hero-extras { max-height:0; opacity:0; pointer-events:none; }
     body.search-active .hero h1 { display:none; }
