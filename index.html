@@ -383,6 +383,10 @@
   .mcard-link:hover { text-decoration:underline; }
   .mcard.hidden { display:none; }
   @media(max-width:640px){ .models-grid { grid-template-columns:1fr; } }
+  .aiw-site-tab{padding:7px 16px;border-radius:99px;border:1.5px solid var(--border);background:var(--surface);color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;transition:all .15s}
+  .aiw-site-tab:hover{border-color:#ccc;color:var(--text)}
+  .aiw-site-active{background:var(--text);color:var(--bg);border-color:var(--text)}
+  .aiw-new-badge{display:inline-block;font-size:10px;font-weight:800;background:#d1fae5;color:#065f46;border-radius:99px;padding:2px 8px;letter-spacing:.04em;margin-bottom:10px}
   </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
@@ -394,10 +398,11 @@
     <nav>
       <a href="#usecases">Use Cases</a>
       <a href="#jargon">Jargon</a>
+      <a href="#aiwatch" style="color:var(--accent);font-weight:600">AI Watch</a>
       <a href="#articles">Articles</a>
       <a href="#media">Videos</a>
       <a href="/learn/">Learn</a>
-      <a href="/tools/" style="color:var(--accent);font-weight:600">Tools</a>
+      <a href="/tools/">Tools</a>
     </nav>
   </div>
 </header>
@@ -630,6 +635,32 @@
   </div>
   <div class="section-empty" id="researchers-empty">No researchers match your search.</div>
   <div class="cards rcards" id="researchers-cards"></div>
+</section>
+
+<section class="section" id="aiwatch">
+  <div class="section-header">
+    <span class="section-title">🔭 AI Watch</span>
+    <span class="section-sub">Companies shaping AI — by sector</span>
+  </div>
+  <div id="aiw-tabs-site" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px">
+    <button onclick="aiwLoadSite('healthcare')" id="aiws-healthcare" class="aiw-site-tab aiw-site-active">🏥 Healthcare</button>
+    <button onclick="aiwLoadSite('fintech')"    id="aiws-fintech"    class="aiw-site-tab">💰 Fintech</button>
+    <button onclick="aiwLoadSite('legal')"      id="aiws-legal"      class="aiw-site-tab">⚖️ Legal</button>
+    <button onclick="aiwLoadSite('climate')"    id="aiws-climate"    class="aiw-site-tab">🌱 Climate</button>
+    <button onclick="aiwLoadSite('edtech')"     id="aiws-edtech"     class="aiw-site-tab">📚 EdTech</button>
+  </div>
+  <div id="aiw-site-cards" class="cards"></div>
+  <div style="margin-top:20px;background:#f5f3ff;border:1px solid #c4b5fd;border-radius:16px;padding:16px 20px;display:flex;align-items:center;gap:14px">
+    <div style="font-size:22px">🔍</div>
+    <div style="flex:1;min-width:0">
+      <div style="font-size:14px;font-weight:700;color:#3730a3">Deep-dive any company on Intel</div>
+      <div style="font-size:13px;color:#6d28d9;margin-top:2px">Financials · strategy · campaigns · rivals — all in one place</div>
+    </div>
+    <a href="https://intel.humanagency.co/" target="_blank" rel="noopener"
+      style="flex-shrink:0;background:#4f46e5;color:#fff;font-size:13px;font-weight:700;padding:10px 16px;border-radius:10px;text-decoration:none;white-space:nowrap">
+      Open Intel →
+    </a>
+  </div>
 </section>
 
 <div class="sub-section">
@@ -2746,6 +2777,41 @@ function filterModels(dimension, value, btn) {
 }
 
 renderModels();
+
+/* ── AI Watch ── */
+var _aiwSiteCache = {}, _aiwSiteV = "healthcare";
+function aiwLoadSite(v) {
+  _aiwSiteV = v;
+  document.querySelectorAll(".aiw-site-tab").forEach(function(b){ b.classList.remove("aiw-site-active"); });
+  var btn = document.getElementById("aiws-" + v);
+  if (btn) btn.classList.add("aiw-site-active");
+  var el = document.getElementById("aiw-site-cards");
+  if (_aiwSiteCache[v]) { aiwRenderSite(_aiwSiteCache[v]); return; }
+  if (el) el.innerHTML = '<p style="color:#999;font-size:14px;padding:24px 0">Loading…</p>';
+  fetch("https://miru.humanagency.co/api/intel/verticals?v=" + v)
+    .then(function(r){ return r.json(); })
+    .then(function(d){ _aiwSiteCache[v] = d.companies || []; aiwRenderSite(_aiwSiteCache[v]); })
+    .catch(function(){ if (el) el.innerHTML = '<p style="color:#999;font-size:14px">Could not load — try again.</p>'; });
+}
+function aiwRenderSite(companies) {
+  var el = document.getElementById("aiw-site-cards");
+  if (!el) return;
+  el.innerHTML = companies.map(function(c) {
+    return '<div class="card" style="cursor:default">' +
+      '<div class="card-icon">' + (c.country || "🌐") + '</div>' +
+      (c.new ? '<div class="aiw-new-badge">NEW TO WATCH</div>' : '') +
+      '<h3 style="margin-bottom:6px">' + c.name + '</h3>' +
+      '<p>' + c.tagline + '</p>' +
+      '<div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center">' +
+        '<span style="font-size:11px;color:var(--muted);background:#f3f4f6;border-radius:99px;padding:2px 10px">' + (c.stage || "") + '</span>' +
+        '<a href="https://intel.humanagency.co/" target="_blank" rel="noopener" ' +
+          'style="font-size:12px;font-weight:700;color:#4f46e5;background:#eef2ff;border:1px solid #c7d2fe;border-radius:99px;padding:5px 12px;text-decoration:none">' +
+          'Research →</a>' +
+      '</div>' +
+    '</div>';
+  }).join("");
+}
+aiwLoadSite("healthcare");
 
 init();
 </script>
