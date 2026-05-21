@@ -640,21 +640,41 @@
 <section class="section" id="aiwatch">
   <div class="section-header">
     <span class="section-title">🔭 AI Watch</span>
-    <span class="section-sub">Companies shaping AI — by sector</span>
+    <span class="section-sub">Companies &amp; news — by sector, last 7 days</span>
   </div>
-  <div id="aiw-tabs-site" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px">
-    <button onclick="aiwLoadSite('healthcare')" id="aiws-healthcare" class="aiw-site-tab aiw-site-active">🏥 Healthcare</button>
-    <button onclick="aiwLoadSite('fintech')"    id="aiws-fintech"    class="aiw-site-tab">💰 Fintech</button>
-    <button onclick="aiwLoadSite('legal')"      id="aiws-legal"      class="aiw-site-tab">⚖️ Legal</button>
-    <button onclick="aiwLoadSite('climate')"    id="aiws-climate"    class="aiw-site-tab">🌱 Climate</button>
-    <button onclick="aiwLoadSite('edtech')"     id="aiws-edtech"     class="aiw-site-tab">📚 EdTech</button>
+
+  <!-- Vertical tabs -->
+  <div id="aiw-tabs-site" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
+    <button onclick="aiwTabSite('healthcare')" id="aiws-healthcare" class="aiw-site-tab aiw-site-active">🏥 Healthcare</button>
+    <button onclick="aiwTabSite('fintech')"    id="aiws-fintech"    class="aiw-site-tab">💰 Fintech</button>
+    <button onclick="aiwTabSite('legal')"      id="aiws-legal"      class="aiw-site-tab">⚖️ Legal</button>
+    <button onclick="aiwTabSite('climate')"    id="aiws-climate"    class="aiw-site-tab">🌱 Climate</button>
+    <button onclick="aiwTabSite('edtech')"     id="aiws-edtech"     class="aiw-site-tab">📚 EdTech</button>
   </div>
+
+  <!-- Companies / News toggle -->
+  <div style="display:flex;gap:0;background:#ebebeb;border-radius:10px;padding:3px;margin-bottom:18px;width:fit-content">
+    <button id="aiws-mode-co" onclick="aiwModeSite('companies')"
+      style="padding:7px 20px;border-radius:8px;border:none;font-size:13px;font-weight:700;cursor:pointer;background:#111;color:#fff;transition:all .15s">Companies</button>
+    <button id="aiws-mode-news" onclick="aiwModeSite('news')"
+      style="padding:7px 20px;border-radius:8px;border:none;font-size:13px;font-weight:700;cursor:pointer;background:transparent;color:#888;transition:all .15s">News</button>
+  </div>
+
+  <!-- Bookmarked strip -->
+  <div id="aiws-bookmarks-strip" style="display:none;margin-bottom:18px;background:#faf5ff;border:1px solid #e9d5ff;border-radius:16px;padding:14px 18px">
+    <div style="font-size:11px;font-weight:800;color:#7c3aed;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px">⭐ Saved for research</div>
+    <div id="aiws-bookmarks-list"></div>
+  </div>
+
+  <!-- Cards -->
   <div id="aiw-site-cards" class="cards"></div>
-  <div style="margin-top:20px;background:#f5f3ff;border:1px solid #c4b5fd;border-radius:16px;padding:16px 20px;display:flex;align-items:center;gap:14px">
+
+  <!-- Intel CTA -->
+  <div style="margin-top:24px;background:#f5f3ff;border:1px solid #c4b5fd;border-radius:16px;padding:16px 20px;display:flex;align-items:center;gap:14px">
     <div style="font-size:22px">🔍</div>
     <div style="flex:1;min-width:0">
       <div style="font-size:14px;font-weight:700;color:#3730a3">Deep-dive any company on Intel</div>
-      <div style="font-size:13px;color:#6d28d9;margin-top:2px">Financials · strategy · campaigns · rivals — all in one place</div>
+      <div style="font-size:13px;color:#6d28d9;margin-top:2px">Financials · strategy · campaigns · rivals</div>
     </div>
     <a href="https://intel.humanagency.co/" target="_blank" rel="noopener"
       style="flex-shrink:0;background:#4f46e5;color:#fff;font-size:13px;font-weight:700;padding:10px 16px;border-radius:10px;text-decoration:none;white-space:nowrap">
@@ -2779,39 +2799,115 @@ function filterModels(dimension, value, btn) {
 renderModels();
 
 /* ── AI Watch ── */
-var _aiwSiteCache = {}, _aiwSiteV = "healthcare";
-function aiwLoadSite(v) {
-  _aiwSiteV = v;
-  document.querySelectorAll(".aiw-site-tab").forEach(function(b){ b.classList.remove("aiw-site-active"); });
-  var btn = document.getElementById("aiws-" + v);
-  if (btn) btn.classList.add("aiw-site-active");
-  var el = document.getElementById("aiw-site-cards");
-  if (_aiwSiteCache[v]) { aiwRenderSite(_aiwSiteCache[v]); return; }
-  if (el) el.innerHTML = '<p style="color:#999;font-size:14px;padding:24px 0">Loading…</p>';
-  fetch("https://miru.humanagency.co/api/intel/verticals?v=" + v)
-    .then(function(r){ return r.json(); })
-    .then(function(d){ _aiwSiteCache[v] = d.companies || []; aiwRenderSite(_aiwSiteCache[v]); })
-    .catch(function(){ if (el) el.innerHTML = '<p style="color:#999;font-size:14px">Could not load — try again.</p>'; });
-}
-function aiwRenderSite(companies) {
-  var el = document.getElementById("aiw-site-cards");
-  if (!el) return;
-  el.innerHTML = companies.map(function(c) {
-    return '<div class="card" style="cursor:default">' +
-      '<div class="card-icon">' + (c.country || "🌐") + '</div>' +
-      (c.new ? '<div class="aiw-new-badge">NEW TO WATCH</div>' : '') +
-      '<h3 style="margin-bottom:6px">' + c.name + '</h3>' +
-      '<p>' + c.tagline + '</p>' +
-      '<div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center">' +
-        '<span style="font-size:11px;color:var(--muted);background:#f3f4f6;border-radius:99px;padding:2px 10px">' + (c.stage || "") + '</span>' +
+var _aiwsV = "healthcare", _aiwsMode = "companies";
+var _aiwsCoCache = {}, _aiwsNewsCache = {};
+
+function _aiwsBM() { try { return JSON.parse(localStorage.getItem("aiw_bookmarks") || "[]"); } catch(_) { return []; } }
+function _aiwsSaveBM(a) { localStorage.setItem("aiw_bookmarks", JSON.stringify(a)); }
+
+window.aiwsToggleBM = function(name) {
+  var bm = _aiwsBM(), idx = bm.indexOf(name);
+  if (idx >= 0) bm.splice(idx, 1); else bm.push(name);
+  _aiwsSaveBM(bm);
+  aiwsRenderBM();
+  if (_aiwsMode === "companies" && _aiwsCoCache[_aiwsV]) aiwsRenderCo(_aiwsCoCache[_aiwsV]);
+};
+
+function aiwsRenderBM() {
+  var bm = _aiwsBM();
+  var strip = document.getElementById("aiws-bookmarks-strip");
+  var list  = document.getElementById("aiws-bookmarks-list");
+  if (!strip || !list) return;
+  strip.style.display = bm.length ? "block" : "none";
+  list.innerHTML = bm.map(function(name) {
+    return '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0;border-top:1px solid #ede9fe">' +
+      '<span style="font-size:14px;font-weight:700;color:#1e1b4b">' + name + '</span>' +
+      '<div style="display:flex;gap:8px">' +
         '<a href="https://intel.humanagency.co/" target="_blank" rel="noopener" ' +
-          'style="font-size:12px;font-weight:700;color:#4f46e5;background:#eef2ff;border:1px solid #c7d2fe;border-radius:99px;padding:5px 12px;text-decoration:none">' +
-          'Research →</a>' +
+          'style="font-size:12px;font-weight:700;color:#4f46e5;background:#eef2ff;border:1px solid #c7d2fe;border-radius:99px;padding:5px 12px;text-decoration:none">Research →</a>' +
+        '<button onclick="aiwsToggleBM(\'' + name.replace(/'/g,"\\'")+  '\')" ' +
+          'style="font-size:12px;color:#7c3aed;background:none;border:none;cursor:pointer">✕</button>' +
       '</div>' +
     '</div>';
   }).join("");
 }
-aiwLoadSite("healthcare");
+
+function aiwTabSite(v) {
+  _aiwsV = v;
+  document.querySelectorAll(".aiw-site-tab").forEach(function(b){ b.classList.remove("aiw-site-active"); });
+  var btn = document.getElementById("aiws-" + v);
+  if (btn) btn.classList.add("aiw-site-active");
+  aiwModeSite(_aiwsMode, true);
+}
+
+function aiwModeSite(mode, force) {
+  _aiwsMode = mode;
+  var cm = document.getElementById("aiws-mode-co"), nm = document.getElementById("aiws-mode-news");
+  if (cm) { cm.style.background = mode === "companies" ? "#111" : "transparent"; cm.style.color = mode === "companies" ? "#fff" : "#888"; }
+  if (nm) { nm.style.background = mode === "news"      ? "#111" : "transparent"; nm.style.color = mode === "news"      ? "#fff" : "#888"; }
+  if (mode === "companies") {
+    if (!force && _aiwsCoCache[_aiwsV]) { aiwsRenderCo(_aiwsCoCache[_aiwsV]); return; }
+    var el = document.getElementById("aiw-site-cards");
+    if (el) el.innerHTML = '<p style="color:#999;padding:24px 0;font-size:14px">Loading…</p>';
+    fetch("https://miru.humanagency.co/api/intel/verticals?v=" + _aiwsV)
+      .then(function(r){ return r.json(); })
+      .then(function(d){ _aiwsCoCache[_aiwsV] = d.companies || []; aiwsRenderCo(_aiwsCoCache[_aiwsV]); })
+      .catch(function(){ var el=document.getElementById("aiw-site-cards"); if(el) el.innerHTML='<p style="color:#999;font-size:14px">Could not load</p>'; });
+  } else {
+    if (!force && _aiwsNewsCache[_aiwsV]) { aiwsRenderNews(_aiwsNewsCache[_aiwsV]); return; }
+    var el = document.getElementById("aiw-site-cards");
+    if (el) el.innerHTML = '<p style="color:#999;padding:24px 0;font-size:14px">Fetching latest news…</p>';
+    fetch("https://miru.humanagency.co/api/intel/news?v=" + _aiwsV)
+      .then(function(r){ return r.json(); })
+      .then(function(d){ _aiwsNewsCache[_aiwsV] = d.items || []; aiwsRenderNews(_aiwsNewsCache[_aiwsV]); })
+      .catch(function(){ var el=document.getElementById("aiw-site-cards"); if(el) el.innerHTML='<p style="color:#999;font-size:14px">Could not load news</p>'; });
+  }
+}
+
+function aiwsRenderCo(companies) {
+  var el = document.getElementById("aiw-site-cards");
+  if (!el) return;
+  var bm = _aiwsBM();
+  el.innerHTML = companies.map(function(c) {
+    var saved = bm.indexOf(c.name) >= 0;
+    return '<div class="card" style="cursor:default">' +
+      '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:4px">' +
+        '<div class="card-icon" style="margin-bottom:0">' + (c.country || "🌐") + '</div>' +
+        '<button onclick="aiwsToggleBM(\'' + c.name.replace(/'/g,"\\'") + '\')" title="Save" ' +
+          'style="font-size:20px;background:none;border:none;cursor:pointer;opacity:' + (saved?'1':'0.3') + ';line-height:1;padding:0">' + (saved?'⭐':'☆') + '</button>' +
+      '</div>' +
+      (c.new ? '<div class="aiw-new-badge">NEW TO WATCH</div>' : '') +
+      '<h3 style="margin-bottom:6px">' + c.name + '</h3>' +
+      '<p>' + c.tagline + '</p>' +
+      '<div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center">' +
+        '<span style="font-size:11px;color:var(--muted);background:#f3f4f6;border-radius:99px;padding:2px 10px">' + (c.stage||"") + '</span>' +
+        '<a href="https://intel.humanagency.co/" target="_blank" rel="noopener" ' +
+          'style="font-size:12px;font-weight:700;color:#4f46e5;background:#eef2ff;border:1px solid #c7d2fe;border-radius:99px;padding:5px 12px;text-decoration:none">Research →</a>' +
+      '</div>' +
+    '</div>';
+  }).join("");
+}
+
+function aiwsRenderNews(items) {
+  var el = document.getElementById("aiw-site-cards");
+  if (!el) return;
+  if (!items.length) {
+    el.innerHTML = '<div style="grid-column:1/-1;padding:32px;text-align:center;color:#999;font-size:14px">No news found in the last 7 days for this sector. Check back tomorrow.</div>';
+    return;
+  }
+  el.innerHTML = '<div style="grid-column:1/-1;font-size:11px;font-weight:700;color:#999;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px">Last 7 days</div>' +
+    items.map(function(n) {
+      return '<div class="card" style="cursor:default">' +
+        '<div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:8px">' + n.source + ' · ' + n.date + '</div>' +
+        '<h3 style="font-size:15px;margin-bottom:8px;line-height:1.35">' + n.title + '</h3>' +
+        (n.desc ? '<p style="font-size:13px;margin-bottom:12px">' + n.desc + '</p>' : '') +
+        '<a href="' + n.url + '" target="_blank" rel="noopener" class="card-plain">Read →</a>' +
+      '</div>';
+    }).join("");
+}
+
+aiwsRenderBM();
+aiwModeSite("companies");
 
 init();
 </script>
