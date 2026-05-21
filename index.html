@@ -644,12 +644,25 @@
   </div>
 
   <!-- Vertical tabs -->
-  <div id="aiw-tabs-site" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
-    <button onclick="aiwTabSite('healthcare')" id="aiws-healthcare" class="aiw-site-tab aiw-site-active">🏥 Healthcare</button>
+  <div id="aiw-tabs-site" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">
+    <button onclick="aiwTabSite('foundation')" id="aiws-foundation" class="aiw-site-tab aiw-site-active">🧠 Foundation</button>
+    <button onclick="aiwTabSite('healthcare')" id="aiws-healthcare" class="aiw-site-tab">🏥 Healthcare</button>
     <button onclick="aiwTabSite('fintech')"    id="aiws-fintech"    class="aiw-site-tab">💰 Fintech</button>
     <button onclick="aiwTabSite('legal')"      id="aiws-legal"      class="aiw-site-tab">⚖️ Legal</button>
     <button onclick="aiwTabSite('climate')"    id="aiws-climate"    class="aiw-site-tab">🌱 Climate</button>
     <button onclick="aiwTabSite('edtech')"     id="aiws-edtech"     class="aiw-site-tab">📚 EdTech</button>
+    <button onclick="aiwTabSite('retail')"     id="aiws-retail"     class="aiw-site-tab">🛒 Retail</button>
+    <button onclick="aiwTabSite('hr')"         id="aiws-hr"         class="aiw-site-tab">👥 HR</button>
+    <button onclick="aiwTabSite('security')"   id="aiws-security"   class="aiw-site-tab">🔐 Security</button>
+    <button onclick="aiwTabSite('creative')"   id="aiws-creative"   class="aiw-site-tab">🎨 Creative</button>
+  </div>
+
+  <!-- Country filter -->
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px" id="aiws-country-row">
+    <button onclick="aiwSetCountry('')"    id="aiws-cc-all" class="aiw-site-tab aiw-site-active" style="font-size:12px;padding:4px 12px">🌐 All</button>
+    <button onclick="aiwSetCountry('GB')"  id="aiws-cc-GB"  class="aiw-site-tab" style="font-size:12px;padding:4px 12px">🇬🇧 UK</button>
+    <button onclick="aiwSetCountry('US')"  id="aiws-cc-US"  class="aiw-site-tab" style="font-size:12px;padding:4px 12px">🇺🇸 US</button>
+    <button onclick="aiwSetCountry('EU')"  id="aiws-cc-EU"  class="aiw-site-tab" style="font-size:12px;padding:4px 12px">🇪🇺 Europe</button>
   </div>
 
   <!-- Companies / News toggle -->
@@ -660,9 +673,9 @@
       style="padding:7px 20px;border-radius:8px;border:none;font-size:13px;font-weight:700;cursor:pointer;background:transparent;color:#888;transition:all .15s">News</button>
   </div>
 
-  <!-- Bookmarked strip -->
+  <!-- Bookmarked strip — shows research cards automatically -->
   <div id="aiws-bookmarks-strip" style="display:none;margin-bottom:18px;background:#faf5ff;border:1px solid #e9d5ff;border-radius:16px;padding:14px 18px">
-    <div style="font-size:11px;font-weight:800;color:#7c3aed;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px">⭐ Saved for research</div>
+    <div style="font-size:11px;font-weight:800;color:#7c3aed;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px">⭐ Your watchlist</div>
     <div id="aiws-bookmarks-list"></div>
   </div>
 
@@ -2799,7 +2812,7 @@ function filterModels(dimension, value, btn) {
 renderModels();
 
 /* ── AI Watch ── */
-var _aiwsV = "healthcare", _aiwsMode = "companies";
+var _aiwsV = "foundation", _aiwsMode = "companies", _aiwsCC = "";
 var _aiwsCoCache = {}, _aiwsNewsCache = {};
 
 function _aiwsBM() { try { return JSON.parse(localStorage.getItem("aiw_bookmarks") || "[]"); } catch(_) { return []; } }
@@ -3012,21 +3025,83 @@ function aiwsRenderBM() {
   var list  = document.getElementById("aiws-bookmarks-list");
   if (!strip || !list) return;
   strip.style.display = bm.length ? "block" : "none";
+  if (!bm.length) return;
+
+  // Render card shells with shimmer; auto-fetch basic research for each
   list.innerHTML = bm.map(function(name) {
     var key = name.replace(/[^a-z0-9]/gi, "_");
-    return '<div>' +
-      '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0;border-top:1px solid #ede9fe">' +
-        '<span style="font-size:14px;font-weight:700;color:#1e1b4b">' + name + '</span>' +
-        '<div style="display:flex;gap:8px">' +
-          '<button onclick="aiwsResearch(\'' + name.replace(/'/g,"\\'") + '\',\'bm_' + key + '\')" ' +
-            'style="font-size:12px;font-weight:700;color:#4f46e5;background:#eef2ff;border:1px solid #c7d2fe;border-radius:99px;padding:5px 12px;cursor:pointer">Research ↓</button>' +
+    return '<div style="border-top:1px solid #e9d5ff;padding:12px 0">' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px">' +
+        '<span style="font-size:15px;font-weight:800;color:#1e1b4b">' + name + '</span>' +
+        '<div style="display:flex;gap:8px;align-items:center">' +
+          '<button id="aiws-bm-deep-' + key + '" onclick="aiwsDeepAnalysis(\'' + name.replace(/'/g,"\\'") + '\',\'bm_' + key + '\')" ' +
+            'style="font-size:11px;font-weight:700;color:#fff;background:#111;border:none;border-radius:99px;padding:4px 11px;cursor:pointer">Deep ↓</button>' +
           '<button onclick="aiwsToggleBM(\'' + name.replace(/'/g,"\\'") + '\')" ' +
-            'style="font-size:12px;color:#7c3aed;background:none;border:none;cursor:pointer">✕</button>' +
+            'style="font-size:12px;color:#9ca3af;background:none;border:none;cursor:pointer">✕</button>' +
         '</div>' +
       '</div>' +
-      '<div id="aiws-panel-bm_' + key + '" style="max-height:0;overflow:hidden;opacity:0;transition:max-height .45s cubic-bezier(.4,0,.2,1),opacity .3s ease .1s"></div>' +
+      '<div id="aiws-bm-brief-' + key + '">' +
+        '<div style="height:9px;border-radius:3px;background:#e9d5ff;margin-bottom:6px;width:85%"></div>' +
+        '<div style="height:9px;border-radius:3px;background:#e9d5ff;margin-bottom:6px;width:70%"></div>' +
+        '<div style="height:9px;border-radius:3px;background:#e9d5ff;width:55%"></div>' +
+      '</div>' +
+      '<div id="aiws-panel-bm_' + key + '" style="overflow:hidden"></div>' +
     '</div>';
   }).join("");
+
+  // Auto-fetch basic brief for each bookmark
+  bm.forEach(function(name) {
+    var key = name.replace(/[^a-z0-9]/gi, "_");
+    var el = document.getElementById("aiws-bm-brief-" + key);
+    if (!el) return;
+    if (_aiwsResearchCache[name]) {
+      _aiwsRenderBmBrief(el, _aiwsResearchCache[name], name, key);
+      return;
+    }
+    fetch("https://miru.humanagency.co/api/brand/basic?name=" + encodeURIComponent(name))
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        _aiwsResearchCache[name] = d;
+        _aiwsRenderBmBrief(el, d, name, key);
+      })
+      .catch(function(){ el.innerHTML = '<span style="font-size:12px;color:#9ca3af">Could not load</span>'; });
+  });
+}
+
+function _aiwsRenderBmBrief(el, d, name, key) {
+  var extract = d.extract || d.summary || d.description || "";
+  var news    = d.news || [];
+  var html = "";
+  if (extract) {
+    var sents = extract.match(/[^.!?]+[.!?]+/g) || [extract];
+    html += '<p style="font-size:12px;color:#374151;line-height:1.6;margin:0 0 8px">' + sents.slice(0,2).join(" ").trim() + '</p>';
+  }
+  if (d.founded || d.hq || d.industry) {
+    html += '<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px">';
+    if (d.founded)  html += '<span style="font-size:10px;color:#6b7280;background:#f3e8ff;border-radius:99px;padding:2px 8px">📅 ' + d.founded + '</span>';
+    if (d.hq)       html += '<span style="font-size:10px;color:#6b7280;background:#f3e8ff;border-radius:99px;padding:2px 8px">📍 ' + d.hq + '</span>';
+    if (d.industry) html += '<span style="font-size:10px;color:#6b7280;background:#f3e8ff;border-radius:99px;padding:2px 8px">' + d.industry + '</span>';
+    html += '</div>';
+  }
+  if (news.length) {
+    html += '<div style="display:flex;flex-direction:column;gap:5px">';
+    news.slice(0,2).forEach(function(n){
+      html += '<a href="' + n.url + '" target="_blank" rel="noopener" style="font-size:11px;color:#4f46e5;line-height:1.45;text-decoration:none">' + n.title + ' →</a>';
+    });
+    html += '</div>';
+  }
+  if (!html) html = '<span style="font-size:12px;color:#9ca3af">No data found</span>';
+  el.innerHTML = html;
+
+  // If deep analysis already cached, render it too
+  if (_aiwsDeepCache[name]) {
+    var deepEl = document.getElementById("aiws-panel-bm_" + key);
+    if (deepEl && !deepEl._showing) {
+      _aiwsRenderDeep(deepEl, _aiwsDeepCache[name], name, "bm_" + key);
+      var btn = document.getElementById("aiws-bm-deep-" + key);
+      if (btn) btn.textContent = "Deep ↑";
+    }
+  }
 }
 
 function aiwTabSite(v) {
@@ -3034,8 +3109,27 @@ function aiwTabSite(v) {
   document.querySelectorAll(".aiw-site-tab").forEach(function(b){ b.classList.remove("aiw-site-active"); });
   var btn = document.getElementById("aiws-" + v);
   if (btn) btn.classList.add("aiw-site-active");
+  // Re-highlight country button
+  document.querySelectorAll("[id^='aiws-cc-']").forEach(function(b){ b.classList.remove("aiw-site-active"); });
+  var ccBtn = document.getElementById("aiws-cc-" + (_aiwsCC || "all"));
+  if (ccBtn) ccBtn.classList.add("aiw-site-active");
   aiwModeSite(_aiwsMode, true);
 }
+
+window.aiwSetCountry = function(cc) {
+  _aiwsCC = cc;
+  document.querySelectorAll("[id^='aiws-cc-']").forEach(function(b){ b.classList.remove("aiw-site-active"); });
+  var ccBtn = document.getElementById("aiws-cc-" + (cc || "all"));
+  if (ccBtn) ccBtn.classList.add("aiw-site-active");
+  // Filter cached companies client-side (no refetch needed)
+  var all = _aiwsCoCache[_aiwsV];
+  if (all) {
+    var filtered = cc ? all.filter(function(c){ return c.cc === cc; }) : all;
+    aiwsRenderCo(filtered);
+  } else {
+    aiwModeSite("companies", true);
+  }
+};
 
 function aiwModeSite(mode, force) {
   _aiwsMode = mode;
@@ -3043,12 +3137,20 @@ function aiwModeSite(mode, force) {
   if (cm) { cm.style.background = mode === "companies" ? "#111" : "transparent"; cm.style.color = mode === "companies" ? "#fff" : "#888"; }
   if (nm) { nm.style.background = mode === "news"      ? "#111" : "transparent"; nm.style.color = mode === "news"      ? "#fff" : "#888"; }
   if (mode === "companies") {
-    if (!force && _aiwsCoCache[_aiwsV]) { aiwsRenderCo(_aiwsCoCache[_aiwsV]); return; }
+    if (!force && _aiwsCoCache[_aiwsV]) {
+      var all = _aiwsCoCache[_aiwsV];
+      aiwsRenderCo(_aiwsCC ? all.filter(function(c){ return c.cc === _aiwsCC; }) : all);
+      return;
+    }
     var el = document.getElementById("aiw-site-cards");
     if (el) el.innerHTML = '<p style="color:#999;padding:24px 0;font-size:14px">Loading…</p>';
     fetch("https://miru.humanagency.co/api/intel/verticals?v=" + _aiwsV)
       .then(function(r){ return r.json(); })
-      .then(function(d){ _aiwsCoCache[_aiwsV] = d.companies || []; aiwsRenderCo(_aiwsCoCache[_aiwsV]); })
+      .then(function(d){
+        _aiwsCoCache[_aiwsV] = d.companies || [];
+        var filtered = _aiwsCC ? _aiwsCoCache[_aiwsV].filter(function(c){ return c.cc === _aiwsCC; }) : _aiwsCoCache[_aiwsV];
+        aiwsRenderCo(filtered);
+      })
       .catch(function(){ var el=document.getElementById("aiw-site-cards"); if(el) el.innerHTML='<p style="color:#999;font-size:14px">Could not load</p>'; });
   } else {
     if (!force && _aiwsNewsCache[_aiwsV]) { aiwsRenderNews(_aiwsNewsCache[_aiwsV]); return; }
@@ -3106,7 +3208,7 @@ function aiwsRenderNews(items) {
 }
 
 aiwsRenderBM();
-aiwModeSite("companies");
+aiwTabSite("foundation");
 
 init();
 </script>
