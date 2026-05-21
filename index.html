@@ -2808,10 +2808,108 @@ function _aiwsSaveBM(a) { localStorage.setItem("aiw_bookmarks", JSON.stringify(a
 window.aiwsToggleBM = function(name) {
   var bm = _aiwsBM(), idx = bm.indexOf(name);
   if (idx >= 0) bm.splice(idx, 1); else bm.push(name);
+  var saved = idx < 0;
   _aiwsSaveBM(bm);
   aiwsRenderBM();
-  if (_aiwsMode === "companies" && _aiwsCoCache[_aiwsV]) aiwsRenderCo(_aiwsCoCache[_aiwsV]);
+  // Update star in card inline (avoids re-rendering the whole list which closes open panels)
+  var key = name.replace(/[^a-z0-9]/gi, "_");
+  var star = document.getElementById("aiws-star-" + key);
+  if (star) {
+    star.textContent = saved ? "⭐" : "☆";
+    star.style.opacity = saved ? "1" : "0.3";
+    star.style.transform = "scale(1.3)";
+    setTimeout(function() { if (star) star.style.transform = "scale(1)"; }, 200);
+  }
+  // Update panel bookmark button if panel is open
+  var pbm = document.getElementById("aiws-panel-bm-" + key);
+  if (pbm) {
+    pbm.textContent = saved ? "⭐ Saved" : "☆ Save";
+    pbm.style.background = saved ? "#f5f3ff" : "transparent";
+    pbm.style.border = saved ? "1.5px solid #7c3aed" : "1.5px dashed #c4b5fd";
+  }
 };
+
+var _aiwsResearchCache = {};
+
+window.aiwsResearch = function(name, key) {
+  key = key || name.replace(/[^a-z0-9]/gi, "_");
+  var panel = document.getElementById("aiws-panel-" + key);
+  if (!panel) return;
+
+  // Toggle closed if already open
+  if (panel.style.maxHeight && panel.style.maxHeight !== "0px" && panel.style.maxHeight !== "0") {
+    panel.style.maxHeight = "0";
+    panel.style.opacity = "0";
+    var btn = document.getElementById("aiws-res-btn-" + key);
+    if (btn) btn.textContent = "Research ↓";
+    return;
+  }
+
+  // Shimmer while loading
+  panel.innerHTML = '<div style="margin-top:12px;border-top:1px solid #e5e7eb;padding-top:12px">' +
+    '<div style="height:11px;border-radius:4px;background:#e5e7eb;margin-bottom:8px;width:82%"></div>' +
+    '<div style="height:11px;border-radius:4px;background:#e5e7eb;margin-bottom:8px;width:96%"></div>' +
+    '<div style="height:11px;border-radius:4px;background:#e5e7eb;width:58%"></div>' +
+    '</div>';
+  panel.style.maxHeight = "300px";
+  panel.style.opacity = "1";
+  var btn = document.getElementById("aiws-res-btn-" + key);
+  if (btn) btn.textContent = "Research ↑";
+
+  if (_aiwsResearchCache[name]) {
+    _aiwsRenderResPanel(panel, _aiwsResearchCache[name], name, key);
+    return;
+  }
+
+  fetch("https://miru.humanagency.co/api/brand/basic?company=" + encodeURIComponent(name))
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      _aiwsResearchCache[name] = d;
+      _aiwsRenderResPanel(panel, d, name, key);
+    })
+    .catch(function() {
+      panel.innerHTML = '<div style="margin-top:12px;border-top:1px solid #e5e7eb;padding-top:10px;font-size:13px;color:#ef4444">Could not load — check connection.</div>';
+    });
+};
+
+function _aiwsRenderResPanel(panel, d, name, key) {
+  var extract = d.extract || d.summary || "";
+  var meta    = d.meta || {};
+  var news    = d.news || [];
+  var saved   = _aiwsBM().indexOf(name) >= 0;
+
+  var html = '<div style="margin-top:12px;border-top:1px solid #e5e7eb;padding-top:12px">';
+
+  if (extract) {
+    var sents = extract.match(/[^.!?]+[.!?]+/g) || [extract];
+    html += '<p style="font-size:13px;color:#374151;line-height:1.6;margin-bottom:10px">' + sents.slice(0, 2).join(" ").trim() + '</p>';
+  }
+
+  if (meta.founded || meta.hq || meta.industry) {
+    html += '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">';
+    if (meta.founded)  html += '<span style="font-size:11px;color:#6b7280;background:#f9fafb;border:1px solid #e5e7eb;border-radius:99px;padding:3px 9px">📅 ' + meta.founded + '</span>';
+    if (meta.hq)       html += '<span style="font-size:11px;color:#6b7280;background:#f9fafb;border:1px solid #e5e7eb;border-radius:99px;padding:3px 9px">📍 ' + meta.hq + '</span>';
+    if (meta.industry) html += '<span style="font-size:11px;color:#6b7280;background:#f9fafb;border:1px solid #e5e7eb;border-radius:99px;padding:3px 9px">' + meta.industry + '</span>';
+    html += '</div>';
+  }
+
+  if (news.length) {
+    html += '<div style="display:flex;flex-direction:column;gap:7px;margin-bottom:12px">';
+    news.slice(0, 2).forEach(function(n) {
+      html += '<a href="' + n.url + '" target="_blank" rel="noopener" style="font-size:12px;color:#4f46e5;line-height:1.45;text-decoration:none">' + n.title + ' →</a>';
+    });
+    html += '</div>';
+  }
+
+  html += '<button onclick="aiwsToggleBM(\'' + name.replace(/'/g,"\\'") + '\')" id="aiws-panel-bm-' + key + '" ' +
+    'style="font-size:12px;font-weight:700;padding:7px 14px;border-radius:99px;cursor:pointer;' +
+    (saved ? 'background:#f5f3ff;border:1.5px solid #7c3aed;color:#7c3aed">' + '⭐ Saved' : 'background:transparent;border:1.5px dashed #c4b5fd;color:#7c3aed">☆ Save this company') +
+    '</button>';
+
+  html += '</div>';
+  panel.innerHTML = html;
+  panel.style.maxHeight = "600px";
+}
 
 function aiwsRenderBM() {
   var bm = _aiwsBM();
@@ -2820,14 +2918,18 @@ function aiwsRenderBM() {
   if (!strip || !list) return;
   strip.style.display = bm.length ? "block" : "none";
   list.innerHTML = bm.map(function(name) {
-    return '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0;border-top:1px solid #ede9fe">' +
-      '<span style="font-size:14px;font-weight:700;color:#1e1b4b">' + name + '</span>' +
-      '<div style="display:flex;gap:8px">' +
-        '<a href="https://intel.humanagency.co/" target="_blank" rel="noopener" ' +
-          'style="font-size:12px;font-weight:700;color:#4f46e5;background:#eef2ff;border:1px solid #c7d2fe;border-radius:99px;padding:5px 12px;text-decoration:none">Research →</a>' +
-        '<button onclick="aiwsToggleBM(\'' + name.replace(/'/g,"\\'")+  '\')" ' +
-          'style="font-size:12px;color:#7c3aed;background:none;border:none;cursor:pointer">✕</button>' +
+    var key = name.replace(/[^a-z0-9]/gi, "_");
+    return '<div>' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0;border-top:1px solid #ede9fe">' +
+        '<span style="font-size:14px;font-weight:700;color:#1e1b4b">' + name + '</span>' +
+        '<div style="display:flex;gap:8px">' +
+          '<button onclick="aiwsResearch(\'' + name.replace(/'/g,"\\'") + '\',\'bm_' + key + '\')" ' +
+            'style="font-size:12px;font-weight:700;color:#4f46e5;background:#eef2ff;border:1px solid #c7d2fe;border-radius:99px;padding:5px 12px;cursor:pointer">Research ↓</button>' +
+          '<button onclick="aiwsToggleBM(\'' + name.replace(/'/g,"\\'") + '\')" ' +
+            'style="font-size:12px;color:#7c3aed;background:none;border:none;cursor:pointer">✕</button>' +
+        '</div>' +
       '</div>' +
+      '<div id="aiws-panel-bm_' + key + '" style="max-height:0;overflow:hidden;opacity:0;transition:max-height .45s cubic-bezier(.4,0,.2,1),opacity .3s ease .1s"></div>' +
     '</div>';
   }).join("");
 }
@@ -2870,20 +2972,22 @@ function aiwsRenderCo(companies) {
   var bm = _aiwsBM();
   el.innerHTML = companies.map(function(c) {
     var saved = bm.indexOf(c.name) >= 0;
-    return '<div class="card" style="cursor:default">' +
+    var key = c.name.replace(/[^a-z0-9]/gi, "_");
+    return '<div class="card" style="cursor:default" id="aiws-card-' + key + '">' +
       '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:4px">' +
         '<div class="card-icon" style="margin-bottom:0">' + (c.country || "🌐") + '</div>' +
-        '<button onclick="aiwsToggleBM(\'' + c.name.replace(/'/g,"\\'") + '\')" title="Save" ' +
-          'style="font-size:20px;background:none;border:none;cursor:pointer;opacity:' + (saved?'1':'0.3') + ';line-height:1;padding:0">' + (saved?'⭐':'☆') + '</button>' +
+        '<button onclick="aiwsToggleBM(\'' + c.name.replace(/'/g,"\\'") + '\')" id="aiws-star-' + key + '" title="Save" ' +
+          'style="font-size:20px;background:none;border:none;cursor:pointer;opacity:' + (saved?'1':'0.3') + ';line-height:1;padding:0;transition:transform .2s">' + (saved?'⭐':'☆') + '</button>' +
       '</div>' +
       (c.new ? '<div class="aiw-new-badge">NEW TO WATCH</div>' : '') +
       '<h3 style="margin-bottom:6px">' + c.name + '</h3>' +
       '<p>' + c.tagline + '</p>' +
       '<div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center">' +
         '<span style="font-size:11px;color:var(--muted);background:#f3f4f6;border-radius:99px;padding:2px 10px">' + (c.stage||"") + '</span>' +
-        '<a href="https://intel.humanagency.co/" target="_blank" rel="noopener" ' +
-          'style="font-size:12px;font-weight:700;color:#4f46e5;background:#eef2ff;border:1px solid #c7d2fe;border-radius:99px;padding:5px 12px;text-decoration:none">Research →</a>' +
+        '<button onclick="aiwsResearch(\'' + c.name.replace(/'/g,"\\'") + '\',\'' + key + '\')" id="aiws-res-btn-' + key + '" ' +
+          'style="font-size:12px;font-weight:700;color:#4f46e5;background:#eef2ff;border:1px solid #c7d2fe;border-radius:99px;padding:5px 12px;cursor:pointer">Research ↓</button>' +
       '</div>' +
+      '<div id="aiws-panel-' + key + '" style="max-height:0;overflow:hidden;opacity:0;transition:max-height .45s cubic-bezier(.4,0,.2,1),opacity .3s ease .1s"></div>' +
     '</div>';
   }).join("");
 }
