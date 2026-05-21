@@ -2872,11 +2872,22 @@ window.aiwsResearch = function(name, key) {
     });
 };
 
+function _aiwsResSection(label, content) {
+  if (!content || content === "Not publicly available") return "";
+  var body = Array.isArray(content)
+    ? content.map(function(c){ return '<div style="display:flex;gap:6px;padding:3px 0"><span style="color:#9ca3af">·</span><span style="font-size:12px;color:#374151;line-height:1.5">' + c + '</span></div>'; }).join("")
+    : '<div style="font-size:12px;color:#374151;line-height:1.6;margin-top:3px">' + content + '</div>';
+  return '<div style="background:#fafafa;border:1px solid #e5e7eb;border-radius:10px;padding:10px 12px;margin-bottom:8px">'
+    + '<div style="font-size:9px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:#9ca3af;margin-bottom:4px">' + label + '</div>'
+    + body + '</div>';
+}
+
 function _aiwsRenderResPanel(panel, d, name, key) {
   var extract = d.extract || d.summary || "";
   var meta    = d.meta || {};
   var news    = d.news || [];
   var saved   = _aiwsBM().indexOf(name) >= 0;
+  var safeName = name.replace(/'/g,"\\'");
 
   var html = '<div style="margin-top:12px;border-top:1px solid #e5e7eb;padding-top:12px">';
 
@@ -2901,14 +2912,98 @@ function _aiwsRenderResPanel(panel, d, name, key) {
     html += '</div>';
   }
 
-  html += '<button onclick="aiwsToggleBM(\'' + name.replace(/'/g,"\\'") + '\')" id="aiws-panel-bm-' + key + '" ' +
-    'style="font-size:12px;font-weight:700;padding:7px 14px;border-radius:99px;cursor:pointer;' +
-    (saved ? 'background:#f5f3ff;border:1.5px solid #7c3aed;color:#7c3aed">' + '⭐ Saved' : 'background:transparent;border:1.5px dashed #c4b5fd;color:#7c3aed">☆ Save this company') +
-    '</button>';
+  html += '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px">';
+  html += '<button onclick="aiwsToggleBM(\'' + safeName + '\')" id="aiws-panel-bm-' + key + '" '
+    + 'style="font-size:12px;font-weight:700;padding:7px 14px;border-radius:99px;cursor:pointer;'
+    + (saved ? 'background:#f5f3ff;border:1.5px solid #7c3aed;color:#7c3aed">⭐ Saved' : 'background:transparent;border:1.5px dashed #c4b5fd;color:#7c3aed">☆ Save')
+    + '</button>';
+  html += '<button id="aiws-deep-btn-' + key + '" onclick="aiwsDeepAnalysis(\'' + safeName + '\',\'' + key + '\')" '
+    + 'style="font-size:12px;font-weight:700;padding:7px 14px;border-radius:99px;cursor:pointer;background:#111;border:none;color:#fff">Deep Analysis ↓</button>';
+  html += '</div>';
 
+  html += '<div id="aiws-deep-' + key + '"></div>';
   html += '</div>';
   panel.innerHTML = html;
-  panel.style.maxHeight = "600px";
+  panel.style.maxHeight = "700px";
+}
+
+var _aiwsDeepCache = {};
+
+window.aiwsDeepAnalysis = async function(name, key) {
+  var container = document.getElementById("aiws-deep-" + key);
+  var btn = document.getElementById("aiws-deep-btn-" + key);
+  if (!container) return;
+
+  // Toggle off if already showing
+  if (container._showing) {
+    container.innerHTML = "";
+    container._showing = false;
+    if (btn) btn.textContent = "Deep Analysis ↓";
+    return;
+  }
+
+  if (btn) { btn.textContent = "Researching…"; btn.disabled = true; }
+
+  // Show shimmer while loading
+  container.innerHTML = '<div style="margin-top:12px">'
+    + ['80%','95%','65%','88%','72%'].map(function(w){
+        return '<div style="height:10px;border-radius:4px;background:#e5e7eb;margin-bottom:8px;width:'+w+'"></div>';
+      }).join("")
+    + '</div>';
+
+  if (_aiwsDeepCache[name]) {
+    _aiwsRenderDeep(container, _aiwsDeepCache[name], name, key);
+    return;
+  }
+
+  try {
+    var r = await fetch("https://miru.humanagency.co/api/intel/research", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ company: name })
+    });
+    var d = await r.json();
+    if (d.error) {
+      container.innerHTML = '<div style="font-size:13px;color:#ef4444;margin-top:10px">Could not load deep analysis — ' + d.error + '</div>';
+      if (btn) { btn.textContent = "Deep Analysis ↓"; btn.disabled = false; }
+      return;
+    }
+    _aiwsDeepCache[name] = d;
+    _aiwsRenderDeep(container, d, name, key);
+  } catch(e) {
+    container.innerHTML = '<div style="font-size:13px;color:#ef4444;margin-top:10px">Network error — check connection.</div>';
+    if (btn) { btn.textContent = "Deep Analysis ↓"; btn.disabled = false; }
+  }
+};
+
+function _aiwsRenderDeep(container, d, name, key) {
+  var btn = document.getElementById("aiws-deep-btn-" + key);
+  var html = '<div style="margin-top:14px;border-top:2px solid #111;padding-top:14px">';
+  html += '<div style="font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:#111;margin-bottom:10px">Deep Analysis</div>';
+
+  if (d.headline) {
+    html += '<div style="font-size:14px;font-weight:800;color:#111;line-height:1.4;margin-bottom:12px;letter-spacing:-.3px">' + d.headline + '</div>';
+  }
+
+  html += _aiwsResSection("Strategy",       d.strategy);
+  html += _aiwsResSection("Leadership",     d.leadership);
+  html += _aiwsResSection("Hiring signals", d.hiring_signals);
+  html += _aiwsResSection("AI focus",       d.ai_focus);
+  html += _aiwsResSection("Risks",          d.risks);
+  html += _aiwsResSection("Opportunity",    d.opportunity_angle);
+
+  if (d.confidence) {
+    var confColor = d.confidence === "high" ? "#16a34a" : d.confidence === "low" ? "#dc2626" : "#d97706";
+    html += '<div style="font-size:11px;color:' + confColor + ';margin-top:8px;font-weight:700">Confidence: ' + d.confidence + '</div>';
+  }
+
+  html += '</div>';
+  container.innerHTML = html;
+  container._showing = true;
+
+  var panel = container.closest("[id^='aiws-panel']");
+  if (panel) panel.style.maxHeight = "1200px";
+  if (btn) { btn.textContent = "Deep Analysis ↑"; btn.disabled = false; }
 }
 
 function aiwsRenderBM() {
