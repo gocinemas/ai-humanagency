@@ -2861,7 +2861,7 @@ window.aiwsResearch = function(name, key) {
     return;
   }
 
-  fetch("https://miru.humanagency.co/api/brand/basic?company=" + encodeURIComponent(name))
+  fetch("https://miru.humanagency.co/api/brand/basic?name=" + encodeURIComponent(name))
     .then(function(r) { return r.json(); })
     .then(function(d) {
       _aiwsResearchCache[name] = d;
