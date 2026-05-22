@@ -674,8 +674,8 @@
   </div>
 
   <!-- Bookmarked strip — shows research cards automatically -->
-  <div id="aiws-bookmarks-strip" style="display:none;margin-bottom:18px;background:#faf5ff;border:1px solid #e9d5ff;border-radius:16px;padding:14px 18px">
-    <div style="font-size:11px;font-weight:800;color:#7c3aed;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px">⭐ Your watchlist</div>
+  <div id="aiws-bookmarks-strip" style="display:none;margin-bottom:18px;background:#faf5ff;border:1px solid #e9d5ff;border-radius:16px;padding:10px 14px">
+    <div style="font-size:11px;font-weight:800;color:#7c3aed;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">⭐ Watchlist</div>
     <div id="aiws-bookmarks-list"></div>
   </div>
 
@@ -3027,46 +3027,56 @@ function aiwsRenderBM() {
   strip.style.display = bm.length ? "block" : "none";
   if (!bm.length) return;
 
-  // Render card shells with shimmer; auto-fetch basic research for each
-  list.innerHTML = bm.map(function(name) {
+  list.innerHTML = bm.map(function(name, i) {
     var key = name.replace(/[^a-z0-9]/gi, "_");
-    return '<div style="border-top:1px solid #e9d5ff;padding:12px 0">' +
-      '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px">' +
-        '<span style="font-size:15px;font-weight:800;color:#1e1b4b">' + name + '</span>' +
-        '<div style="display:flex;gap:8px;align-items:center">' +
-          '<button id="aiws-bm-deep-' + key + '" onclick="aiwsDeepAnalysis(\'' + name.replace(/'/g,"\\'") + '\',\'bm_' + key + '\')" ' +
-            'style="font-size:11px;font-weight:700;color:#fff;background:#111;border:none;border-radius:99px;padding:4px 11px;cursor:pointer">Deep ↓</button>' +
-          '<button onclick="aiwsToggleBM(\'' + name.replace(/'/g,"\\'") + '\')" ' +
-            'style="font-size:12px;color:#9ca3af;background:none;border:none;cursor:pointer">✕</button>' +
-        '</div>' +
+    var border = i > 0 ? "border-top:1px solid #e9d5ff;" : "";
+    return '<div style="' + border + 'padding:7px 0">' +
+      '<div style="display:flex;align-items:center;gap:8px">' +
+        '<button onclick="_aiwsBmToggleBrief(\'' + key + '\')" ' +
+          'id="aiws-bm-chevron-' + key + '" ' +
+          'style="font-size:11px;color:#7c3aed;background:none;border:none;cursor:pointer;padding:0;line-height:1;flex-shrink:0">▶</button>' +
+        '<span style="font-size:13px;font-weight:800;color:#1e1b4b;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + name + '</span>' +
+        '<button id="aiws-bm-deep-' + key + '" onclick="aiwsDeepAnalysis(\'' + name.replace(/'/g,"\\'") + '\',\'bm_' + key + '\')" ' +
+          'style="font-size:10px;font-weight:700;color:#fff;background:#111;border:none;border-radius:99px;padding:3px 9px;cursor:pointer;flex-shrink:0">Deep ↓</button>' +
+        '<button onclick="aiwsToggleBM(\'' + name.replace(/'/g,"\\'") + '\')" ' +
+          'style="font-size:12px;color:#9ca3af;background:none;border:none;cursor:pointer;flex-shrink:0;padding:0 2px">✕</button>' +
       '</div>' +
-      '<div id="aiws-bm-brief-' + key + '">' +
-        '<div style="height:9px;border-radius:3px;background:#e9d5ff;margin-bottom:6px;width:85%"></div>' +
-        '<div style="height:9px;border-radius:3px;background:#e9d5ff;margin-bottom:6px;width:70%"></div>' +
-        '<div style="height:9px;border-radius:3px;background:#e9d5ff;width:55%"></div>' +
+      '<div id="aiws-bm-expand-' + key + '" style="display:none;padding:8px 0 4px 18px">' +
+        '<div id="aiws-bm-brief-' + key + '"></div>' +
+        '<div id="aiws-panel-bm_' + key + '" style="overflow:hidden"></div>' +
       '</div>' +
-      '<div id="aiws-panel-bm_' + key + '" style="overflow:hidden"></div>' +
     '</div>';
   }).join("");
+}
 
-  // Auto-fetch basic brief for each bookmark
-  bm.forEach(function(name) {
-    var key = name.replace(/[^a-z0-9]/gi, "_");
+window._aiwsBmToggleBrief = function(key) {
+  var exp = document.getElementById("aiws-bm-expand-" + key);
+  var chev = document.getElementById("aiws-bm-chevron-" + key);
+  if (!exp) return;
+  var open = exp.style.display !== "none";
+  exp.style.display = open ? "none" : "block";
+  if (chev) chev.textContent = open ? "▶" : "▼";
+  if (!open) {
+    // Lazy-load brief on first open
     var el = document.getElementById("aiws-bm-brief-" + key);
-    if (!el) return;
+    if (!el || el.dataset.loaded) return;
+    el.dataset.loaded = "1";
+    // Find the name from the bookmark list
+    var bm = _aiwsBM();
+    var name = bm.find(function(n){ return n.replace(/[^a-z0-9]/gi,"_") === key; }) || "";
+    if (!name) return;
+    el.innerHTML = '<div style="height:8px;border-radius:3px;background:#e9d5ff;margin-bottom:5px;width:80%"></div>' +
+      '<div style="height:8px;border-radius:3px;background:#e9d5ff;width:60%"></div>';
     if (_aiwsResearchCache[name]) {
       _aiwsRenderBmBrief(el, _aiwsResearchCache[name], name, key);
       return;
     }
     fetch("https://miru.humanagency.co/api/brand/basic?name=" + encodeURIComponent(name))
       .then(function(r){ return r.json(); })
-      .then(function(d){
-        _aiwsResearchCache[name] = d;
-        _aiwsRenderBmBrief(el, d, name, key);
-      })
+      .then(function(d){ _aiwsResearchCache[name] = d; _aiwsRenderBmBrief(el, d, name, key); })
       .catch(function(){ el.innerHTML = '<span style="font-size:12px;color:#9ca3af">Could not load</span>'; });
-  });
-}
+  }
+};
 
 function _aiwsRenderBmBrief(el, d, name, key) {
   var extract = d.extract || d.summary || d.description || "";
@@ -3074,26 +3084,22 @@ function _aiwsRenderBmBrief(el, d, name, key) {
   var html = "";
   if (extract) {
     var sents = extract.match(/[^.!?]+[.!?]+/g) || [extract];
-    html += '<p style="font-size:12px;color:#374151;line-height:1.6;margin:0 0 8px">' + sents.slice(0,2).join(" ").trim() + '</p>';
+    html += '<p style="font-size:12px;color:#374151;line-height:1.55;margin:0 0 7px">' + sents.slice(0,2).join(" ").trim() + '</p>';
   }
   if (d.founded || d.hq || d.industry) {
-    html += '<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px">';
-    if (d.founded)  html += '<span style="font-size:10px;color:#6b7280;background:#f3e8ff;border-radius:99px;padding:2px 8px">📅 ' + d.founded + '</span>';
-    if (d.hq)       html += '<span style="font-size:10px;color:#6b7280;background:#f3e8ff;border-radius:99px;padding:2px 8px">📍 ' + d.hq + '</span>';
-    if (d.industry) html += '<span style="font-size:10px;color:#6b7280;background:#f3e8ff;border-radius:99px;padding:2px 8px">' + d.industry + '</span>';
+    html += '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:7px">';
+    if (d.founded)  html += '<span style="font-size:10px;color:#6b7280;background:#f3e8ff;border-radius:99px;padding:2px 7px">📅 ' + d.founded + '</span>';
+    if (d.hq)       html += '<span style="font-size:10px;color:#6b7280;background:#f3e8ff;border-radius:99px;padding:2px 7px">📍 ' + d.hq + '</span>';
+    if (d.industry) html += '<span style="font-size:10px;color:#6b7280;background:#f3e8ff;border-radius:99px;padding:2px 7px">' + d.industry + '</span>';
     html += '</div>';
   }
   if (news.length) {
-    html += '<div style="display:flex;flex-direction:column;gap:5px">';
     news.slice(0,2).forEach(function(n){
-      html += '<a href="' + n.url + '" target="_blank" rel="noopener" style="font-size:11px;color:#4f46e5;line-height:1.45;text-decoration:none">' + n.title + ' →</a>';
+      html += '<a href="' + n.url + '" target="_blank" rel="noopener" style="display:block;font-size:11px;color:#4f46e5;line-height:1.4;text-decoration:none;margin-bottom:4px">' + n.title + ' →</a>';
     });
-    html += '</div>';
   }
   if (!html) html = '<span style="font-size:12px;color:#9ca3af">No data found</span>';
   el.innerHTML = html;
-
-  // If deep analysis already cached, render it too
   if (_aiwsDeepCache[name]) {
     var deepEl = document.getElementById("aiws-panel-bm_" + key);
     if (deepEl && !deepEl._showing) {
