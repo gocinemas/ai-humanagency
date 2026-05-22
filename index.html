@@ -2854,7 +2854,7 @@ window.aiwsResearch = function(name, key) {
     panel.style.maxHeight = "0";
     panel.style.opacity = "0";
     var btn = document.getElementById("aiws-res-btn-" + key);
-    if (btn) btn.textContent = "Research ↓";
+    if (btn) btn.textContent = "Brief & News ↓";
     return;
   }
 
@@ -2864,10 +2864,10 @@ window.aiwsResearch = function(name, key) {
     '<div style="height:11px;border-radius:4px;background:#e5e7eb;margin-bottom:8px;width:96%"></div>' +
     '<div style="height:11px;border-radius:4px;background:#e5e7eb;width:58%"></div>' +
     '</div>';
-  panel.style.maxHeight = "300px";
+  panel.style.maxHeight = "600px";
   panel.style.opacity = "1";
   var btn = document.getElementById("aiws-res-btn-" + key);
-  if (btn) btn.textContent = "Research ↑";
+  if (btn) btn.textContent = "Brief & News ↑";
 
   if (_aiwsResearchCache[name]) {
     _aiwsRenderResPanel(panel, _aiwsResearchCache[name], name, key);
@@ -2896,31 +2896,47 @@ function _aiwsResSection(label, content) {
 }
 
 function _aiwsRenderResPanel(panel, d, name, key) {
-  var extract = d.extract || d.summary || "";
-  var meta    = d.meta || {};
-  var news    = d.news || [];
-  var saved   = _aiwsBM().indexOf(name) >= 0;
+  var extract  = d.extract || d.summary || "";
+  var news     = d.news || [];
+  var saved    = _aiwsBM().indexOf(name) >= 0;
   var safeName = name.replace(/'/g,"\\'");
+  var domain   = d.domain || "";
 
-  var html = '<div style="margin-top:12px;border-top:1px solid #e5e7eb;padding-top:12px">';
+  var html = '<div style="margin-top:12px;border-top:1px solid #e5e7eb;padding-top:14px">';
 
-  if (extract) {
-    var sents = extract.match(/[^.!?]+[.!?]+/g) || [extract];
-    html += '<p style="font-size:13px;color:#374151;line-height:1.6;margin-bottom:10px">' + sents.slice(0, 2).join(" ").trim() + '</p>';
+  // Website link (from API domain if not already on card)
+  if (domain) {
+    html += '<a href="https://' + domain + '" target="_blank" rel="noopener" '
+      + 'style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:#4f46e5;'
+      + 'background:#eef2ff;border:1px solid #c7d2fe;border-radius:99px;padding:4px 12px;text-decoration:none;margin-bottom:10px">'
+      + '🌐 ' + domain + ' →</a>';
   }
 
-  if (meta.founded || meta.hq || meta.industry) {
-    html += '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">';
-    if (meta.founded)  html += '<span style="font-size:11px;color:#6b7280;background:#f9fafb;border:1px solid #e5e7eb;border-radius:99px;padding:3px 9px">📅 ' + meta.founded + '</span>';
-    if (meta.hq)       html += '<span style="font-size:11px;color:#6b7280;background:#f9fafb;border:1px solid #e5e7eb;border-radius:99px;padding:3px 9px">📍 ' + meta.hq + '</span>';
-    if (meta.industry) html += '<span style="font-size:11px;color:#6b7280;background:#f9fafb;border:1px solid #e5e7eb;border-radius:99px;padding:3px 9px">' + meta.industry + '</span>';
+  // Meta chips
+  if (d.founded || d.hq || d.industry) {
+    html += '<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px">';
+    if (d.founded)  html += '<span style="font-size:11px;color:#6b7280;background:#f9fafb;border:1px solid #e5e7eb;border-radius:99px;padding:2px 9px">📅 ' + d.founded + '</span>';
+    if (d.hq)       html += '<span style="font-size:11px;color:#6b7280;background:#f9fafb;border:1px solid #e5e7eb;border-radius:99px;padding:2px 9px">📍 ' + d.hq + '</span>';
+    if (d.industry) html += '<span style="font-size:11px;color:#6b7280;background:#f9fafb;border:1px solid #e5e7eb;border-radius:99px;padding:2px 9px">' + d.industry + '</span>';
     html += '</div>';
   }
 
+  // About
+  if (extract) {
+    var sents = extract.match(/[^.!?]+[.!?]+/g) || [extract];
+    html += '<p style="font-size:12px;color:#374151;line-height:1.65;margin:0 0 12px">' + sents.slice(0, 2).join(" ").trim() + '</p>';
+  }
+
+  // News with source + date
   if (news.length) {
-    html += '<div style="display:flex;flex-direction:column;gap:7px;margin-bottom:12px">';
-    news.slice(0, 2).forEach(function(n) {
-      html += '<a href="' + n.url + '" target="_blank" rel="noopener" style="font-size:12px;color:#4f46e5;line-height:1.45;text-decoration:none">' + n.title + ' →</a>';
+    html += '<div style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#9ca3af;margin-bottom:7px">📰 In the news</div>';
+    html += '<div style="display:flex;flex-direction:column;gap:0;margin-bottom:12px">';
+    news.slice(0, 4).forEach(function(n) {
+      html += '<a href="' + (n.url||"#") + '" target="_blank" rel="noopener" '
+        + 'style="display:block;padding:8px 0;border-bottom:1px solid #f3f4f6;text-decoration:none">'
+        + '<div style="font-size:12px;color:#1e1b4b;line-height:1.45;font-weight:500;margin-bottom:3px">' + (n.title||"") + '</div>'
+        + '<div style="font-size:10px;color:#9ca3af">' + [n.source, n.date].filter(Boolean).join(' · ') + '</div>'
+        + '</a>';
     });
     html += '</div>';
   }
@@ -2928,7 +2944,7 @@ function _aiwsRenderResPanel(panel, d, name, key) {
   html += '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px">';
   html += '<button onclick="aiwsToggleBM(\'' + safeName + '\')" id="aiws-panel-bm-' + key + '" '
     + 'style="font-size:12px;font-weight:700;padding:7px 14px;border-radius:99px;cursor:pointer;'
-    + (saved ? 'background:#f5f3ff;border:1.5px solid #7c3aed;color:#7c3aed">⭐ Saved' : 'background:transparent;border:1.5px dashed #c4b5fd;color:#7c3aed">☆ Save')
+    + (saved ? 'background:#f5f3ff;border:1.5px solid #7c3aed;color:#7c3aed">⭐ Saved' : 'background:transparent;border:1.5px dashed #c4b5fd;color:#7c3aed">☆ Watch')
     + '</button>';
   html += '<button id="aiws-deep-btn-' + key + '" onclick="aiwsDeepAnalysis(\'' + safeName + '\',\'' + key + '\')" '
     + 'style="font-size:12px;font-weight:700;padding:7px 14px;border-radius:99px;cursor:pointer;background:#111;border:none;color:#fff">Deep Analysis ↓</button>';
@@ -3176,20 +3192,31 @@ function aiwsRenderCo(companies) {
   el.innerHTML = companies.map(function(c) {
     var saved = bm.indexOf(c.name) >= 0;
     var key = c.name.replace(/[^a-z0-9]/gi, "_");
+    var safeName = c.name.replace(/'/g,"\\'");
+    var websiteHtml = c.website
+      ? '<a href="https://' + c.website + '" target="_blank" rel="noopener" '
+        + 'style="font-size:11px;color:#6b7280;text-decoration:none;background:#f3f4f6;border-radius:99px;padding:2px 9px;flex-shrink:0" '
+        + 'onclick="event.stopPropagation()">🌐 ' + c.website + '</a>'
+      : '';
     return '<div class="card" style="cursor:default" id="aiws-card-' + key + '">' +
-      '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:4px">' +
-        '<div class="card-icon" style="margin-bottom:0">' + (c.country || "🌐") + '</div>' +
-        '<button onclick="aiwsToggleBM(\'' + c.name.replace(/'/g,"\\'") + '\')" id="aiws-star-' + key + '" title="Save" ' +
-          'style="font-size:20px;background:none;border:none;cursor:pointer;opacity:' + (saved?'1':'0.3') + ';line-height:1;padding:0;transition:transform .2s">' + (saved?'⭐':'☆') + '</button>' +
+      '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px">' +
+        '<div style="display:flex;align-items:center;gap:7px;min-width:0">' +
+          '<span style="font-size:18px;flex-shrink:0;line-height:1">' + (c.country || "🌐") + '</span>' +
+          '<div style="min-width:0">' +
+            (c.new ? '<div class="aiw-new-badge" style="margin-bottom:2px">NEW</div>' : '') +
+            '<h3 style="margin:0;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + c.name + '</h3>' +
+          '</div>' +
+        '</div>' +
+        '<button onclick="aiwsToggleBM(\'' + safeName + '\')" id="aiws-star-' + key + '" title="Watch" ' +
+          'style="font-size:18px;background:none;border:none;cursor:pointer;opacity:' + (saved?'1':'0.35') + ';line-height:1;padding:0;flex-shrink:0">' + (saved?'⭐':'☆') + '</button>' +
       '</div>' +
-      (c.new ? '<div class="aiw-new-badge">NEW TO WATCH</div>' : '') +
-      '<h3 style="margin-bottom:6px">' + c.name + '</h3>' +
-      '<p>' + c.tagline + '</p>' +
-      '<div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center">' +
-        '<span style="font-size:11px;color:var(--muted);background:#f3f4f6;border-radius:99px;padding:2px 10px">' + (c.stage||"") + '</span>' +
-        '<button onclick="aiwsResearch(\'' + c.name.replace(/'/g,"\\'") + '\',\'' + key + '\')" id="aiws-res-btn-' + key + '" ' +
-          'style="font-size:12px;font-weight:700;color:#4f46e5;background:#eef2ff;border:1px solid #c7d2fe;border-radius:99px;padding:5px 12px;cursor:pointer">Research ↓</button>' +
+      '<p style="font-size:13px;margin:0 0 10px;line-height:1.5">' + c.tagline + '</p>' +
+      '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:12px">' +
+        '<span style="font-size:11px;color:var(--muted);background:#f3f4f6;border-radius:99px;padding:2px 9px">' + (c.stage||"") + '</span>' +
+        websiteHtml +
       '</div>' +
+      '<button onclick="aiwsResearch(\'' + safeName + '\',\'' + key + '\')" id="aiws-res-btn-' + key + '" ' +
+        'style="width:100%;font-size:12px;font-weight:700;color:#4f46e5;background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:8px;cursor:pointer">Brief & News ↓</button>' +
       '<div id="aiws-panel-' + key + '" style="max-height:0;overflow:hidden;opacity:0;transition:max-height .45s cubic-bezier(.4,0,.2,1),opacity .3s ease .1s"></div>' +
     '</div>';
   }).join("");
