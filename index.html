@@ -3193,8 +3193,12 @@ function aiwsRenderCo(companies) {
     var saved = bm.indexOf(c.name) >= 0;
     var key = c.name.replace(/[^a-z0-9]/gi, "_");
     var safeName = c.name.replace(/'/g,"\\'");
-    // Website shown in expanded panel (from API domain) — not hardcoded on card to avoid wrong URLs
-    var websiteHtml = '';
+    var websiteHtml = c.website
+      ? '<a href="https://' + c.website + '" target="_blank" rel="noopener" '
+        + 'onclick="event.stopPropagation()" '
+        + 'style="font-size:11px;color:#6b7280;text-decoration:none;background:#f3f4f6;border-radius:99px;padding:2px 9px;flex-shrink:0;white-space:nowrap">'
+        + '🌐 ' + c.website + '</a>'
+      : '';
     return '<div class="card" style="cursor:default" id="aiws-card-' + key + '">' +
       '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px">' +
         '<div style="display:flex;align-items:center;gap:7px;min-width:0">' +
@@ -3208,8 +3212,9 @@ function aiwsRenderCo(companies) {
           'style="font-size:18px;background:none;border:none;cursor:pointer;opacity:' + (saved?'1':'0.35') + ';line-height:1;padding:0;flex-shrink:0">' + (saved?'⭐':'☆') + '</button>' +
       '</div>' +
       '<p style="font-size:13px;margin:0 0 10px;line-height:1.5">' + c.tagline + '</p>' +
-      '<div style="margin-bottom:12px">' +
+      '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:12px">' +
         '<span style="font-size:11px;color:var(--muted);background:#f3f4f6;border-radius:99px;padding:2px 9px">' + (c.stage||"") + '</span>' +
+        websiteHtml +
       '</div>' +
       '<button onclick="aiwsResearch(\'' + safeName + '\',\'' + key + '\')" id="aiws-res-btn-' + key + '" ' +
         'style="width:100%;font-size:12px;font-weight:700;color:#4f46e5;background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:8px;cursor:pointer">Brief & News ↓</button>' +
