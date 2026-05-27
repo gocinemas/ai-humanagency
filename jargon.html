@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Jargon Decoder — Human Agency</title>
+<meta name="description" content="25 AI terms. Plain English. No pretence.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #f9f8f6; --surface: #ffffff; --border: #ebebeb;
+  --text: #111111; --muted: #666666; --subtle: #aaaaaa;
+  --accent: #4f46e5;
+}
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+
+nav { border-bottom: 1px solid var(--border); background: var(--surface); position: sticky; top: 0; z-index: 100; }
+.nav-inner { max-width: 800px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+.nav-logo { font-size: 15px; font-weight: 800; letter-spacing: -0.4px; }
+.nav-logo .dot { color: var(--accent); }
+.nav-back { font-size: 13px; color: var(--muted); font-weight: 500; transition: color .15s; }
+.nav-back:hover { color: var(--text); }
+
+.hero { max-width: 800px; margin: 0 auto; padding: 64px 24px 32px; }
+.hero-tag { font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+.hero h1 { font-size: clamp(34px, 5vw, 52px); font-weight: 900; letter-spacing: -1.8px; line-height: 1.08; color: var(--text); margin-bottom: 10px; }
+.hero-sub { font-size: 16px; color: var(--muted); margin-bottom: 28px; line-height: 1.6; }
+.search-wrap { position: relative; max-width: 440px; }
+.search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--subtle); font-size: 15px; pointer-events: none; }
+.search-input { width: 100%; font-family: 'Inter', sans-serif; font-size: 15px; padding: 12px 16px 12px 42px; border: 2px solid var(--border); border-radius: 12px; background: var(--surface); color: var(--text); outline: none; transition: border-color .15s; }
+.search-input:focus { border-color: var(--accent); }
+.search-input::placeholder { color: var(--subtle); }
+
+.filters { max-width: 800px; margin: 0 auto; padding: 28px 24px 24px; display: flex; gap: 8px; flex-wrap: wrap; }
+.pill { font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; padding: 7px 16px; border-radius: 99px; border: 1.5px solid var(--border); background: var(--surface); color: var(--muted); cursor: pointer; transition: all .15s; }
+.pill:hover { border-color: #c7d2fe; color: var(--accent); }
+.pill.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+.terms { max-width: 800px; margin: 0 auto; padding: 0 24px 100px; }
+
+.term-row { border-bottom: 1px solid var(--border); }
+.terms > .term-row:first-child { border-top: 1px solid var(--border); }
+
+.term-header { display: flex; align-items: center; gap: 16px; padding: 20px 0; cursor: pointer; user-select: none; }
+.term-name { font-size: 17px; font-weight: 800; letter-spacing: -0.3px; color: var(--text); width: 170px; flex-shrink: 0; transition: color .15s; }
+.term-row:hover .term-name { color: var(--accent); }
+.term-oneliner { font-size: 14px; color: var(--muted); flex: 1; line-height: 1.5; }
+.term-badge { font-size: 10px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; padding: 3px 9px; border-radius: 99px; flex-shrink: 0; white-space: nowrap; }
+.badge-basics      { background: #dcfce7; color: #166534; }
+.badge-intermediate { background: #fef9c3; color: #854d0e; }
+.badge-advanced    { background: #ede9fe; color: #5b21b6; }
+.term-arrow { font-size: 13px; color: var(--subtle); flex-shrink: 0; transition: transform .2s ease; }
+.term-row.open .term-arrow { transform: rotate(90deg); color: var(--accent); }
+
+.term-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .25s ease; }
+.term-row.open .term-body { grid-template-rows: 1fr; }
+.term-body-inner { overflow: hidden; }
+.term-body-text { padding: 0 0 22px 186px; font-size: 15px; color: #444; line-height: 1.85; }
+
+.no-results { padding: 56px 0; text-align: center; font-size: 15px; color: var(--muted); }
+
+footer { border-top: 1px solid var(--border); background: var(--surface); }
+.footer-inner { max-width: 800px; margin: 0 auto; padding: 24px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.footer-inner p { font-size: 13px; color: var(--muted); }
+.footer-links { display: flex; gap: 20px; }
+.footer-links a { font-size: 13px; color: var(--muted); transition: color .15s; }
+.footer-links a:hover { color: var(--text); }
+
+@media (max-width: 600px) {
+  .term-oneliner { display: none; }
+  .term-name { width: auto; flex: 1; }
+  .term-body-text { padding: 0 0 20px 0; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">Human<span class="dot">.</span>Agency</a>
+    <a href="/" class="nav-back">← Back</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Jargon Decoder</div>
+  <h1>Every AI term.<br>Explained properly.</h1>
+  <p class="hero-sub">25 terms. Plain English. No pretence.</p>
+  <div class="search-wrap">
+    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input class="search-input" id="search" type="search" placeholder="Search 25 terms…" oninput="render()" autocomplete="off">
+  </div>
+</div>
+
+<div class="filters">
+  <button class="pill active" onclick="setFilter('all',this)">All 25</button>
+  <button class="pill" onclick="setFilter('basics',this)">Basics</button>
+  <button class="pill" onclick="setFilter('intermediate',this)">Intermediate</button>
+  <button class="pill" onclick="setFilter('advanced',this)">Advanced</button>
+</div>
+
+<div class="terms" id="terms"></div>
+
+<footer>
+  <div class="footer-inner">
+    <p>Human Agency · ai.humanagency.co</p>
+    <div class="footer-links">
+      <a href="/learn/">Learn →</a>
+      <a href="/start.html">Start Here →</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+let activeFilter = 'all';
+
+const terms = [
+  { word: "Prompt", level: "basics", oneliner: "What you type to get a response.", body: "Every message you send to an AI is a prompt. The quality of your prompt directly shapes the quality of the answer — a specific, clear prompt almost always beats a vague one. Think of it as a brief to a contractor: the clearer the brief, the better the work. 'Prompt engineering' is just the practice of getting better at this." },
+  { word: "Model", level: "basics", oneliner: "The AI engine doing the work.", body: "When you use ChatGPT, you're using a model called GPT-4. When you use Claude, you're using Anthropic's model. The model is the trained system — fed billions of words and learned to predict what comes next. Different models have different strengths and costs. The chat interface is the dashboard. The model is the engine." },
+  { word: "Hallucination", level: "basics", oneliner: "When AI confidently says something wrong.", body: "AI doesn't 'know' things the way you do. It predicts what a plausible response looks like — and sometimes that produces facts that sound right but aren't. A fake citation, a wrong date, a statistic that doesn't exist. This is the single most important limitation to understand. Always verify claims that matter." },
+  { word: "Context window", level: "basics", oneliner: "How much text an AI can read at once.", body: "Every model has a limit to how much it can process in one go. If your conversation is longer than the context window, the model can't see the earlier parts. Imagine reading a book but only being able to see 10 pages at a time — that's the context window. Starting a fresh conversation sometimes gives better results than a very long one." },
+  { word: "Token", level: "basics", oneliner: "The chunks AI uses to read and write text.", body: "AI doesn't read word by word. It reads in tokens — roughly mapping to words or word-parts. 'ChatGPT' is one token. 'I cannot' might be two. Tokens determine how much of a conversation fits in the context window and how much you're charged on paid APIs. A rule of thumb: 100 tokens is roughly 75 words." },
+  { word: "Generative AI", level: "basics", oneliner: "AI that creates new content — text, images, code.", body: "The previous wave of AI classified things: is this spam? will this customer churn? Generative AI creates something new. ChatGPT writes text. Midjourney generates images. GitHub Copilot writes code. The difference is like the gap between Shazam (identifies a song) and an app that composes a new one for you." },
+  { word: "LLM", level: "basics", oneliner: "Large Language Model — the tech behind text AI.", body: "An LLM is trained on enormous amounts of text — a large portion of the internet, books, code, conversations. It learns patterns in language and uses them to generate responses. Every major text AI (GPT-4, Claude, Gemini, Llama) is an LLM. 'Large' refers to the billions of parameters — the numerical values that encode what the model has learned." },
+  { word: "Agent", level: "intermediate", oneliner: "AI that takes actions, not just answers.", body: "A basic AI chat answers your question and stops. An agent takes the next step — search the web, run code, send an email, book a meeting. It can also plan: break a goal into steps and work through them. The difference between giving someone directions and handing them your car. Agents are why AI is shifting from chat to doing." },
+  { word: "System prompt", level: "intermediate", oneliner: "Hidden instructions that shape how an AI behaves.", body: "Before you type a word, the AI you're using has usually been given a system prompt by whoever built the product. It sets the persona, constraints, and rules. 'You are a helpful customer service agent. Never discuss competitors.' You never see it — but it shapes every response you get." },
+  { word: "Temperature", level: "intermediate", oneliner: "A dial controlling how creative or predictable AI is.", body: "Temperature (usually 0 to 1) controls how much randomness is introduced. Low = predictable, consistent. High = more creative, more surprising. For factual work like code or data extraction, keep it low. For brainstorming or creative writing, higher works better. Most chat interfaces handle this invisibly." },
+  { word: "RAG", level: "intermediate", oneliner: "Giving AI access to your own documents.", body: "Retrieval-Augmented Generation. Instead of relying on training data alone, the system retrieves relevant chunks of your documents and passes them to the model at query time. The model answers based on your files — not just what it was originally trained on. Like giving an analyst your company reports before asking a question, rather than expecting them to remember everything from memory." },
+  { word: "API", level: "intermediate", oneliner: "How you connect to AI from code or software.", body: "An API (Application Programming Interface) lets you send requests to an AI model programmatically — from your own code or application. Instead of typing into a chat box, you send a structured request and get a response back. This is how businesses build AI into their products. The chat interface disappears. The AI becomes a service behind the scenes." },
+  { word: "Fine-tuning", level: "intermediate", oneliner: "Training a model on your data to specialise it.", body: "Fine-tuning takes an existing model and continues training it on a specific dataset — your company tone, a specialist domain, a specific task format. The result behaves differently from the base model. More expensive and complex than prompting, but sometimes necessary. Like hiring a skilled professional and putting them through your company's induction programme." },
+  { word: "Multimodal", level: "intermediate", oneliner: "AI that handles more than just text.", body: "Early AI was text-in, text-out. Multimodal models handle images, audio, video — or any combination. GPT-4o can describe a photo. Claude can read a PDF with charts. The difference between a pen pal and a video call. This is what makes AI genuinely useful in everyday work — you're not limited to typing." },
+  { word: "Embeddings", level: "intermediate", oneliner: "Turning text into numbers so AI can compare meaning.", body: "To search documents meaningfully, AI converts text into lists of numbers (vectors). Documents with similar meaning end up with similar numbers — enabling semantic search: finding things by what they mean, not just by matching keywords. Think of it like GPS coordinates: cities close together have similar coordinates. Embeddings are the engine behind most AI-powered search." },
+  { word: "Prompt engineering", level: "intermediate", oneliner: "The practice of crafting prompts to get better outputs.", body: "There are patterns that consistently produce better AI responses — providing context, specifying a format, giving examples, assigning a role. Prompt engineering is the name for learning and applying these. It sounds more technical than it is. It's mostly about being specific and giving the model enough to work with. The skill transfers directly from knowing how to brief a colleague well." },
+  { word: "Copilot", level: "intermediate", oneliner: "An AI assistant built into software you already use.", body: "Microsoft Copilot is built into Word, Excel, Outlook, and Teams. More broadly, a copilot is any AI embedded in an existing tool — writing while you write, suggesting while you code. GitHub Copilot autocompletes code as you type. The assistant is inside your existing workflow, not a separate tab. Autocomplete, but for everything." },
+  { word: "Foundation model", level: "advanced", oneliner: "A massive pre-trained AI that others build on.", body: "GPT-4, Claude 3, Gemini, Llama — these are foundation models. Trained at enormous cost on vast data, they're the base layer of the AI ecosystem. Most AI products don't train from scratch — they use a foundation model and either fine-tune or prompt it. Think of it as an operating system. Most developers build applications on top of it, not their own OS." },
+  { word: "Inference", level: "advanced", oneliner: "Running a trained model to produce an answer.", body: "Training is when the model learns. Inference is when it's used — taking your input and generating a response. Every message you send to Claude or ChatGPT is inference. It requires significant compute, which is why AI APIs cost money per request. Training is writing the cookbook. Inference is cooking a meal from it." },
+  { word: "Training data", level: "advanced", oneliner: "The text and data a model learned from.", body: "LLMs are trained on enormous datasets — large portions of the internet, books, code, conversations. Training data shapes the model's knowledge and knowledge cutoff date. The model doesn't update automatically as the world changes — new training is expensive. Like everything a person read before a certain age: it shapes how they think, but the world keeps moving." },
+  { word: "Parameters", level: "advanced", oneliner: "The numerical weights inside a model that encode its knowledge.", body: "A model's parameters are the billions of numbers that result from training — encoding everything the model has learned. When people say 'a 7 billion parameter model,' this is what they mean. More parameters generally means more capability, but also more cost to run. Think of them like synaptic connections in a brain: more connections, more nuance." },
+  { word: "Transformer", level: "advanced", oneliner: "The architecture that powers modern AI.", body: "The Transformer is a neural network design from Google's 2017 paper 'Attention Is All You Need.' It's the architecture that makes LLMs work — specifically the attention mechanism that lets the model weigh the importance of different words in context. GPT, Claude, Gemini — all Transformer-based. Most modern AI traces back to this one paper." },
+  { word: "Neural network", level: "advanced", oneliner: "The layered computational structure AI is built on.", body: "A neural network is a system of connected nodes, loosely inspired by the brain. Data passes through layers, each transforming it slightly, until an output emerges. LLMs are a specific, very large type of neural network. 'Deep learning' refers to networks with many layers. Like an assembly line: each station does a small transformation, and something complex emerges from simple inputs." },
+  { word: "Vector database", level: "advanced", oneliner: "Storage for embeddings that enables fast similarity search.", body: "When you convert documents to embeddings, you need somewhere to store and search them efficiently. A vector database finds the vectors mathematically closest to your query — similarity in meaning rather than exact keyword matching. Pinecone, Weaviate, and Supabase Vector are common examples. It's the storage layer that makes RAG fast at scale." },
+  { word: "Context length", level: "advanced", oneliner: "The maximum tokens an AI can process in one request.", body: "Context length and context window are often used interchangeably. A model with a 200,000-token context can process roughly 150,000 words in one go — about two full novels. Longer context means more of a conversation held in memory, bigger documents analysed, more coherent long-form work. It's one of the fastest-improving specifications in the field." }
+];
+
+function badge(level) {
+  const map = { basics: ['badge-basics','Basics'], intermediate: ['badge-intermediate','Intermediate'], advanced: ['badge-advanced','Advanced'] };
+  const [cls, label] = map[level];
+  return `<span class="term-badge ${cls}">${label}</span>`;
+}
+
+function setFilter(f, el) {
+  activeFilter = f;
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  render();
+}
+
+function render() {
+  const q = (document.getElementById('search').value || '').toLowerCase();
+  const filtered = terms.filter(t => {
+    const matchLevel = activeFilter === 'all' || t.level === activeFilter;
+    const matchQ = !q || t.word.toLowerCase().includes(q) || t.oneliner.toLowerCase().includes(q) || t.body.toLowerCase().includes(q);
+    return matchLevel && matchQ;
+  });
+
+  const el = document.getElementById('terms');
+  if (!filtered.length) { el.innerHTML = '<div class="no-results">No terms match. Try a different search.</div>'; return; }
+
+  el.innerHTML = filtered.map((t, i) => `
+    <div class="term-row" id="tr-${i}">
+      <div class="term-header" onclick="toggle(${i})">
+        <span class="term-name">${t.word}</span>
+        <span class="term-oneliner">${t.oneliner}</span>
+        ${badge(t.level)}
+        <span class="term-arrow">›</span>
+      </div>
+      <div class="term-body">
+        <div class="term-body-inner">
+          <p class="term-body-text">${t.body}</p>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggle(i) {
+  document.getElementById('tr-' + i).classList.toggle('open');
+}
+
+render();
+</script>
+
+</body>
+</html>

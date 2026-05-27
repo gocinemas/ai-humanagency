@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Start Here — Human Agency</title>
+<meta name="description" content="No install. No credit card. Start using AI in 10 minutes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #f9f8f6; --surface: #ffffff; --border: #ebebeb;
+  --text: #111111; --muted: #666666; --subtle: #aaaaaa;
+  --accent: #4f46e5;
+}
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+
+nav { border-bottom: 1px solid var(--border); background: var(--surface); position: sticky; top: 0; z-index: 100; }
+.nav-inner { max-width: 700px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+.nav-logo { font-size: 15px; font-weight: 800; letter-spacing: -0.4px; }
+.nav-logo .dot { color: var(--accent); }
+.nav-back { font-size: 13px; color: var(--muted); font-weight: 500; transition: color .15s; }
+.nav-back:hover { color: var(--text); }
+
+.hero { max-width: 700px; margin: 0 auto; padding: 64px 24px 56px; border-bottom: 1px solid var(--border); }
+.hero-tag { font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+.hero h1 { font-size: clamp(30px, 5vw, 44px); font-weight: 900; letter-spacing: -1.5px; line-height: 1.1; color: var(--text); margin-bottom: 14px; }
+.hero-note { font-size: 15px; color: var(--muted); line-height: 1.75; max-width: 520px; }
+.hero-note strong { color: var(--text); font-weight: 600; }
+
+.steps { max-width: 700px; margin: 0 auto; padding: 0 24px; }
+
+.step { padding: 48px 0; border-bottom: 1px solid var(--border); display: flex; gap: 32px; align-items: flex-start; }
+.step-num { font-size: 13px; font-weight: 800; color: var(--subtle); letter-spacing: 0.5px; padding-top: 3px; flex-shrink: 0; width: 28px; }
+.step-body { flex: 1; min-width: 0; }
+.step-title { font-size: 22px; font-weight: 900; letter-spacing: -0.6px; color: var(--text); margin-bottom: 10px; line-height: 1.2; }
+.step-desc { font-size: 15px; color: var(--muted); line-height: 1.75; margin-bottom: 20px; }
+.step-desc strong { color: var(--text); font-weight: 600; }
+
+.tool-buttons { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+.tool-btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 12px; border: 2px solid var(--border); background: var(--surface); font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700; color: var(--text); cursor: pointer; transition: all .15s; text-decoration: none; }
+.tool-btn:hover { border-color: #c7d2fe; color: var(--accent); background: #fafafe; }
+.tool-btn.primary { background: var(--accent); color: white; border-color: var(--accent); }
+.tool-btn.primary:hover { background: #4338ca; border-color: #4338ca; color: white; }
+.tool-note { font-size: 12px; color: var(--subtle); }
+
+.prompt-box { background: var(--surface); border: 2px solid var(--border); border-radius: 14px; padding: 20px; cursor: pointer; transition: border-color .15s; position: relative; }
+.prompt-box:hover { border-color: #c7d2fe; }
+.prompt-box.copied { border-color: #059669; background: #f0fdf4; }
+.prompt-label { font-size: 10px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--subtle); margin-bottom: 10px; }
+.prompt-text { font-size: 15px; color: var(--text); line-height: 1.75; font-style: italic; }
+.prompt-text em { font-style: normal; color: var(--subtle); }
+.copy-hint { font-size: 12px; color: var(--muted); margin-top: 12px; display: flex; align-items: center; gap: 5px; }
+.prompt-box.copied .copy-hint { color: #059669; }
+
+.next-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.next-item { display: flex; gap: 12px; align-items: flex-start; font-size: 15px; color: var(--muted); line-height: 1.6; }
+.next-item::before { content: "→"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+
+.deeper { max-width: 700px; margin: 0 auto; padding: 48px 24px 80px; }
+.deeper-label { font-size: 13px; font-weight: 700; color: var(--muted); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.6px; }
+.deeper-links { display: flex; gap: 12px; flex-wrap: wrap; }
+.deeper-link { display: inline-flex; align-items: center; gap: 6px; padding: 12px 20px; border-radius: 12px; border: 1.5px solid var(--border); background: var(--surface); font-size: 14px; font-weight: 700; color: var(--text); transition: all .15s; }
+.deeper-link:hover { border-color: #c7d2fe; color: var(--accent); }
+.deeper-link.accent { background: var(--accent); color: white; border-color: var(--accent); }
+.deeper-link.accent:hover { background: #4338ca; border-color: #4338ca; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">Human<span class="dot">.</span>Agency</a>
+    <a href="/" class="nav-back">← Back</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Start Here</div>
+  <h1>No install.<br>No credit card.<br>Open a browser.</h1>
+  <p class="hero-note">I build AI tools used by real people every day. When someone asks where to start — this is what I tell them. <strong>You are 10 minutes away from your first useful result.</strong></p>
+</div>
+
+<div class="steps">
+
+  <div class="step">
+    <div class="step-num">01</div>
+    <div class="step-body">
+      <div class="step-title">Pick a tool</div>
+      <p class="step-desc">Both are free to start. Both work in any browser. <strong>Claude</strong> is sharper for writing and reasoning. <strong>ChatGPT</strong> is more widely known. Either is fine — you can try both later.</p>
+      <div class="tool-buttons">
+        <a href="https://claude.ai" target="_blank" rel="noopener" class="tool-btn primary">Claude →</a>
+        <a href="https://chatgpt.com" target="_blank" rel="noopener" class="tool-btn">ChatGPT →</a>
+      </div>
+      <p class="tool-note">Sign up with your Google account. Takes 30 seconds.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">02</div>
+    <div class="step-body">
+      <div class="step-title">Send your first message</div>
+      <p class="step-desc">Don't overthink it. Copy this prompt, paste it, and replace the bracketed part with something real from your life or work.</p>
+      <div class="prompt-box" id="prompt-box" onclick="copyPrompt()">
+        <div class="prompt-label">Tap to copy</div>
+        <div class="prompt-text">Help me think through a problem I'm working on. Here's the situation: <em>[describe what you're trying to figure out].</em> What questions should I be asking, and what are the key things to consider?</div>
+        <div class="copy-hint" id="copy-hint">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Click anywhere to copy
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">03</div>
+    <div class="step-body">
+      <div class="step-title">Keep exploring</div>
+      <p class="step-desc">There is no wrong question. Here are four things to try in your first session:</p>
+      <ul class="next-list">
+        <li class="next-item">Paste an email and ask it to write a clear, professional reply</li>
+        <li class="next-item">Ask it to explain something you've always found confusing — in plain English</li>
+        <li class="next-item">Paste a long document and ask for a 3-bullet summary</li>
+        <li class="next-item">Ask "what are you actually good at?" and see what it says</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<div class="deeper">
+  <div class="deeper-label">Ready to go further?</div>
+  <div class="deeper-links">
+    <a href="/learn/" class="deeper-link accent">Learn AI basics →</a>
+    <a href="/jargon.html" class="deeper-link">Decode the jargon →</a>
+    <a href="/" class="deeper-link">All tools →</a>
+  </div>
+</div>
+
+<script>
+function copyPrompt() {
+  const text = "Help me think through a problem I'm working on. Here's the situation: [describe what you're trying to figure out]. What questions should I be asking, and what are the key things to consider?";
+  navigator.clipboard.writeText(text).then(() => {
+    const box = document.getElementById('prompt-box');
+    const hint = document.getElementById('copy-hint');
+    box.classList.add('copied');
+    hint.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copied — paste it into Claude or ChatGPT';
+    setTimeout(() => { box.classList.remove('copied'); hint.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"/></svg> Click anywhere to copy'; }, 3000);
+  });
+}
+</script>
+
+</body>
+</html>
