@@ -152,6 +152,7 @@
     .article-source { font-size:11px; font-weight:700; color:var(--accent); background:#eef2ff; padding:3px 8px; border-radius:99px; white-space:nowrap; flex-shrink:0; min-width:80px; text-align:center; }
     .article-title { font-size:13px; font-weight:600; color:var(--text); flex:1; line-height:1.4; }
     .article-arrow { font-size:14px; color:var(--subtle); flex-shrink:0; }
+    .new-badge { font-size:10px; font-weight:700; background:#dcfce7; color:#166534; padding:2px 8px; border-radius:99px; letter-spacing:.3px; flex-shrink:0; }
 
     @media(max-width:900px){
       .goal-grid { grid-template-columns:1fr 1fr 1fr; }
@@ -268,9 +269,11 @@
       </div>
     </div>
     <div class="first-action">
-      <div class="first-action-label">⚡ Try this now</div>
-      <div class="first-action-intro">Open Claude or ChatGPT and paste this. Replace the bracketed part with something real from your life:</div>
-      <div class="prompt-box" onclick="copyPrompt(this)">Help me think through something I've been meaning to sort out. Here's the situation: [describe what you're trying to figure out]. What questions should I be asking, and what are the key things to consider?<span class="copy-hint">📋 click to copy</span></div>
+      <div class="first-action-label">⚡ Start with one of these</div>
+      <div class="first-action-intro">Open Claude or ChatGPT, paste one of these, fill in the bracket — and see what happens:</div>
+      <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">Help me think through something I've been meaning to sort out. Here's the situation: [describe what you're trying to figure out]. What questions should I be asking, and what are the key things to consider?<span class="copy-hint">📋 click to copy</span></div>
+      <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">Summarise this for me: [paste any article, email, or document]. Give me: the 3 main points, what I need to do (if anything), and one question worth asking.<span class="copy-hint">📋 click to copy</span></div>
+      <div class="prompt-box" onclick="copyPrompt(this)">Explain [topic] to me simply. I know nothing about it. Use plain English, give one real-world example, and tell me why it matters right now.<span class="copy-hint">📋 click to copy</span></div>
     </div>
   </div>
 
@@ -385,9 +388,11 @@
       </div>
     </div>
     <div class="first-action">
-      <div class="first-action-label">⚡ First action today</div>
-      <div class="first-action-intro">Build a set of reusable email templates — the ones you write the same way every week:</div>
-      <div class="prompt-box" onclick="copyPrompt(this)">Write 5 email templates I can reuse: (1) following up after no reply, (2) sending a quote, (3) confirming a meeting, (4) politely chasing a late payment, (5) turning down work gracefully. Professional, warm, British English. Each under 80 words.<span class="copy-hint">📋 click to copy</span></div>
+      <div class="first-action-label">⚡ Most useful prompts</div>
+      <div class="first-action-intro">Click any prompt to copy, then paste into Claude:</div>
+      <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">Write 5 email templates I can reuse: (1) following up after no reply, (2) sending a quote, (3) confirming a meeting, (4) politely chasing a late payment, (5) turning down work gracefully. Professional, warm, British English. Each under 80 words.<span class="copy-hint">📋 click to copy</span></div>
+      <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">Write a short proposal for a new client. My service: [describe]. Their problem: [describe]. Format: problem, my solution, why me, what's included, and next steps. Under 400 words. Professional but not corporate-sounding.<span class="copy-hint">📋 click to copy</span></div>
+      <div class="prompt-box" onclick="copyPrompt(this)">Write a LinkedIn post for my business about [what happened / a result / a lesson learned]. Tone: direct and honest. Under 150 words. No hashtag spam. End with a genuine question.<span class="copy-hint">📋 click to copy</span></div>
     </div>
   </div>
 
@@ -814,7 +819,7 @@
       <a class="video-card" href="https://www.youtube.com/watch?v=sXCKgEl9hBo" target="_blank" rel="noopener">
         <img class="video-thumb" src="https://img.youtube.com/vi/sXCKgEl9hBo/hqdefault.jpg" alt="Naval on AI" loading="lazy">
         <div class="video-info">
-          <div class="video-channel">Naval</div>
+          <div class="video-channel">Naval <span class="new-badge">New</span></div>
           <div class="video-title">On Artificial Intelligence</div>
           <div class="video-duration">Explainer</div>
         </div>
@@ -822,7 +827,7 @@
       <a class="video-card" href="https://www.youtube.com/watch?v=Z3D2UmAesN4" target="_blank" rel="noopener">
         <img class="video-thumb" src="https://img.youtube.com/vi/Z3D2UmAesN4/hqdefault.jpg" alt="State of AI industry" loading="lazy">
         <div class="video-info">
-          <div class="video-channel">OpenAI</div>
+          <div class="video-channel">OpenAI <span class="new-badge">New</span></div>
           <div class="video-title">State of the AI industry — OpenAI CFO Sarah Friar and Vinod Khosla</div>
           <div class="video-duration">Explainer</div>
         </div>
@@ -912,11 +917,13 @@
       <a class="article-item" href="https://www.theatlantic.com/technology/archive/2023/11/chatgpt-openai-one-year/675982/" target="_blank" rel="noopener">
         <span class="article-source">The Atlantic</span>
         <span class="article-title">The Inside Story of ChatGPT's Launch</span>
+        <span class="new-badge">New</span>
         <span class="article-arrow">→</span>
       </a>
       <a class="article-item" href="https://www.technologyreview.com/2023/05/02/1072528/geoffrey-hinton-google-why-scared/" target="_blank" rel="noopener">
         <span class="article-source">MIT Tech Review</span>
         <span class="article-title">The Godfather of AI Has Some Regrets</span>
+        <span class="new-badge">New</span>
         <span class="article-arrow">→</span>
       </a>
       <a class="article-item" href="https://www.economist.com/science-and-technology/2023/04/22/large-language-models-ability-to-generate-text-becomes-ever-more-human" target="_blank" rel="noopener">
