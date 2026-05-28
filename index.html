@@ -132,6 +132,27 @@
     .footer-links a { font-size:13px; color:var(--muted); transition:color .15s; }
     .footer-links a:hover { color:var(--text); }
 
+    /* Inspire */
+    .inspire-tabs { display:flex; gap:8px; margin-bottom:20px; }
+    .inspire-tab { font-family:'Inter',sans-serif; font-size:14px; font-weight:600; padding:8px 20px; border-radius:99px; border:1.5px solid var(--border); background:var(--surface); color:var(--muted); cursor:pointer; transition:all .15s; }
+    .inspire-tab:hover { border-color:#c7d2fe; color:var(--accent); }
+    .inspire-tab.active { background:var(--accent); color:white; border-color:var(--accent); }
+    .video-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px; }
+    .video-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; overflow:hidden; transition:border-color .15s,box-shadow .15s,transform .15s; text-decoration:none; display:block; }
+    .video-card:hover { border-color:#c7d2fe; box-shadow:0 4px 20px rgba(79,70,229,.08); transform:translateY(-2px); }
+    .video-thumb { width:100%; aspect-ratio:16/9; object-fit:cover; display:block; background:#e5e7eb; }
+    .video-info { padding:12px 14px 14px; }
+    .video-channel { font-size:10px; font-weight:700; color:var(--accent); text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; }
+    .video-title { font-size:13px; font-weight:700; color:var(--text); line-height:1.45; margin-bottom:5px; }
+    .video-duration { font-size:11px; color:var(--subtle); }
+    .article-list { border:1px solid var(--border); border-radius:16px; overflow:hidden; }
+    .article-item { display:flex; align-items:center; gap:14px; padding:14px 20px; background:var(--surface); border-bottom:1px solid var(--border); transition:background .15s; text-decoration:none; }
+    .article-item:last-child { border-bottom:none; }
+    .article-item:hover { background:#fafafe; }
+    .article-source { font-size:11px; font-weight:700; color:var(--accent); background:#eef2ff; padding:3px 8px; border-radius:99px; white-space:nowrap; flex-shrink:0; min-width:80px; text-align:center; }
+    .article-title { font-size:13px; font-weight:600; color:var(--text); flex:1; line-height:1.4; }
+    .article-arrow { font-size:14px; color:var(--subtle); flex-shrink:0; }
+
     @media(max-width:900px){
       .goal-grid { grid-template-columns:1fr 1fr 1fr; }
     }
@@ -162,6 +183,7 @@
       <a href="/start.html" style="color:var(--accent);font-weight:700">Start Here</a>
       <a href="/jargon.html">Jargon</a>
       <a href="#tools">Tools</a>
+      <a href="#inspire">Inspire</a>
       <a href="/learn/">Learn →</a>
     </nav>
   </div>
@@ -759,6 +781,107 @@
   </div>
 </section>
 
+<!-- ── WATCH & READ ── -->
+<section id="inspire" class="section">
+  <div class="section-header">
+    <span class="section-title">Watch &amp; Read</span>
+    <span class="section-sub">Curated picks for going deeper</span>
+  </div>
+
+  <div class="inspire-tabs">
+    <button class="inspire-tab active" onclick="switchTab('videos',this)">Videos</button>
+    <button class="inspire-tab" onclick="switchTab('articles',this)">Articles</button>
+  </div>
+
+  <div id="inspire-videos">
+    <div class="video-grid">
+      <a class="video-card" href="https://www.youtube.com/watch?v=giT0ytynSqg" target="_blank" rel="noopener">
+        <img class="video-thumb" src="https://img.youtube.com/vi/giT0ytynSqg/hqdefault.jpg" alt="Godfather of AI" loading="lazy">
+        <div class="video-info">
+          <div class="video-channel">The Diary Of A CEO</div>
+          <div class="video-title">Godfather of AI: They Keep Silencing Me But I'm Trying to Warn Them</div>
+          <div class="video-duration">~1 hr</div>
+        </div>
+      </a>
+      <a class="video-card" href="https://www.youtube.com/watch?v=l-CjPuSMgM0" target="_blank" rel="noopener">
+        <img class="video-thumb" src="https://img.youtube.com/vi/l-CjPuSMgM0/hqdefault.jpg" alt="Geoffrey Hinton" loading="lazy">
+        <div class="video-info">
+          <div class="video-channel">CBS Mornings</div>
+          <div class="video-title">Geoffrey Hinton in conversation — AI risks and his regrets</div>
+          <div class="video-duration">15 min</div>
+        </div>
+      </a>
+      <a class="video-card" href="https://www.youtube.com/watch?v=SjhIlw3Iffs" target="_blank" rel="noopener">
+        <img class="video-thumb" src="https://img.youtube.com/vi/SjhIlw3Iffs/hqdefault.jpg" alt="AI trillion dollar industry" loading="lazy">
+        <div class="video-info">
+          <div class="video-channel">Vox</div>
+          <div class="video-title">The moment AI became a trillion-dollar industry</div>
+          <div class="video-duration">20 min</div>
+        </div>
+      </a>
+      <a class="video-card" href="https://www.youtube.com/watch?v=aircAruvnKk" target="_blank" rel="noopener">
+        <img class="video-thumb" src="https://img.youtube.com/vi/aircAruvnKk/hqdefault.jpg" alt="Neural network" loading="lazy">
+        <div class="video-info">
+          <div class="video-channel">3Blue1Brown</div>
+          <div class="video-title">But what is a neural network?</div>
+          <div class="video-duration">19 min</div>
+        </div>
+      </a>
+      <a class="video-card" href="https://www.youtube.com/watch?v=wjZofJX0v4M" target="_blank" rel="noopener">
+        <img class="video-thumb" src="https://img.youtube.com/vi/wjZofJX0v4M/hqdefault.jpg" alt="Transformers" loading="lazy">
+        <div class="video-info">
+          <div class="video-channel">3Blue1Brown</div>
+          <div class="video-title">Transformers (how LLMs work) explained visually</div>
+          <div class="video-duration">26 min</div>
+        </div>
+      </a>
+      <a class="video-card" href="https://www.youtube.com/watch?v=ASABxNenD_U" target="_blank" rel="noopener">
+        <img class="video-thumb" src="https://img.youtube.com/vi/ASABxNenD_U/hqdefault.jpg" alt="Vertical AI Agents" loading="lazy">
+        <div class="video-info">
+          <div class="video-channel">a16z</div>
+          <div class="video-title">Vertical AI Agents Could Be 10X Bigger Than SaaS</div>
+          <div class="video-duration">~45 min</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div id="inspire-articles" style="display:none">
+    <div class="article-list">
+      <a class="article-item" href="https://hbr.org/2025/04/how-people-are-really-using-gen-ai-in-2025" target="_blank" rel="noopener">
+        <span class="article-source">HBR</span>
+        <span class="article-title">How People Are Really Using Gen AI in 2025</span>
+        <span class="article-arrow">→</span>
+      </a>
+      <a class="article-item" href="https://www.stateof.ai/" target="_blank" rel="noopener">
+        <span class="article-source">State of AI</span>
+        <span class="article-title">State of AI Report 2025</span>
+        <span class="article-arrow">→</span>
+      </a>
+      <a class="article-item" href="https://aiindex.stanford.edu/report/" target="_blank" rel="noopener">
+        <span class="article-source">Stanford HAI</span>
+        <span class="article-title">AI Index Report 2026</span>
+        <span class="article-arrow">→</span>
+      </a>
+      <a class="article-item" href="https://hbr.org/2020/01/competing-in-the-age-of-ai" target="_blank" rel="noopener">
+        <span class="article-source">HBR</span>
+        <span class="article-title">Competing in the Age of AI</span>
+        <span class="article-arrow">→</span>
+      </a>
+      <a class="article-item" href="https://www.pewresearch.org/internet/2025/12/09/teens-social-media-and-ai-chatbots-2025/" target="_blank" rel="noopener">
+        <span class="article-source">Pew Research</span>
+        <span class="article-title">Teens, Social Media and AI Chatbots 2025</span>
+        <span class="article-arrow">→</span>
+      </a>
+      <a class="article-item" href="https://ai-2027.com/" target="_blank" rel="noopener">
+        <span class="article-source">ai-2027.com</span>
+        <span class="article-title">AI 2027 — What Happens Next</span>
+        <span class="article-arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
 <!-- ── NEWSLETTER ── -->
 <div class="sub-section">
   <div class="sub-section-inner">
@@ -872,6 +995,14 @@ function toggleFaq(btn) {
   var wasOpen = item.classList.contains("open");
   document.querySelectorAll(".faq-item.open").forEach(function(el) { el.classList.remove("open"); });
   if (!wasOpen) item.classList.add("open");
+}
+
+// ── Inspire tabs ──
+function switchTab(tab, btn) {
+  document.querySelectorAll(".inspire-tab").forEach(function(b) { b.classList.remove("active"); });
+  btn.classList.add("active");
+  document.getElementById("inspire-videos").style.display = tab === "videos" ? "block" : "none";
+  document.getElementById("inspire-articles").style.display = tab === "articles" ? "block" : "none";
 }
 
 // ── Newsletter ──
