@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI for your work — Human Agency</title>
-  <meta name="description" content="Practical AI starting points for people building something real — no jargon, no tech degree needed.">
+  <title>AI for real life — Human Agency</title>
+  <meta name="description" content="Pick your situation. Get the right tools, prompts and starting points — no jargon, no tech degree needed.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -37,7 +37,7 @@
     .section-sub { font-size:13px; color:var(--muted); font-weight:500; }
 
     /* Goal cards */
-    .goal-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+    .goal-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
     .goal-card { background:var(--surface); border:2px solid var(--border); border-radius:18px; padding:20px; cursor:pointer; transition:border-color .15s,box-shadow .15s,transform .15s; position:relative; user-select:none; }
     .goal-card:hover { border-color:#c7d2fe; box-shadow:0 6px 24px rgba(79,70,229,.08); transform:translateY(-2px); }
     .goal-card.active { border-color:var(--accent); background:#fafafe; box-shadow:0 4px 20px rgba(79,70,229,.1); }
@@ -133,6 +133,9 @@
     .footer-links a:hover { color:var(--text); }
 
     @media(max-width:900px){
+      .goal-grid { grid-template-columns:1fr 1fr 1fr; }
+    }
+    @media(max-width:680px){
       .goal-grid { grid-template-columns:1fr 1fr; }
     }
     @media(max-width:520px){
@@ -165,67 +168,68 @@
 </header>
 
 <div class="hero">
-  <h1>AI for your work</h1>
-  <p>Practical starting points for people building something real — no jargon, no tech degree needed.</p>
+  <h1>Real help.<br>For real life.</h1>
+  <p>Pick your situation. Get the right tools, prompts and starting points — in minutes, not months.</p>
 </div>
 
 <!-- ── START HERE ── -->
 <section id="start-here" class="section">
   <div class="section-header">
     <span class="section-title">Start Here</span>
-    <span class="section-sub">Pick what you're trying to do</span>
+    <span class="section-sub">Pick what fits your life right now</span>
   </div>
 
   <div class="goal-grid">
-    <div class="goal-card" id="goal-sell" onclick="toggleGoal('sell')">
+    <div class="goal-card" id="goal-newtoai" onclick="toggleGoal('newtoai')">
       <span class="goal-chevron">▶</span>
-      <div class="goal-icon">🛍️</div>
-      <h3>Sell online</h3>
-      <p>Products, jewellery, handmade goods — or a shop you're just starting</p>
+      <div class="goal-icon">🌱</div>
+      <h3>New to AI</h3>
+      <p>Never used it before. Here's your 10-minute start — no tech background needed.</p>
     </div>
-    <div class="goal-card" id="goal-market" onclick="toggleGoal('market')">
+    <div class="goal-card" id="goal-parent" onclick="toggleGoal('parent')">
       <span class="goal-chevron">▶</span>
-      <div class="goal-icon">📣</div>
-      <h3>Run campaigns</h3>
-      <p>Social posts, email, ads — getting your message to the right people</p>
+      <div class="goal-icon">👩‍👧</div>
+      <h3>Busy parent</h3>
+      <p>School admin, homework questions, letters and appeals — less time for everything.</p>
     </div>
-    <div class="goal-card" id="goal-b2b" onclick="toggleGoal('b2b')">
+    <div class="goal-card" id="goal-jobhunt" onclick="toggleGoal('jobhunt')">
       <span class="goal-chevron">▶</span>
-      <div class="goal-icon">🤝</div>
-      <h3>Grow B2B</h3>
-      <p>Finding clients, writing proposals, understanding new markets</p>
+      <div class="goal-icon">💼</div>
+      <h3>Looking for work</h3>
+      <p>CV, cover letters, interview prep. Stand out from hundreds of applicants.</p>
     </div>
-    <div class="goal-card" id="goal-faster" onclick="toggleGoal('faster')">
+    <div class="goal-card" id="goal-business" onclick="toggleGoal('business')">
       <span class="goal-chevron">▶</span>
-      <div class="goal-icon">⚡</div>
-      <h3>Work faster</h3>
-      <p>Cut admin, automate the repetitive stuff, do more with less</p>
+      <div class="goal-icon">🛠️</div>
+      <h3>Running a business</h3>
+      <p>Doing everything solo. Make AI your first team member — no cost, no overhead.</p>
+    </div>
+    <div class="goal-card" id="goal-returning" onclick="toggleGoal('returning')">
+      <span class="goal-chevron">▶</span>
+      <div class="goal-icon">🔄</div>
+      <h3>Returning to work</h3>
+      <p>Career break behind you. Catching up feels overwhelming. Here's where to start.</p>
+    </div>
+    <div class="goal-card" id="goal-student" onclick="toggleGoal('student')">
+      <span class="goal-chevron">▶</span>
+      <div class="goal-icon">📚</div>
+      <h3>Student</h3>
+      <p>Study smarter. Understand faster. Practice more — without it doing the work for you.</p>
     </div>
   </div>
 
-  <!-- Sell online panel -->
-  <div id="goal-panel-sell" class="goal-panel" style="display:none">
-    <div class="goal-panel-title">Sell online — where to start</div>
+  <!-- New to AI panel -->
+  <div id="goal-panel-newtoai" class="goal-panel" style="display:none">
+    <div class="goal-panel-title">New to AI — where to start</div>
     <div class="tool-list">
       <div class="tool-item">
-        <div class="tool-item-icon">🛒</div>
+        <div class="tool-item-icon">✍️</div>
         <div>
-          <div class="tool-item-name">Shopify Magic</div>
-          <div class="tool-item-desc">AI product descriptions, images, and email campaigns built into Shopify. No extra setup needed.</div>
+          <div class="tool-item-name">Claude</div>
+          <div class="tool-item-desc">The best starting point for most people. Clear, helpful, and great at explaining things in plain English.</div>
           <div class="tool-item-footer">
-            <span class="tool-cost">From £25/mo</span>
-            <a class="tool-link" href="https://shopify.com" target="_blank" rel="noopener">shopify.com →</a>
-          </div>
-        </div>
-      </div>
-      <div class="tool-item">
-        <div class="tool-item-icon">🎨</div>
-        <div>
-          <div class="tool-item-name">Canva AI</div>
-          <div class="tool-item-desc">Design product photos, banners, and social ads. Magic Design creates from a single photo — no designer needed.</div>
-          <div class="tool-item-footer">
-            <span class="tool-cost">Free to start</span>
-            <a class="tool-link" href="https://canva.com" target="_blank" rel="noopener">canva.com →</a>
+            <span class="tool-cost">Free</span>
+            <a class="tool-link" href="https://claude.ai" target="_blank" rel="noopener">claude.ai →</a>
           </div>
         </div>
       </div>
@@ -233,30 +237,102 @@
         <div class="tool-item-icon">💬</div>
         <div>
           <div class="tool-item-name">ChatGPT</div>
-          <div class="tool-item-desc">Write product descriptions, FAQs, email sequences, and returns policies in minutes. Free to start.</div>
+          <div class="tool-item-desc">The most widely used AI assistant. Free to start, works in any browser, no install needed.</div>
           <div class="tool-item-footer">
-            <span class="tool-cost">Free · Plus £20/mo</span>
-            <a class="tool-link" href="https://chat.openai.com" target="_blank" rel="noopener">chat.openai.com →</a>
+            <span class="tool-cost">Free</span>
+            <a class="tool-link" href="https://chatgpt.com" target="_blank" rel="noopener">chatgpt.com →</a>
           </div>
         </div>
       </div>
     </div>
     <div class="first-action">
-      <div class="first-action-label">⚡ First action today</div>
-      <div class="first-action-intro">Open ChatGPT — free, no account needed to try — and paste this prompt. Fill in your product details:</div>
-      <div class="prompt-box" onclick="copyPrompt(this)">Write 5 product descriptions for [your product, e.g. handmade candles / ceramic mugs / printed T-shirts]. Each under 60 words. Tone: warm and creative. Price point: £[X–Y]. Include what makes them special and who they'd make a great gift for.<span class="copy-hint">📋 click to copy</span></div>
+      <div class="first-action-label">⚡ Try this now</div>
+      <div class="first-action-intro">Open Claude or ChatGPT and paste this. Replace the bracketed part with something real from your life:</div>
+      <div class="prompt-box" onclick="copyPrompt(this)">Help me think through something I've been meaning to sort out. Here's the situation: [describe what you're trying to figure out]. What questions should I be asking, and what are the key things to consider?<span class="copy-hint">📋 click to copy</span></div>
     </div>
   </div>
 
-  <!-- Run campaigns panel -->
-  <div id="goal-panel-market" class="goal-panel" style="display:none">
-    <div class="goal-panel-title">Run campaigns — where to start</div>
+  <!-- Busy parent panel -->
+  <div id="goal-panel-parent" class="goal-panel" style="display:none">
+    <div class="goal-panel-title">Busy parent — where to start</div>
     <div class="tool-list">
       <div class="tool-item">
         <div class="tool-item-icon">✍️</div>
         <div>
           <div class="tool-item-name">Claude</div>
-          <div class="tool-item-desc">Exceptional at long-form copy, email sequences, and matching your brand voice. Often sharper than ChatGPT for marketing writing.</div>
+          <div class="tool-item-desc">Brilliant at drafting letters, appeals, and emails that sound considered and clear. Free to use.</div>
+          <div class="tool-item-footer">
+            <span class="tool-cost">Free</span>
+            <a class="tool-link" href="https://claude.ai" target="_blank" rel="noopener">claude.ai →</a>
+          </div>
+        </div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-item-icon">💬</div>
+        <div>
+          <div class="tool-item-name">ChatGPT</div>
+          <div class="tool-item-desc">Great for homework explanations, meal ideas, quick summaries. Explain anything at the right level for your child.</div>
+          <div class="tool-item-footer">
+            <span class="tool-cost">Free</span>
+            <a class="tool-link" href="https://chatgpt.com" target="_blank" rel="noopener">chatgpt.com →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="first-action">
+      <div class="first-action-label">⚡ Most useful prompts</div>
+      <div class="first-action-intro">Click any prompt to copy it, then paste into Claude or ChatGPT:</div>
+      <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">Help me reply to this school email. Keep it polite, clear, and under 100 words: [paste the email here]<span class="copy-hint">📋 click to copy</span></div>
+      <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">My [age]-year-old is stuck on [topic] for homework. Explain it simply and give one example — but don't just give the answer.<span class="copy-hint">📋 click to copy</span></div>
+      <div class="prompt-box" onclick="copyPrompt(this)">Help me write a formal appeal letter about [situation, e.g. a school place / council decision / GP referral]. Tone: calm, polite, persuasive. Under 300 words.<span class="copy-hint">📋 click to copy</span></div>
+    </div>
+  </div>
+
+  <!-- Looking for work panel -->
+  <div id="goal-panel-jobhunt" class="goal-panel" style="display:none">
+    <div class="goal-panel-title">Looking for work — where to start</div>
+    <div class="tool-list">
+      <div class="tool-item">
+        <div class="tool-item-icon">✍️</div>
+        <div>
+          <div class="tool-item-name">Claude</div>
+          <div class="tool-item-desc">Sharp at tailoring CVs, writing cover letters that don't sound generic, and interview prep. Free tier is generous.</div>
+          <div class="tool-item-footer">
+            <span class="tool-cost">Free</span>
+            <a class="tool-link" href="https://claude.ai" target="_blank" rel="noopener">claude.ai →</a>
+          </div>
+        </div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-item-icon">🔍</div>
+        <div>
+          <div class="tool-item-name">Perplexity</div>
+          <div class="tool-item-desc">Research companies before interviews. Get sourced, up-to-date answers on any employer in seconds.</div>
+          <div class="tool-item-footer">
+            <span class="tool-cost">Free</span>
+            <a class="tool-link" href="https://perplexity.ai" target="_blank" rel="noopener">perplexity.ai →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="first-action">
+      <div class="first-action-label">⚡ Most useful prompts</div>
+      <div class="first-action-intro">Click any prompt to copy, then paste into Claude:</div>
+      <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">Here's a job description: [paste it]. Here's my current CV summary: [paste it]. Rewrite my summary to match this role specifically. Keep it honest — don't invent anything.<span class="copy-hint">📋 click to copy</span></div>
+      <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">Write a cover letter for [job title] at [company]. My background in one sentence: [describe]. Under 250 words. No fluff, no clichés.<span class="copy-hint">📋 click to copy</span></div>
+      <div class="prompt-box" onclick="copyPrompt(this)">I have an interview at [company] for [role]. What questions should I expect, and what's the best way to answer each one given my background: [brief summary]?<span class="copy-hint">📋 click to copy</span></div>
+    </div>
+  </div>
+
+  <!-- Running a business panel -->
+  <div id="goal-panel-business" class="goal-panel" style="display:none">
+    <div class="goal-panel-title">Running a business — where to start</div>
+    <div class="tool-list">
+      <div class="tool-item">
+        <div class="tool-item-icon">✍️</div>
+        <div>
+          <div class="tool-item-name">Claude</div>
+          <div class="tool-item-desc">Write proposals, client emails, product descriptions and social content that sound like you, not a template.</div>
           <div class="tool-item-footer">
             <span class="tool-cost">Free · Pro £18/mo</span>
             <a class="tool-link" href="https://claude.ai" target="_blank" rel="noopener">claude.ai →</a>
@@ -267,7 +343,7 @@
         <div class="tool-item-icon">🎨</div>
         <div>
           <div class="tool-item-name">Canva AI</div>
-          <div class="tool-item-desc">Social graphics, ad creative, branded templates. Keeps your visuals consistent without a designer on retainer.</div>
+          <div class="tool-item-desc">Professional graphics, social posts, and pitch decks — without a designer. Magic Design works from a photo or a prompt.</div>
           <div class="tool-item-footer">
             <span class="tool-cost">Free · Pro £11/mo</span>
             <a class="tool-link" href="https://canva.com" target="_blank" rel="noopener">canva.com →</a>
@@ -275,102 +351,12 @@
         </div>
       </div>
       <div class="tool-item">
-        <div class="tool-item-icon">📋</div>
-        <div>
-          <div class="tool-item-name">Copy.ai</div>
-          <div class="tool-item-desc">Built specifically for marketers. Ad copy, landing pages, A/B test variations — in bulk, fast.</div>
-          <div class="tool-item-footer">
-            <span class="tool-cost">Free · Pro $36/mo</span>
-            <a class="tool-link" href="https://copy.ai" target="_blank" rel="noopener">copy.ai →</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="first-action">
-      <div class="first-action-label">⚡ First action today</div>
-      <div class="first-action-intro">Open Claude and use this to batch a whole month of content in one go:</div>
-      <div class="prompt-box" onclick="copyPrompt(this)">Write 12 Instagram captions for [your brand, e.g. a food business / clothing brand / home décor shop]. Mix: 4 product highlights, 4 behind-the-scenes, 4 customer-story angles. British English, warm tone. Add 5 relevant hashtags to each caption.<span class="copy-hint">📋 click to copy</span></div>
-    </div>
-  </div>
-
-  <!-- Grow B2B panel -->
-  <div id="goal-panel-b2b" class="goal-panel" style="display:none">
-    <div class="goal-panel-title">Grow B2B — where to start</div>
-    <div class="tool-list">
-      <div class="tool-item">
-        <div class="tool-item-icon">🔍</div>
-        <div>
-          <div class="tool-item-name">Perplexity</div>
-          <div class="tool-item-desc">Research any company, market, or sector in seconds with sourced answers. Better than Google for business intelligence.</div>
-          <div class="tool-item-footer">
-            <span class="tool-cost">Free · Pro £20/mo</span>
-            <a class="tool-link" href="https://perplexity.ai" target="_blank" rel="noopener">perplexity.ai →</a>
-          </div>
-        </div>
-      </div>
-      <div class="tool-item">
-        <div class="tool-item-icon">✍️</div>
-        <div>
-          <div class="tool-item-name">Claude</div>
-          <div class="tool-item-desc">Draft professional proposals, outreach emails, and pitch decks. Strong at formal business writing that doesn't sound stiff.</div>
-          <div class="tool-item-footer">
-            <span class="tool-cost">Free · Pro £18/mo</span>
-            <a class="tool-link" href="https://claude.ai" target="_blank" rel="noopener">claude.ai →</a>
-          </div>
-        </div>
-      </div>
-      <div class="tool-item">
-        <div class="tool-item-icon">💬</div>
-        <div>
-          <div class="tool-item-name">ChatGPT</div>
-          <div class="tool-item-desc">Prep for meetings, summarise long documents, translate complex ideas into clear language fast.</div>
-          <div class="tool-item-footer">
-            <span class="tool-cost">Free · Plus £20/mo</span>
-            <a class="tool-link" href="https://chat.openai.com" target="_blank" rel="noopener">chat.openai.com →</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="first-action">
-      <div class="first-action-label">⚡ First action today</div>
-      <div class="first-action-intro">Open Perplexity and search this — swap in your product category and target market:</div>
-      <div class="prompt-box" onclick="copyPrompt(this)">Key distributors, buying cycles, and decision-makers for [your product/service category] in [your target market, e.g. the UK SME market / India B2B space / European retail]. Include major trade shows, typical margins, and how new suppliers typically enter.<span class="copy-hint">📋 click to copy</span></div>
-    </div>
-  </div>
-
-  <!-- Work faster panel -->
-  <div id="goal-panel-faster" class="goal-panel" style="display:none">
-    <div class="goal-panel-title">Work faster — where to start</div>
-    <div class="tool-list">
-      <div class="tool-item">
-        <div class="tool-item-icon">🎙️</div>
-        <div>
-          <div class="tool-item-name">Otter.ai</div>
-          <div class="tool-item-desc">Auto-transcribes every meeting and pulls out action items. Works with Zoom, Teams, and Google Meet.</div>
-          <div class="tool-item-footer">
-            <span class="tool-cost">Free 300 min/mo · Pro £10/mo</span>
-            <a class="tool-link" href="https://otter.ai" target="_blank" rel="noopener">otter.ai →</a>
-          </div>
-        </div>
-      </div>
-      <div class="tool-item">
-        <div class="tool-item-icon">📝</div>
-        <div>
-          <div class="tool-item-name">Notion AI</div>
-          <div class="tool-item-desc">Turns rough notes into structured documents, summaries, and action plans — inside the tool where you already work.</div>
-          <div class="tool-item-footer">
-            <span class="tool-cost">Free · AI add-on £8/mo</span>
-            <a class="tool-link" href="https://notion.so" target="_blank" rel="noopener">notion.so →</a>
-          </div>
-        </div>
-      </div>
-      <div class="tool-item">
         <div class="tool-item-icon">⚙️</div>
         <div>
           <div class="tool-item-name">Zapier</div>
-          <div class="tool-item-desc">Connect your apps and automate repetitive tasks — no code. Most businesses save hours every week within a month.</div>
+          <div class="tool-item-desc">Automate repetitive tasks between your apps — no code. Most solo operators save 3-5 hours a week within a month.</div>
           <div class="tool-item-footer">
-            <span class="tool-cost">Free 100 tasks/mo · from $20/mo</span>
+            <span class="tool-cost">Free 100/mo · from $20/mo</span>
             <a class="tool-link" href="https://zapier.com" target="_blank" rel="noopener">zapier.com →</a>
           </div>
         </div>
@@ -378,8 +364,80 @@
     </div>
     <div class="first-action">
       <div class="first-action-label">⚡ First action today</div>
-      <div class="first-action-intro">Start by building a set of canned email replies — things you write the same way every week. Use ChatGPT:</div>
-      <div class="prompt-box" onclick="copyPrompt(this)">Write 5 canned email responses I can reuse for: (1) following up after no reply, (2) sending a quote, (3) confirming a meeting, (4) chasing a late payment politely, (5) turning down a project gracefully. Professional, warm, British English. Each under 80 words.<span class="copy-hint">📋 click to copy</span></div>
+      <div class="first-action-intro">Build a set of reusable email templates — the ones you write the same way every week:</div>
+      <div class="prompt-box" onclick="copyPrompt(this)">Write 5 email templates I can reuse: (1) following up after no reply, (2) sending a quote, (3) confirming a meeting, (4) politely chasing a late payment, (5) turning down work gracefully. Professional, warm, British English. Each under 80 words.<span class="copy-hint">📋 click to copy</span></div>
+    </div>
+  </div>
+
+  <!-- Returning to work panel -->
+  <div id="goal-panel-returning" class="goal-panel" style="display:none">
+    <div class="goal-panel-title">Returning to work — where to start</div>
+    <div class="tool-list">
+      <div class="tool-item">
+        <div class="tool-item-icon">✍️</div>
+        <div>
+          <div class="tool-item-name">Claude</div>
+          <div class="tool-item-desc">Excellent at reframing career gaps positively and writing CVs and LinkedIn summaries that are honest but compelling.</div>
+          <div class="tool-item-footer">
+            <span class="tool-cost">Free</span>
+            <a class="tool-link" href="https://claude.ai" target="_blank" rel="noopener">claude.ai →</a>
+          </div>
+        </div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-item-icon">🔍</div>
+        <div>
+          <div class="tool-item-name">Perplexity</div>
+          <div class="tool-item-desc">Research what's changed in your field, which skills are now in demand, and what employers are looking for in 2026.</div>
+          <div class="tool-item-footer">
+            <span class="tool-cost">Free</span>
+            <a class="tool-link" href="https://perplexity.ai" target="_blank" rel="noopener">perplexity.ai →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="first-action">
+      <div class="first-action-label">⚡ Most useful prompts</div>
+      <div class="first-action-intro">Click any prompt to copy, then paste into Claude:</div>
+      <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">I've been out of work for [period] due to [reason, e.g. caring responsibilities / health / family]. Help me write a CV summary that presents this gap honestly and positions it as a strength. My background: [brief summary].<span class="copy-hint">📋 click to copy</span></div>
+      <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">Write a LinkedIn summary for someone returning to [field] after [period]. Honest about the gap, forward-focused, under 200 words. Not corporate-sounding.<span class="copy-hint">📋 click to copy</span></div>
+      <div class="prompt-box" onclick="copyPrompt(this)">I worked in [field] until [year]. What skills are most in demand in that field now? What should I prioritise learning or updating first?<span class="copy-hint">📋 click to copy</span></div>
+    </div>
+  </div>
+
+  <!-- Student panel -->
+  <div id="goal-panel-student" class="goal-panel" style="display:none">
+    <div class="goal-panel-title">Student — where to start</div>
+    <div class="tool-list">
+      <div class="tool-item">
+        <div class="tool-item-icon">✍️</div>
+        <div>
+          <div class="tool-item-name">Claude</div>
+          <div class="tool-item-desc">Exceptional at explaining complex topics simply, giving essay feedback, and helping you think — without writing things for you.</div>
+          <div class="tool-item-footer">
+            <span class="tool-cost">Free</span>
+            <a class="tool-link" href="https://claude.ai" target="_blank" rel="noopener">claude.ai →</a>
+          </div>
+        </div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-item-icon">🔍</div>
+        <div>
+          <div class="tool-item-name">Perplexity</div>
+          <div class="tool-item-desc">Research with sourced answers. Better than Google for finding credible information quickly — with citations.</div>
+          <div class="tool-item-footer">
+            <span class="tool-cost">Free</span>
+            <a class="tool-link" href="https://perplexity.ai" target="_blank" rel="noopener">perplexity.ai →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="first-action">
+      <div class="first-action-label">⚡ Most useful prompts</div>
+      <div class="first-action-intro">Click any prompt to copy, then paste into Claude:</div>
+      <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">Explain [concept] for [subject] at [level, e.g. A-level / first-year university]. Use plain language and a real-world example. Tell me why it matters.<span class="copy-hint">📋 click to copy</span></div>
+      <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">Here's my essay draft: [paste it]. What's the weakest part of my argument? What's missing? Don't rewrite it — just tell me what to improve.<span class="copy-hint">📋 click to copy</span></div>
+      <div class="prompt-box" onclick="copyPrompt(this)">Create a revision plan for [subject / exam] over [number] weeks. I have roughly [hours] per day. Include what to cover each week and how to test myself.<span class="copy-hint">📋 click to copy</span></div>
     </div>
   </div>
 </section>
@@ -392,13 +450,57 @@
   </div>
 
   <div class="role-tabs">
-    <button class="role-tab active" onclick="setRole('marketing', this)">Marketing</button>
+    <button class="role-tab active" onclick="setRole('parent', this)">Parent</button>
+    <button class="role-tab" onclick="setRole('jobhunt', this)">Job hunter</button>
+    <button class="role-tab" onclick="setRole('marketing', this)">Marketing</button>
     <button class="role-tab" onclick="setRole('ecomm', this)">E-commerce</button>
     <button class="role-tab" onclick="setRole('b2b', this)">B2B</button>
     <button class="role-tab" onclick="setRole('ops', this)">Operations</button>
   </div>
 
-  <div id="role-marketing" class="prompt-grid">
+  <div id="role-parent" class="prompt-grid">
+    <div class="prompt-card">
+      <div class="prompt-card-label">School email</div>
+      <div class="prompt-card-title">Reply in 30 seconds</div>
+      <div class="prompt-card-text" onclick="copyPromptCard(this)">Help me reply to this school email. Polite, clear, under 100 words: [paste the email]</div>
+      <div class="prompt-copy-hint">📋 Click to copy</div>
+    </div>
+    <div class="prompt-card">
+      <div class="prompt-card-label">Homework help</div>
+      <div class="prompt-card-title">Explain without giving the answer</div>
+      <div class="prompt-card-text" onclick="copyPromptCard(this)">My [age]-year-old is stuck on [topic] for homework. Explain it simply with one example — but don't give them the answer directly. I want them to understand it.</div>
+      <div class="prompt-copy-hint">📋 Click to copy</div>
+    </div>
+    <div class="prompt-card">
+      <div class="prompt-card-label">Formal letter</div>
+      <div class="prompt-card-title">Appeals, complaints, requests</div>
+      <div class="prompt-card-text" onclick="copyPromptCard(this)">Help me write a formal letter about [situation, e.g. school place appeal / council complaint / GP referral request]. Tone: calm, polite, persuasive. Include the key points: [list them]. Under 300 words.</div>
+      <div class="prompt-copy-hint">📋 Click to copy</div>
+    </div>
+  </div>
+
+  <div id="role-jobhunt" class="prompt-grid" style="display:none">
+    <div class="prompt-card">
+      <div class="prompt-card-label">CV tailoring</div>
+      <div class="prompt-card-title">Match your CV to the role</div>
+      <div class="prompt-card-text" onclick="copyPromptCard(this)">Here's a job description: [paste it]. Here's my CV summary: [paste it]. Rewrite my summary to match this specific role. Keep it honest — don't invent anything I haven't done.</div>
+      <div class="prompt-copy-hint">📋 Click to copy</div>
+    </div>
+    <div class="prompt-card">
+      <div class="prompt-card-label">Cover letter</div>
+      <div class="prompt-card-title">No fluff, no clichés</div>
+      <div class="prompt-card-text" onclick="copyPromptCard(this)">Write a cover letter for [job title] at [company]. My background in one sentence: [describe]. Under 250 words. No fluff, no phrases like "I am a passionate team player."</div>
+      <div class="prompt-copy-hint">📋 Click to copy</div>
+    </div>
+    <div class="prompt-card">
+      <div class="prompt-card-label">Interview prep</div>
+      <div class="prompt-card-title">Know what's coming</div>
+      <div class="prompt-card-text" onclick="copyPromptCard(this)">I have an interview at [company] for [role]. My background: [brief summary]. What questions should I expect — including the tough ones — and how should I answer each one?</div>
+      <div class="prompt-copy-hint">📋 Click to copy</div>
+    </div>
+  </div>
+
+  <div id="role-marketing" class="prompt-grid" style="display:none">
     <div class="prompt-card">
       <div class="prompt-card-label">Caption batch</div>
       <div class="prompt-card-title">A month of Instagram content, instantly</div>
@@ -754,7 +856,7 @@ function _fallbackCopy(text) {
 }
 
 // ── Role tabs ──
-var _roles = ["marketing","ecomm","b2b","ops"];
+var _roles = ["parent","jobhunt","marketing","ecomm","b2b","ops"];
 function setRole(role, btn) {
   document.querySelectorAll(".role-tab").forEach(function(b) { b.classList.remove("active"); });
   btn.classList.add("active");
