@@ -88,8 +88,8 @@ header { border-bottom: 1px solid var(--border); background: var(--surface); pos
 
 <div class="hero">
   <div class="hero-tag">Start Here</div>
-  <h1>No install.<br>No credit card.<br>Open a browser.</h1>
-  <p class="hero-note">I build AI tools used by real people every day. When someone asks where to start — this is what I tell them. <strong>You are 10 minutes away from your first useful result.</strong></p>
+  <h1>Start with one<br>annoying task.</h1>
+  <p class="hero-note">Not "learn AI." Not "explore the tools." Just pick one thing you do every week that wastes your time. <strong>That's your first prompt. You're 10 minutes away from never doing it manually again.</strong></p>
 </div>
 
 <div class="steps">
@@ -110,14 +110,30 @@ header { border-bottom: 1px solid var(--border); background: var(--surface); pos
   <div class="step">
     <div class="step-num">02</div>
     <div class="step-body">
-      <div class="step-title">Send your first message</div>
-      <p class="step-desc">Don't overthink it. Copy this prompt, paste it, and replace the bracketed part with something real from your life or work.</p>
-      <div class="prompt-box" id="prompt-box" onclick="copyPrompt()">
-        <div class="prompt-label">Tap to copy</div>
-        <div class="prompt-text">Help me think through a problem I'm working on. Here's the situation: <em>[describe what you're trying to figure out].</em> What questions should I be asking, and what are the key things to consider?</div>
-        <div class="copy-hint" id="copy-hint">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          Click anywhere to copy
+      <div class="step-title">Automate your first task</div>
+      <p class="step-desc">Think of something you do every week — a reply you always write, a document you always summarise, something you always have to explain. Copy one of these, paste it, replace the bracket with your real situation.</p>
+      <div class="prompt-box" id="prompt-box-1" onclick="copyPromptBox('prompt-box-1', 'hint-1', 'Help me reply to this email. Keep it polite, clear and under 100 words: [paste the email here]')">
+        <div class="prompt-label">Reply to an email</div>
+        <div class="prompt-text">Help me reply to this email. Keep it polite, clear and under 100 words: <em>[paste the email here]</em></div>
+        <div class="copy-hint" id="hint-1">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"/></svg>
+          Click to copy
+        </div>
+      </div>
+      <div class="prompt-box" id="prompt-box-2" onclick="copyPromptBox('prompt-box-2', 'hint-2', 'Summarise this for me: [paste any document, article or email]. Give me: the 3 main points, what I need to do (if anything), and one question worth asking.')" style="margin-top:10px">
+        <div class="prompt-label">Summarise a document</div>
+        <div class="prompt-text">Summarise this for me: <em>[paste any document, article or email].</em> Give me: the 3 main points, what I need to do (if anything), and one question worth asking.</div>
+        <div class="copy-hint" id="hint-2">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"/></svg>
+          Click to copy
+        </div>
+      </div>
+      <div class="prompt-box" id="prompt-box-3" onclick="copyPromptBox('prompt-box-3', 'hint-3', 'Explain [topic] to me simply. I know nothing about it. Use plain English, give one real-world example, and tell me why it matters right now.')" style="margin-top:10px">
+        <div class="prompt-label">Explain something confusing</div>
+        <div class="prompt-text">Explain <em>[topic]</em> to me simply. I know nothing about it. Use plain English, give one real-world example, and tell me why it matters right now.</div>
+        <div class="copy-hint" id="hint-3">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"/></svg>
+          Click to copy
         </div>
       </div>
     </div>
@@ -149,14 +165,15 @@ header { border-bottom: 1px solid var(--border); background: var(--surface); pos
 </div>
 
 <script>
-function copyPrompt() {
-  const text = "Help me think through a problem I'm working on. Here's the situation: [describe what you're trying to figure out]. What questions should I be asking, and what are the key things to consider?";
+const _copyIcon = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"/></svg>';
+const _checkIcon = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+function copyPromptBox(boxId, hintId, text) {
   navigator.clipboard.writeText(text).then(() => {
-    const box = document.getElementById('prompt-box');
-    const hint = document.getElementById('copy-hint');
+    const box = document.getElementById(boxId);
+    const hint = document.getElementById(hintId);
     box.classList.add('copied');
-    hint.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copied — paste it into Claude or ChatGPT';
-    setTimeout(() => { box.classList.remove('copied'); hint.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"/></svg> Click anywhere to copy'; }, 3000);
+    hint.innerHTML = _checkIcon + ' Copied — paste it into Claude or ChatGPT';
+    setTimeout(() => { box.classList.remove('copied'); hint.innerHTML = _copyIcon + ' Click to copy'; }, 3000);
   });
 }
 </script>
