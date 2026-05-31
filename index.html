@@ -154,6 +154,19 @@
     .article-arrow { font-size:14px; color:var(--subtle); flex-shrink:0; }
     .new-badge { font-size:10px; font-weight:700; background:#dcfce7; color:#166534; padding:2px 8px; border-radius:99px; letter-spacing:.3px; flex-shrink:0; }
 
+    /* Ask AI */
+    .ask-wrap { max-width:640px; margin:0 auto; }
+    .ask-row { display:flex; gap:8px; }
+    .ask-input { flex:1; padding:12px 16px; border:1.5px solid var(--border); border-radius:12px; font-size:15px; font-family:inherit; color:var(--text); background:var(--surface); outline:none; transition:border-color .15s; }
+    .ask-input:focus { border-color:var(--accent); }
+    .ask-btn { padding:12px 20px; background:var(--accent); color:#fff; border:none; border-radius:12px; font-size:15px; font-weight:700; font-family:inherit; cursor:pointer; transition:opacity .15s; white-space:nowrap; }
+    .ask-btn:hover { opacity:.85; }
+    .ask-btn:disabled { opacity:.5; cursor:default; }
+    .ask-answer { margin-top:16px; padding:16px; background:var(--surface); border:1.5px solid #c7d2fe; border-radius:14px; font-size:14px; line-height:1.7; color:var(--text); display:none; }
+    .ask-answer.visible { display:block; }
+    .ask-bm-label { font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.6px; margin:18px 0 8px; }
+    .ask-bm-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:10px; }
+
     /* From the feed */
     .feed-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px; }
     .feed-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:16px; display:flex; flex-direction:column; gap:8px; transition:border-color .15s,box-shadow .15s,transform .15s; text-decoration:none; }
@@ -194,6 +207,7 @@
       <a href="/jargon.html">Jargon</a>
       <a href="#tools">Tools</a>
       <a href="#inspire">Inspire</a>
+      <a href="#ask">Ask</a>
       <a href="#feed">Feed</a>
       <a href="/learn/">Learn →</a>
     </nav>
@@ -995,6 +1009,23 @@
   </div>
 </section>
 
+<!-- ── ASK AI ── -->
+<section id="ask" class="section">
+  <div class="section-header">
+    <span class="section-title">Ask AI</span>
+    <span class="section-sub">Ask anything about using AI — get an answer + 5 ideas from the feed</span>
+  </div>
+  <div class="ask-wrap">
+    <div class="ask-row">
+      <input id="ask-input" class="ask-input" type="text" placeholder="e.g. How do I use AI to write a better CV?" maxlength="300" onkeydown="if(event.key==='Enter')askAI()" />
+      <button id="ask-btn" class="ask-btn" onclick="askAI()">Ask →</button>
+    </div>
+    <div id="ask-answer" class="ask-answer"></div>
+    <div id="ask-bm-label" class="ask-bm-label" style="display:none">From the bookmarks</div>
+    <div id="ask-bm-grid" class="ask-bm-grid feed-grid"></div>
+  </div>
+</section>
+
 <!-- ── FROM THE FEED ── -->
 <section id="feed" class="section">
   <div class="section-header">
@@ -1119,6 +1150,46 @@ function switchTab(tab, btn) {
   btn.classList.add("active");
   document.getElementById("inspire-videos").style.display = tab === "videos" ? "block" : "none";
   document.getElementById("inspire-articles").style.display = tab === "articles" ? "block" : "none";
+}
+
+// ── Ask AI ──
+async function askAI() {
+  var q = (document.getElementById("ask-input").value || "").trim();
+  if (!q) return;
+  var btn = document.getElementById("ask-btn");
+  var ansDiv = document.getElementById("ask-answer");
+  var bmLabel = document.getElementById("ask-bm-label");
+  var bmGrid = document.getElementById("ask-bm-grid");
+  btn.disabled = true; btn.textContent = "Thinking…";
+  ansDiv.className = "ask-answer visible";
+  ansDiv.textContent = "…";
+  bmLabel.style.display = "none";
+  bmGrid.innerHTML = "";
+  try {
+    var r = await fetch("https://miru.humanagency.co/api/ai/ask", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({q: q})
+    });
+    var d = await r.json();
+    ansDiv.textContent = d.answer || "Couldn't get an answer — try rephrasing.";
+    if (d.bookmarks && d.bookmarks.length) {
+      bmLabel.style.display = "block";
+      bmGrid.innerHTML = d.bookmarks.map(function(t) {
+        var handle = t.author_handle ? "@" + t.author_handle : (t.author_name || "");
+        var snippet = (t.text || "").slice(0, 180) + ((t.text || "").length > 180 ? "…" : "");
+        var href = t.url || ("https://x.com/" + (t.author_handle || ""));
+        return '<a class="feed-card" href="' + href + '" target="_blank" rel="noopener">' +
+          '<div class="feed-handle">' + handle + '</div>' +
+          '<div class="feed-text">' + snippet.replace(/</g,"&lt;").replace(/>/g,"&gt;") + '</div>' +
+          '<div class="feed-arrow">→</div>' +
+          '</a>';
+      }).join("");
+    }
+  } catch(e) {
+    ansDiv.textContent = "Something went wrong — please try again.";
+  }
+  btn.disabled = false; btn.textContent = "Ask →";
 }
 
 // ── From the feed ──
