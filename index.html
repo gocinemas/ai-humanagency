@@ -208,7 +208,6 @@
       <a href="#tools">Tools</a>
       <a href="#inspire">Inspire</a>
       <a href="#ask">Ask</a>
-      <a href="#feed">Feed</a>
       <a href="/learn/">Learn →</a>
     </nav>
   </div>
@@ -1026,18 +1025,6 @@
   </div>
 </section>
 
-<!-- ── FROM THE FEED ── -->
-<section id="feed" class="section">
-  <div class="section-header">
-    <span class="section-title">From the feed</span>
-    <span class="section-sub">AI ideas worth reading — refreshes every visit</span>
-    <button onclick="loadFeed()" style="margin-left:auto;font-size:12px;font-weight:600;color:var(--accent);background:none;border:none;cursor:pointer;font-family:inherit;padding:4px 8px;border-radius:6px;transition:background .15s" onmouseover="this.style.background='#eef2ff'" onmouseout="this.style.background='none'">↻ Refresh</button>
-  </div>
-  <div id="feed-grid" class="feed-grid">
-    <div class="feed-loading">Loading ideas…</div>
-  </div>
-</section>
-
 <!-- ── NEWSLETTER ── -->
 <div class="sub-section">
   <div class="sub-section-inner">
@@ -1248,34 +1235,6 @@ async function askAI() {
 // ── From the feed ──
 const _SB_URL = "https://uqwidlptkgmbxgaivafi.supabase.co";
 const _SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVxd2lkbHB0a2dtYnhnYWl2YWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5MzQ5MTAsImV4cCI6MjA5MjUxMDkxMH0._sNpPZgjpZ6kUCNfv6_wAB2ilmsFa8JnzM2EBXLKBlE";
-
-async function loadFeed() {
-  var grid = document.getElementById("feed-grid");
-  grid.innerHTML = '<div class="feed-loading">Loading ideas…</div>';
-  try {
-    var r = await fetch(
-      _SB_URL + "/rest/v1/twitter_bookmarks?select=author_name,author_handle,text,url&category=eq.AI%20%26%20Tech&text=not.is.null&limit=60",
-      { headers: { "apikey": _SB_KEY, "Authorization": "Bearer " + _SB_KEY } }
-    );
-    var rows = await r.json();
-    if (!rows || !rows.length) { grid.innerHTML = '<div class="feed-loading">Nothing yet — check back soon.</div>'; return; }
-    // shuffle and pick 6
-    var pool = rows.sort(() => Math.random() - 0.5).slice(0, 6);
-    grid.innerHTML = pool.map(function(t) {
-      var handle = t.author_handle ? "@" + t.author_handle : (t.author_name || "");
-      var snippet = (t.text || "").slice(0, 200) + ((t.text || "").length > 200 ? "…" : "");
-      var href = t.url || ("https://x.com/" + (t.author_handle || ""));
-      return '<a class="feed-card" href="' + href + '" target="_blank" rel="noopener">' +
-        '<div class="feed-handle">' + handle + '</div>' +
-        '<div class="feed-text">' + snippet.replace(/</g,"&lt;").replace(/>/g,"&gt;") + '</div>' +
-        '<div class="feed-arrow">→</div>' +
-        '</a>';
-    }).join("");
-  } catch(e) {
-    grid.innerHTML = '<div class="feed-loading">Couldn\'t load — try refreshing.</div>';
-  }
-}
-loadFeed();
 
 // ── Newsletter ──
 async function subscribeEmail(e) {
