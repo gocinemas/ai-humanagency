@@ -1009,21 +1009,19 @@
 </section>
 
 <!-- ── ASK AI ── -->
-<section id="ask" class="section">
-  <div class="section-header">
-    <span class="section-title">Ask AI</span>
-    <span class="section-sub">Ask anything about using AI — get an answer + 5 ideas from the feed</span>
-  </div>
-  <div class="ask-wrap">
+<div style="background:var(--surface2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:48px 24px">
+  <div style="max-width:640px;margin:0 auto">
+    <div style="font-size:22px;font-weight:900;letter-spacing:-.5px;color:var(--text);margin-bottom:6px" id="ask">Ask anything</div>
+    <div style="font-size:14px;color:var(--muted);margin-bottom:20px">About AI, tools, how to use it — plain English answers, no jargon.</div>
     <div class="ask-row">
-      <input id="ask-input" class="ask-input" type="text" placeholder="e.g. How do I use AI to write a better CV?" maxlength="300" onkeydown="if(event.key==='Enter')askAI()" />
+      <input id="ask-input" class="ask-input" type="text" placeholder="e.g. What is RAG? How do I write a better CV with AI?" maxlength="300" onkeydown="if(event.key==='Enter')askAI()" />
       <button id="ask-btn" class="ask-btn" onclick="askAI()">Ask →</button>
     </div>
     <div id="ask-answer" class="ask-answer"></div>
     <div id="ask-bm-label" class="ask-bm-label" style="display:none">AI tweets worth reading</div>
     <div id="ask-bm-grid" class="ask-bm-grid feed-grid"></div>
   </div>
-</section>
+</div>
 
 <!-- ── NEWSLETTER ── -->
 <div class="sub-section">
