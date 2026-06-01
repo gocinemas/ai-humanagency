@@ -1031,9 +1031,9 @@
 </section>
 
 <!-- ── ASK AI ── -->
-<div style="background:var(--surface2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:48px 24px">
+<div id="ask" style="background:var(--surface2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:64px 24px;scroll-margin-top:72px">
   <div style="max-width:640px;margin:0 auto">
-    <div style="font-size:22px;font-weight:900;letter-spacing:-.5px;color:var(--text);margin-bottom:6px" id="ask">Ask anything</div>
+    <div style="font-size:22px;font-weight:900;letter-spacing:-.5px;color:var(--text);margin-bottom:6px">Ask anything</div>
     <div style="font-size:14px;color:var(--muted);margin-bottom:20px">About AI, tools, how to use it — plain English answers, no jargon.</div>
     <div class="ask-row">
       <input id="ask-input" class="ask-input" type="text" placeholder="e.g. What is RAG? How do I write a better CV with AI?" maxlength="300" onkeydown="if(event.key==='Enter')askAI()" />
