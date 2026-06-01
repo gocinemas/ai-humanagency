@@ -218,7 +218,6 @@
       <a href="/start.html" style="color:var(--accent);font-weight:700">Start Here</a>
       <a href="/jargon.html">Jargon</a>
       <a href="#tools">Tools</a>
-      <a href="#inspire">Inspire</a>
       <a href="#ask">Ask</a>
       <a href="/learn/">Learn →</a>
     </nav>
@@ -228,6 +227,19 @@
 <div class="hero">
   <h1>Real help.<br>For real life.</h1>
   <p>Pick your situation. Get the right tools, prompts and starting points — in minutes, not months.</p>
+</div>
+
+<!-- ── ASK AI ── -->
+<div id="ask" style="background:var(--surface2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:48px 24px;scroll-margin-top:72px">
+  <div style="max-width:640px;margin:0 auto">
+    <div style="font-size:22px;font-weight:900;letter-spacing:-.5px;color:var(--text);margin-bottom:6px">Ask anything</div>
+    <div style="font-size:14px;color:var(--muted);margin-bottom:20px">About AI, tools, how to use it — plain English answers, no jargon.</div>
+    <div class="ask-row">
+      <input id="ask-input" class="ask-input" type="text" placeholder="e.g. What is RAG? How do I write a better CV with AI?" maxlength="300" onkeydown="if(event.key==='Enter')askAI()" />
+      <button id="ask-btn" class="ask-btn" onclick="askAI()">Ask →</button>
+    </div>
+    <div id="ask-answer" class="ask-answer"></div>
+  </div>
 </div>
 
 <!-- ── START HERE ── -->
@@ -821,8 +833,8 @@
   </div>
 </section>
 
-<!-- ── WATCH & READ ── -->
-<section id="inspire" class="section">
+<!-- ── WATCH & READ — hidden, kept for reference ── -->
+<section id="inspire" class="section" style="display:none">
   <div class="section-header">
     <span class="section-title">Watch &amp; Read</span>
     <span class="section-sub">Curated picks for going deeper</span>
@@ -1019,19 +1031,6 @@
     </div>
   </div>
 </section>
-
-<!-- ── ASK AI ── -->
-<div id="ask" style="background:var(--surface2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:64px 24px;scroll-margin-top:72px">
-  <div style="max-width:640px;margin:0 auto">
-    <div style="font-size:22px;font-weight:900;letter-spacing:-.5px;color:var(--text);margin-bottom:6px">Ask anything</div>
-    <div style="font-size:14px;color:var(--muted);margin-bottom:20px">About AI, tools, how to use it — plain English answers, no jargon.</div>
-    <div class="ask-row">
-      <input id="ask-input" class="ask-input" type="text" placeholder="e.g. What is RAG? How do I write a better CV with AI?" maxlength="300" onkeydown="if(event.key==='Enter')askAI()" />
-      <button id="ask-btn" class="ask-btn" onclick="askAI()">Ask →</button>
-    </div>
-    <div id="ask-answer" class="ask-answer"></div>
-  </div>
-</div>
 
 <!-- ── NEWSLETTER ── -->
 <div class="sub-section">
