@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Compare AI Tools — Human Agency</title>
-<meta name="description" content="ChatGPT vs Claude vs Gemini vs Perplexity — side-by-side in plain English. Pick two and see exactly what each is best for.">
+<meta name="description" content="ChatGPT vs Claude vs Gemini — compare up to 3 AI tools side-by-side in plain English. No benchmarks, just what each is actually best for.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
 a { color: inherit; text-decoration: none; }
 
 header { border-bottom: 1px solid var(--border); background: var(--surface); position: sticky; top: 0; z-index: 100; }
-.nav-inner { max-width: 800px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+.nav-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
 .nav-logo { font-size: 15px; font-weight: 800; letter-spacing: -0.4px; color: var(--text); }
 .nav-logo .dot { color: var(--accent); }
 .nav-links { display: flex; gap: 18px; align-items: center; }
@@ -27,55 +27,55 @@ header { border-bottom: 1px solid var(--border); background: var(--surface); pos
 .nav-links a:hover { color: var(--text); }
 @media(max-width:520px) { .nav-links a:not(.nav-active):not(:last-child) { display: none; } }
 
-.hero { max-width: 800px; margin: 0 auto; padding: 52px 24px 28px; }
+.hero { max-width: 900px; margin: 0 auto; padding: 48px 24px 24px; }
 .hero-tag { font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
-.hero h1 { font-size: clamp(30px, 5vw, 46px); font-weight: 900; letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 10px; }
-.hero-sub { font-size: 15px; color: var(--muted); line-height: 1.65; max-width: 480px; }
+.hero h1 { font-size: clamp(28px, 5vw, 42px); font-weight: 900; letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 10px; }
+.hero-sub { font-size: 15px; color: var(--muted); line-height: 1.65; max-width: 500px; }
 
 /* Tool grid */
-.tools-section { max-width: 800px; margin: 0 auto; padding: 32px 24px 0; }
-.tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-@media(max-width:600px) { .tools-grid { grid-template-columns: repeat(2, 1fr); } }
-@media(max-width:380px) { .tools-grid { grid-template-columns: 1fr; } }
+.tools-section { max-width: 900px; margin: 0 auto; padding: 28px 24px 0; }
+.tools-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+@media(max-width:720px) { .tools-grid { grid-template-columns: repeat(3, 1fr); } }
+@media(max-width:500px) { .tools-grid { grid-template-columns: repeat(2, 1fr); } }
 
 .tool-card {
-  background: var(--surface); border: 2px solid var(--border); border-radius: 18px;
-  padding: 18px 16px 14px; cursor: pointer; transition: border-color .15s, box-shadow .15s, transform .1s;
+  background: var(--surface); border: 2px solid var(--border); border-radius: 16px;
+  padding: 14px 12px 12px; cursor: pointer; transition: border-color .15s, box-shadow .15s, transform .1s;
   user-select: none; position: relative;
 }
 .tool-card:hover { border-color: #c7d2fe; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(79,70,229,.08); }
 .tool-card.selected { border-color: var(--accent); background: #fafafe; box-shadow: 0 0 0 3px rgba(79,70,229,.12); }
-.tool-card.dimmed { opacity: .45; pointer-events: none; }
-.tool-card.dimmed:not(.selected) { pointer-events: auto; }
+.tool-card.dimmed { opacity: .38; pointer-events: none; }
+.tool-card.dimmed { pointer-events: auto; }
 .tool-sel-badge {
-  display: none; position: absolute; top: 10px; right: 10px;
-  width: 22px; height: 22px; border-radius: 50%; background: var(--accent);
+  display: none; position: absolute; top: 8px; right: 8px;
+  width: 20px; height: 20px; border-radius: 50%; background: var(--accent);
   color: #fff; font-size: 11px; font-weight: 800; align-items: center; justify-content: center;
 }
 .tool-card.selected .tool-sel-badge { display: flex; }
-.tool-emoji { font-size: 28px; line-height: 1; margin-bottom: 10px; }
-.tool-name { font-size: 15px; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 2px; }
-.tool-maker { font-size: 11px; color: var(--subtle); font-weight: 500; margin-bottom: 8px; }
-.tool-tagline { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 10px; min-height: 36px; }
-.tool-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
-.chip { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 99px; background: #eef2ff; color: var(--accent); letter-spacing: .2px; }
-.tool-cost { font-size: 11px; font-weight: 600; color: #059669; }
+.tool-emoji { font-size: 24px; line-height: 1; margin-bottom: 8px; }
+.tool-name { font-size: 13px; font-weight: 800; letter-spacing: -0.2px; margin-bottom: 1px; }
+.tool-maker { font-size: 10px; color: var(--subtle); font-weight: 500; margin-bottom: 6px; }
+.tool-tagline { font-size: 11px; color: var(--muted); line-height: 1.45; margin-bottom: 8px; min-height: 32px; }
+.tool-chips { display: flex; flex-wrap: wrap; gap: 3px; margin-bottom: 7px; }
+.chip { font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 99px; background: #eef2ff; color: var(--accent); letter-spacing: .2px; }
+.tool-cost { font-size: 10px; font-weight: 600; color: #059669; }
 
 /* Hint bar */
-.hint-bar { max-width: 800px; margin: 16px auto 0; padding: 0 24px; }
+.hint-bar { max-width: 900px; margin: 14px auto 0; padding: 0 24px; }
 .hint-inner { font-size: 12px; color: var(--muted); text-align: center; padding: 10px 0; border-top: 1px solid var(--border); }
 #hint-text { font-weight: 600; }
 
 /* Recently compared */
-.recent-bar { max-width: 800px; margin: 0 auto; padding: 0 24px; display: none; }
-.recent-bar-inner { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 16px 0 0; }
+.recent-bar { max-width: 900px; margin: 0 auto; padding: 0 24px; display: none; }
+.recent-bar-inner { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 14px 0 0; }
 .recent-label { font-size: 11px; font-weight: 700; color: var(--subtle); text-transform: uppercase; letter-spacing: .5px; white-space: nowrap; }
 .recent-pair { display: flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; color: var(--muted); background: var(--surface); border: 1px solid var(--border); border-radius: 99px; padding: 4px 12px; cursor: pointer; transition: all .15s; }
 .recent-pair:hover { color: var(--accent); border-color: #c7d2fe; }
 
 /* Compare panel */
 #compare-panel {
-  display: none; max-width: 800px; margin: 20px auto 0; padding: 0 24px 80px;
+  display: none; max-width: 900px; margin: 20px auto 0; padding: 0 24px 80px;
 }
 #compare-panel.open { display: block; }
 
@@ -85,40 +85,46 @@ header { border-bottom: 1px solid var(--border); background: var(--surface); pos
 }
 @keyframes slideUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
 
-.cmp-header {
-  display: grid; grid-template-columns: 1fr 1fr;
-  border-bottom: 2px solid var(--border);
-}
+.cmp-header { display: flex; border-bottom: 2px solid var(--border); }
 .cmp-tool-hdr {
-  padding: 20px 22px 16px;
-  display: flex; align-items: flex-start; gap: 12px;
+  flex: 1; padding: 18px 18px 14px;
+  display: flex; align-items: flex-start; gap: 10px;
+  border-right: 1px solid var(--border);
 }
-.cmp-tool-hdr:first-child { border-right: 1px solid var(--border); }
-.cmp-hdr-emoji { font-size: 26px; flex-shrink: 0; line-height: 1; }
-.cmp-hdr-name { font-size: 16px; font-weight: 800; letter-spacing: -.3px; }
+.cmp-tool-hdr:last-child { border-right: none; }
+.cmp-hdr-emoji { font-size: 24px; flex-shrink: 0; line-height: 1; }
+.cmp-hdr-name { font-size: 15px; font-weight: 800; letter-spacing: -.3px; }
 .cmp-hdr-maker { font-size: 11px; color: var(--subtle); margin-top: 1px; }
 .cmp-hdr-url { display: inline-block; margin-top: 6px; font-size: 11px; font-weight: 700; color: var(--accent); background: #eef2ff; border-radius: 99px; padding: 2px 9px; }
 
-.cmp-row { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--border); }
+.cmp-row { display: flex; border-bottom: 1px solid var(--border); }
 .cmp-row:last-child { border-bottom: none; }
-.cmp-cell { padding: 16px 22px; }
-.cmp-cell:first-child { border-right: 1px solid var(--border); }
-.cmp-row-label { font-size: 10px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: .7px; margin-bottom: 8px; }
+.cmp-cell { flex: 1; padding: 14px 18px; border-right: 1px solid var(--border); }
+.cmp-cell:last-child { border-right: none; }
+.cmp-row-label { font-size: 10px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: .7px; margin-bottom: 7px; }
 .cmp-chips { display: flex; flex-wrap: wrap; gap: 4px; }
 .cmp-chip { font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; background: #f3f4f6; color: #374151; }
 .cmp-cost { font-size: 13px; font-weight: 700; color: #059669; }
 .cmp-cost-free { background: #d1fae5; color: #065f46; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 99px; display: inline-block; margin-top: 4px; }
 .cmp-strengths { list-style: none; display: flex; flex-direction: column; gap: 7px; }
-.cmp-strengths li { font-size: 13px; color: var(--text); line-height: 1.5; padding-left: 16px; position: relative; }
+.cmp-strengths li { font-size: 12px; color: var(--text); line-height: 1.5; padding-left: 16px; position: relative; }
 .cmp-strengths li::before { content: "✓"; position: absolute; left: 0; color: #16a34a; font-weight: 800; font-size: 12px; }
-.cmp-watch { font-size: 13px; color: #92400e; line-height: 1.5; background: #fffbeb; border-radius: 10px; padding: 10px 12px; }
+.cmp-watch { font-size: 12px; color: #92400e; line-height: 1.5; background: #fffbeb; border-radius: 10px; padding: 10px 12px; }
 
-.cmp-actions { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 18px 22px 20px; border-top: 1px solid var(--border); }
+.cmp-actions { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 16px 18px 18px; border-top: 1px solid var(--border); }
 .cmp-reset { font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; color: var(--muted); background: none; border: 1.5px solid var(--border); border-radius: 10px; padding: 9px 20px; cursor: pointer; transition: all .15s; }
 .cmp-reset:hover { color: var(--text); border-color: var(--muted); }
 
+@media(max-width:600px) {
+  .cmp-header, .cmp-row { flex-direction: column; }
+  .cmp-tool-hdr { border-right: none; border-bottom: 1px solid var(--border); }
+  .cmp-tool-hdr:last-child { border-bottom: none; }
+  .cmp-cell { border-right: none; border-bottom: 1px solid var(--border); }
+  .cmp-cell:last-child { border-bottom: none; }
+}
+
 footer { border-top: 1px solid var(--border); background: var(--surface); }
-.footer-inner { max-width: 800px; margin: 0 auto; padding: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+.footer-inner { max-width: 900px; margin: 0 auto; padding: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
 .footer-inner p { font-size: 13px; color: var(--muted); }
 .footer-links { display: flex; gap: 20px; }
 .footer-links a { font-size: 13px; color: var(--muted); transition: color .15s; }
@@ -143,8 +149,8 @@ footer { border-top: 1px solid var(--border); background: var(--surface); }
 
 <div class="hero">
   <div class="hero-tag">AI Tool Comparison</div>
-  <h1>Pick two. See the difference.</h1>
-  <p class="hero-sub">ChatGPT, Claude, Gemini, Perplexity — in plain English. No benchmarks, no jargon. Just what each is actually best for.</p>
+  <h1>Pick up to 3. See the difference.</h1>
+  <p class="hero-sub">ChatGPT, Claude, Gemini and more — in plain English. No benchmarks, no jargon. Just what each is actually best for.</p>
 </div>
 
 <div class="recent-bar" id="recent-bar">
@@ -159,7 +165,7 @@ footer { border-top: 1px solid var(--border); background: var(--surface); }
 </div>
 
 <div class="hint-bar">
-  <div class="hint-inner"><span id="hint-text">Select any two tools to compare</span></div>
+  <div class="hint-inner"><span id="hint-text">Select 2 or 3 tools to compare</span></div>
 </div>
 
 <div id="compare-panel">
@@ -188,11 +194,11 @@ const TOOLS = [
     hasFree: true,
     bestFor: ["Writing", "Coding", "Everyday tasks"],
     strengths: [
-      "Widest range of tasks — emails, code, analysis, images all in one place",
-      "Browse the web, run code, generate images on the Plus plan",
+      "Widest range of tasks — emails, code, analysis, images in one place",
+      "Browse the web, run code, generate images on Plus plan",
       "Most supported by third-party apps and integrations"
     ],
-    watchOut: "Can sound very confident while being wrong. Always verify anything factual.",
+    watchOut: "Can sound very confident while being wrong. Always verify factual claims.",
     url: "https://chatgpt.com"
   },
   {
@@ -206,7 +212,7 @@ const TOOLS = [
     bestFor: ["Long docs", "Analysis", "Writing"],
     strengths: [
       "Reads and summarises very long documents — books, contracts, reports",
-      "More likely to say 'I'm not sure' than to hallucinate confidently",
+      "More likely to say 'I'm not sure' than hallucinate confidently",
       "Strongest on nuanced writing — tone, voice, structure"
     ],
     watchOut: "No real-time web access on free tier. Less image generation than ChatGPT.",
@@ -222,7 +228,7 @@ const TOOLS = [
     hasFree: true,
     bestFor: ["Google Workspace", "Research", "Search"],
     strengths: [
-      "Native in Gmail, Docs, Sheets — no app switching needed",
+      "Native in Gmail, Docs, Sheets — no app switching",
       "Real-time web access by default — always current",
       "Handles images, audio and text together naturally"
     ],
@@ -239,12 +245,46 @@ const TOOLS = [
     hasFree: true,
     bestFor: ["Research", "Fact-checking", "Current events"],
     strengths: [
-      "Every answer comes with cited sources — you can verify everything",
-      "Searches live web — no knowledge cutoff",
+      "Every answer includes cited sources — you can verify everything",
+      "Searches the live web — no knowledge cutoff",
       "Best for 'explain this topic with evidence' questions"
     ],
     watchOut: "Not a writing tool. Answers are research briefs, not polished prose.",
     url: "https://perplexity.ai"
+  },
+  {
+    id: "grok",
+    name: "Grok",
+    maker: "xAI (Elon Musk)",
+    emoji: "𝕏",
+    tagline: "Real-time access to X/Twitter. Bold and opinionated.",
+    cost: "Free on X · SuperGrok £22/mo",
+    hasFree: true,
+    bestFor: ["X/Twitter data", "Current events", "Trending news"],
+    strengths: [
+      "Only AI with live access to X posts and trends",
+      "Real-time internet access included on free tier",
+      "More willing to tackle edgy or controversial questions"
+    ],
+    watchOut: "Heavily biased by X/Twitter's worldview. Less nuanced than Claude or ChatGPT.",
+    url: "https://grok.com"
+  },
+  {
+    id: "deepseek",
+    name: "DeepSeek",
+    maker: "DeepSeek (China)",
+    emoji: "🐋",
+    tagline: "The model that shocked the world — powerful and free.",
+    cost: "Completely free",
+    hasFree: true,
+    bestFor: ["Coding", "Maths", "Long reasoning"],
+    strengths: [
+      "Matches GPT-4 level at a fraction of the cost — free to use",
+      "Outstanding at coding, maths, and step-by-step reasoning",
+      "Shows its thinking process — you can see how it reaches answers"
+    ],
+    watchOut: "Chinese company — some privacy concerns. Censors topics sensitive to the Chinese government.",
+    url: "https://chat.deepseek.com"
   },
   {
     id: "copilot",
@@ -280,6 +320,40 @@ const TOOLS = [
     watchOut: "Text tasks are not what it's for. Runs via Discord — less beginner-friendly.",
     url: "https://midjourney.com"
   },
+  {
+    id: "sora",
+    name: "Sora",
+    maker: "OpenAI",
+    emoji: "🎬",
+    tagline: "Type a prompt, get a video. OpenAI's video generator.",
+    cost: "Plus £16/mo · Pro £160/mo",
+    hasFree: false,
+    bestFor: ["Video", "Creative content", "Storytelling"],
+    strengths: [
+      "Creates realistic videos up to 20 seconds from text prompts",
+      "Understands physics, lighting and camera movement naturally",
+      "Integrated with ChatGPT — no separate app needed on Plus"
+    ],
+    watchOut: "Very new — can still produce strange glitches. High quality needs Pro plan.",
+    url: "https://sora.com"
+  },
+  {
+    id: "runway",
+    name: "Runway",
+    maker: "Runway AI",
+    emoji: "🎥",
+    tagline: "Professional AI video tools used by filmmakers.",
+    cost: "Free basic · Standard £12/mo",
+    hasFree: true,
+    bestFor: ["Video", "Film", "Motion"],
+    strengths: [
+      "Used by professional filmmakers and studios — serious quality",
+      "Expand videos, remove backgrounds, stylise footage",
+      "More creative control than Sora — frame-by-frame editing"
+    ],
+    watchOut: "Steeper learning curve than other tools. Credits run out quickly on free tier.",
+    url: "https://runwayml.com"
+  },
 ];
 
 let selected = [];
@@ -287,24 +361,26 @@ let selected = [];
 function getRecent() {
   try { return JSON.parse(localStorage.getItem('ha_compare_recent') || '[]'); } catch { return []; }
 }
-function saveRecent(id1, id2) {
+function saveRecent(ids) {
   let recent = getRecent();
-  const key = [id1, id2].sort().join('|');
-  recent = [key, ...recent.filter(k => k !== key)].slice(0, 4);
+  const key = [...ids].sort().join('|');
+  recent = [key, ...recent.filter(k => k !== key)].slice(0, 5);
   localStorage.setItem('ha_compare_recent', JSON.stringify(recent));
 }
 function renderRecentBar() {
   const recent = getRecent();
   const bar = document.getElementById('recent-bar');
   const container = document.getElementById('recent-pairs');
-  if (!recent.length) { bar.style.display = 'none'; return; }
+  const validRecent = recent.filter(key => {
+    return key.split('|').every(id => TOOLS.find(t => t.id === id));
+  });
+  if (!validRecent.length) { bar.style.display = 'none'; return; }
   bar.style.display = '';
-  container.innerHTML = recent.map(key => {
-    const [id1, id2] = key.split('|');
-    const t1 = TOOLS.find(t => t.id === id1);
-    const t2 = TOOLS.find(t => t.id === id2);
-    if (!t1 || !t2) return '';
-    return `<button class="recent-pair" onclick="loadPair('${id1}','${id2}')">${t1.emoji} ${t1.name} vs ${t2.emoji} ${t2.name}</button>`;
+  container.innerHTML = validRecent.map(key => {
+    const ids = key.split('|');
+    const tools = ids.map(id => TOOLS.find(t => t.id === id)).filter(Boolean);
+    if (tools.length < 2) return '';
+    return `<button class="recent-pair" onclick="loadSet(${JSON.stringify(ids)})">${tools.map(t => t.emoji + ' ' + t.name).join(' vs ')}</button>`;
   }).join('');
 }
 
@@ -325,18 +401,18 @@ function renderGrid() {
 function toggleSelect(id) {
   if (selected.includes(id)) {
     selected = selected.filter(x => x !== id);
-  } else if (selected.length < 2) {
+  } else if (selected.length < 3) {
     selected.push(id);
   } else {
-    selected = [selected[1], id];
+    selected = [selected[1], selected[2], id];
   }
   updateUI();
 }
 
-function loadPair(id1, id2) {
-  selected = [id1, id2];
+function loadSet(ids) {
+  selected = ids.filter(id => TOOLS.find(t => t.id === id)).slice(0, 3);
   updateUI();
-  document.getElementById('compare-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  setTimeout(() => document.getElementById('compare-panel').scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
 }
 
 function updateUI() {
@@ -345,30 +421,33 @@ function updateUI() {
     const badge = document.getElementById('badge-' + t.id);
     const idx = selected.indexOf(t.id);
     card.classList.toggle('selected', idx >= 0);
-    card.classList.toggle('dimmed', selected.length === 2 && idx < 0);
+    card.classList.toggle('dimmed', selected.length === 3 && idx < 0);
     badge.textContent = idx >= 0 ? (idx + 1) : '';
   });
 
   const hint = document.getElementById('hint-text');
-  if (selected.length === 0) hint.textContent = 'Select any two tools to compare';
+  if (selected.length === 0) hint.textContent = 'Select 2 or 3 tools to compare';
   else if (selected.length === 1) {
     const t = TOOLS.find(x => x.id === selected[0]);
-    hint.textContent = `${t.name} selected — pick one more`;
+    hint.textContent = `${t.name} selected — pick 1 or 2 more`;
+  } else if (selected.length === 2) {
+    hint.textContent = '↓ Comparison below — or pick a 3rd to add it';
+    showComparison(selected);
   } else {
-    hint.textContent = '↓ Comparison below';
+    hint.textContent = '↓ 3-way comparison below';
+    showComparison(selected);
   }
 
-  if (selected.length === 2) {
-    showComparison(selected[0], selected[1]);
-  } else {
+  if (selected.length < 2) {
     document.getElementById('compare-panel').classList.remove('open');
   }
 }
 
-function showComparison(id1, id2) {
-  const a = TOOLS.find(t => t.id === id1);
-  const b = TOOLS.find(t => t.id === id2);
-  saveRecent(id1, id2);
+function showComparison(ids) {
+  const tools = ids.map(id => TOOLS.find(t => t.id === id)).filter(Boolean);
+  if (tools.length < 2) return;
+
+  saveRecent(ids);
   renderRecentBar();
 
   const col = (t) => `
@@ -381,14 +460,9 @@ function showComparison(id1, id2) {
       </div>
     </div>`;
 
-  const row = (label, aHtml, bHtml) => `
+  const row = (label, cells) => `
     <div class="cmp-row">
-      <div class="cmp-cell">
-        <div class="cmp-row-label">${label}</div>${aHtml}
-      </div>
-      <div class="cmp-cell">
-        <div class="cmp-row-label">${label}</div>${bHtml}
-      </div>
+      ${cells.map(html => `<div class="cmp-cell"><div class="cmp-row-label">${label}</div>${html}</div>`).join('')}
     </div>`;
 
   const chips = t => `<div class="cmp-chips">${t.bestFor.map(c => `<span class="cmp-chip">${c}</span>`).join('')}</div>`;
@@ -397,20 +471,20 @@ function showComparison(id1, id2) {
   const watch = t => `<div class="cmp-watch">⚠️ ${t.watchOut}</div>`;
 
   document.getElementById('cmp-card').innerHTML = `
-    <div class="cmp-header">
-      ${col(a)}${col(b)}
-    </div>
-    ${row('Best for', chips(a), chips(b))}
-    ${row('Cost', cost(a), cost(b))}
-    ${row('Strengths', strengths(a), strengths(b))}
-    ${row('Watch out', watch(a), watch(b))}
+    <div class="cmp-header">${tools.map(t => col(t)).join('')}</div>
+    ${row('Best for', tools.map(chips))}
+    ${row('Cost', tools.map(cost))}
+    ${row('Strengths', tools.map(strengths))}
+    ${row('Watch out', tools.map(watch))}
     <div class="cmp-actions">
       <button class="cmp-reset" onclick="resetCompare()">✕ Clear comparison</button>
     </div>`;
 
   const panel = document.getElementById('compare-panel');
   panel.classList.add('open');
-  setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+  if (selected.length === 2) {
+    setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+  }
 }
 
 function resetCompare() {
