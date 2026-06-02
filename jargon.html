@@ -105,9 +105,11 @@ footer { border-top: 1px solid var(--border); background: var(--surface); }
   <h1>Every AI term.<br>Explained properly.</h1>
   <p class="hero-sub">Plain English. No pretence.</p>
   <div class="search-wrap">
-    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    <input class="search-input" id="search" type="search" placeholder="Search any term…" oninput="render()" autocomplete="off">
-    <span class="search-kbd" id="search-kbd">⌘K</span>
+    <div style="position:relative">
+      <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input class="search-input" id="search" type="search" placeholder="Search any term…" oninput="render()" autocomplete="off">
+      <span class="search-kbd" id="search-kbd">⌘K</span>
+    </div>
     <div class="recent-strip" id="recent-strip"></div>
   </div>
 </div>
