@@ -136,6 +136,19 @@
     .sub-btn { font-family:'Inter',sans-serif; font-size:14px; font-weight:700; padding:10px 20px; background:var(--accent); color:white; border:none; border-radius:10px; cursor:pointer; transition:background .15s; }
     .sub-btn:hover { background:#4338ca; }
     .sub-msg { font-size:12px; color:var(--muted); margin-top:10px; min-height:18px; }
+    /* Inline capture in goal panels */
+    .panel-capture { margin-top:18px; padding:14px 16px; background:#fafafe; border:1.5px solid #c7d2fe; border-radius:14px; }
+    .panel-capture-label { font-size:12px; font-weight:700; color:var(--accent); margin-bottom:10px; }
+    .panel-capture-row { display:flex; gap:8px; flex-wrap:wrap; }
+    .panel-capture-input { font-family:'Inter',sans-serif; font-size:13px; padding:9px 14px; border:1.5px solid #c7d2fe; border-radius:9px; outline:none; flex:1; min-width:180px; color:var(--text); background:white; }
+    .panel-capture-input:focus { border-color:var(--accent); }
+    .panel-capture-btn { font-family:'Inter',sans-serif; font-size:13px; font-weight:700; padding:9px 16px; background:var(--accent); color:white; border:none; border-radius:9px; cursor:pointer; white-space:nowrap; }
+    .panel-capture-msg { font-size:12px; color:var(--green); margin-top:7px; min-height:16px; }
+    /* Copy nudge toast */
+    #copy-nudge { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px); background:#1f1f1f; color:white; border-radius:14px; padding:12px 20px; font-size:13px; font-weight:500; display:flex; align-items:center; gap:12px; box-shadow:0 8px 32px rgba(0,0,0,.25); z-index:999; transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .3s; opacity:0; white-space:nowrap; }
+    #copy-nudge.show { transform:translateX(-50%) translateY(0); opacity:1; }
+    #copy-nudge a { color:#a5b4fc; font-weight:700; text-decoration:none; }
+    #copy-nudge-close { background:none; border:none; color:#666; cursor:pointer; font-size:16px; padding:0; line-height:1; flex-shrink:0; }
 
     footer { border-top:1px solid var(--border); background:var(--surface); }
     .footer-inner { max-width:1100px; margin:0 auto; padding:28px 24px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
@@ -289,6 +302,19 @@
     </div>
   </div>
 
+  <!-- Mid-page email strip -->
+  <div style="background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%);border-radius:20px;padding:28px 32px;margin-bottom:32px;display:flex;align-items:center;gap:24px;flex-wrap:wrap">
+    <div style="flex:1;min-width:0">
+      <div style="font-size:16px;font-weight:800;color:white;letter-spacing:-.3px;margin-bottom:4px">One clear email, every week</div>
+      <div style="font-size:13px;color:rgba(255,255,255,.75)">What's changing in AI and what it means for your work — no hype, no jargon.</div>
+    </div>
+    <form onsubmit="subscribeInline(event,this,'hero-strip')" style="display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap">
+      <input type="email" required placeholder="your@email.com" autocomplete="email" style="font-family:'Inter',sans-serif;font-size:14px;padding:10px 16px;border:none;border-radius:10px;outline:none;min-width:200px;color:var(--text)">
+      <button type="submit" style="font-family:'Inter',sans-serif;font-size:14px;font-weight:700;padding:10px 20px;background:white;color:var(--accent);border:none;border-radius:10px;cursor:pointer;white-space:nowrap">Subscribe →</button>
+    </form>
+    <div class="strip-msg" style="width:100%;font-size:12px;color:rgba(255,255,255,.8);margin-top:-8px;min-height:16px"></div>
+  </div>
+
   <!-- New to AI panel -->
   <div id="goal-panel-newtoai" class="goal-panel" style="display:none">
     <div class="goal-panel-title">New to AI — where to start</div>
@@ -322,6 +348,14 @@
       <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">Help me think through something I've been meaning to sort out. Here's the situation: [describe what you're trying to figure out]. What questions should I be asking, and what are the key things to consider?<span class="copy-hint">📋 click to copy</span></div>
       <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">Summarise this for me: [paste any article, email, or document]. Give me: the 3 main points, what I need to do (if anything), and one question worth asking.<span class="copy-hint">📋 click to copy</span></div>
       <div class="prompt-box" onclick="copyPrompt(this)">Explain [topic] to me simply. I know nothing about it. Use plain English, give one real-world example, and tell me why it matters right now.<span class="copy-hint">📋 click to copy</span></div>
+    </div>
+    <div class="panel-capture">
+      <div class="panel-capture-label">📬 Get a new starter prompt every week — free</div>
+      <form class="panel-capture-row" onsubmit="subscribeInline(event,this,'panel-newtoai')">
+        <input class="panel-capture-input" type="email" required placeholder="your@email.com" autocomplete="email">
+        <button class="panel-capture-btn" type="submit">Get them →</button>
+      </form>
+      <div class="panel-capture-msg"></div>
     </div>
   </div>
 
@@ -359,6 +393,14 @@
       <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">My [age]-year-old is stuck on [topic] for homework. Explain it simply and give one example — but don't just give the answer.<span class="copy-hint">📋 click to copy</span></div>
       <div class="prompt-box" onclick="copyPrompt(this)">Help me write a formal appeal letter about [situation, e.g. a school place / council decision / GP referral]. Tone: calm, polite, persuasive. Under 300 words.<span class="copy-hint">📋 click to copy</span></div>
     </div>
+    <div class="panel-capture">
+      <div class="panel-capture-label">📬 Weekly prompts for busy parents — free</div>
+      <form class="panel-capture-row" onsubmit="subscribeInline(event,this,'panel-parent')">
+        <input class="panel-capture-input" type="email" required placeholder="your@email.com" autocomplete="email">
+        <button class="panel-capture-btn" type="submit">Get them →</button>
+      </form>
+      <div class="panel-capture-msg"></div>
+    </div>
   </div>
 
   <!-- Looking for work panel -->
@@ -394,6 +436,14 @@
       <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">Here's a job description: [paste it]. Here's my current CV summary: [paste it]. Rewrite my summary to match this role specifically. Keep it honest — don't invent anything.<span class="copy-hint">📋 click to copy</span></div>
       <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">Write a cover letter for [job title] at [company]. My background in one sentence: [describe]. Under 250 words. No fluff, no clichés.<span class="copy-hint">📋 click to copy</span></div>
       <div class="prompt-box" onclick="copyPrompt(this)">I have an interview at [company] for [role]. What questions should I expect, and what's the best way to answer each one given my background: [brief summary]?<span class="copy-hint">📋 click to copy</span></div>
+    </div>
+    <div class="panel-capture">
+      <div class="panel-capture-label">📬 Weekly prompts for job seekers — free</div>
+      <form class="panel-capture-row" onsubmit="subscribeInline(event,this,'panel-jobhunt')">
+        <input class="panel-capture-input" type="email" required placeholder="your@email.com" autocomplete="email">
+        <button class="panel-capture-btn" type="submit">Get them →</button>
+      </form>
+      <div class="panel-capture-msg"></div>
     </div>
   </div>
 
@@ -442,6 +492,14 @@
       <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">Write a short proposal for a new client. My service: [describe]. Their problem: [describe]. Format: problem, my solution, why me, what's included, and next steps. Under 400 words. Professional but not corporate-sounding.<span class="copy-hint">📋 click to copy</span></div>
       <div class="prompt-box" onclick="copyPrompt(this)">Write a LinkedIn post for my business about [what happened / a result / a lesson learned]. Tone: direct and honest. Under 150 words. No hashtag spam. End with a genuine question.<span class="copy-hint">📋 click to copy</span></div>
     </div>
+    <div class="panel-capture">
+      <div class="panel-capture-label">📬 Weekly prompts for business owners — free</div>
+      <form class="panel-capture-row" onsubmit="subscribeInline(event,this,'panel-business')">
+        <input class="panel-capture-input" type="email" required placeholder="your@email.com" autocomplete="email">
+        <button class="panel-capture-btn" type="submit">Get them →</button>
+      </form>
+      <div class="panel-capture-msg"></div>
+    </div>
   </div>
 
   <!-- Returning to work panel -->
@@ -478,6 +536,14 @@
       <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">Write a LinkedIn summary for someone returning to [field] after [period]. Honest about the gap, forward-focused, under 200 words. Not corporate-sounding.<span class="copy-hint">📋 click to copy</span></div>
       <div class="prompt-box" onclick="copyPrompt(this)">I worked in [field] until [year]. What skills are most in demand in that field now? What should I prioritise learning or updating first?<span class="copy-hint">📋 click to copy</span></div>
     </div>
+    <div class="panel-capture">
+      <div class="panel-capture-label">📬 Weekly prompts for returning workers — free</div>
+      <form class="panel-capture-row" onsubmit="subscribeInline(event,this,'panel-returning')">
+        <input class="panel-capture-input" type="email" required placeholder="your@email.com" autocomplete="email">
+        <button class="panel-capture-btn" type="submit">Get them →</button>
+      </form>
+      <div class="panel-capture-msg"></div>
+    </div>
   </div>
 
   <!-- Student panel -->
@@ -513,6 +579,14 @@
       <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">Explain [concept] for [subject] at [level, e.g. A-level / first-year university]. Use plain language and a real-world example. Tell me why it matters.<span class="copy-hint">📋 click to copy</span></div>
       <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">Here's my essay draft: [paste it]. What's the weakest part of my argument? What's missing? Don't rewrite it — just tell me what to improve.<span class="copy-hint">📋 click to copy</span></div>
       <div class="prompt-box" onclick="copyPrompt(this)">Create a revision plan for [subject / exam] over [number] weeks. I have roughly [hours] per day. Include what to cover each week and how to test myself.<span class="copy-hint">📋 click to copy</span></div>
+    </div>
+    <div class="panel-capture">
+      <div class="panel-capture-label">📬 Weekly prompts for students — free</div>
+      <form class="panel-capture-row" onsubmit="subscribeInline(event,this,'panel-student')">
+        <input class="panel-capture-input" type="email" required placeholder="your@email.com" autocomplete="email">
+        <button class="panel-capture-btn" type="submit">Get them →</button>
+      </form>
+      <div class="panel-capture-msg"></div>
     </div>
   </div>
 </section>
@@ -1052,6 +1126,13 @@
   </div>
 </footer>
 
+<!-- Copy nudge toast -->
+<div id="copy-nudge" role="status">
+  💡 Useful? Get a new prompt every week →
+  <a href="#" onclick="document.getElementById('sub-email').focus();document.querySelector('.sub-section').scrollIntoView({behavior:'smooth'});_dismissNudge();return false">Subscribe free</a>
+  <button id="copy-nudge-close" onclick="_dismissNudge()" aria-label="Dismiss">✕</button>
+</div>
+
 <script>
 // ── Goal card expand/collapse ──
 var _activeGoal = null;
@@ -1091,6 +1172,7 @@ function copyPrompt(el) {
       if (hint) hint.textContent = "📋 click to copy";
       el.classList.remove("copied");
     }, 2000);
+    setTimeout(_showNudge, 1200);
   });
 }
 
@@ -1106,6 +1188,7 @@ function copyPromptCard(el) {
       el.classList.remove("copied");
       if (hint) hint.textContent = "📋 Click to copy";
     }, 2000);
+    setTimeout(_showNudge, 1200);
   });
 }
 
@@ -1187,6 +1270,49 @@ async function askAI() {
     ansDiv.textContent = "Something went wrong — please try again.";
   }
   btn.disabled = false; btn.textContent = "Ask →";
+}
+
+// ── Inline subscribe (goal panels + mid-page strip) ──
+var _nudgeDismissed = false;
+var _nudgeTimer = null;
+function _dismissNudge() {
+  _nudgeDismissed = true;
+  var el = document.getElementById("copy-nudge");
+  if (el) { el.classList.remove("show"); }
+  if (_nudgeTimer) clearTimeout(_nudgeTimer);
+}
+function _showNudge() {
+  if (_nudgeDismissed || localStorage.getItem("ha_subscribed")) return;
+  var el = document.getElementById("copy-nudge");
+  if (!el) return;
+  el.classList.add("show");
+  _nudgeTimer = setTimeout(_dismissNudge, 6000);
+}
+
+async function subscribeInline(e, form, source) {
+  e.preventDefault();
+  var input = form.querySelector("input[type=email]");
+  var msgEl = form.parentElement.querySelector(".panel-capture-msg, .strip-msg");
+  var email = (input ? input.value : "").trim();
+  if (!email) return;
+  var btn = form.querySelector("button");
+  if (btn) { btn.disabled = true; btn.textContent = "…"; }
+  try {
+    var r = await fetch("https://humanagency.co/api/newsletter/subscribe", {
+      method: "POST", headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({email: email, source: source || "inline"})
+    });
+    localStorage.setItem("ha_subscribed", "1");
+    if (msgEl) msgEl.textContent = "✅ You're in — one email a week.";
+    if (input) input.value = "";
+    _dismissNudge();
+  } catch (_) {
+    localStorage.setItem("ha_subscribed", "1");
+    if (msgEl) msgEl.textContent = "✅ You're in — one email a week.";
+    if (input) input.value = "";
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = "Get them →"; }
+  }
 }
 
 // ── Newsletter ──
