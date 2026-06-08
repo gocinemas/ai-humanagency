@@ -619,6 +619,190 @@
   </div>
 </section>
 
+<!-- ── ORGANIZATIONAL AI ── -->
+<section id="organizational-ai" class="section">
+  <div class="section-header">
+    <span class="section-title">Organizational AI</span>
+    <span class="section-sub">Upskill your team on AI fundamentals and role-specific applications</span>
+  </div>
+
+  <div class="goal-grid">
+    <div class="goal-card" id="goal-foundation" onclick="toggleGoal('foundation')">
+      <span class="goal-chevron">▶</span>
+      <div class="goal-icon">🏢</div>
+      <h3>Foundation Training</h3>
+      <p>What every employee needs to know about AI, regardless of their role. Build a common language across your team.</p>
+    </div>
+    <div class="goal-card" id="goal-marketing" onclick="toggleGoal('marketing')">
+      <span class="goal-chevron">▶</span>
+      <div class="goal-icon">📈</div>
+      <h3>Marketing Manager</h3>
+      <p>AI tools and prompts for content creation, campaign optimization, and customer insights. Faster execution, better ideas.</p>
+    </div>
+    <div class="goal-card" id="goal-finance" onclick="toggleGoal('finance')">
+      <span class="goal-chevron">▶</span>
+      <div class="goal-icon">💰</div>
+      <h3>Finance Lead</h3>
+      <p>AI for forecasting, analysis, and reporting. Spend less time gathering data, more time making decisions.</p>
+    </div>
+  </div>
+
+  <!-- Foundation Training Panel -->
+  <div id="goal-panel-foundation" class="goal-panel" style="display:none">
+    <div class="goal-panel-title">Foundation Training — What Every Employee Should Know</div>
+    <div class="tool-list">
+      <div class="tool-item">
+        <div class="tool-item-icon">✍️</div>
+        <div>
+          <div class="tool-item-name">Claude</div>
+          <div class="tool-item-desc">Best for learning. Clear explanations, handles follow-up questions, explains limitations honestly.</div>
+          <div class="tool-item-footer">
+            <span class="tool-cost">Free</span>
+            <a class="tool-link" href="https://claude.ai" target="_blank" rel="noopener">claude.ai →</a>
+          </div>
+        </div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-item-icon">💬</div>
+        <div>
+          <div class="tool-item-name">ChatGPT</div>
+          <div class="tool-item-desc">Most widely used. Good for testing prompts, seeing how AI responds to different requests.</div>
+          <div class="tool-item-footer">
+            <span class="tool-cost">Free</span>
+            <a class="tool-link" href="https://chatgpt.com" target="_blank" rel="noopener">chatgpt.com →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="first-action">
+      <div class="first-action-label">⚡ Start with these prompts</div>
+      <div class="first-action-intro">Use these with your team to establish what AI is and isn't:</div>
+
+      <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">Explain to me like I'm in a business meeting: What is AI, what can it actually do well, and what are the real limitations? Include one concrete example from [your industry].<span class="copy-hint">📋 click to copy</span></div>
+
+      <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">What are the main security and ethical risks our team should know about when using AI tools at work? What should we never do?<span class="copy-hint">📋 click to copy</span></div>
+
+      <div class="prompt-box" onclick="copyPrompt(this)">Give me 5 real examples of tasks in [your department] that AI could help with. For each one, explain what would still need human judgment.<span class="copy-hint">📋 click to copy</span></div>
+    </div>
+
+    <div style="background:#f0f9ff;border:1px solid #bfdbfe;border-radius:14px;padding:16px 18px;margin-top:16px;font-size:13px;color:#1e40af;line-height:1.6">
+      <strong>Foundation topics to cover:</strong> What AI is and isn't • Common use cases • Limitations and hallucinations • Security risks • Responsible usage • How it changes workflows • What judgment still matters
+    </div>
+  </div>
+
+  <!-- Marketing Manager Panel -->
+  <div id="goal-panel-marketing" class="goal-panel" style="display:none">
+    <div class="goal-panel-title">Marketing Manager — AI for Content and Campaign Optimisation</div>
+    <div class="tool-list">
+      <div class="tool-item">
+        <div class="tool-item-icon">✍️</div>
+        <div>
+          <div class="tool-item-name">Claude</div>
+          <div class="tool-item-desc">Content ideation, campaign briefing, audience research summaries. Clear writing, good at strategic thinking.</div>
+          <div class="tool-item-footer">
+            <span class="tool-cost">Free</span>
+            <a class="tool-link" href="https://claude.ai" target="_blank" rel="noopener">claude.ai →</a>
+          </div>
+        </div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-item-icon">🎨</div>
+        <div>
+          <div class="tool-item-name">Canva</div>
+          <div class="tool-item-desc">Design mockups, social posts, campaign graphics. Templates + AI-powered layout suggestions.</div>
+          <div class="tool-item-footer">
+            <span class="tool-cost">Free</span>
+            <a class="tool-link" href="https://canva.com" target="_blank" rel="noopener">canva.com →</a>
+          </div>
+        </div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-item-icon">📊</div>
+        <div>
+          <div class="tool-item-name">Perplexity</div>
+          <div class="tool-item-desc">Market research, competitor analysis, trend research. Searches current web, good for what's happening now.</div>
+          <div class="tool-item-footer">
+            <span class="tool-cost">Free</span>
+            <a class="tool-link" href="https://perplexity.ai" target="_blank" rel="noopener">perplexity.ai →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="first-action">
+      <div class="first-action-label">⚡ Start with these</div>
+      <div class="first-action-intro">Copy these prompts and fill in [brackets]. Paste into Claude or ChatGPT:</div>
+
+      <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">I'm creating a campaign for [audience] about [topic/product]. What are the top 3 emotional hooks that would resonate? Give me 5 different headline angles for each hook.<span class="copy-hint">📋 click to copy</span></div>
+
+      <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">Analyse our competitor [competitor name]. What are they saying in their marketing? What messaging gap could we fill? What's our opportunity?<span class="copy-hint">📋 click to copy</span></div>
+
+      <div class="prompt-box" onclick="copyPrompt(this)">Write 3 versions of this email for [audience]: [paste your draft]. One should be conversational, one data-driven, one story-based. Which feels most authentic to our brand voice?<span class="copy-hint">📋 click to copy</span></div>
+    </div>
+
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:14px;padding:16px 18px;margin-top:16px;font-size:13px;color:#166534;line-height:1.6">
+      <strong>Use AI for:</strong> Content ideation • Headline testing • Campaign briefs • Audience analysis • Competitor research • Social post variations • Email subject lines • SEO keyword research • Writing first drafts
+    </div>
+  </div>
+
+  <!-- Finance Lead Panel -->
+  <div id="goal-panel-finance" class="goal-panel" style="display:none">
+    <div class="goal-panel-title">Finance Lead — AI for Analysis, Forecasting, and Reporting</div>
+    <div class="tool-list">
+      <div class="tool-item">
+        <div class="tool-item-icon">✍️</div>
+        <div>
+          <div class="tool-item-name">Claude</div>
+          <div class="tool-item-desc">Financial analysis, budget reviews, trend interpretation. Explains complex numbers in plain language. Good at "what does this mean?"</div>
+          <div class="tool-item-footer">
+            <span class="tool-cost">Free</span>
+            <a class="tool-link" href="https://claude.ai" target="_blank" rel="noopener">claude.ai →</a>
+          </div>
+        </div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-item-icon">📊</div>
+        <div>
+          <div class="tool-item-name">Excel + AI (Copilot)</div>
+          <div class="tool-item-desc">Automating spreadsheet analysis, creating formulas, spotting patterns in data. Turns hours into minutes.</div>
+          <div class="tool-item-footer">
+            <span class="tool-cost">Subscription</span>
+            <a class="tool-link" href="https://microsoft.com/microsoft-365" target="_blank" rel="noopener">microsoft.com →</a>
+          </div>
+        </div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-item-icon">📈</div>
+        <div>
+          <div class="tool-item-name">Google Sheets</div>
+          <div class="tool-item-desc">Collaborative analysis, automated reporting, formula help. Built-in AI suggestions for data patterns.</div>
+          <div class="tool-item-footer">
+            <span class="tool-cost">Free</span>
+            <a class="tool-link" href="https://sheets.google.com" target="_blank" rel="noopener">sheets.google.com →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="first-action">
+      <div class="first-action-label">⚡ Start with these</div>
+      <div class="first-action-intro">Use these prompts to accelerate financial analysis and reporting:</div>
+
+      <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">Analyse this financial data: [paste your numbers/spreadsheet]. What trends do you see? What should we be concerned about? What's working well?<span class="copy-hint">📋 click to copy</span></div>
+
+      <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">Create a forecast for [metric] based on these numbers: [paste data]. Assume [assumptions]. What should we budget for next quarter?<span class="copy-hint">📋 click to copy</span></div>
+
+      <div class="prompt-box" onclick="copyPrompt(this)">I need to explain our [financial situation/budget cuts/growth] to leadership. Help me write a one-page summary that's clear but doesn't oversimplify the risks.<span class="copy-hint">📋 click to copy</span></div>
+    </div>
+
+    <div style="background:#fef3c7;border:1px solid #fcd34d;border-radius:14px;padding:16px 18px;margin-top:16px;font-size:13px;color:#92400e;line-height:1.6">
+      <strong>Use AI for:</strong> Data analysis • Trend spotting • Forecasting • Report generation • Budget reviews • Risk assessment • Financial commentary • Variance analysis • Scenario planning
+    </div>
+  </div>
+
+</section>
+
 <!-- ── AI IN PRACTICE ── -->
 <section id="practice" class="section">
   <div class="section-header">
