@@ -623,7 +623,7 @@
 <section id="organizational-ai" class="section">
   <div class="section-header">
     <span class="section-title">Organizational AI</span>
-    <span class="section-sub">Upskill your team on AI fundamentals and role-specific applications</span>
+    <span class="section-sub">Build your team's AI literacy with role-specific training and real prompts</span>
   </div>
 
   <div class="goal-grid">
@@ -631,23 +631,41 @@
       <span class="goal-chevron">▶</span>
       <div class="goal-icon">🏢</div>
       <h3>Foundation Training</h3>
-      <p>What every employee needs to know about AI, regardless of their role. Build a common language across your team.</p>
+      <p>What every employee needs to know: capabilities, limitations, risks, how it changes workflows. Build common language.</p>
     </div>
-    <div class="goal-card" id="goal-marketing" onclick="toggleGoal('marketing')">
+    <div class="goal-card" id="goal-org-marketing" onclick="toggleGoal('org-marketing')">
       <span class="goal-chevron">▶</span>
       <div class="goal-icon">📈</div>
       <h3>Marketing Manager</h3>
-      <p>AI tools and prompts for content creation, campaign optimization, and customer insights. Faster execution, better ideas.</p>
+      <p>Content creation, campaign optimization, competitor research. Ready-to-use prompts with sample outputs included.</p>
     </div>
-    <div class="goal-card" id="goal-finance" onclick="toggleGoal('finance')">
+    <div class="goal-card" id="goal-org-finance" onclick="toggleGoal('org-finance')">
       <span class="goal-chevron">▶</span>
       <div class="goal-icon">💰</div>
       <h3>Finance Lead</h3>
-      <p>AI for forecasting, analysis, and reporting. Spend less time gathering data, more time making decisions.</p>
+      <p>Analysis, forecasting, reporting. Save hours on data review and budget cycles. See real example outputs.</p>
+    </div>
+    <div class="goal-card" id="goal-hr" onclick="toggleGoal('hr')">
+      <span class="goal-chevron">▶</span>
+      <div class="goal-icon">👥</div>
+      <h3>HR Director</h3>
+      <p>Recruitment, interviews, employee communication, culture assessment. Practical prompts for people decisions.</p>
+    </div>
+    <div class="goal-card" id="goal-operations" onclick="toggleGoal('operations')">
+      <span class="goal-chevron">▶</span>
+      <div class="goal-icon">⚙️</div>
+      <h3>Operations Manager</h3>
+      <p>Process optimization, bottleneck identification, efficiency gains. Spot what's broken and how to fix it.</p>
+    </div>
+    <div class="goal-card" id="goal-legal" onclick="toggleGoal('legal')">
+      <span class="goal-chevron">▶</span>
+      <div class="goal-icon">⚖️</div>
+      <h3>Legal & Compliance</h3>
+      <p>Contract review, risk assessment, policy drafting. AI as first-pass analysis (always verify with counsel).</p>
     </div>
   </div>
 
-  <!-- Foundation Training Panel -->
+  <!-- Foundation Training Panel - EXPANDED -->
   <div id="goal-panel-foundation" class="goal-panel" style="display:none">
     <div class="goal-panel-title">Foundation Training — What Every Employee Should Know</div>
     <div class="tool-list">
@@ -692,7 +710,7 @@
   </div>
 
   <!-- Marketing Manager Panel -->
-  <div id="goal-panel-marketing" class="goal-panel" style="display:none">
+  <div id="goal-panel-org-marketing" class="goal-panel" style="display:none">
     <div class="goal-panel-title">Marketing Manager — AI for Content and Campaign Optimisation</div>
     <div class="tool-list">
       <div class="tool-item">
@@ -747,7 +765,7 @@
   </div>
 
   <!-- Finance Lead Panel -->
-  <div id="goal-panel-finance" class="goal-panel" style="display:none">
+  <div id="goal-panel-org-finance" class="goal-panel" style="display:none">
     <div class="goal-panel-title">Finance Lead — AI for Analysis, Forecasting, and Reporting</div>
     <div class="tool-list">
       <div class="tool-item">
@@ -798,6 +816,124 @@
 
     <div style="background:#fef3c7;border:1px solid #fcd34d;border-radius:14px;padding:16px 18px;margin-top:16px;font-size:13px;color:#92400e;line-height:1.6">
       <strong>Use AI for:</strong> Data analysis • Trend spotting • Forecasting • Report generation • Budget reviews • Risk assessment • Financial commentary • Variance analysis • Scenario planning
+    </div>
+  </div>
+
+  <!-- HR Director Panel -->
+  <div id="goal-panel-hr" class="goal-panel" style="display:none">
+    <div class="goal-panel-title">HR Director — AI for Recruitment, Culture, and People Operations</div>
+    <div class="tool-list">
+      <div class="tool-item">
+        <div class="tool-item-icon">✍️</div>
+        <div>
+          <div class="tool-item-name">Claude</div>
+          <div class="tool-item-desc">Job descriptions, interview questions, employee communications, culture assessment.</div>
+          <div class="tool-item-footer">
+            <span class="tool-cost">Free</span>
+            <a class="tool-link" href="https://claude.ai" target="_blank" rel="noopener">claude.ai →</a>
+          </div>
+        </div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-item-icon">📊</div>
+        <div>
+          <div class="tool-item-name">Perplexity</div>
+          <div class="tool-item-desc">Salary benchmarking, industry trends, competitive benefits, talent market research.</div>
+          <div class="tool-item-footer">
+            <span class="tool-cost">Free</span>
+            <a class="tool-link" href="https://perplexity.ai" target="_blank" rel="noopener">perplexity.ai →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="first-action">
+      <div class="first-action-label">⚡ Start with these prompts</div>
+      <div class="first-action-intro">Use with Claude to improve hiring and team communication:</div>
+      <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">Write a job description for [role] at [company]. Include day-to-day responsibilities, what we need from them, and what they'll learn. Tone: honest, not corporate.<span class="copy-hint">📋 click to copy</span></div>
+      <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">Generate 5 interview questions for [role] that would reveal whether someone can actually do this job. Include one about [specific challenge].<span class="copy-hint">📋 click to copy</span></div>
+      <div class="prompt-box" onclick="copyPrompt(this)">Draft a message to our team about [topic: policy change / announcement / culture initiative]. Tone: [transparent/encouraging]. Key points: [list them].<span class="copy-hint">📋 click to copy</span></div>
+    </div>
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:14px;padding:16px 18px;margin-top:16px;font-size:13px;color:#166534;line-height:1.6">
+      <strong>Use AI for:</strong> Job descriptions • Interview questions • Salary benchmarking • Employee communications • Onboarding materials • Culture assessment • Feedback conversations • Learning & development
+    </div>
+  </div>
+
+  <!-- Operations Manager Panel -->
+  <div id="goal-panel-operations" class="goal-panel" style="display:none">
+    <div class="goal-panel-title">Operations Manager — AI for Process Optimisation and Efficiency</div>
+    <div class="tool-list">
+      <div class="tool-item">
+        <div class="tool-item-icon">✍️</div>
+        <div>
+          <div class="tool-item-name">Claude</div>
+          <div class="tool-item-desc">Process documentation, workflow optimisation, bottleneck analysis, efficiency recommendations.</div>
+          <div class="tool-item-footer">
+            <span class="tool-cost">Free</span>
+            <a class="tool-link" href="https://claude.ai" target="_blank" rel="noopener">claude.ai →</a>
+          </div>
+        </div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-item-icon">📊</div>
+        <div>
+          <div class="tool-item-name">Google Sheets + AI</div>
+          <div class="tool-item-desc">Performance tracking, KPI analysis, trend spotting, resource planning automation.</div>
+          <div class="tool-item-footer">
+            <span class="tool-cost">Free</span>
+            <a class="tool-link" href="https://sheets.google.com" target="_blank" rel="noopener">sheets.google.com →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="first-action">
+      <div class="first-action-label">⚡ Start with these prompts</div>
+      <div class="first-action-intro">Identify and fix operational bottlenecks quickly:</div>
+      <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">Walk me through our [process: order fulfillment, onboarding, etc.]. Here's how we do it: [describe]. Where are the bottlenecks? What could we eliminate or automate?<span class="copy-hint">📋 click to copy</span></div>
+      <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">Create a foolproof checklist for [routine task]. Include: what could go wrong at each step, how to prevent it, who's responsible.<span class="copy-hint">📋 click to copy</span></div>
+      <div class="prompt-box" onclick="copyPrompt(this)">Analyse this operational data: [paste numbers]. What's working? What's broken? What should we fix first given [constraints]?<span class="copy-hint">📋 click to copy</span></div>
+    </div>
+    <div style="background:#fef3c7;border:1px solid #fcd34d;border-radius:14px;padding:16px 18px;margin-top:16px;font-size:13px;color:#92400e;line-height:1.6">
+      <strong>Use AI for:</strong> Process documentation • Bottleneck analysis • Checklist creation • KPI tracking • Automation spotting • Resource planning • Decision frameworks • Risk assessment
+    </div>
+  </div>
+
+  <!-- Legal & Compliance Panel -->
+  <div id="goal-panel-legal" class="goal-panel" style="display:none">
+    <div class="goal-panel-title">Legal & Compliance — AI for Risk Assessment and Documentation</div>
+    <div class="tool-list">
+      <div class="tool-item">
+        <div class="tool-item-icon">✍️</div>
+        <div>
+          <div class="tool-item-name">Claude</div>
+          <div class="tool-item-desc">Contract analysis, risk identification, compliance review, policy creation. Good at spotting edge cases.</div>
+          <div class="tool-item-footer">
+            <span class="tool-cost">Free</span>
+            <a class="tool-link" href="https://claude.ai" target="_blank" rel="noopener">claude.ai →</a>
+          </div>
+        </div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-item-icon">📊</div>
+        <div>
+          <div class="tool-item-name">Perplexity</div>
+          <div class="tool-item-desc">Regulatory research, compliance updates, legal precedent, industry standards and case law.</div>
+          <div class="tool-item-footer">
+            <span class="tool-cost">Free</span>
+            <a class="tool-link" href="https://perplexity.ai" target="_blank" rel="noopener">perplexity.ai →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="first-action">
+      <div class="first-action-label">⚡ Start with these prompts</div>
+      <div class="first-action-intro">Speed up legal review and compliance work. Always verify with qualified counsel:</div>
+      <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">Review this contract: [paste or summarise]. Flag: liabilities we're assuming, unfavourable terms, missing protections, ambiguous language. Jurisdiction: [country].<span class="copy-hint">📋 click to copy</span></div>
+      <div class="prompt-box" onclick="copyPrompt(this)" style="margin-bottom:8px">What are the key compliance requirements for [regulation: GDPR/SOC2/etc.] that affect [our business: data handling/etc.]? What are the main risks?<span class="copy-hint">📋 click to copy</span></div>
+      <div class="prompt-box" onclick="copyPrompt(this)">Draft a [policy: data retention/remote work/etc.] for our company. Include: why it matters, what behaviour we're setting rules for, consequences of violations.<span class="copy-hint">📋 click to copy</span></div>
+    </div>
+    <div style="background:#fef3c7;border:1px solid #fcd34d;border-radius:14px;padding:16px 18px;margin-top:16px;font-size:13px;color:#92400e;line-height:1.6">
+      <strong>Use AI for:</strong> Contract review (first pass) • Risk identification • Compliance frameworks • Policy drafting • Regulatory research • Audit documentation<br><br>
+      <strong>⚠️ Important:</strong> Always verify AI legal analysis with qualified legal counsel before acting.
     </div>
   </div>
 
