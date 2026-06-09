@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quick Reference — AI Concepts for Interviews</title>
+  <meta name="description" content="Core AI concepts explained. RAG, Agents, Context, Embeddings. Interview-ready in 5 minutes.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f9f8f6; --surface: #ffffff; --border: #ebebeb;
+      --text: #111111; --muted: #666666; --subtle: #999999; --accent: #4f46e5;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+
+    /* Header */
+    header { border-bottom: 1px solid var(--border); background: var(--surface); position: sticky; top: 0; z-index: 100; }
+    .header-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-size: 17px; font-weight: 800; letter-spacing: -0.5px; }
+    .logo .dot { color: var(--accent); }
+    nav { display: flex; gap: 20px; align-items: center; }
+    nav a { font-size: 14px; font-weight: 500; color: var(--muted); transition: color .15s; }
+    nav a:hover { color: var(--text); }
+
+    /* Hero */
+    .hero { max-width: 900px; margin: 0 auto; padding: 60px 24px 40px; }
+    .hero-badge { display: inline-block; background: #eef2ff; color: var(--accent); font-size: 11px; font-weight: 700; padding: 6px 14px; border-radius: 99px; letter-spacing: .5px; text-transform: uppercase; margin-bottom: 16px; }
+    .hero h1 { font-size: 42px; font-weight: 900; letter-spacing: -1.2px; line-height: 1.1; margin-bottom: 12px; }
+    .hero p { font-size: 16px; color: var(--muted); max-width: 560px; line-height: 1.7; }
+
+    /* Content */
+    .content { max-width: 900px; margin: 0 auto; padding: 0 24px 80px; }
+
+    .intro-box { background: #f0fdf4; border: 1.5px solid #bbf7d0; border-radius: 16px; padding: 24px; margin-bottom: 48px; }
+    .intro-box p { font-size: 15px; line-height: 1.7; color: var(--text); }
+    .intro-box strong { color: #166534; }
+
+    /* Concept cards */
+    .concept { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+    .concept:last-child { border-bottom: none; }
+
+    .concept-num { font-size: 11px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 6px; }
+    .concept-title { font-size: 24px; font-weight: 900; letter-spacing: -.5px; margin-bottom: 8px; }
+    .concept-oneliner { font-size: 14px; color: var(--muted); font-style: italic; margin-bottom: 16px; }
+
+    .concept-section { margin-bottom: 18px; }
+    .concept-label { font-size: 12px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
+    .concept-text { font-size: 15px; line-height: 1.7; color: var(--text); }
+
+    .concept-example { background: #f0f9ff; border-left: 4px solid #0ea5e9; border-radius: 0 8px 8px 0; padding: 14px 16px; margin: 12px 0; font-size: 14px; line-height: 1.65; }
+    .concept-interview { background: #fef3c7; border-left: 4px solid #f59e0b; border-radius: 0 8px 8px 0; padding: 14px 16px; margin: 12px 0; font-size: 14px; line-height: 1.65; }
+
+    .code-block { background: #1f2937; color: #e5e7eb; padding: 12px 14px; border-radius: 8px; font-family: 'Monaco', monospace; font-size: 12px; overflow-x: auto; margin: 12px 0; }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--border); background: var(--surface); }
+    .footer-inner { max-width: 900px; margin: 0 auto; padding: 24px; font-size: 13px; color: var(--muted); text-align: center; }
+
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 28px; }
+      nav a:not(:first-child) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/jargon.html">Jargon</a>
+      <a href="/quick-reference.html" style="color:var(--accent);font-weight:700">Quick Ref</a>
+      <a href="/learn/">Learn</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-badge">📖 Interview Prep</div>
+  <h1>Quick Reference</h1>
+  <p>Core AI concepts explained. How RAG works. What agents do. Why context matters. Read this in 5 minutes before an interview or meeting.</p>
+</div>
+
+<div class="content">
+
+  <div class="intro-box">
+    <p><strong>How to use this:</strong> Skim the concept names. If one comes up in conversation, you've got the explanation. Print it, bookmark it, or read it right before the call. This is what you actually need to know.</p>
+  </div>
+
+  <!-- Concept 1: How AI Works -->
+  <div class="concept">
+    <div class="concept-num">1. Fundamentals</div>
+    <div class="concept-title">How AI Works (The Pipeline)</div>
+    <div class="concept-oneliner">Input → Processing → Output. The basic flow.</div>
+
+    <div class="concept-section">
+      <div class="concept-label">The Flow</div>
+      <div class="concept-text">You send text (a prompt) → the AI processes it (predicts what comes next based on patterns it learned) → returns text. It's not thinking. It's predicting the statistically most likely next word, then the next, then the next. But statistically accurate predictions look like thinking.</div>
+    </div>
+
+    <div class="concept-example">
+      <strong>Example:</strong> You type "The capital of France is" → the model has seen this pattern millions of times in training → predicts "Paris" → that's the output. Not because it "knows" facts. Because "Paris" is statistically the most likely word to follow that phrase.
+    </div>
+
+    <div class="concept-section">
+      <div class="concept-label">Training vs. Inference</div>
+      <div class="concept-text"><strong>Training:</strong> Learning the patterns (happens once, costs millions). <strong>Inference:</strong> Using those patterns to answer your question (happens every time you ask, costs money per query).</div>
+    </div>
+
+    <div class="concept-interview">
+      <strong>In an interview:</strong> "AI isn't magic. It's pattern matching on a massive scale. The model learned statistical relationships from billions of words and can predict plausible continuations. That's why it's good at writing but can hallucinate facts."
+    </div>
+  </div>
+
+  <!-- Concept 2: Tokens & Context -->
+  <div class="concept">
+    <div class="concept-num">2. Constraints</div>
+    <div class="concept-title">Tokens & Context Windows</div>
+    <div class="concept-oneliner">AI reads in chunks. There's a limit to how much it can see at once.</div>
+
+    <div class="concept-section">
+      <div class="concept-label">What's a Token?</div>
+      <div class="concept-text">AI doesn't read words. It reads tokens — roughly word-sized chunks. "ChatGPT" = 1 token. "I cannot" = 2 tokens. 100 tokens ≈ 75 words. This matters because:</div>
+    </div>
+
+    <div class="concept-section">
+      <div class="concept-label">Context Window</div>
+      <div class="concept-text">Every model has a limit to how much it can process at once. Claude reads up to 200,000 tokens. GPT-4o reads 128,000. That sounds huge — it's about 150,000 words. But paste a 50-page document + a long conversation + a request, and you hit the limit. When you do, the model can't see the earlier parts.</div>
+    </div>
+
+    <div class="concept-example">
+      <strong>Example:</strong> You have a 100-page customer manual. You paste it + ask a question. The model can read all of it (within the window). Now add another 100-page document + more questions. Now you're over the limit. The model can't see everything anymore.
+    </div>
+
+    <div class="concept-interview">
+      <strong>In an interview:</strong> "Context windows are the limit to how much the model can process at once. Larger is better for document analysis or long conversations. Once you hit the limit, earlier context gets dropped. This is why sometimes models seem to 'forget' earlier parts of conversations."
+    </div>
+  </div>
+
+  <!-- Concept 3: RAG -->
+  <div class="concept">
+    <div class="concept-num">3. Architecture</div>
+    <div class="concept-title">RAG (Retrieval-Augmented Generation)</div>
+    <div class="concept-oneliner">Give AI your documents. It finds relevant ones, reads them, and answers based on what it found.</div>
+
+    <div class="concept-section">
+      <div class="concept-label">The Problem It Solves</div>
+      <div class="concept-text">Vanilla LLMs only know what they were trained on. They can't read your company's internal documents, recent news, or proprietary data. RAG fixes this by letting you upload documents that the model reads at query time.</div>
+    </div>
+
+    <div class="concept-section">
+      <div class="concept-label">How It Works</div>
+      <div class="concept-text">
+        <strong>Step 1 (Offline):</strong> Convert your documents into embeddings (numbers that represent meaning). Store them in a database.<br>
+        <strong>Step 2 (At query time):</strong> Convert the user's question into embeddings. Find the most similar document chunks (semantically similar, not keyword match).<br>
+        <strong>Step 3:</strong> Pass those chunks to the LLM along with the question. The model answers based on those chunks, not just training data.
+      </div>
+    </div>
+
+    <div class="concept-example">
+      <strong>Example:</strong> You ask ChatGPT "What was our Q3 revenue?" and it hallucinates. With RAG: the system finds your Q3 earnings report, passes it to the LLM, which reads it and answers accurately from that source.
+    </div>
+
+    <div class="concept-interview">
+      <strong>In an interview:</strong> "RAG lets AI work with your data without being retrained. It's retrieval-augmented — it retrieves relevant documents, then generates answers based on what it found. This is how you build AI that knows about proprietary information, recent events, or domain-specific data."
+    </div>
+  </div>
+
+  <!-- Concept 4: Embeddings -->
+  <div class="concept">
+    <div class="concept-num">4. Representation</div>
+    <div class="concept-title">Embeddings (Semantic Search)</div>
+    <div class="concept-oneliner">Turn words into numbers so the model can compare meaning.</div>
+
+    <div class="concept-section">
+      <div class="concept-label">What Is It?</div>
+      <div class="concept-text">An embedding is a list of numbers that represents the meaning of a piece of text. "The cat sat on the mat" becomes something like [0.2, -0.5, 0.8, ...]. Texts with similar meaning get similar numbers. This lets you do semantic search: find things by meaning, not keywords.</div>
+    </div>
+
+    <div class="concept-section">
+      <div class="concept-label">Why It Matters</div>
+      <div class="concept-text">Keyword search: you search for "dog" and get pages with "dog" but not "puppy" or "canine". Semantic search: you search for "dog" and get pages about canines, puppies, and animal companions because they mean similar things.</div>
+    </div>
+
+    <div class="concept-example">
+      <strong>Example:</strong> You have 10,000 support tickets. Convert them to embeddings. A customer asks "How do I refund an order?" You convert that to embeddings, find tickets with similar embeddings, and you've found the 20 most relevant past tickets — even if none say "refund" exactly.
+    </div>
+
+    <div class="concept-interview">
+      <strong>In an interview:</strong> "Embeddings are how we make semantic search work. They convert meaning into geometry. Documents with similar meaning end up close together in embedding space. This is foundational to RAG, vector databases, and any system that needs to find semantically similar content at scale."
+    </div>
+  </div>
+
+  <!-- Concept 5: Agents -->
+  <div class="concept">
+    <div class="concept-num">5. Autonomy</div>
+    <div class="concept-title">Agents (Agentic AI)</div>
+    <div class="concept-oneliner">AI that takes actions, not just answers. It thinks, acts, observes results, and adjusts.</div>
+
+    <div class="concept-section">
+      <div class="concept-label">Basic AI vs. Agents</div>
+      <div class="concept-text"><strong>Chat:</strong> You ask a question → it answers. Done.<br>
+      <strong>Agent:</strong> You ask something complex → it breaks it into steps → executes each step (might search, run code, call APIs, read files) → observes the results → adjusts → eventually returns an answer.</div>
+    </div>
+
+    <div class="concept-section">
+      <div class="concept-label">The Loop</div>
+      <div class="concept-text">Think → Act (use a tool) → Observe (see the result) → Reflect (does this help?) → Repeat until done. The agent can do things beyond text generation: search the web, execute code, send emails, fetch data from APIs.</div>
+    </div>
+
+    <div class="concept-example">
+      <strong>Example:</strong> You ask an agent "What's the cheapest flight from London to New York next Tuesday?" The agent thinks: "I need to search for flights." It calls a flight search API → sees results → thinks "I need to filter these" → does so → thinks "Now I need to find the cheapest" → does so → returns an answer with links to book.
+    </div>
+
+    <div class="concept-interview">
+      <strong>In an interview:</strong> "Agents shift from chat to action. They can plan multi-step tasks, use tools, and iterate based on results. This is why AI is moving beyond 'answer my question' to 'actually do something' — book a meeting, run an analysis, fetch and synthesise data. The agent decides what to do, what tools to use, and when it's done."
+    </div>
+  </div>
+
+  <!-- Concept 6: Prompting -->
+  <div class="concept">
+    <div class="concept-num">6. Technique</div>
+    <div class="concept-title">Prompt Engineering (Getting Better Answers)</div>
+    <div class="concept-oneliner">The better your question, the better the answer. There are patterns that consistently work.</div>
+
+    <div class="concept-section">
+      <div class="concept-label">Key Patterns</div>
+      <div class="concept-text">
+        <strong>Specificity:</strong> "Write a poem" → vague. "Write a poem in the style of Keats about autumn, 8 lines, structured as a sonnet" → specific.<br>
+        <strong>Context:</strong> Explain your situation before asking. "I'm a product manager for a fitness app" helps the model give domain-appropriate advice.<br>
+        <strong>Format:</strong> "Give me a bullet list of 5 ideas" → structured output.<br>
+        <strong>Examples:</strong> Show 2-3 examples of what you want before asking for the real thing.
+      </div>
+    </div>
+
+    <div class="concept-example">
+      <strong>Example:</strong> Bad: "Analyse this customer feedback." Good: "I'm a SaaS founder with a product management problem. Here's feedback from 10 customers. Group it by theme, tell me what's most urgent, and suggest a fix for the top issue. Use a bullet list."
+    </div>
+
+    <div class="concept-interview">
+      <strong>In an interview:</strong> "Prompt engineering isn't mystical. It's just being clear and specific. The model responds to the quality of the question. A vague prompt gets a vague answer. A well-structured, specific prompt — where you explain context, give examples, and specify format — gets dramatically better results. It's like briefing a contractor: the better the brief, the better the work."
+    </div>
+  </div>
+
+  <!-- Concept 7: Limitations -->
+  <div class="concept">
+    <div class="concept-num">7. Reality Check</div>
+    <div class="concept-title">What AI Can't Do (Yet)</div>
+    <div class="concept-oneliner">The important limitations to remember.</div>
+
+    <div class="concept-section">
+      <div class="concept-label">Hallucinations</div>
+      <div class="concept-text">The model predicts plausible text. Sometimes it predicts facts that sound plausible but don't exist. Fake citations, wrong dates, stats that don't exist. It's not lying. It's pattern-matching producing implausible but grammatically correct text.</div>
+    </div>
+
+    <div class="concept-section">
+      <div class="concept-label">Knowledge Cutoff</div>
+      <div class="concept-text">Training data ends at a specific date (Claude's is April 2024, GPT-4 is April 2023). It doesn't know what happened after that unless you give it RAG context.</div>
+    </div>
+
+    <div class="concept-section">
+      <div class="concept-label">No Real Reasoning</div>
+      <div class="concept-text">It predicts plausible text. It doesn't understand causality, logic, or consequence the way humans do. Reasoning models (o1, o3) simulate reasoning but it's still statistical prediction at the base.</div>
+    </div>
+
+    <div class="concept-section">
+      <div class="concept-label">Context Limit</div>
+      <div class="concept-text">As mentioned: there's a maximum amount of text it can process. And the longer the context, the less reliable it becomes on specific details.</div>
+    </div>
+
+    <div class="concept-interview">
+      <strong>In an interview:</strong> "AI is a tool, not a brain. It's remarkably capable at text generation, pattern matching, and synthesis. But it hallucinates, has a knowledge cutoff, and doesn't reason the way humans do. The key is knowing where to use it (draft writing, summarisation, brainstorming) and where you need human judgment (decisions, facts that matter, anything with real consequences)."
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <p>Quick Reference — print this before your interview. 5-minute read. <a href="/">Back to home.</a></p>
+  </div>
+</footer>
+
+</body>
+</html>
