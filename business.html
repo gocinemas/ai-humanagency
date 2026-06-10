@@ -52,6 +52,16 @@
     .tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
     .tool-badge { background: var(--surface); border: 1px solid var(--border); padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; text-align: center; }
 
+    /* Prompts section */
+    .prompts-section { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .prompts-title { font-size: 14px; font-weight: 700; margin-bottom: 12px; }
+    .prompt-card { background: var(--surface); border: 1.5px solid #fcd34d; border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; cursor: pointer; transition: all .2s; }
+    .prompt-card:hover { border-color: var(--accent); background: #fffdf5; box-shadow: 0 2px 8px rgba(79, 70, 229, 0.05); }
+    .prompt-card.copied { border-color: var(--success); background: #f0fdf4; }
+    .prompt-text { font-size: 13px; color: var(--text); line-height: 1.6; margin-bottom: 6px; }
+    .copy-hint { font-size: 11px; color: var(--muted); font-style: italic; }
+    .prompt-card.copied .copy-hint { color: var(--success); }
+
     .roi { margin-top: 60px; padding: 32px; background: linear-gradient(135deg, #fef2f2 0%, #fffbfb 100%); border: 1.5px solid var(--border); border-radius: 14px; }
     .roi-title { font-size: 20px; font-weight: 900; margin-bottom: 20px; }
     .roi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
@@ -138,6 +148,19 @@
         <div class="tool-badge">Claude</div>
         <div class="tool-badge">Gemini</div>
       </div>
+
+      <!-- Prompts -->
+      <div class="prompts-section">
+        <div class="prompts-title">🎯 Try These Prompts</div>
+        <div class="prompt-card" onclick="copyPrompt(this)">
+          <div class="prompt-text">Write 5 LinkedIn posts about [your product/service] for small business owners. Tone: helpful, practical, not salesy. Each post ~100 words.</div>
+          <div class="copy-hint">Click to copy</div>
+        </div>
+        <div class="prompt-card" onclick="copyPrompt(this)">
+          <div class="prompt-text">I have this customer feedback: [paste feedback]. Group it into themes and tell me the top 3 complaints. Suggest one fix for each.</div>
+          <div class="copy-hint">Click to copy</div>
+        </div>
+      </div>
     </div>
 
     <!-- Customer Service -->
@@ -159,6 +182,19 @@
         <div class="tool-badge">ChatGPT</div>
         <div class="tool-badge">Zapier + AI</div>
         <div class="tool-badge">n8n</div>
+      </div>
+
+      <!-- Prompts -->
+      <div class="prompts-section">
+        <div class="prompts-title">🎯 Try These Prompts</div>
+        <div class="prompt-card" onclick="copyPrompt(this)">
+          <div class="prompt-text">Draft a helpful response to this customer question: [paste question]. Keep it under 100 words, friendly but professional.</div>
+          <div class="copy-hint">Click to copy</div>
+        </div>
+        <div class="prompt-card" onclick="copyPrompt(this)">
+          <div class="prompt-text">I have 20 support emails. Here they are: [paste emails]. Group them by topic and tell me which topics come up most.</div>
+          <div class="copy-hint">Click to copy</div>
+        </div>
       </div>
     </div>
 
@@ -182,6 +218,19 @@
         <div class="tool-badge">Zapier</div>
         <div class="tool-badge">Make</div>
       </div>
+
+      <!-- Prompts -->
+      <div class="prompts-section">
+        <div class="prompts-title">🎯 Try These Prompts</div>
+        <div class="prompt-card" onclick="copyPrompt(this)">
+          <div class="prompt-text">Summarize this document in 3 sentences: [paste document]. Focus on: what it's about, the main point, and any action items.</div>
+          <div class="copy-hint">Click to copy</div>
+        </div>
+        <div class="prompt-card" onclick="copyPrompt(this)">
+          <div class="prompt-text">I have a spreadsheet with [description]. Extract the following fields: name, email, date. Format as a clean list.</div>
+          <div class="copy-hint">Click to copy</div>
+        </div>
+      </div>
     </div>
 
     <!-- Finance & Analytics -->
@@ -203,6 +252,19 @@
         <div class="tool-badge">ChatGPT</div>
         <div class="tool-badge">Google Sheets + AI</div>
         <div class="tool-badge">Excel Copilot</div>
+      </div>
+
+      <!-- Prompts -->
+      <div class="prompts-section">
+        <div class="prompts-title">🎯 Try These Prompts</div>
+        <div class="prompt-card" onclick="copyPrompt(this)">
+          <div class="prompt-text">Here's my spending for June: [paste data]. Categorize by type (food, transport, office, etc) and tell me where I spent the most.</div>
+          <div class="copy-hint">Click to copy</div>
+        </div>
+        <div class="prompt-card" onclick="copyPrompt(this)">
+          <div class="prompt-text">My revenue for the last 6 months: [paste numbers]. What's the trend? Am I growing or shrinking?</div>
+          <div class="copy-hint">Click to copy</div>
+        </div>
       </div>
     </div>
 
@@ -278,6 +340,22 @@
     <p>AI isn't for big corporations anymore. Small businesses get the same tools. Better results. Lower costs. Faster growth.</p>
   </div>
 </footer>
+
+<script>
+function copyPrompt(element) {
+  const promptText = element.querySelector('.prompt-text').textContent.trim();
+  navigator.clipboard.writeText(promptText).then(() => {
+    element.classList.add('copied');
+    element.querySelector('.copy-hint').textContent = '✓ Copied!';
+    setTimeout(() => {
+      element.classList.remove('copied');
+      element.querySelector('.copy-hint').textContent = 'Click to copy';
+    }, 2000);
+  }).catch(() => {
+    alert('Copy failed — try selecting and Cmd+C instead');
+  });
+}
+</script>
 
 </body>
 </html>
