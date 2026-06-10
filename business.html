@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI for Small Business — Human.Agency</title>
+  <meta name="description" content="Use AI to save time, cut costs, and grow. For small & medium businesses. Real ROI. Copy-paste ready prompts.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f9f8f6; --surface: #ffffff; --border: #ebebeb;
+      --text: #111111; --muted: #666666; --accent: #ef4444;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    a { color: inherit; text-decoration: none; }
+
+    header { border-bottom: 1px solid var(--border); background: var(--surface); position: sticky; top: 0; z-index: 100; }
+    .header-inner { max-width: 1000px; margin: 0 auto; padding: 0 24px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-size: 18px; font-weight: 900; letter-spacing: -0.5px; }
+    .logo .dot { color: #4f46e5; }
+    nav { display: flex; gap: 20px; }
+    nav a { font-size: 14px; font-weight: 500; color: var(--muted); }
+    nav a:hover, nav a.active { color: var(--text); font-weight: 600; }
+
+    .hero { max-width: 1000px; margin: 0 auto; padding: 60px 24px 40px; }
+    .hero h1 { font-size: 42px; font-weight: 900; letter-spacing: -1px; margin-bottom: 12px; }
+    .hero p { font-size: 16px; color: var(--muted); max-width: 560px; }
+
+    .content { max-width: 1000px; margin: 0 auto; padding: 0 24px 80px; }
+
+    .promise { background: #fef2f2; border-left: 4px solid var(--accent); border-radius: 8px; padding: 20px; margin-bottom: 40px; }
+    .promise-title { font-size: 14px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .promise-text { font-size: 15px; line-height: 1.7; }
+
+    .usecases { margin-bottom: 60px; }
+    .usecases-title { font-size: 20px; font-weight: 900; margin-bottom: 24px; }
+
+    .usecase { background: var(--surface); border: 1.5px solid var(--border); border-radius: 14px; padding: 24px; margin-bottom: 16px; }
+    .usecase-icon { font-size: 32px; margin-bottom: 12px; }
+    .usecase-title { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
+    .usecase-desc { font-size: 14px; color: var(--muted); margin-bottom: 16px; line-height: 1.6; }
+
+    .metric { display: inline-block; background: #fef2f2; padding: 8px 14px; border-radius: 6px; margin-right: 12px; font-size: 13px; font-weight: 600; color: var(--accent); margin-bottom: 12px; }
+
+    .usecase-items { list-style: none; padding-left: 0; margin-bottom: 16px; }
+    .usecase-items li { padding: 8px 0; font-size: 13px; display: flex; gap: 10px; }
+    .usecase-items li::before { content: "→"; font-weight: 700; color: var(--accent); }
+
+    .tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
+    .tool-badge { background: var(--surface); border: 1px solid var(--border); padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; text-align: center; }
+
+    .roi { margin-top: 60px; padding: 32px; background: linear-gradient(135deg, #fef2f2 0%, #fffbfb 100%); border: 1.5px solid var(--border); border-radius: 14px; }
+    .roi-title { font-size: 20px; font-weight: 900; margin-bottom: 20px; }
+    .roi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+    .roi-card { background: var(--surface); padding: 16px; border-radius: 10px; }
+    .roi-number { font-size: 28px; font-weight: 900; color: var(--accent); }
+    .roi-label { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    .getting-started { margin-top: 60px; padding: 32px; background: var(--surface); border-radius: 14px; }
+    .getting-started-title { font-size: 20px; font-weight: 900; margin-bottom: 20px; }
+    .steps { counter-reset: step-counter; }
+    .step { display: flex; gap: 16px; margin-bottom: 16px; }
+    .step-num { counter-increment: step-counter; content: counter(step-counter); display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: var(--accent); color: white; border-radius: 50%; font-weight: 700; flex-shrink: 0; }
+    .step-content { flex: 1; }
+    .step-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .step-desc { font-size: 13px; color: var(--muted); }
+
+    footer { border-top: 1px solid var(--border); background: var(--surface); margin-top: 80px; }
+    .footer-inner { max-width: 1000px; margin: 0 auto; padding: 24px; text-align: center; font-size: 13px; color: var(--muted); }
+
+    @media (max-width: 900px) {
+      .hero h1 { font-size: 32px; }
+      .tools-grid { grid-template-columns: 1fr; }
+      .roi-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 520px) {
+      .header-inner { padding: 0 16px; }
+      nav a:not(:first-child) { display: none; }
+      .hero { padding: 40px 16px 24px; }
+      .hero h1 { font-size: 26px; }
+      .content { padding: 0 16px 40px; }
+      .usecase { padding: 16px; }
+      .roi { padding: 20px 16px; }
+      .getting-started { padding: 20px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/learning.html">Learning</a>
+      <a href="/business.html" class="active">Business</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <h1>AI for Your Business</h1>
+  <p>Save time. Cut costs. Grow faster. AI tools and strategies for small & medium businesses. Ready-to-use, no coding needed.</p>
+</div>
+
+<div class="content">
+
+  <div class="promise">
+    <div class="promise-title">💡 What You'll Get</div>
+    <div class="promise-text">Real use cases with ROI. Copy-paste ready prompts. Step-by-step guides. No buzzwords, no BS. Just how to actually use AI in your business.</div>
+  </div>
+
+  <!-- Use Cases -->
+  <div class="usecases">
+    <div class="usecases-title">Where AI Helps</div>
+
+    <!-- Marketing -->
+    <div class="usecase">
+      <div class="usecase-icon">📢</div>
+      <div class="usecase-title">Marketing & Content</div>
+      <div class="usecase-desc">Write copy faster. Plan campaigns. Analyze data. Adapt messaging.</div>
+      <div>
+        <span class="metric">5 hrs/week saved</span>
+        <span class="metric">3x faster drafts</span>
+      </div>
+      <ul class="usecase-items">
+        <li>Write social media posts in bulk</li>
+        <li>Draft product descriptions from specs</li>
+        <li>Analyze customer feedback for patterns</li>
+        <li>Plan quarterly content calendar</li>
+      </ul>
+      <div class="tools-grid">
+        <div class="tool-badge">ChatGPT</div>
+        <div class="tool-badge">Claude</div>
+        <div class="tool-badge">Gemini</div>
+      </div>
+    </div>
+
+    <!-- Customer Service -->
+    <div class="usecase">
+      <div class="usecase-icon">💬</div>
+      <div class="usecase-title">Customer Service</div>
+      <div class="usecase-desc">Answer common questions automatically. Handle support 24/7. Reduce response time.</div>
+      <div>
+        <span class="metric">40% fewer emails</span>
+        <span class="metric">2 min response time</span>
+      </div>
+      <ul class="usecase-items">
+        <li>AI chatbot for FAQ responses</li>
+        <li>Draft replies to support tickets</li>
+        <li>Categorize customer issues</li>
+        <li>Suggest resolutions based on history</li>
+      </ul>
+      <div class="tools-grid">
+        <div class="tool-badge">ChatGPT</div>
+        <div class="tool-badge">Zapier + AI</div>
+        <div class="tool-badge">n8n</div>
+      </div>
+    </div>
+
+    <!-- Operations & Admin -->
+    <div class="usecase">
+      <div class="usecase-icon">⚙️</div>
+      <div class="usecase-title">Operations & Admin</div>
+      <div class="usecase-desc">Automate repetitive tasks. Process data faster. Reduce errors.</div>
+      <div>
+        <span class="metric">10 hrs/week saved</span>
+        <span class="metric">99% accuracy</span>
+      </div>
+      <ul class="usecase-items">
+        <li>Summarize long documents</li>
+        <li>Extract data from emails/forms</li>
+        <li>Generate reports from raw data</li>
+        <li>Organize and tag information</li>
+      </ul>
+      <div class="tools-grid">
+        <div class="tool-badge">ChatGPT</div>
+        <div class="tool-badge">Zapier</div>
+        <div class="tool-badge">Make</div>
+      </div>
+    </div>
+
+    <!-- Finance & Analytics -->
+    <div class="usecase">
+      <div class="usecase-icon">📊</div>
+      <div class="usecase-title">Finance & Insights</div>
+      <div class="usecase-desc">Analyze spending. Forecast trends. Get insights from data.</div>
+      <div>
+        <span class="metric">5% cost savings</span>
+        <span class="metric">Better forecasts</span>
+      </div>
+      <ul class="usecase-items">
+        <li>Categorize expenses automatically</li>
+        <li>Spot spending anomalies</li>
+        <li>Generate financial summaries</li>
+        <li>Forecast revenue trends</li>
+      </ul>
+      <div class="tools-grid">
+        <div class="tool-badge">ChatGPT</div>
+        <div class="tool-badge">Google Sheets + AI</div>
+        <div class="tool-badge">Excel Copilot</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ROI Section -->
+  <div class="roi">
+    <div class="roi-title">The Numbers</div>
+    <div class="roi-grid">
+      <div class="roi-card">
+        <div class="roi-number">10-15</div>
+        <div class="roi-label">hours saved per week</div>
+      </div>
+      <div class="roi-card">
+        <div class="roi-number">3-5%</div>
+        <div class="roi-label">cost reduction</div>
+      </div>
+      <div class="roi-card">
+        <div class="roi-number">2-4 hrs</div>
+        <div class="roi-label">setup time</div>
+      </div>
+      <div class="roi-card">
+        <div class="roi-number">£0</div>
+        <div class="roi-label">licensing (most tools free)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Getting Started -->
+  <div class="getting-started">
+    <div class="getting-started-title">How to Start</div>
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Pick your first use case</div>
+          <div class="step-desc">Choose one problem AI can solve (marketing, support, admin). Start there.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Get a ChatGPT account (free)</div>
+          <div class="step-desc">Sign up at openai.com. Free tier is enough to start.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Try the prompt</div>
+          <div class="step-desc">Copy a prompt from this page. Test it with your real data.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">Automate if it works</div>
+          <div class="step-desc">Use Zapier or Make to connect ChatGPT to your tools (email, CRM, etc).</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <p>AI isn't for big corporations anymore. Small businesses get the same tools. Better results. Lower costs. Faster growth.</p>
+  </div>
+</footer>
+
+</body>
+</html>
