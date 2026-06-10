@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 120" width="520" height="120">
+  <rect width="520" height="120" fill="#ffffff"/>
+
+  <!-- Circuit node icon -->
+  <g transform="translate(24, 60)" stroke="#2b2b2b" stroke-width="2.2" stroke-linecap="round" fill="none">
+    <!-- Centre dot -->
+    <circle cx="22" cy="0" r="3.5" fill="#2b2b2b" stroke="none"/>
+    <!-- Top-left branch -->
+    <line x1="19" y1="-3" x2="6" y2="-16"/>
+    <circle cx="5" cy="-17" r="2.8" fill="#2b2b2b" stroke="none"/>
+    <!-- Top-right branch -->
+    <line x1="25" y1="-3" x2="36" y2="-14"/>
+    <circle cx="37" cy="-15" r="2.8" fill="#2b2b2b" stroke="none"/>
+    <!-- Bottom branch -->
+    <line x1="22" y1="3.5" x2="22" y2="18"/>
+    <circle cx="22" cy="19" r="2.8" fill="#2b2b2b" stroke="none"/>
+    <!-- Left stub -->
+    <line x1="18.5" y1="0" x2="4" y2="0"/>
+    <circle cx="3" cy="0" r="2.8" fill="#2b2b2b" stroke="none"/>
+  </g>
+
+  <!-- "Human" text -->
+  <text x="72" y="78" font-family="'Arial Black', 'Helvetica Neue', Arial, sans-serif"
+        font-weight="900" font-size="52" fill="#2b2b2b" letter-spacing="-1">Human</text>
+
+  <!-- "Agency" text -->
+  <text x="285" y="78" font-family="'Arial Black', 'Helvetica Neue', Arial, sans-serif"
+        font-weight="900" font-size="52" fill="#c0152a" letter-spacing="-1">Agency</text>
+</svg>

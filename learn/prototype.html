@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[PROTOTYPE] Learn AI — Human Agency</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:#f9f8f6; --surface:#ffffff; --border:#ebebeb; --text:#111111;
+      --muted:#666666; --subtle:#999999; --accent:#4f46e5; --accent2:#7c3aed;
+      --green:#059669; --amber:#d97706; --red:#dc2626;
+    }
+    body { font-family:'Inter',ui-sans-serif,system-ui,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; -webkit-font-smoothing:antialiased; }
+    a { color:inherit; text-decoration:none; }
+
+    header { border-bottom:1px solid var(--border); background:var(--surface); position:sticky; top:0; z-index:100; }
+    .header-inner { max-width:1100px; margin:0 auto; padding:0 24px; height:60px; display:flex; align-items:center; justify-content:space-between; }
+    .logo { font-size:17px; font-weight:800; letter-spacing:-0.5px; color:var(--text); }
+    .logo .dot { color:var(--accent); }
+    .proto-badge { font-size:11px; font-weight:700; background:#fef3c7; color:#92400e; padding:3px 10px; border-radius:99px; border:1px solid #fcd34d; }
+
+    .hero { max-width:720px; margin:0 auto; padding:48px 24px 36px; text-align:center; }
+    .hero-badge { display:inline-flex; align-items:center; gap:8px; background:#eef2ff; color:var(--accent); font-size:12px; font-weight:700; padding:5px 14px; border-radius:99px; letter-spacing:.4px; text-transform:uppercase; margin-bottom:20px; }
+    .hero h1 { font-size:36px; font-weight:900; letter-spacing:-1px; line-height:1.15; margin-bottom:14px; }
+    .hero p { font-size:16px; color:var(--muted); line-height:1.7; }
+
+    /* Level picker */
+    .level-section { max-width:1000px; margin:0 auto; padding:0 24px 60px; }
+    .level-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:36px; }
+    @media(max-width:760px){ .level-grid { grid-template-columns:1fr; } }
+    .level-card { background:var(--surface); border:2px solid var(--border); border-radius:20px; padding:28px 24px; cursor:pointer; transition:border-color .2s, box-shadow .2s, transform .15s; }
+    .level-card:hover { box-shadow:0 8px 32px rgba(0,0,0,.08); transform:translateY(-2px); }
+    .level-card.novice:hover  { border-color:#059669; }
+    .level-card.inter:hover   { border-color:#d97706; }
+    .level-card.expert:hover  { border-color:#4f46e5; }
+    .level-icon  { font-size:36px; margin-bottom:14px; }
+    .level-tag   { font-size:11px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; margin-bottom:8px; }
+    .novice .level-tag  { color:#059669; }
+    .inter  .level-tag  { color:#d97706; }
+    .expert .level-tag  { color:#4f46e5; }
+    .level-title { font-size:20px; font-weight:800; letter-spacing:-.4px; margin-bottom:8px; }
+    .level-desc  { font-size:14px; color:var(--muted); line-height:1.65; margin-bottom:20px; }
+    .level-cta   { display:inline-flex; align-items:center; gap:6px; font-size:14px; font-weight:700; padding:10px 18px; border-radius:12px; border:none; cursor:pointer; width:100%; justify-content:center; }
+    .novice .level-cta { background:#ecfdf5; color:#059669; }
+    .inter  .level-cta { background:#fffbeb; color:#d97706; }
+    .expert .level-cta { background:#eef2ff; color:#4f46e5; }
+
+    /* Content panel */
+    .content-panel { display:none; max-width:1000px; margin:0 auto; padding:0 24px 80px; }
+    .content-panel.visible { display:block; }
+    .panel-header { display:flex; align-items:center; gap:14px; margin-bottom:28px; padding-bottom:20px; border-bottom:2px solid var(--border); }
+    .panel-back { font-size:13px; font-weight:600; color:var(--muted); cursor:pointer; margin-right:auto; border:1px solid var(--border); background:var(--surface); padding:7px 14px; border-radius:99px; }
+    .panel-back:hover { color:var(--text); border-color:var(--text); }
+    .progress-bar { height:4px; background:var(--border); border-radius:99px; margin-bottom:28px; }
+    .progress-fill { height:100%; border-radius:99px; background:var(--accent); transition:width .4s; }
+
+    /* Modules */
+    .modules-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px; margin-bottom:32px; }
+    .module-card { background:var(--surface); border:1.5px solid var(--border); border-radius:16px; padding:20px; cursor:pointer; transition:border-color .15s, box-shadow .15s; }
+    .module-card:hover { border-color:var(--accent); box-shadow:0 4px 16px rgba(0,0,0,.06); }
+    .module-card.locked { opacity:.5; cursor:default; }
+    .module-card.locked:hover { border-color:var(--border); box-shadow:none; }
+    .module-num   { font-size:11px; font-weight:700; color:var(--subtle); letter-spacing:.5px; text-transform:uppercase; margin-bottom:8px; }
+    .module-title { font-size:15px; font-weight:700; letter-spacing:-.3px; margin-bottom:6px; }
+    .module-desc  { font-size:13px; color:var(--muted); line-height:1.55; margin-bottom:12px; }
+    .module-meta  { display:flex; align-items:center; gap:10px; font-size:11px; color:var(--subtle); font-weight:600; }
+    .module-lock  { margin-left:auto; font-size:14px; }
+    .new-badge { font-size:10px; font-weight:700; background:var(--accent); color:#fff; padding:2px 7px; border-radius:4px; letter-spacing:.04em; margin-left:auto; }
+
+    /* Lesson */
+    .lesson-view { display:none; max-width:720px; margin:0 auto; padding:0 24px 80px; }
+    .lesson-view.visible { display:block; }
+    .lesson-title { font-size:28px; font-weight:900; letter-spacing:-.6px; margin-bottom:8px; }
+    .lesson-meta  { font-size:13px; color:var(--muted); margin-bottom:28px; }
+    .lesson-body  { font-size:16px; line-height:1.8; }
+    .lesson-body p { margin-bottom:16px; }
+    .lesson-body h3 { font-size:18px; font-weight:800; margin:28px 0 10px; }
+    .lesson-body .callout { background:#eef2ff; border-left:4px solid var(--accent); border-radius:0 12px 12px 0; padding:14px 18px; margin:20px 0; font-size:14px; line-height:1.65; }
+    .lesson-body .callout.warn { background:#fffbeb; border-color:var(--amber); }
+    .lesson-body .example { background:#f0fdf4; border:1.5px solid #bbf7d0; border-radius:12px; padding:16px 18px; margin:20px 0; font-size:13px; font-family:monospace; line-height:1.7; white-space:pre-wrap; }
+    .lesson-nav { display:flex; gap:10px; margin-top:36px; padding-top:24px; border-top:1px solid var(--border); }
+    .lesson-nav button { flex:1; padding:12px; border-radius:12px; font-size:14px; font-weight:700; cursor:pointer; border:1.5px solid var(--border); background:var(--surface); color:var(--text); }
+    .lesson-nav .next-btn { background:var(--accent); color:#fff; border-color:var(--accent); }
+    .lesson-nav .next-btn:disabled { opacity:.4; cursor:default; }
+
+    /* ── INTERACTIVE: Myth Quiz ────────────────────────────────────── */
+    .myth-quiz { background:var(--surface); border:2px solid var(--border); border-radius:20px; padding:28px; margin:28px 0; }
+    .myth-quiz-label { font-size:11px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; color:var(--accent); margin-bottom:16px; }
+    .myth-quiz h4 { font-size:16px; font-weight:700; margin-bottom:16px; }
+    .myth-options { display:flex; flex-direction:column; gap:8px; margin-bottom:16px; }
+    .myth-opt { padding:12px 16px; border:1.5px solid var(--border); border-radius:12px; cursor:pointer; font-size:14px; font-weight:500; transition:all .15s; }
+    .myth-opt:hover:not(.answered) { border-color:var(--accent); background:#eef2ff; }
+    .myth-opt.correct { border-color:#059669; background:#f0fdf4; color:#065f46; font-weight:700; }
+    .myth-opt.wrong   { border-color:#dc2626; background:#fef2f2; color:#991b1b; text-decoration:line-through; opacity:.7; }
+    .myth-reveal { display:none; font-size:14px; color:var(--muted); line-height:1.65; padding:12px 16px; background:#f9f8f6; border-radius:10px; margin-top:4px; }
+    .myth-reveal.show { display:block; }
+    .myth-nav { display:flex; align-items:center; justify-content:space-between; margin-top:16px; }
+    .myth-counter { font-size:13px; color:var(--muted); font-weight:600; }
+    .myth-next { font-size:13px; font-weight:700; padding:8px 16px; background:var(--accent); color:#fff; border:none; border-radius:10px; cursor:pointer; display:none; }
+    .myth-score { text-align:center; padding:24px 0 8px; }
+    .myth-score .score-big { font-size:40px; font-weight:900; letter-spacing:-1px; color:var(--accent); }
+    .myth-score p { font-size:14px; color:var(--muted); margin-top:6px; }
+    .myth-restart { font-size:13px; font-weight:600; color:var(--accent); background:none; border:1.5px solid var(--accent); padding:7px 16px; border-radius:10px; cursor:pointer; margin-top:12px; }
+
+    /* ── INTERACTIVE: Prompt Builder ──────────────────────────────── */
+    .prompt-builder { background:var(--surface); border:2px solid var(--border); border-radius:20px; overflow:hidden; margin:28px 0; }
+    .pb-header { padding:20px 24px 16px; border-bottom:1px solid var(--border); }
+    .pb-label { font-size:11px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; color:var(--accent); margin-bottom:6px; }
+    .pb-header p { font-size:13px; color:var(--muted); }
+    .pb-slots { padding:20px 24px; display:flex; flex-direction:column; gap:14px; }
+    .pb-slot { display:grid; grid-template-columns:100px 1fr; gap:12px; align-items:start; }
+    .pb-slot-label { font-size:12px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; padding:10px 0 0; }
+    .pb-slot-label .sl-icon { font-size:18px; display:block; margin-bottom:2px; }
+    .pb-slot-label .sl-text { font-size:10px; }
+    .pb-role   .pb-slot-label { color:#7c3aed; }
+    .pb-task   .pb-slot-label { color:#0891b2; }
+    .pb-ctx    .pb-slot-label { color:#059669; }
+    .pb-format .pb-slot-label { color:#d97706; }
+
+    .pb-input-area { display:flex; flex-direction:column; gap:6px; }
+    .pb-chips { display:flex; gap:6px; flex-wrap:wrap; }
+    .pb-chip { font-size:12px; font-weight:600; padding:4px 12px; border-radius:99px; border:1.5px solid var(--border); background:var(--bg); color:var(--muted); cursor:pointer; transition:all .15s; white-space:nowrap; }
+    .pb-chip:hover { border-color:#aaa; color:var(--text); }
+    .pb-chip.active { color:#fff; border-color:transparent; }
+    .pb-role   .pb-chip.active { background:#7c3aed; }
+    .pb-task   .pb-chip.active { background:#0891b2; }
+    .pb-ctx    .pb-chip.active { background:#059669; }
+    .pb-format .pb-chip.active { background:#d97706; }
+
+    .pb-custom { font-family:'Inter',sans-serif; font-size:13px; width:100%; padding:9px 12px; border:1.5px solid var(--border); border-radius:10px; outline:none; resize:none; transition:border-color .15s; }
+    .pb-custom:focus { border-color:var(--accent); }
+    .pb-custom::placeholder { color:#bbb; }
+
+    .pb-preview { border-top:1px solid var(--border); padding:20px 24px; background:#fafaf9; }
+    .pb-preview-label { font-size:11px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; color:var(--muted); margin-bottom:10px; }
+    .pb-preview-text { font-size:14px; line-height:1.75; color:var(--text); min-height:60px; white-space:pre-wrap; }
+    .pb-preview-text .ph { color:#ccc; font-style:italic; }
+    .pb-preview-text .r { color:#7c3aed; font-weight:600; }
+    .pb-preview-text .t { color:#0891b2; font-weight:600; }
+    .pb-preview-text .c { color:#059669; font-weight:600; }
+    .pb-preview-text .f { color:#d97706; font-weight:600; }
+    .pb-actions { display:flex; align-items:center; gap:10px; margin-top:14px; }
+    .pb-copy { font-size:13px; font-weight:700; padding:8px 16px; background:var(--accent); color:#fff; border:none; border-radius:10px; cursor:pointer; transition:background .15s; }
+    .pb-copy:hover { background:#4338ca; }
+    .pb-copy.copied { background:#059669; }
+    .pb-quality { font-size:13px; font-weight:700; padding:6px 14px; border-radius:99px; }
+    .pb-quality.empty    { background:#f3f4f6; color:#9ca3af; }
+    .pb-quality.weak     { background:#fef3c7; color:#92400e; }
+    .pb-quality.good     { background:#dbeafe; color:#1e40af; }
+    .pb-quality.strong   { background:#dcfce7; color:#166534; }
+
+    /* ── INTERACTIVE: Knowledge Check ─────────────────────────────── */
+    .kcheck { border:2px solid var(--border); border-radius:20px; overflow:hidden; margin:32px 0 0; }
+    .kcheck-header { padding:16px 24px; background:linear-gradient(135deg,#1e1b4b,#312e81); }
+    .kcheck-label { font-size:11px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; color:#a5b4fc; margin-bottom:4px; }
+    .kcheck-title { font-size:16px; font-weight:800; color:#fff; }
+    .kcheck-body { padding:24px; }
+    .kq { margin-bottom:24px; }
+    .kq:last-child { margin-bottom:0; }
+    .kq-text { font-size:15px; font-weight:600; margin-bottom:12px; }
+    .kq-opts { display:flex; flex-direction:column; gap:7px; }
+    .kq-opt { padding:10px 14px; border:1.5px solid var(--border); border-radius:10px; cursor:pointer; font-size:14px; font-weight:500; transition:all .15s; display:flex; align-items:center; gap:10px; }
+    .kq-opt:hover:not(.locked) { border-color:var(--accent); background:#eef2ff; }
+    .kq-opt.correct { border-color:#059669; background:#f0fdf4; color:#065f46; }
+    .kq-opt.wrong   { border-color:#dc2626; background:#fef2f2; color:#991b1b; }
+    .kq-opt .opt-icon { font-size:16px; opacity:0; }
+    .kq-opt.correct .opt-icon { opacity:1; }
+    .kq-opt.wrong   .opt-icon { opacity:1; }
+    .kq-hint { display:none; font-size:13px; color:var(--muted); margin-top:8px; padding:10px 14px; background:#f9f8f6; border-radius:8px; line-height:1.6; }
+    .kq-hint.show { display:block; }
+    .kcheck-submit { width:100%; padding:12px; background:var(--accent); color:#fff; font-size:15px; font-weight:700; border:none; border-radius:12px; cursor:pointer; margin-top:24px; transition:background .15s; }
+    .kcheck-submit:hover { background:#4338ca; }
+    .kcheck-submit:disabled { opacity:.4; cursor:default; }
+    .kcheck-result { display:none; text-align:center; padding:24px; }
+    .kcheck-result.show { display:block; }
+    .result-score { font-size:42px; font-weight:900; letter-spacing:-1px; margin-bottom:8px; }
+    .result-score.perfect { color:#059669; }
+    .result-score.good2   { color:#d97706; }
+    .result-score.retry   { color:#dc2626; }
+    .result-msg { font-size:15px; color:var(--muted); margin-bottom:16px; }
+    .result-mark-done { padding:11px 24px; background:#059669; color:#fff; font-size:14px; font-weight:700; border:none; border-radius:12px; cursor:pointer; }
+    .result-retry { font-size:13px; font-weight:600; color:var(--accent); background:none; border:none; cursor:pointer; margin-left:12px; }
+
+    /* Playground */
+    .playground-teaser { background:linear-gradient(135deg,#1e1b4b,#312e81); border-radius:20px; padding:32px; color:#fff; }
+    .pg-label { font-size:11px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; color:#a5b4fc; margin-bottom:10px; }
+    .pg-title { font-size:22px; font-weight:800; letter-spacing:-.5px; margin-bottom:8px; }
+    .pg-desc  { font-size:14px; color:#c7d2fe; line-height:1.65; margin-bottom:20px; }
+    .pg-locked { display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,.1); color:#a5b4fc; font-size:13px; font-weight:600; padding:8px 16px; border-radius:99px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="/">Human Agency<span class="dot"> + AI</span></a>
+    <span class="proto-badge">⚗️ Prototype — not live</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-badge">🎓 Learning Paths</div>
+  <h1>Learn AI at your pace</h1>
+  <p>Pick your level. Interactive modules, real examples, and a playground to try things yourself.</p>
+</div>
+
+<!-- Level picker -->
+<div class="level-section" id="level-section">
+  <div class="level-grid">
+    <div class="level-card novice" onclick="selectLevel('novice')">
+      <div class="level-icon">🌱</div>
+      <div class="level-tag">Novice</div>
+      <div class="level-title">AI is new to me</div>
+      <div class="level-desc">You've heard the words — ChatGPT, AI, LLM — but want to understand what it actually means for your life and work.</div>
+      <button class="level-cta">Start here →</button>
+    </div>
+    <div class="level-card inter" onclick="selectLevel('intermediate')">
+      <div class="level-icon">⚡</div>
+      <div class="level-tag">Intermediate</div>
+      <div class="level-title">I use AI, want to use it better</div>
+      <div class="level-desc">You've tried ChatGPT or Copilot. You want dramatically better results — smarter prompts, real workflows, tools that actually save time.</div>
+      <button class="level-cta">Level up →</button>
+    </div>
+    <div class="level-card expert" onclick="selectLevel('expert')">
+      <div class="level-icon">🚀</div>
+      <div class="level-tag">Expert</div>
+      <div class="level-title">I want to build with AI</div>
+      <div class="level-desc">You understand the basics and want to go further — APIs, agents, automation pipelines, and what's genuinely possible today.</div>
+      <button class="level-cta">Go deep →</button>
+    </div>
+  </div>
+</div>
+
+<!-- NOVICE panel -->
+<div class="content-panel" id="panel-novice">
+  <div class="panel-header">
+    <button class="panel-back" onclick="goBack()">← Choose level</button>
+    <div style="font-size:13px;font-weight:700;color:var(--green)">🌱 Novice path</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-novice" style="width:0%"></div></div>
+  <div class="modules-grid">
+    <div class="module-card" onclick="openLesson('novice',0)">
+      <div class="module-num">Module 1 <span class="new-badge">Interactive</span></div>
+      <div class="module-title">What actually is AI?</div>
+      <div class="module-desc">Not robots, not magic. What AI actually does — with a myth-busting quiz to test yourself.</div>
+      <div class="module-meta"><span>📖 5 min</span><span>Free</span></div>
+    </div>
+    <div class="module-card" onclick="openLesson('novice',1)">
+      <div class="module-num">Module 2</div>
+      <div class="module-title">ChatGPT, Claude, Gemini — what's the difference?</div>
+      <div class="module-desc">The big AI assistants explained and compared. Which one is actually best for what.</div>
+      <div class="module-meta"><span>📖 5 min</span><span>Free</span></div>
+    </div>
+    <div class="module-card locked">
+      <div class="module-num">Module 3</div>
+      <div class="module-title">What can AI do for my job?</div>
+      <div class="module-desc">Concrete examples for 10 different professions — not hype, just what's useful today.</div>
+      <div class="module-meta"><span>📖 6 min</span><div class="module-lock">🔒 Coming soon</div></div>
+    </div>
+    <div class="module-card locked">
+      <div class="module-num">Module 4</div>
+      <div class="module-title">What AI can't do (yet)</div>
+      <div class="module-desc">Hallucinations, bias, limitations — understanding where AI falls flat.</div>
+      <div class="module-meta"><span>📖 5 min</span><div class="module-lock">🔒 Coming soon</div></div>
+    </div>
+  </div>
+  <div class="playground-teaser">
+    <div class="pg-label">✨ Playground</div>
+    <div class="pg-title">Try it yourself</div>
+    <div class="pg-desc">Ask an AI a question and see how it responds. Pre-loaded with starter prompts for complete beginners.</div>
+    <div class="pg-locked">🔒 Unlocks after Module 2</div>
+  </div>
+</div>
+
+<!-- INTERMEDIATE panel -->
+<div class="content-panel" id="panel-intermediate">
+  <div class="panel-header">
+    <button class="panel-back" onclick="goBack()">← Choose level</button>
+    <div style="font-size:13px;font-weight:700;color:var(--amber)">⚡ Intermediate path</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-intermediate" style="width:0%"></div></div>
+  <div class="modules-grid">
+    <div class="module-card" onclick="openLesson('intermediate',0)">
+      <div class="module-num">Module 1</div>
+      <div class="module-title">Why your prompts aren't working</div>
+      <div class="module-desc">The most common mistakes — and how to fix them immediately.</div>
+      <div class="module-meta"><span>📖 6 min</span><span>Free</span></div>
+    </div>
+    <div class="module-card" onclick="openLesson('intermediate',1)">
+      <div class="module-num">Module 2 <span class="new-badge">Interactive</span></div>
+      <div class="module-title">The prompt formula that works every time</div>
+      <div class="module-desc">Role + Task + Context + Format — build your own prompt live and see it assemble in real time.</div>
+      <div class="module-meta"><span>📖 7 min</span><span>Free</span></div>
+    </div>
+    <div class="module-card locked">
+      <div class="module-num">Module 3</div>
+      <div class="module-title">Building a workflow — AI as your assistant</div>
+      <div class="module-desc">How to integrate AI into your daily work.</div>
+      <div class="module-meta"><span>📖 8 min</span><div class="module-lock">🔒 Coming soon</div></div>
+    </div>
+  </div>
+  <div class="playground-teaser" style="margin-top:8px">
+    <div class="pg-label">✨ Playground</div>
+    <div class="pg-title">Practice your prompts</div>
+    <div class="pg-desc">A sandboxed environment with pre-loaded exercises. Try the prompt formula, compare results.</div>
+    <div class="pg-locked">🔒 Unlocks after Module 2</div>
+  </div>
+</div>
+
+<!-- EXPERT panel -->
+<div class="content-panel" id="panel-expert">
+  <div class="panel-header">
+    <button class="panel-back" onclick="goBack()">← Choose level</button>
+    <div style="font-size:13px;font-weight:700;color:var(--accent)">🚀 Expert path</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-expert" style="width:0%"></div></div>
+  <div style="padding:60px 0;text-align:center;color:var(--muted)">Expert modules coming soon — prototype focuses on Novice + Intermediate</div>
+</div>
+
+<!-- Lesson view -->
+<div class="lesson-view" id="lesson-view">
+  <button class="panel-back" onclick="closeLesson()" style="margin-bottom:24px">← Back to modules</button>
+  <div class="progress-bar"><div class="progress-fill" id="progress-lesson" style="width:0%"></div></div>
+  <div class="lesson-title" id="lesson-title"></div>
+  <div class="lesson-meta" id="lesson-meta"></div>
+  <div class="lesson-body" id="lesson-body"></div>
+  <div id="lesson-interactive"></div>
+  <div id="lesson-kcheck"></div>
+  <div class="lesson-nav">
+    <button onclick="closeLesson()">← All modules</button>
+    <button class="next-btn" id="lesson-next-btn">Mark complete & continue →</button>
+  </div>
+</div>
+
+<script>
+var _currentLevel = null, _currentIdx = null;
+
+// ── Lesson content ─────────────────────────────────────────────────────────
+var _LESSONS = {
+  novice: [
+    {
+      title: "What actually is AI?",
+      meta: "📖 5 min · Module 1",
+      body: `
+        <p>You've heard the term a thousand times. But what is AI — artificial intelligence — actually doing?</p>
+        <h3>Not what Hollywood told you</h3>
+        <p>AI isn't a robot brain trying to take over. It's a pattern-matching system trained on enormous amounts of text, images, or data to predict what comes next.</p>
+        <p>When you ask ChatGPT "what's the capital of France?" it isn't looking it up in a database. It's predicting, based on everything it was trained on, that the word "Paris" should follow your question. Incredibly sophisticated autocomplete — but autocomplete nonetheless.</p>
+        <div class="callout">💡 The key insight: AI doesn't know things the way you do. It predicts the most likely response based on patterns in its training data.</div>
+        <h3>Three types you'll actually encounter</h3>
+        <p><strong>Language models</strong> (ChatGPT, Claude, Gemini) — generate and understand text.<br>
+        <strong>Image generators</strong> (Midjourney, DALL·E) — create images from text descriptions.<br>
+        <strong>Specialist AI</strong> — tools trained for one job: transcription, translation, code completion.</p>
+        <h3>Why it suddenly got this good</h3>
+        <p>Three things converged around 2020–2022: vastly more training data, much bigger models, and the discovery of "transformers" — a new architecture that changed how AI processes language. The result was a step-change that surprised even the researchers building it.</p>
+        <div class="callout">🎯 <strong>What to remember:</strong> AI is a prediction machine trained on human-generated content. It's genuinely useful, genuinely limited, and not magic.</div>`,
+      interactive: 'myth-quiz',
+      kcheck: 'novice-0'
+    },
+    {
+      title: "ChatGPT, Claude, Gemini — what's the difference?",
+      meta: "📖 5 min · Module 2",
+      body: `
+        <p>There are now dozens of AI assistants. The three you'll encounter most are ChatGPT (OpenAI), Claude (Anthropic), and Gemini (Google).</p>
+        <h3>ChatGPT</h3>
+        <p>The one that started the mainstream wave. The free version is good for everyday tasks. The paid version (£20/month) is excellent for complex reasoning, writing, and code. Has the biggest ecosystem of integrations and plugins.</p>
+        <h3>Claude</h3>
+        <p>Made by Anthropic, a company focused on AI safety. Gives longer, more nuanced answers — often preferred for writing, analysis, and tasks requiring careful reasoning. Less likely to make things up. This site was largely built with Claude.</p>
+        <h3>Gemini</h3>
+        <p>Google's offering. Deeply integrated with Google Docs, Gmail, and Search. If you live in Google's ecosystem, it can access your actual documents and emails.</p>
+        <div class="callout">🎯 <strong>Honest take:</strong> For most everyday tasks, the differences are smaller than the marketing suggests. Pick one, learn it well, and you'll get 90% of the value.</div>
+        <h3>Free vs paid — is it worth it?</h3>
+        <p>Free tiers are genuinely useful. Paid tiers (£15–20/month) give you faster responses, smarter models, and no usage limits. If you're using AI for work more than 30 minutes a day, paid is worth it.</p>`,
+      interactive: null,
+      kcheck: 'novice-1'
+    }
+  ],
+  intermediate: [
+    {
+      title: "Why your prompts aren't working",
+      meta: "📖 6 min · Module 1",
+      body: `
+        <p>If AI keeps giving you vague, generic, or wrong answers — the problem is almost certainly your prompt, not the AI. Here are the most common mistakes.</p>
+        <h3>Mistake 1: Too vague</h3>
+        <p>Asking "write me an email" gives you a generic email. Asking "write a firm but polite email to a client who hasn't paid their invoice after 30 days, from a small UK plumbing business, under 100 words" gives you something actually useful.</p>
+        <div class="callout">🎯 Specificity is everything. The more context you give, the better the output.</div>
+        <h3>Mistake 2: No role assigned</h3>
+        <p>AI responds differently depending on what persona you give it. "Explain inflation" gets a textbook answer. "Explain inflation as if I'm a 12-year-old who just got their first job" gets something you can actually use.</p>
+        <h3>Mistake 3: No format specified</h3>
+        <p>Want bullet points? Ask for them. Under 200 words? Say so. AI will match whatever format you specify — but only if you specify it.</p>
+        <h3>Mistake 4: Accepting the first answer</h3>
+        <p>Treat AI like a colleague, not a vending machine. If the first response isn't right, push back: "Make it shorter." "More formal." "Remove the third point." Iteration dramatically improves results.</p>
+        <h3>Mistake 5: One massive ask</h3>
+        <p>Breaking complex tasks into steps gets much better results. Ask for an outline first, review it, then ask for the full content.</p>`,
+      interactive: null,
+      kcheck: 'intermediate-0'
+    },
+    {
+      title: "The prompt formula that works every time",
+      meta: "📖 7 min · Module 2",
+      body: `
+        <p>There's a simple structure behind almost every effective AI prompt: <strong>Role + Task + Context + Format</strong>. Master this and you'll get dramatically better results from every AI interaction.</p>
+        <h3>Role — who should the AI be?</h3>
+        <p>Set the persona. "You are an experienced UK employment solicitor." "You are a direct, no-nonsense business coach." This shapes tone, vocabulary, and expertise level.</p>
+        <h3>Task — what exactly do you need?</h3>
+        <p>Be specific about the action. Not "write something about X" but "write a 200-word introduction explaining X for people who've never encountered it before."</p>
+        <h3>Context — what does the AI need to know?</h3>
+        <p>Background that changes what good output looks like. Who's the audience? What's the purpose? What constraints exist?</p>
+        <h3>Format — how should it be presented?</h3>
+        <p>Bullet points, numbered list, email format, under 150 words. Be explicit — AI will match exactly what you ask for.</p>
+        <div class="callout">💡 You don't need all four every time — but the more you include, the better the result.</div>`,
+      interactive: 'prompt-builder',
+      kcheck: 'intermediate-1'
+    }
+  ]
+};
+
+// ── Knowledge checks ───────────────────────────────────────────────────────
+var _KCHECKS = {
+  'novice-0': {
+    questions: [
+      {
+        q: "When ChatGPT answers your question, what is it actually doing?",
+        opts: ["Looking it up in a live database", "Predicting the most likely next words based on training data", "Connecting to the internet and searching", "Running a logical reasoning algorithm"],
+        correct: 1,
+        hint: "AI is fundamentally a prediction machine — it generates the most statistically likely response based on patterns in its training data, not a lookup or live search."
+      },
+      {
+        q: "Which of these best describes a 'hallucination' in AI?",
+        opts: ["The AI crashes and stops responding", "The AI generates creative ideas", "The AI confidently states something false as if it's true", "The AI refuses to answer a question"],
+        correct: 2,
+        hint: "Hallucination is when AI produces plausible-sounding but false information — made-up statistics, fake citations, wrong names — without realising it's wrong."
+      }
+    ]
+  },
+  'novice-1': {
+    questions: [
+      {
+        q: "Which AI assistant has the deepest integration with Google Docs and Gmail?",
+        opts: ["ChatGPT", "Claude", "Gemini", "They are all equally integrated"],
+        correct: 2,
+        hint: "Gemini is Google's product and is baked into Google Workspace — it can access your actual Docs, Gmail, and Drive when you grant it permission."
+      },
+      {
+        q: "For most everyday tasks, which statement is most accurate?",
+        opts: ["ChatGPT is significantly better than all others", "The differences between the main AI assistants are smaller than the marketing suggests", "Only paid AI tools are worth using", "Claude is always the best choice"],
+        correct: 1,
+        hint: "The honest take: pick one AI tool and learn it well. For most tasks, the quality gap between the main assistants is smaller than their marketing implies."
+      }
+    ]
+  },
+  'intermediate-0': {
+    questions: [
+      {
+        q: "You ask AI: 'Write me a report on climate change.' What's the main problem?",
+        opts: ["The topic is too complex for AI", "The request is too vague — no audience, length, format, or angle specified", "AI can't write reports", "You need to pay for a higher tier to get reports"],
+        correct: 1,
+        hint: "Without specifics — who's reading it, what angle, how long, what format — AI will default to a generic overview. Specificity is everything."
+      },
+      {
+        q: "AI gives you a decent but slightly too formal response. What should you do?",
+        opts: ["Start a completely new conversation", "Accept it — that's the best AI can do", "Reply with 'Make it more conversational and cut it by half'", "Try a different AI tool"],
+        correct: 2,
+        hint: "Treat AI like a colleague. Push back with specific refinements — tone, length, structure. Iteration almost always improves results significantly."
+      }
+    ]
+  },
+  'intermediate-1': {
+    questions: [
+      {
+        q: "Which prompt is likely to get the best result?",
+        opts: [
+          "Write an email",
+          "You are an experienced UK employment solicitor. Draft a polite but firm letter to an employee who has been absent without notice for 3 days, in formal English, under 200 words.",
+          "Write a legal letter about an absent employee",
+          "Help me write a legal email"
+        ],
+        correct: 1,
+        hint: "The second option uses all four elements: Role (employment solicitor), Task (draft letter), Context (absent employee, 3 days, no notice), Format (formal English, under 200 words)."
+      },
+      {
+        q: "In the RTCF prompt formula, what does 'Context' mean?",
+        opts: ["The setting on your computer", "Background information that changes what a good response looks like", "The length of your prompt", "The previous messages in the conversation"],
+        correct: 1,
+        hint: "Context is the background the AI needs to tailor its response — the audience, purpose, constraints, and any relevant situation details."
+      }
+    ]
+  }
+};
+
+// ── Myth quiz widget ───────────────────────────────────────────────────────
+var _MYTHS = [
+  {
+    q: "AI thinks and reasons like a human brain.",
+    opts: ["True — it's basically a digital brain", "False — it predicts patterns, not thinks", "Partly true — it can reason in some ways"],
+    correct: 1,
+    reveal: "AI has no understanding or consciousness. It's a sophisticated pattern-matcher trained to predict what text should come next. It mimics reasoning very convincingly — but there's no comprehension happening."
+  },
+  {
+    q: "ChatGPT searches the internet to answer your questions.",
+    opts: ["True — it uses Google in the background", "False — it uses knowledge from training data", "It depends which version you're using"],
+    correct: 2,
+    reveal: "Standard ChatGPT (and most AI models) has a knowledge cutoff and uses training data — not live search. Some versions now have optional web browsing, but it's not the default. Your question about last week's news may get a confidently wrong answer."
+  },
+  {
+    q: "If AI gives you a confident, detailed answer, it's probably correct.",
+    opts: ["True — detail signals accuracy", "False — AI is just as confident when it's making things up", "True for facts, false for opinions"],
+    correct: 1,
+    reveal: "This is the hallucination trap. AI delivers false information with the exact same confident tone as correct information. It has no internal fact-checker. Always verify consequential claims from another source."
+  },
+  {
+    q: "AI will replace most jobs in the next 2–3 years.",
+    opts: ["True — it's coming faster than we think", "False — AI changes roles, rarely eliminates them entirely", "Only technical jobs are at risk"],
+    correct: 1,
+    reveal: "Evidence so far shows AI augments work far more than it eliminates it. Most roles involve relationships, physical tasks, or judgment calls that AI can't replicate. The bigger risk is being out-competed by people who use AI well."
+  }
+];
+var _mythIdx = 0, _mythScore = 0, _mythAnswered = false;
+
+function _buildMythQuiz() {
+  return `<div class="myth-quiz">
+    <div class="myth-quiz-label">🧠 Myth-Buster Quiz</div>
+    <div id="myth-content">
+      ${_renderMyth(0)}
+    </div>
+  </div>`;
+}
+
+function _renderMyth(idx) {
+  if (idx >= _MYTHS.length) {
+    return `<div class="myth-score">
+      <div class="score-big">${_mythScore}/${_MYTHS.length}</div>
+      <p>${_mythScore === _MYTHS.length ? '🎉 Perfect score! You already have sharper AI instincts than most.' :
+          _mythScore >= 2 ? '👍 Good — a few surprises in there. Read those reveals again.' :
+          '😅 Lots of common misconceptions — everyone starts here. Re-read the reveals.'}</p>
+      <button class="myth-restart" onclick="_mythRestart()">Try again</button>
+    </div>`;
+  }
+  var m = _MYTHS[idx];
+  return `<div>
+    <div class="myth-counter">Question ${idx+1} of ${_MYTHS.length}</div>
+    <h4 style="margin-top:10px">${m.q}</h4>
+    <div class="myth-options">
+      ${m.opts.map((o,i) => `<div class="myth-opt" onclick="_mythAnswer(${idx},${i})">${o}</div>`).join('')}
+    </div>
+    <div class="myth-reveal" id="myth-reveal-${idx}">${m.reveal}</div>
+    <div class="myth-nav">
+      <span class="myth-counter" id="myth-score-label">Score: ${_mythScore}</span>
+      <button class="myth-next" id="myth-next-btn" onclick="_mythNext(${idx})">Next question →</button>
+    </div>
+  </div>`;
+}
+
+function _mythAnswer(idx, chosen) {
+  if (_mythAnswered) return;
+  _mythAnswered = true;
+  var m = _MYTHS[idx];
+  var opts = document.querySelectorAll('.myth-opt');
+  opts.forEach(function(o){ o.classList.add('answered'); });
+  opts[chosen].classList.add(chosen === m.correct ? 'correct' : 'wrong');
+  opts[m.correct].classList.add('correct');
+  if (chosen === m.correct) _mythScore++;
+  document.getElementById('myth-reveal-' + idx).classList.add('show');
+  document.getElementById('myth-score-label').textContent = 'Score: ' + _mythScore;
+  document.getElementById('myth-next-btn').style.display = 'inline-flex';
+}
+
+function _mythNext(idx) {
+  _mythAnswered = false;
+  _mythIdx = idx + 1;
+  document.getElementById('myth-content').innerHTML = _renderMyth(_mythIdx);
+}
+
+function _mythRestart() {
+  _mythIdx = 0; _mythScore = 0; _mythAnswered = false;
+  document.getElementById('myth-content').innerHTML = _renderMyth(0);
+}
+
+// ── Prompt builder widget ─────────────────────────────────────────────────
+var _PB = {
+  role: '', task: '', ctx: '', format: '',
+  roleCustom: false, taskCustom: false, ctxCustom: false, formatCustom: false
+};
+var _PB_EXAMPLES = {
+  role: [
+    "You are an experienced UK GP",
+    "You are a direct, no-nonsense business coach",
+    "You are a secondary school English teacher",
+    "You are a friendly customer support specialist",
+    "You are a senior HR professional"
+  ],
+  task: [
+    "Write a short letter explaining",
+    "Summarise the following in plain English",
+    "Draft a polite but firm response to",
+    "Create 5 bullet points covering",
+    "Explain the pros and cons of"
+  ],
+  ctx: [
+    "The audience is non-technical and over 50",
+    "This is for a small UK business, 10 employees",
+    "The tone should match a professional NHS trust",
+    "The reader has no prior knowledge of this topic",
+    "Keep it suitable for a parent letter from a school"
+  ],
+  format: [
+    "Under 150 words, no jargon",
+    "3 short paragraphs, formal English",
+    "Bullet points, max 5 items",
+    "Email format with subject line",
+    "Plain language, active voice"
+  ]
+};
+
+function _buildPromptBuilder() {
+  return `<div class="prompt-builder">
+    <div class="pb-header">
+      <div class="pb-label">⚡ Interactive Prompt Builder</div>
+      <p>Click the example chips to fill each part — or type your own. Watch your prompt build in real time.</p>
+    </div>
+    <div class="pb-slots">
+      ${_pbSlot('role','🎭','Role','Who should the AI be?','pb-role')}
+      ${_pbSlot('task','📋','Task','What do you need?','pb-task')}
+      ${_pbSlot('ctx','📁','Context','Background info','pb-ctx')}
+      ${_pbSlot('format','📐','Format','How should it look?','pb-format')}
+    </div>
+    <div class="pb-preview">
+      <div class="pb-preview-label">Your prompt</div>
+      <div class="pb-preview-text" id="pb-preview-text"><span class="ph">Select or type each part above to build your prompt…</span></div>
+      <div class="pb-actions">
+        <button class="pb-copy" id="pb-copy-btn" onclick="_pbCopy()">Copy prompt</button>
+        <span class="pb-quality empty" id="pb-quality">—</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+function _pbSlot(key, icon, label, hint, cls) {
+  var chips = _PB_EXAMPLES[key].map(function(ex) {
+    return `<span class="pb-chip" onclick="_pbChip('${key}', this, '${ex.replace(/'/g,"\\'")}');">${ex}</span>`;
+  }).join('');
+  return `<div class="pb-slot ${cls}" id="pb-slot-${key}">
+    <div class="pb-slot-label">
+      <span class="sl-icon">${icon}</span>
+      <span class="sl-text">${label}</span>
+    </div>
+    <div class="pb-input-area">
+      <div class="pb-chips" id="pb-chips-${key}">${chips}</div>
+      <textarea class="pb-custom" id="pb-custom-${key}" rows="2" placeholder="${hint}…" oninput="_pbType('${key}')" onfocus="_pbClearChips('${key}')"></textarea>
+    </div>
+  </div>`;
+}
+
+function _pbChip(key, el, val) {
+  _PB[key] = val;
+  document.querySelectorAll('#pb-chips-' + key + ' .pb-chip').forEach(function(c){ c.classList.remove('active'); });
+  el.classList.add('active');
+  document.getElementById('pb-custom-' + key).value = '';
+  _pbUpdate();
+}
+
+function _pbClearChips(key) {
+  document.querySelectorAll('#pb-chips-' + key + ' .pb-chip').forEach(function(c){ c.classList.remove('active'); });
+}
+
+function _pbType(key) {
+  _PB[key] = document.getElementById('pb-custom-' + key).value.trim();
+  _pbUpdate();
+}
+
+function _pbUpdate() {
+  var parts = [];
+  var preview = '';
+  if (_PB.role)   { parts.push('role');   preview += '<span class="r">' + _esc(_PB.role) + '.</span> '; }
+  if (_PB.task)   { parts.push('task');   preview += '<span class="t">' + _esc(_PB.task) + '.</span> '; }
+  if (_PB.ctx)    { parts.push('ctx');    preview += '<span class="c">' + _esc(_PB.ctx) + '.</span> '; }
+  if (_PB.format) { parts.push('format'); preview += '<span class="f">' + _esc(_PB.format) + '.</span>'; }
+
+  var el = document.getElementById('pb-preview-text');
+  if (!preview) {
+    el.innerHTML = '<span class="ph">Select or type each part above to build your prompt…</span>';
+  } else {
+    el.innerHTML = preview.trim();
+  }
+
+  var q = document.getElementById('pb-quality');
+  if (parts.length === 0)      { q.className = 'pb-quality empty';  q.textContent = '—'; }
+  else if (parts.length === 1) { q.className = 'pb-quality weak';   q.textContent = '⚠ Weak'; }
+  else if (parts.length === 2) { q.className = 'pb-quality weak';   q.textContent = '⚠ Incomplete'; }
+  else if (parts.length === 3) { q.className = 'pb-quality good';   q.textContent = '✓ Good'; }
+  else                          { q.className = 'pb-quality strong'; q.textContent = '★ Strong'; }
+}
+
+function _esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function _pbCopy() {
+  var parts = [];
+  if (_PB.role)   parts.push(_PB.role + '.');
+  if (_PB.task)   parts.push(_PB.task + '.');
+  if (_PB.ctx)    parts.push(_PB.ctx + '.');
+  if (_PB.format) parts.push(_PB.format + '.');
+  var text = parts.join(' ');
+  if (!text) return;
+  navigator.clipboard.writeText(text).catch(function(){});
+  var btn = document.getElementById('pb-copy-btn');
+  btn.textContent = '✓ Copied!'; btn.classList.add('copied');
+  setTimeout(function(){ btn.textContent = 'Copy prompt'; btn.classList.remove('copied'); }, 2000);
+}
+
+// ── Knowledge check ───────────────────────────────────────────────────────
+var _kcAnswers = {};
+
+function _buildKcheck(key) {
+  var kc = _KCHECKS[key];
+  if (!kc) return '';
+  var qhtml = kc.questions.map(function(q, qi) {
+    var opts = q.opts.map(function(o, oi) {
+      return `<div class="kq-opt" id="kq-${key}-${qi}-${oi}" onclick="_kcPick('${key}',${qi},${oi})">\
+        <span class="opt-icon" id="kq-icon-${key}-${qi}-${oi}">✓</span>${o}</div>`;
+    }).join('');
+    return `<div class="kq" id="kq-block-${key}-${qi}">
+      <div class="kq-text">Q${qi+1}. ${q.q}</div>
+      <div class="kq-opts">${opts}</div>
+      <div class="kq-hint" id="kq-hint-${key}-${qi}">${q.hint}</div>
+    </div>`;
+  }).join('');
+
+  return `<div class="kcheck">
+    <div class="kcheck-header">
+      <div class="kcheck-label">✅ Knowledge Check</div>
+      <div class="kcheck-title">Quick test before you continue</div>
+    </div>
+    <div class="kcheck-body" id="kcheck-body-${key}">
+      ${qhtml}
+      <button class="kcheck-submit" id="kcheck-submit-${key}" onclick="_kcSubmit('${key}')" disabled>Check answers</button>
+    </div>
+    <div class="kcheck-result" id="kcheck-result-${key}">
+      <div class="result-score" id="kcheck-score-${key}"></div>
+      <div class="result-msg"  id="kcheck-msg-${key}"></div>
+      <button class="result-mark-done" onclick="_kcMarkDone()">✓ Mark complete &amp; continue</button>
+      <button class="result-retry" onclick="_kcRetry('${key}')">Retry</button>
+    </div>
+  </div>`;
+}
+
+function _kcPick(key, qi, oi) {
+  var kc = _KCHECKS[key];
+  var q  = kc.questions[qi];
+  // lock this question
+  for (var i = 0; i < q.opts.length; i++) {
+    var el = document.getElementById('kq-' + key + '-' + qi + '-' + i);
+    if (el) el.classList.add('locked');
+  }
+  var chosen = document.getElementById('kq-' + key + '-' + qi + '-' + oi);
+  var correct = document.getElementById('kq-' + key + '-' + qi + '-' + q.correct);
+  chosen.classList.add(oi === q.correct ? 'correct' : 'wrong');
+  chosen.querySelector('.opt-icon').textContent = oi === q.correct ? '✓' : '✗';
+  if (oi !== q.correct) {
+    correct.classList.add('correct');
+    correct.querySelector('.opt-icon').textContent = '✓';
+  }
+  document.getElementById('kq-hint-' + key + '-' + qi).classList.add('show');
+  _kcAnswers[key + '-' + qi] = (oi === q.correct);
+
+  // enable submit if all answered
+  var all = true;
+  for (var j = 0; j < kc.questions.length; j++) {
+    if (_kcAnswers[key + '-' + j] === undefined) { all = false; break; }
+  }
+  if (all) document.getElementById('kcheck-submit-' + key).disabled = false;
+}
+
+function _kcSubmit(key) {
+  var kc = _KCHECKS[key];
+  var score = 0;
+  for (var j = 0; j < kc.questions.length; j++) {
+    if (_kcAnswers[key + '-' + j]) score++;
+  }
+  var total = kc.questions.length;
+  document.getElementById('kcheck-body-' + key).style.display = 'none';
+  var res = document.getElementById('kcheck-result-' + key);
+  res.classList.add('show');
+  var sc = document.getElementById('kcheck-score-' + key);
+  sc.textContent = score + '/' + total;
+  sc.className = 'result-score ' + (score === total ? 'perfect' : score >= total - 1 ? 'good2' : 'retry');
+  document.getElementById('kcheck-msg-' + key).textContent =
+    score === total ? '🎉 Perfect — you got it. Ready for the next module.' :
+    score >= total - 1 ? '👍 Nearly there — read the hints for the missed one.' :
+    '😅 Worth re-reading the module before moving on.';
+  document.getElementById('lesson-next-btn').disabled = false;
+}
+
+function _kcRetry(key) {
+  _kcAnswers = {};
+  var kc = _KCHECKS[key];
+  for (var j = 0; j < kc.questions.length; j++) {
+    var q = kc.questions[j];
+    for (var i = 0; i < q.opts.length; i++) {
+      var el = document.getElementById('kq-' + key + '-' + j + '-' + i);
+      if (el) { el.className = 'kq-opt'; el.querySelector('.opt-icon').textContent = '✓'; }
+    }
+    var hint = document.getElementById('kq-hint-' + key + '-' + j);
+    if (hint) hint.classList.remove('show');
+  }
+  document.getElementById('kcheck-body-' + key).style.display = '';
+  document.getElementById('kcheck-result-' + key).classList.remove('show');
+  document.getElementById('kcheck-submit-' + key).disabled = true;
+}
+
+function _kcMarkDone() {
+  // same as pressing next
+  document.getElementById('lesson-next-btn').click();
+}
+
+// ── Navigation ─────────────────────────────────────────────────────────────
+var _DONE = {};
+
+function selectLevel(lvl) {
+  _currentLevel = lvl;
+  document.getElementById('level-section').style.display = 'none';
+  document.querySelectorAll('.content-panel').forEach(function(p){ p.classList.remove('visible'); });
+  document.getElementById('panel-' + lvl).classList.add('visible');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function goBack() {
+  _currentLevel = null;
+  document.querySelectorAll('.content-panel').forEach(function(p){ p.classList.remove('visible'); });
+  document.getElementById('lesson-view').classList.remove('visible');
+  document.getElementById('level-section').style.display = 'block';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function openLesson(lvl, idx) {
+  var lessons = _LESSONS[lvl];
+  if (!lessons || !lessons[idx]) return;
+  var lesson = lessons[idx];
+  _currentLevel = lvl; _currentIdx = idx;
+  _kcAnswers = {};
+  _mythIdx = 0; _mythScore = 0; _mythAnswered = false;
+
+  document.querySelectorAll('.content-panel').forEach(function(p){ p.classList.remove('visible'); });
+  document.getElementById('lesson-view').classList.add('visible');
+
+  document.getElementById('lesson-title').textContent = lesson.title;
+  document.getElementById('lesson-meta').textContent  = lesson.meta;
+  document.getElementById('lesson-body').innerHTML    = lesson.body;
+
+  // Interactive widget
+  var iEl = document.getElementById('lesson-interactive');
+  if (lesson.interactive === 'myth-quiz')      iEl.innerHTML = _buildMythQuiz();
+  else if (lesson.interactive === 'prompt-builder') iEl.innerHTML = _buildPromptBuilder();
+  else iEl.innerHTML = '';
+
+  // Knowledge check
+  var kEl = document.getElementById('lesson-kcheck');
+  kEl.innerHTML = lesson.kcheck ? _buildKcheck(lesson.kcheck) : '';
+
+  // Next btn
+  var btn = document.getElementById('lesson-next-btn');
+  btn.disabled = !!lesson.kcheck; // must pass kcheck before continuing
+  var next = lessons[idx + 1];
+  if (next) {
+    btn.textContent = 'Mark complete & continue →';
+    btn.onclick = function() { _DONE[lvl + '-' + idx] = true; openLesson(lvl, idx + 1); };
+  } else {
+    btn.textContent = 'Complete path ✓';
+    btn.onclick = function() { _DONE[lvl + '-' + idx] = true; closeLesson(); };
+  }
+
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function closeLesson() {
+  document.getElementById('lesson-view').classList.remove('visible');
+  document.getElementById('panel-' + _currentLevel).classList.add('visible');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+</body>
+</html>

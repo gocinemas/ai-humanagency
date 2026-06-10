@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Prep — Concepts & Interview Help</title>
+  <meta name="description" content="Learn AI concepts fast. RAG, Agents, Embeddings, Prompt Engineering. Get interview-ready in minutes.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f9f8f6; --surface: #ffffff; --border: #ebebeb;
+      --text: #111111; --muted: #666666; --accent: #4f46e5;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    a { color: inherit; text-decoration: none; }
+
+    /* Header */
+    header { border-bottom: 1px solid var(--border); background: var(--surface); position: sticky; top: 0; z-index: 100; }
+    .header-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-size: 17px; font-weight: 800; letter-spacing: -0.5px; }
+    .logo .dot { color: var(--accent); }
+    nav { display: flex; gap: 20px; align-items: center; }
+    nav a { font-size: 14px; font-weight: 500; color: var(--muted); transition: color .15s; }
+    nav a:hover, nav a.active { color: var(--text); font-weight: 600; }
+
+    /* Hero */
+    .hero { max-width: 900px; margin: 0 auto; padding: 60px 24px 40px; text-align: center; }
+    .hero-badge { display: inline-block; background: #eef2ff; color: var(--accent); font-size: 11px; font-weight: 700; padding: 6px 14px; border-radius: 99px; letter-spacing: .5px; text-transform: uppercase; margin-bottom: 16px; }
+    .hero h1 { font-size: 48px; font-weight: 900; letter-spacing: -1.2px; line-height: 1.1; margin-bottom: 12px; }
+    .hero p { font-size: 16px; color: var(--muted); max-width: 600px; line-height: 1.7; margin: 0 auto 32px; }
+
+    /* Search bar */
+    .search-box { max-width: 900px; margin: 0 auto 48px; padding: 0 24px; }
+    .search-input { width: 100%; padding: 14px 18px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 15px; font-family: inherit; transition: border .15s; }
+    .search-input:focus { outline: none; border-color: var(--accent); }
+
+    /* Content */
+    .content { max-width: 900px; margin: 0 auto; padding: 0 24px 80px; }
+
+    /* Concept cards grid */
+    .concepts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 48px; }
+    .concept-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 16px; padding: 24px; cursor: pointer; transition: all .2s; }
+    .concept-card:hover { border-color: var(--accent); box-shadow: 0 8px 16px rgba(79, 70, 229, 0.08); transform: translateY(-2px); }
+    .concept-card.active { border-color: var(--accent); background: #eef2ff; }
+
+    .concept-number { font-size: 11px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 8px; }
+    .concept-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .concept-short { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+    /* Detail panel */
+    .detail-panel { display: none; background: var(--surface); border: 1.5px solid var(--border); border-radius: 16px; padding: 32px; margin-bottom: 48px; }
+    .detail-panel.active { display: block; }
+    .detail-close { float: right; font-size: 20px; cursor: pointer; color: var(--muted); }
+    .detail-close:hover { color: var(--text); }
+
+    .detail-title { font-size: 28px; font-weight: 900; margin-bottom: 16px; }
+    .detail-section { margin-bottom: 24px; }
+    .detail-label { font-size: 12px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
+    .detail-text { font-size: 15px; line-height: 1.7; color: var(--text); }
+
+    .example-box { background: #f0f9ff; border-left: 4px solid #0ea5e9; border-radius: 0 8px 8px 0; padding: 14px 16px; margin: 14px 0; font-size: 14px; line-height: 1.65; }
+    .interview-box { background: #fef3c7; border-left: 4px solid #f59e0b; border-radius: 0 8px 8px 0; padding: 14px 16px; margin: 14px 0; font-size: 14px; line-height: 1.65; }
+
+    .cta-whatsapp { display: inline-block; background: #25d366; color: white; padding: 12px 24px; border-radius: 8px; font-weight: 600; margin-top: 16px; transition: background .15s; }
+    .cta-whatsapp:hover { background: #20ba5a; }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--border); background: var(--surface); }
+    .footer-inner { max-width: 900px; margin: 0 auto; padding: 24px; font-size: 13px; color: var(--muted); text-align: center; }
+
+    @media (max-width: 768px) {
+      .header-inner { padding: 0 16px; }
+      nav { gap: 12px; }
+      nav a { font-size: 13px; }
+      nav a:not(:first-child):not(:last-child) { display: none; }
+      .hero { padding: 48px 16px 32px; }
+      .hero h1 { font-size: 36px; }
+      .hero p { font-size: 14px; }
+      .search-box { padding: 0 16px; margin: 0 auto 40px; }
+      .content { padding: 0 16px 60px; }
+      .concepts-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+      .concept-card { padding: 18px; }
+      .concept-title { font-size: 16px; }
+      .concept-short { font-size: 13px; }
+      .detail-panel { padding: 24px; }
+      .detail-title { font-size: 24px; }
+      .detail-text { font-size: 14px; }
+      .example-box { padding: 12px 14px; font-size: 13px; }
+      .interview-box { padding: 12px 14px; font-size: 13px; }
+    }
+
+    @media (max-width: 480px) {
+      .header-inner { padding: 0 12px; height: 52px; }
+      nav { gap: 8px; }
+      nav a { font-size: 12px; }
+      nav a:not(:first-child) { display: none; }
+      .hero { padding: 40px 12px 24px; }
+      .hero-badge { font-size: 10px; padding: 5px 12px; }
+      .hero h1 { font-size: 26px; }
+      .hero p { font-size: 13px; margin-bottom: 20px; }
+      .search-box { padding: 0 12px; margin: 0 auto 32px; }
+      .search-input { padding: 12px 14px; font-size: 14px; }
+      .content { padding: 0 12px 40px; }
+      .concepts-grid { grid-template-columns: 1fr; gap: 10px; }
+      .concept-card { padding: 16px; }
+      .concept-number { font-size: 10px; }
+      .concept-title { font-size: 15px; }
+      .concept-short { font-size: 12px; }
+      .detail-panel { padding: 20px; margin-bottom: 40px; }
+      .detail-close { font-size: 24px; margin-top: 4px; }
+      .detail-title { font-size: 20px; margin-bottom: 12px; }
+      .detail-section { margin-bottom: 16px; }
+      .detail-label { font-size: 11px; }
+      .detail-text { font-size: 13px; }
+      .example-box { padding: 10px 12px; font-size: 12px; margin: 10px 0; }
+      .interview-box { padding: 10px 12px; font-size: 12px; margin: 10px 0; }
+      .cta-whatsapp { padding: 10px 18px; font-size: 13px; margin-top: 12px; }
+      .footer-inner { padding: 16px 12px; }
+      .footer-inner p { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <nav>
+      <a href="/start.html">Start Here</a>
+      <a href="/jargon.html">Jargon</a>
+      <a href="/quick-reference.html">Quick Ref</a>
+      <a href="/ai-prep.html" class="active">AI Prep</a>
+      <a href="/#ask">Ask</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-badge">📚 Interview Ready</div>
+  <h1>AI Prep</h1>
+  <p>Learn core AI concepts in minutes. RAG, Agents, Embeddings, and more. Get interview-ready or master the basics.</p>
+</div>
+
+<div class="content">
+  <div class="search-box">
+    <input type="text" class="search-input" id="searchInput" placeholder="Search: RAG, agents, embeddings, prompt engineering...">
+  </div>
+
+  <!-- Concepts Grid -->
+  <div class="concepts-grid" id="conceptsGrid"></div>
+
+  <!-- Detail Panel -->
+  <div class="detail-panel" id="detailPanel">
+    <span class="detail-close" onclick="closeDetail()">×</span>
+    <div id="detailContent"></div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <p>💬 <strong>On WhatsApp?</strong> Text Miru with concept names: "RAG", "interview embeddings", "explain agents"</p>
+    <p style="margin-top: 12px; color: #999;">AI Prep • Part of Human.Agency</p>
+  </div>
+</footer>
+
+<script>
+const concepts = {
+  "how-ai-works": {
+    title: "How AI Works (The Pipeline)",
+    number: "1. Fundamentals",
+    short: "Input → Processing → Output. It's pattern matching on a massive scale.",
+    explanation: "You send text (a prompt) → the AI processes it (predicts what comes next based on patterns it learned) → returns text. It's not thinking. It's predicting the statistically most likely next word, then the next, then the next. But statistically accurate predictions look like thinking.",
+    example: "You type 'The capital of France is' → the model has seen this pattern millions of times → predicts 'Paris'. Not because it 'knows'. Because 'Paris' is statistically the most likely word to follow that phrase.",
+    interview: "AI isn't magic. It's pattern matching on a massive scale. The model learned statistical relationships from billions of words and can predict plausible continuations. That's why it's good at writing but can hallucinate facts."
+  },
+  "tokens": {
+    title: "Tokens & Context Windows",
+    number: "2. Constraints",
+    short: "AI reads in chunks. There's a limit to how much it can see at once.",
+    explanation: "AI doesn't read words. It reads tokens — roughly word-sized chunks. 'ChatGPT' = 1 token. 'I cannot' = 2 tokens. 100 tokens ≈ 75 words. Every model has a limit (Claude: 200k, GPT-4o: 128k). That's huge but paste multiple 50-page documents and you hit the limit.",
+    example: "You have a 100-page manual + ask a question. Model reads it all. Add another 100-page document + more questions. Now you're over the limit. The model can't see everything anymore.",
+    interview: "Context windows are the limit to how much the model can process at once. Larger is better for document analysis or long conversations. Once you hit the limit, earlier context gets dropped. This is why sometimes models seem to 'forget' earlier parts of conversations."
+  },
+  "rag": {
+    title: "RAG (Retrieval-Augmented Generation)",
+    number: "3. Architecture",
+    short: "Give AI your documents. It finds relevant ones, reads them, and answers based on what it found.",
+    explanation: "Vanilla LLMs only know their training data. RAG fixes this by letting you upload documents that the model reads at query time. Step 1 (offline): Convert docs to embeddings, store them. Step 2 (query time): Convert question to embeddings, find similar doc chunks. Step 3: Pass those chunks to the LLM along with the question.",
+    example: "You ask ChatGPT 'What was our Q3 revenue?' and it hallucinates. With RAG: the system finds your Q3 earnings report, passes it to the LLM, which reads it and answers accurately from that source.",
+    interview: "RAG lets AI work with your data without being retrained. It's retrieval-augmented — it retrieves relevant documents, then generates answers based on what it found. This is how you build AI that knows about proprietary information, recent events, or domain-specific data."
+  },
+  "embeddings": {
+    title: "Embeddings (Semantic Search)",
+    number: "4. Representation",
+    short: "Turn words into numbers so the model can compare meaning.",
+    explanation: "An embedding is a list of numbers that represents the meaning of text. 'The cat sat on the mat' becomes [0.2, -0.5, 0.8, ...]. Texts with similar meaning get similar numbers. This lets you do semantic search: find things by meaning, not keywords. 'Dog' search finds 'puppy' and 'canine' too.",
+    example: "You have 10,000 support tickets. Convert them to embeddings. Customer asks 'How do I refund an order?' You find tickets with similar embeddings. You've found the 20 most relevant tickets — even if none say 'refund' exactly.",
+    interview: "Embeddings are how we make semantic search work. They convert meaning into geometry. Documents with similar meaning end up close together in embedding space. This is foundational to RAG, vector databases, and any system that needs to find semantically similar content at scale."
+  },
+  "agents": {
+    title: "Agents (Agentic AI)",
+    number: "5. Autonomy",
+    short: "AI that takes actions, not just answers. It thinks, acts, observes results, and adjusts.",
+    explanation: "Chat: you ask → it answers. Agent: you ask something complex → it breaks into steps → executes each step (search, run code, call APIs, read files) → observes results → adjusts → returns answer. The loop: Think → Act → Observe → Reflect → Repeat.",
+    example: "You ask an agent 'What's the cheapest flight from London to New York next Tuesday?' It calls flight API → sees results → filters them → finds cheapest → returns answer with booking links.",
+    interview: "Agents shift from chat to action. They can plan multi-step tasks, use tools, and iterate based on results. This is why AI is moving beyond 'answer my question' to 'actually do something' — book a meeting, run an analysis, fetch and synthesise data."
+  },
+  "prompt-engineering": {
+    title: "Prompt Engineering (Getting Better Answers)",
+    number: "6. Technique",
+    short: "The better your question, the better the answer. There are patterns that consistently work.",
+    explanation: "Key patterns: Specificity (be detailed), Context (explain your situation), Format (specify output structure), Examples (show what you want). Bad: 'Analyse this feedback.' Good: 'I'm a SaaS founder. Here's feedback from 10 customers. Group by theme, tell me what's urgent, suggest a fix. Use bullets.'",
+    example: "Vague prompt gets vague answer. Well-structured prompt — where you explain context, give examples, specify format — gets dramatically better results. It's like briefing a contractor: better brief = better work.",
+    interview: "Prompt engineering isn't mystical. It's just being clear and specific. The model responds to the quality of the question. A well-structured, specific prompt dramatically improves results."
+  }
+};
+
+function renderConcepts(filter = '') {
+  const grid = document.getElementById('conceptsGrid');
+  grid.innerHTML = '';
+
+  Object.entries(concepts).forEach(([key, concept]) => {
+    if (filter && !concept.title.toLowerCase().includes(filter) && !concept.short.toLowerCase().includes(filter)) {
+      return;
+    }
+
+    const card = document.createElement('div');
+    card.className = 'concept-card';
+    card.onclick = () => showDetail(key);
+    card.innerHTML = `
+      <div class="concept-number">${concept.number}</div>
+      <div class="concept-title">${concept.title}</div>
+      <div class="concept-short">${concept.short}</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function showDetail(key) {
+  const concept = concepts[key];
+  const panel = document.getElementById('detailPanel');
+  const content = document.getElementById('detailContent');
+
+  content.innerHTML = `
+    <div class="detail-title">${concept.title}</div>
+
+    <div class="detail-section">
+      <div class="detail-label">Explanation</div>
+      <div class="detail-text">${concept.explanation}</div>
+    </div>
+
+    <div class="example-box">
+      <strong>Example:</strong><br>${concept.example}
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-label">Interview Prep</div>
+      <div class="interview-box">
+        <strong>In an interview:</strong><br>"${concept.interview}"
+      </div>
+    </div>
+
+    <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border);">
+      <p style="font-size: 14px; color: var(--muted); margin-bottom: 12px;">💬 Get this on WhatsApp too:</p>
+      <a href="https://wa.me/?text=interview%20${concept.title.split(' ')[0].toLowerCase()}" class="cta-whatsapp">Ask on WhatsApp</a>
+    </div>
+  `;
+
+  panel.classList.add('active');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function closeDetail() {
+  document.getElementById('detailPanel').classList.remove('active');
+}
+
+document.getElementById('searchInput').addEventListener('keyup', (e) => {
+  renderConcepts(e.target.value.toLowerCase());
+});
+
+// Initial render
+renderConcepts();
+</script>
+
+</body>
+</html>
