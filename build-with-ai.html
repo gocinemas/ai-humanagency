@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Build with AI — How to Get Started</title>
+  <meta name="description" content="Step-by-step guide: figure out which AI model, how to start, and how to build it into an app.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f9f8f6; --surface: #ffffff; --border: #ebebeb;
+      --text: #111111; --muted: #666666; --accent: #4f46e5;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+
+    header { border-bottom: 1px solid var(--border); background: var(--surface); position: sticky; top: 0; z-index: 100; }
+    .header-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-size: 17px; font-weight: 800; letter-spacing: -0.5px; }
+    .logo .dot { color: var(--accent); }
+    nav { display: flex; gap: 20px; align-items: center; }
+    nav a { font-size: 14px; font-weight: 500; color: var(--muted); transition: color .15s; }
+    nav a:hover { color: var(--text); }
+
+    .hero { max-width: 900px; margin: 0 auto; padding: 60px 24px 40px; }
+    .hero-badge { display: inline-block; background: #eef2ff; color: var(--accent); font-size: 11px; font-weight: 700; padding: 6px 14px; border-radius: 99px; letter-spacing: .5px; text-transform: uppercase; margin-bottom: 16px; }
+    .hero h1 { font-size: 42px; font-weight: 900; letter-spacing: -1.2px; line-height: 1.1; margin-bottom: 12px; }
+    .hero p { font-size: 16px; color: var(--muted); max-width: 560px; line-height: 1.7; }
+
+    .content { max-width: 900px; margin: 0 auto; padding: 0 24px 80px; }
+
+    .flow-section { margin-bottom: 60px; }
+    .flow-title { font-size: 28px; font-weight: 900; letter-spacing: -.5px; margin-bottom: 28px; padding-top: 20px; border-top: 2px solid var(--border); }
+
+    .decision-tree { background: var(--surface); border: 1.5px solid var(--border); border-radius: 16px; padding: 32px; margin-bottom: 20px; }
+    .decision-q { font-size: 18px; font-weight: 800; margin-bottom: 20px; }
+    .decision-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+    .option-btn { background: var(--bg); border: 1.5px solid var(--border); border-radius: 12px; padding: 16px; text-align: left; cursor: pointer; transition: all .15s; font-size: 14px; font-weight: 600; }
+    .option-btn:hover { border-color: var(--accent); background: var(--surface); box-shadow: 0 2px 8px rgba(79, 70, 229, 0.1); }
+
+    .answer-box { background: #f0fdf4; border-left: 4px solid #16a34a; border-radius: 0 8px 8px 0; padding: 20px; margin: 20px 0; }
+    .answer-box h3 { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+    .answer-box p { font-size: 14px; line-height: 1.7; color: var(--text); }
+
+    .example-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; padding: 24px; margin: 20px 0; }
+    .example-card h4 { font-size: 16px; font-weight: 800; margin-bottom: 12px; }
+    .example-card p { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+    .steps-list { list-style: none; padding: 0; }
+    .steps-list li { padding: 12px 0; padding-left: 32px; position: relative; font-size: 14px; line-height: 1.7; }
+    .steps-list li:before { content: counter(step); counter-increment: step; position: absolute; left: 0; font-weight: 700; color: var(--accent); }
+    .steps-list { counter-reset: step; }
+
+    footer { border-top: 1px solid var(--border); background: var(--surface); }
+    .footer-inner { max-width: 900px; margin: 0 auto; padding: 24px; font-size: 13px; color: var(--muted); text-align: center; }
+
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 28px; }
+      nav a:not(:first-child) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <nav>
+      <a href="/start.html">Start Here</a>
+      <a href="/jargon.html">Jargon</a>
+      <a href="/quick-reference.html">Quick Ref</a>
+      <a href="/compare.html">Compare</a>
+      <a href="/#tools">Tools</a>
+      <a href="/#ask">Ask</a>
+      <a href="/consulting.html">Consulting</a>
+      <a href="/build-with-ai.html" style="color:var(--accent);font-weight:700">Build</a>
+      <a href="/learn/">Learn →</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-badge">🛠️ Builder's Guide</div>
+  <h1>Build with AI</h1>
+  <p>You have an idea. You don't know where to start. This guide answers the three questions that matter: What model? How to test? How to turn it into an app?</p>
+</div>
+
+<div class="content">
+
+  <!-- Step 1: What Model -->
+  <div class="flow-section">
+    <div class="flow-title">Step 1: What Model Do You Need?</div>
+
+    <div class="decision-tree">
+      <div class="decision-q">What is your idea about?</div>
+      <div class="decision-options">
+        <button class="option-btn" onclick="showAnswer('text')">Text (writing, analysis, coding)</button>
+        <button class="option-btn" onclick="showAnswer('image')">Images (scanning, recognition, generation)</button>
+        <button class="option-btn" onclick="showAnswer('audio')">Audio (transcription, analysis)</button>
+        <button class="option-btn" onclick="showAnswer('mixed')">Multiple (combining text + images + audio)</button>
+      </div>
+    </div>
+
+    <div id="text-answer" class="answer-box" style="display:none;">
+      <h3>✍️ Text Model</h3>
+      <p><strong>Use:</strong> Claude or GPT-4 for anything involving writing, analysis, reasoning, or code.</p>
+      <p><strong>Examples:</strong> Customer service chatbots, document analysis, email drafting, code generation.</p>
+      <p><strong>Start with:</strong> Claude.ai or ChatGPT free tier. Test your idea in 5 minutes.</p>
+    </div>
+
+    <div id="image-answer" class="answer-box" style="display:none;">
+      <h3>🖼️ Image Model</h3>
+      <p><strong>Use:</strong> Claude Vision, GPT-4V for reading/understanding images. DALL-E or Midjourney for generating images.</p>
+      <p><strong>Examples:</strong> Garden planning (scan photo, get recommendations), document scanning, visual inspection, design generation.</p>
+      <p><strong>Start with:</strong> Claude.ai (upload a photo and ask a question). Free. Instant.</p>
+    </div>
+
+    <div id="audio-answer" class="answer-box" style="display:none;">
+      <h3>🎤 Audio Model</h3>
+      <p><strong>Use:</strong> Whisper for transcription. GPT-4 for analysis of transcribed text.</p>
+      <p><strong>Examples:</strong> Meeting transcription, voice note analysis, podcast summarisation.</p>
+      <p><strong>Start with:</strong> OpenAI's Whisper API or use a tool like Otter.ai that wraps it.</p>
+    </div>
+
+    <div id="mixed-answer" class="answer-box" style="display:none;">
+      <h3>🔀 Multimodal Model</h3>
+      <p><strong>Use:</strong> Claude Vision + text, or GPT-4o (handles text, images, audio together).</p>
+      <p><strong>Examples:</strong> Scan a garden photo, get text recommendations, export as a plan.</p>
+      <p><strong>Start with:</strong> Claude.ai. Upload image, ask your question, get text back.</p>
+    </div>
+  </div>
+
+  <!-- Step 2: How to Test -->
+  <div class="flow-section">
+    <div class="flow-title">Step 2: Test Your Idea (This Week)</div>
+
+    <div class="example-card">
+      <h4>Garden Scanning App Example</h4>
+      <p><strong>The idea:</strong> Scan your garden → AI suggests where to plant, play with layout.</p>
+      <p><strong>Test in 30 minutes:</strong></p>
+      <ol class="steps-list">
+        <li>Take a photo of a garden (yours or Google Images)</li>
+        <li>Go to Claude.ai, upload the photo</li>
+        <li>Ask: "I want to plan what to grow here. What are the zones? What would you recommend? Draw a simple plan."</li>
+        <li>See what you get back. Is it useful? Does it answer your question?</li>
+        <li>If yes → keep going. If no → rephrase the question and try again.</li>
+      </ol>
+    </div>
+
+    <p style="margin-top: 24px; padding: 16px; background: var(--bg); border-radius: 12px; font-size: 14px; line-height: 1.7;">
+      <strong>Key insight:</strong> You don't need to build anything yet. You're just proving the idea works. If Claude can't handle it, neither can your app. If Claude nails it, you know the idea is sound.
+    </p>
+  </div>
+
+  <!-- Step 3: Turn into App -->
+  <div class="flow-section">
+    <div class="flow-title">Step 3: Turn It Into an App</div>
+
+    <div class="decision-tree">
+      <div class="decision-q">What type of app do you want?</div>
+      <div class="decision-options">
+        <button class="option-btn" onclick="showApp('web')">Web app (browser-based)</button>
+        <button class="option-btn" onclick="showApp('mobile')">Mobile app (iOS/Android)</button>
+        <button class="option-btn" onclick="showApp('hybrid')">Both (web + mobile)</button>
+      </div>
+    </div>
+
+    <div id="web-answer" class="answer-box" style="display:none;">
+      <h3>🌐 Web App</h3>
+      <p><strong>Tech stack:</strong> React or Vue (frontend) + Node.js (backend) + Claude API.</p>
+      <p><strong>Timeline:</strong> 2-4 weeks for MVP (minimum viable product).</p>
+      <p><strong>Cost:</strong> Hosting (~£5-20/month) + API calls (~£0.01-1 per request).</p>
+      <p><strong>Start:</strong> Learn React basics or use a no-code tool like Bubble or Webflow with AI integrations.</p>
+    </div>
+
+    <div id="mobile-answer" class="answer-box" style="display:none;">
+      <h3>📱 Mobile App</h3>
+      <p><strong>Tech stack:</strong> React Native or Flutter + Claude API.</p>
+      <p><strong>Timeline:</strong> 4-8 weeks for MVP.</p>
+      <p><strong>Cost:</strong> App store fees (£99 Apple, free Google) + API calls.</p>
+      <p><strong>Start:</strong> Prototype with Expo (React Native) or Flutter. Both have good documentation.</p>
+    </div>
+
+    <div id="hybrid-answer" class="answer-box" style="display:none;">
+      <h3>⚙️ Web + Mobile</h3>
+      <p><strong>Tech stack:</strong> React (web) + React Native (mobile) sharing code. Backend: Node.js + Claude API.</p>
+      <p><strong>Timeline:</strong> 8-12 weeks.</p>
+      <p><strong>Cost:</strong> Higher upfront (more development), lower per-user cost.</p>
+      <p><strong>Start:</strong> Build web first. Once it's working, port to mobile using React Native.</p>
+    </div>
+  </div>
+
+  <!-- The Real Path -->
+  <div class="flow-section" style="background: #f9fafb; border-radius: 16px; padding: 32px;">
+    <div class="flow-title" style="border: none; padding-top: 0; margin-top: 0;">The Real Path Forward</div>
+    <ol class="steps-list">
+      <li><strong>Test with Claude.ai this week.</strong> Prove the idea works. (30 mins)</li>
+      <li><strong>Build a simple web prototype.</strong> Basic interface, API calls to Claude. (2 weeks)</li>
+      <li><strong>Get real users.</strong> Let 5-10 people test it. See what breaks. (1 week)</li>
+      <li><strong>Iterate based on feedback.</strong> Fix the broken bits. (1-2 weeks)</li>
+      <li><strong>Only then decide:</strong> Mobile app? Better hosting? Premium features?</li>
+    </ol>
+    <p style="margin-top: 20px; font-size: 14px; color: var(--muted);">Most builders skip steps 1-4 and jump to "build the perfect app." That's backwards. Test first. Build second. Perfect third.</p>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <p>Build with AI — From idea to app in steps. <a href="/#ask">Questions? Ask here.</a></p>
+  </div>
+</footer>
+
+<script>
+function showAnswer(type) {
+  document.querySelectorAll('[id$="-answer"]').forEach(el => el.style.display = 'none');
+  const id = type + '-answer';
+  if (document.getElementById(id)) {
+    document.getElementById(id).style.display = 'block';
+  }
+}
+
+function showApp(type) {
+  document.querySelectorAll('[id$="-answer"]').forEach(el => el.style.display = 'none');
+  const id = type + '-answer';
+  if (document.getElementById(id)) {
+    document.getElementById(id).style.display = 'block';
+  }
+}
+</script>
+
+</body>
+</html>
