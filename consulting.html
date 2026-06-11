@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Consulting — Human Agency</title>
+  <meta name="description" content="AI strategy, audits, and use case discovery for organizations. Figure out what's actually possible.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f9f8f6; --surface: #ffffff; --border: #ebebeb;
+      --text: #111111; --muted: #666666; --subtle: #999999; --accent: #4f46e5;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+
+    header { border-bottom: 1px solid var(--border); background: var(--surface); position: sticky; top: 0; z-index: 100; }
+    .header-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-size: 17px; font-weight: 800; letter-spacing: -0.5px; }
+    .logo .dot { color: var(--accent); }
+    nav { display: flex; gap: 20px; align-items: center; }
+    nav a { font-size: 14px; font-weight: 500; color: var(--muted); transition: color .15s; }
+    nav a:hover { color: var(--text); }
+
+    .hero { max-width: 900px; margin: 0 auto; padding: 60px 24px 40px; }
+    .hero-badge { display: inline-block; background: #eef2ff; color: var(--accent); font-size: 11px; font-weight: 700; padding: 6px 14px; border-radius: 99px; letter-spacing: .5px; text-transform: uppercase; margin-bottom: 16px; }
+    .hero h1 { font-size: 42px; font-weight: 900; letter-spacing: -1.2px; line-height: 1.1; margin-bottom: 12px; }
+    .hero p { font-size: 16px; color: var(--muted); max-width: 560px; line-height: 1.7; }
+
+    .content { max-width: 900px; margin: 0 auto; padding: 0 24px 80px; }
+
+    .intro-box { background: #f0fdf4; border: 1.5px solid #bbf7d0; border-radius: 16px; padding: 24px; margin-bottom: 48px; }
+    .intro-box p { font-size: 15px; line-height: 1.7; color: var(--text); }
+
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-bottom: 48px; }
+
+    .service-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 16px; padding: 32px; transition: border-color .15s, box-shadow .15s; }
+    .service-card:hover { border-color: var(--accent); box-shadow: 0 4px 16px rgba(79, 70, 229, 0.1); }
+
+    .service-icon { font-size: 32px; margin-bottom: 12px; }
+    .service-title { font-size: 20px; font-weight: 800; letter-spacing: -.3px; margin-bottom: 10px; }
+    .service-desc { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+    .how-it-works { background: #f9fafb; border-radius: 16px; padding: 40px 32px; margin-bottom: 48px; }
+    .how-it-works h2 { font-size: 24px; font-weight: 900; letter-spacing: -.5px; margin-bottom: 28px; }
+
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; }
+    .step { }
+    .step-num { font-size: 28px; font-weight: 900; color: var(--accent); margin-bottom: 8px; }
+    .step-title { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .step-desc { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+    .cta-section { background: var(--accent); color: white; border-radius: 16px; padding: 48px 32px; text-align: center; margin-bottom: 48px; }
+    .cta-section h2 { font-size: 28px; font-weight: 900; letter-spacing: -.5px; margin-bottom: 12px; }
+    .cta-section p { font-size: 15px; line-height: 1.7; margin-bottom: 24px; opacity: 0.95; max-width: 500px; margin-left: auto; margin-right: auto; }
+
+    .cta-button { display: inline-block; background: white; color: var(--accent); font-size: 15px; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; transition: transform .15s, box-shadow .15s; }
+    .cta-button:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); }
+
+    .faq { margin-bottom: 48px; }
+    .faq h2 { font-size: 24px; font-weight: 900; letter-spacing: -.5px; margin-bottom: 24px; }
+
+    .faq-item { border-bottom: 1px solid var(--border); padding: 20px 0; }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-q { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 8px; cursor: pointer; }
+    .faq-a { font-size: 14px; color: var(--muted); line-height: 1.7; display: none; }
+    .faq-item.open .faq-a { display: block; }
+
+    footer { border-top: 1px solid var(--border); background: var(--surface); }
+    .footer-inner { max-width: 900px; margin: 0 auto; padding: 24px; font-size: 13px; color: var(--muted); text-align: center; }
+
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 28px; }
+      nav a:not(:first-child) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <nav>
+      <a href="/start.html">Start Here</a>
+      <a href="/jargon.html">Jargon</a>
+      <a href="/quick-reference.html">Quick Ref</a>
+      <a href="/compare.html">Compare</a>
+      <a href="/#tools">Tools</a>
+      <a href="/#ask">Ask</a>
+      <a href="/consulting.html" style="color:var(--accent);font-weight:700">Consulting</a>
+      <a href="/learn/">Learn →</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-badge">🤝 Services</div>
+  <h1>AI Consulting</h1>
+  <p>Figure out what's actually possible with AI. Not the hype. Not the theory. What your organization can actually build and use.</p>
+</div>
+
+<div class="content">
+
+  <div class="intro-box">
+    <p>You know AI matters. You don't know where to start. Or you've started but you're not sure if you're solving the right problem. That's where we come in.</p>
+  </div>
+
+  <!-- Services -->
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">🔍</div>
+      <div class="service-title">AI Audit</div>
+      <div class="service-desc">What's working? What's broken? Where's the real opportunity? We analyse your current state and identify what's actually possible — no theory, just reality.</div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">🎯</div>
+      <div class="service-title">AI Strategy</div>
+      <div class="service-desc">How do you use AI without destroying what makes your organization valuable? We build a strategy that leverages AI while protecting the things that matter.</div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">💡</div>
+      <div class="service-title">Use Case Discovery</div>
+      <div class="service-desc">Which problems can AI actually solve? We identify high-impact use cases, separate the real opportunities from the hype, and build a roadmap.</div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">⚙️</div>
+      <div class="service-title">Implementation</div>
+      <div class="service-desc">From idea to live. We work through the hard problems: how to integrate AI into your workflows, what to measure, what to change when things don't work.</div>
+    </div>
+  </div>
+
+  <!-- How It Works -->
+  <div class="how-it-works">
+    <h2>How It Works</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-title">Conversation</div>
+        <div class="step-desc">We talk about what you're trying to do. No pitch. Just understanding.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-title">Audit</div>
+        <div class="step-desc">We look at your situation. What's actually possible. What's the bottleneck.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-title">Plan</div>
+        <div class="step-desc">A realistic roadmap. What to build first. What to measure. What to change.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-title">Build</div>
+        <div class="step-desc">We work with you or your team to execute. Real solutions. Real results.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2>Ready?</h2>
+    <p>Let's talk about what's actually possible. No commitment. Just a conversation.</p>
+    <a href="mailto:mekala@gmail.com?subject=AI Consulting Inquiry" class="cta-button">Get in Touch</a>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq">
+    <h2>Questions</h2>
+
+    <div class="faq-item">
+      <div class="faq-q">What's the typical engagement look like?</div>
+      <div class="faq-a">It depends on what you need. An audit might be 2-4 weeks. A strategy piece might be 6-8 weeks. Implementation can be longer depending on scope. We'll be clear about timeline and cost before we start.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Do you work with startups or just enterprises?</div>
+      <div class="faq-a">Both. Startups building AI into their product. Enterprises figuring out how to use it. The size doesn't matter as much as the question: is this actually worth solving?</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">What if we don't know where to start?</div>
+      <div class="faq-a">That's the most common situation. We start with a conversation. You tell us what's frustrating you. We help you figure out if AI is actually the answer, and if it is, what the first move should be.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Do you build the AI solutions?</div>
+      <div class="faq-a">We guide the strategy and help you build or find the right team to execute. We focus on the thinking part. Making sure you're solving the right problem in the right way.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">How do you price?</div>
+      <div class="faq-a">Project-based, not hourly. We'll talk through what you need, give you a clear number, and get to work. No surprises.</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <p>AI Consulting — Let's figure out what's actually possible. <a href="mailto:mekala@gmail.com">Get in touch.</a></p>
+  </div>
+</footer>
+
+<script>
+  // FAQ toggle
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      q.parentElement.classList.toggle('open');
+    });
+  });
+</script>
+
+</body>
+</html>
