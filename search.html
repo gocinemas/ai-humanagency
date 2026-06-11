@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search — Human Agency</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f9f8f6; --surface: #ffffff; --border: #ebebeb;
+      --text: #111111; --muted: #666666; --accent: #4f46e5;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    header { border-bottom: 1px solid var(--border); background: var(--surface); position: sticky; top: 0; z-index: 100; }
+    .header-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-size: 17px; font-weight: 800; letter-spacing: -0.5px; }
+    .logo .dot { color: var(--accent); }
+    nav { display: flex; gap: 20px; align-items: center; }
+    nav a { font-size: 14px; font-weight: 500; color: var(--muted); transition: color .15s; }
+    nav a:hover { color: var(--text); }
+
+    .content { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
+
+    .search-box { margin-bottom: 40px; }
+    .search-input { width: 100%; max-width: 500px; padding: 14px 18px; font-size: 16px; border: 2px solid var(--border); border-radius: 12px; font-family: 'Inter', sans-serif; }
+    .search-input:focus { outline: none; border-color: var(--accent); }
+
+    .results { margin-top: 30px; }
+    .result-item { border-bottom: 1px solid var(--border); padding: 20px 0; }
+    .result-item:last-child { border-bottom: none; }
+
+    .result-title { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+    .result-snippet { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 8px; }
+    .result-source { font-size: 12px; color: var(--subtle); }
+
+    .no-results { text-align: center; padding: 40px 0; color: var(--muted); }
+    .no-results p { font-size: 16px; }
+
+    footer { border-top: 1px solid var(--border); background: var(--surface); margin-top: 60px; }
+    .footer-inner { max-width: 900px; margin: 0 auto; padding: 24px; font-size: 13px; color: var(--muted); text-align: center; }
+
+    @media (max-width: 640px) {
+      nav a:not(:first-child) { display: none; }
+      .search-input { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <nav>
+      <a href="/start.html">Start Here</a>
+      <a href="/jargon.html">Jargon</a>
+      <a href="/search.html" style="color:var(--accent);font-weight:700">Search</a>
+      <a href="/learn/">Learn →</a>
+    </nav>
+  </div>
+</header>
+
+<div class="content">
+  <h1 style="margin-bottom: 24px; font-size: 32px; font-weight: 900;">Search</h1>
+
+  <div class="search-box">
+    <input type="text" class="search-input" id="searchInput" placeholder="What are you looking for? (e.g., 'RAG', 'marketing', 'Claude')" autofocus>
+  </div>
+
+  <div class="results" id="results"></div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <p>Search across Jargon, Quick Reference, and guides. <a href="/">Back to home</a></p>
+  </div>
+</footer>
+
+<script>
+const searchData = [
+  // Jargon samples
+  { title: 'Agent', source: 'Jargon', snippet: 'AI that takes actions, not just answers. A basic AI chat answers your question and stops. An agent takes the next step.', url: '/jargon.html' },
+  { title: 'RAG', source: 'Quick Reference', snippet: 'Retrieval-Augmented Generation. Give AI your documents. It finds relevant ones, reads them, and answers based on what it found.', url: '/quick-reference.html' },
+  { title: 'Embeddings', source: 'Quick Reference', snippet: 'Turn words into numbers so the model can compare meaning. Texts with similar meaning get similar numbers.', url: '/quick-reference.html' },
+  { title: 'Tokens', source: 'Jargon', snippet: 'The chunks AI uses to read and write text. Roughly mapping to words or word-parts. A rule of thumb: 100 tokens is roughly 75 words.', url: '/jargon.html' },
+  { title: 'Claude', source: 'Jargon', snippet: 'Anthropic\'s AI assistant known for nuanced writing and honesty. Designed with safety as a core principle.', url: '/jargon.html' },
+  { title: 'Context Window', source: 'Jargon', snippet: 'How much text an AI can read at once. Every model has a limit to how much it can process in one go.', url: '/jargon.html' },
+  { title: 'Hallucination', source: 'Jargon', snippet: 'When AI confidently says something wrong. Always verify claims that matter.', url: '/jargon.html' },
+  { title: 'Prompt Engineering', source: 'Quick Reference', snippet: 'The practice of crafting prompts to get better outputs. Mostly about being specific and giving the model enough to work with.', url: '/quick-reference.html' },
+  { title: 'Marketing Manager', source: 'Organizational AI', snippet: 'AI tools for content creation, campaign optimization, and customer insights. Use Claude for ideation and Perplexity for research.', url: '/#organizational-ai' },
+  { title: 'Foundation Training', source: 'Organizational AI', snippet: 'What every employee needs to know about AI. Build a common language about capabilities, limitations, and risks.', url: '/#organizational-ai' },
+  { title: 'Build with AI', source: 'Guide', snippet: 'Step-by-step: figure out which model, how to test your idea, and how to build it into an app.', url: '/build-with-ai.html' },
+  { title: 'Taste and Judgment', source: 'Quick Reference', snippet: 'The new bottleneck in building. Not execution. The quality of thinking you bring before you open the chat window.', url: '/quick-reference.html' },
+];
+
+const searchInput = document.getElementById('searchInput');
+const resultsDiv = document.getElementById('results');
+
+function search() {
+  const query = searchInput.value.toLowerCase().trim();
+
+  if (!query) {
+    resultsDiv.innerHTML = '<div class="no-results"><p>Start typing to search.</p></div>';
+    return;
+  }
+
+  const results = searchData.filter(item =>
+    item.title.toLowerCase().includes(query) ||
+    item.snippet.toLowerCase().includes(query) ||
+    item.source.toLowerCase().includes(query)
+  );
+
+  if (results.length === 0) {
+    resultsDiv.innerHTML = '<div class="no-results"><p>No results found. Try different keywords.</p></div>';
+    return;
+  }
+
+  resultsDiv.innerHTML = results.map(item => `
+    <div class="result-item">
+      <div class="result-title"><a href="${item.url}">${item.title}</a></div>
+      <div class="result-snippet">${item.snippet}</div>
+      <div class="result-source">${item.source}</div>
+    </div>
+  `).join('');
+}
+
+searchInput.addEventListener('keyup', search);
+searchInput.addEventListener('change', search);
+</script>
+
+</body>
+</html>
