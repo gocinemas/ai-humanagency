@@ -101,6 +101,7 @@
         <button class="option-btn" onclick="showAnswer('image')">Images (scanning, recognition, generation)</button>
         <button class="option-btn" onclick="showAnswer('audio')">Audio (transcription, analysis)</button>
         <button class="option-btn" onclick="showAnswer('mixed')">Multiple (combining text + images + audio)</button>
+        <button class="option-btn" onclick="showAnswer('unsure')">Not sure? Help me figure it out</button>
       </div>
     </div>
 
@@ -131,6 +132,23 @@
       <p><strong>Examples:</strong> Scan a garden photo, get text recommendations, export as a plan.</p>
       <p><strong>Start with:</strong> Claude.ai. Upload image, ask your question, get text back.</p>
     </div>
+
+    <div id="unsure-answer" class="answer-box" style="display:none;">
+      <h3>❓ How to Figure Out Your Idea</h3>
+      <p><strong>Ask yourself these questions:</strong></p>
+      <ol class="steps-list">
+        <li><strong>What am I asking the AI to do?</strong> Write something? Understand a photo? Listen to audio? Read a document?</li>
+        <li><strong>What does the user give the AI?</strong> Words? Pictures? Voice? A combination?</li>
+        <li><strong>What should the AI give back?</strong> Text? Analysis? A recommendation? An image?</li>
+      </ol>
+      <p style="margin-top: 16px;"><strong>Examples:</strong></p>
+      <ul class="steps-list">
+        <li>Garden scanning: User gives photo → AI gives text advice = Image model</li>
+        <li>Customer service: User types question → AI types answer = Text model</li>
+        <li>Meeting notes: User speaks → AI transcribes + summarizes = Audio + Text = Multiple</li>
+      </ul>
+      <p style="margin-top: 16px;">Still unsure? Go with <strong>Claude.ai</strong> and try uploading/typing your idea. Claude will tell you if it's possible and what model you actually need.</p>
+    </div>
   </div>
 
   <!-- Step 2: How to Test -->
@@ -153,6 +171,31 @@
     <p style="margin-top: 24px; padding: 16px; background: var(--bg); border-radius: 12px; font-size: 14px; line-height: 1.7;">
       <strong>Key insight:</strong> You don't need to build anything yet. You're just proving the idea works. If Claude can't handle it, neither can your app. If Claude nails it, you know the idea is sound.
     </p>
+  </div>
+
+  <!-- If It Doesn't Work -->
+  <div class="flow-section">
+    <div class="flow-title">What If It Doesn't Work?</div>
+
+    <p style="margin-bottom: 20px; font-size: 14px; line-height: 1.7;">You tested your idea with Claude Vision (or your chosen model) and it didn't give you what you wanted. Here's what to do next.</p>
+
+    <div class="example-card">
+      <h4>Example: Garden Scanning</h4>
+      <p><strong>You tried:</strong> Claude Vision with a garden photo. It gave generic advice.</p>
+      <p><strong>The problem:</strong> Claude didn't understand your specific garden context.</p>
+      <p><strong>What to do:</strong></p>
+      <ol class="steps-list">
+        <li><strong>Rephrase your question.</strong> Instead of "What should I plant?" try "I live in zone 7, with sandy soil, full sun 6+ hours. What grows here? Rank by low maintenance."</li>
+        <li><strong>Give Claude more context.</strong> Upload multiple photos. Tell it about your soil, climate, budget, preferences.</li>
+        <li><strong>Ask differently.</strong> Instead of "plan my garden", try "critique this layout" or "give me 3 plant options for the shaded corner".</li>
+        <li><strong>Try a different model.</strong> GPT-4V might handle it differently. Or combine with text: photo + detailed questions = better results.</li>
+        <li><strong>Question your idea.</strong> If no model can handle it well, maybe the approach is wrong. Do you need AI here, or just a checklist?</li>
+      </ol>
+    </div>
+
+    <div style="background: #fef3c7; border-left: 4px solid #f59e0b; border-radius: 0 8px 8px 0; padding: 20px; margin: 20px 0;">
+      <p style="font-size: 14px; line-height: 1.7;"><strong>The key insight:</strong> If Claude struggles, it's usually not because the model is bad. It's because your question is unclear. When you rephrase and give more context, 80% of "it doesn't work" problems get solved.</p>
+    </div>
   </div>
 
   <!-- Step 3: Turn into App -->
