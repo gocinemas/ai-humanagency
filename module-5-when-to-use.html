@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 5: When to Use AI — AI Fundamentals</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8f9fa; color: #333; line-height: 1.7; }
+        header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px 20px; }
+        header h1 { max-width: 1200px; margin: 0 auto; font-size: 36px; margin-bottom: 10px; }
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        .content-section { background: white; border-radius: 12px; padding: 40px; margin-bottom: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .content-section h2 { font-size: 28px; margin-bottom: 20px; color: #667eea; border-bottom: 2px solid #f0f4ff; padding-bottom: 15px; }
+        .content-section h3 { font-size: 22px; margin-top: 30px; margin-bottom: 15px; }
+        .good-use { background: #d4edda; border-left: 4px solid #28a745; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .bad-use { background: #f8d7da; border-left: 4px solid #dc3545; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .key-insight { background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%); border-left: 4px solid #667eea; padding: 20px; border-radius: 8px; margin: 20px 0; font-style: italic; }
+        .matrix { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
+        .matrix-cell { padding: 20px; border-radius: 8px; border: 1px solid #e0e0e0; }
+        .checklist { list-style: none; margin: 20px 0; }
+        .checklist li { padding: 10px 0; border-bottom: 1px solid #f0f0f0; position: relative; padding-left: 30px; }
+        .checklist li:before { content: "☐"; position: absolute; left: 0; color: #667eea; font-weight: bold; }
+        footer { text-align: center; padding: 20px; color: #999; font-size: 14px; margin-top: 40px; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Module 5: When to Use AI (& When Not To)</h1>
+        <p>AI solves specific problems brilliantly. It fails spectacularly at others. How to tell the difference before you've invested six months.</p>
+    </header>
+
+    <div class="container">
+        <div class="content-section">
+            <h2>The Hype vs. Reality</h2>
+
+            <p>Everyone wants to use AI. "Can we use AI to..." is the default question. But AI isn't the answer to every problem.</p>
+
+            <p>Sometimes a database query is better. Sometimes a simple rule beats a model. Sometimes a human is faster.</p>
+
+            <h3>Good Use Cases for AI</h3>
+
+            <div class="good-use">
+                <strong>✓ Text Analysis & Categorization</strong>
+                <p>Classify emails, receipts, support tickets, or content into categories.</p>
+                <p>Why it works: Clear categories. Fuzzy matching (typos, variations). Subjective boundaries.</p>
+                <p>Example: Categorize "Spent £45 at Tesco on groceries" → Groceries category.</p>
+            </div>
+
+            <div class="good-use">
+                <strong>✓ Summarization</strong>
+                <p>Extract key information from long documents, emails, or transcripts.</p>
+                <p>Why it works: Subjective (what's "key" depends on context). Handles variability well.</p>
+                <p>Example: "Extract date, merchant, and amount from this receipt."</p>
+            </div>
+
+            <div class="good-use">
+                <strong>✓ Information Extraction</strong>
+                <p>Pull structured data from unstructured sources (receipts, invoices, emails).</p>
+                <p>Why it works: Handles formatting variation. Learns from examples.</p>
+                <p>Example: Extract {date, merchant, amount, category} from a receipt photo.</p>
+            </div>
+
+            <div class="good-use">
+                <strong>✓ Content Generation (with Guardrails)</strong>
+                <p>Generate personalized copy, emails, or explanations.</p>
+                <p>Why it works: Scale. Can't hire 100 copywriters. AI can generate 10K variations.</p>
+                <p>Important: Needs human review. Hallucinations are a risk.</p>
+            </div>
+
+            <div class="good-use">
+                <strong>✓ Semantic Search</strong>
+                <p>Find similar documents, past conversations, or relevant examples.</p>
+                <p>Why it works: Understands meaning, not just keywords. "I lost my password" matches "forgot credentials".</p>
+                <p>Example: Customer support search — find past similar tickets.</p>
+            </div>
+
+            <h3>Bad Use Cases for AI</h3>
+
+            <div class="bad-use">
+                <strong>✗ Exact Fact Lookup</strong>
+                <p>Don't use AI if you need the exact answer. Example: "What's the company's Q2 revenue?"</p>
+                <p>Why it fails: Model will guess based on patterns. Just query the database.</p>
+            </div>
+
+            <div class="bad-use">
+                <strong>✗ Deterministic Logic</strong>
+                <p>Don't use AI for "if A then B" decisions. Example: "Apply 10% discount if order > £100".</p>
+                <p>Why it fails: AI is probabilistic. Use a rule engine. Faster, cheaper, reliable.</p>
+            </div>
+
+            <div class="bad-use">
+                <strong>✗ Real-Time Decision Making Under Uncertainty</strong>
+                <p>Don't use AI for instant, high-stakes decisions. Example: "Should we approve this loan application?"</p>
+                <p>Why it fails: AI will hallucinate. Needs human review. Defeats the speed advantage.</p>
+            </div>
+
+            <div class="bad-use">
+                <strong>✗ Audio/Video Understanding (Today)</strong>
+                <p>Vision models are getting better, but they still hallucinate on uncommon objects.</p>
+                <p>Why it fails: Real-world data is messier than training data. Reliability is low.</p>
+            </div>
+
+            <div class="bad-use">
+                <strong>✗ Tasks With No Training Examples</strong>
+                <p>AI learns from patterns in data. If you have zero examples, AI can't learn.</p>
+                <p>Why it fails: Will hallucinate. Use explicit rules instead.</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>The AI vs. Alternatives Decision Matrix</h2>
+
+            <p>For a given problem, compare AI against alternatives:</p>
+
+            <div class="matrix">
+                <div class="matrix-cell" style="background: #d4edda;">
+                    <strong>AI</strong>
+                    <ul style="list-style: disc; margin-left: 20px; margin-top: 10px;">
+                        <li>Handles fuzzy/variable input</li>
+                        <li>Scales to 1M+ examples</li>
+                        <li>Learns from examples</li>
+                        <li>Cost: High (£0.01-1/request)</li>
+                        <li>Latency: 2-10 seconds</li>
+                    </ul>
+                </div>
+                <div class="matrix-cell" style="background: #e7f3ff;">
+                    <strong>Rule Engine</strong>
+                    <ul style="list-style: disc; margin-left: 20px; margin-top: 10px;">
+                        <li>Fast (milliseconds)</li>
+                        <li>Reliable (no hallucinations)</li>
+                        <li>Cheap (once built)</li>
+                        <li>Brittle (breaks on edge cases)</li>
+                        <li>Hard to scale (adds 1 rule per edge case)</li>
+                    </ul>
+                </div>
+                <div class="matrix-cell" style="background: #fff3cd;">
+                    <strong>Database Query</strong>
+                    <ul style="list-style: disc; margin-left: 20px; margin-top: 10px;">
+                        <li>Exact answers</li>
+                        <li>Fast (< 100ms)</li>
+                        <li>Cheap</li>
+                        <li>Works only for structured data</li>
+                        <li>No flexibility</li>
+                    </ul>
+                </div>
+                <div class="matrix-cell" style="background: #f0f0f0;">
+                    <strong>Human Review</strong>
+                    <ul style="list-style: disc; margin-left: 20px; margin-top: 10px;">
+                        <li>Perfect accuracy</li>
+                        <li>Understands context</li>
+                        <li>Expensive (£10-100/decision)</li>
+                        <li>Slow (hours)</li>
+                        <li>Doesn't scale</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Decision Framework</h3>
+            <ul class="checklist">
+                <li>Is the answer objective? → Use database or rules</li>
+                <li>Is the answer subjective? → Use AI</li>
+                <li>Do you have >100 examples? → AI might work</li>
+                <li>Do you have 0 examples? → Use rules or humans</li>
+                <li>Is speed critical (< 100ms)? → Not AI</li>
+                <li>Is accuracy critical (>99.9%)? → Not AI</li>
+                <li>Are costs low? → Maybe AI</li>
+                <li>Are costs high? → Definitely not AI</li>
+            </ul>
+
+            <div class="key-insight">
+                <strong>Real Metric:</strong> 78% of AI pilots die because they solved the wrong problem. Not because the model was bad, but because the problem didn't need AI in the first place.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>The AI + Alternative Hybrid Approach</h2>
+
+            <p><strong>Best practice:</strong> Use AI where it excels. Use rules/databases for everything else.</p>
+
+            <h3>Example: Expense Categorization</h3>
+            <ul class="checklist">
+                <li>Merchant has known category? → Use database lookup</li>
+                <li>Amount > £5,000? → Manual review (high-value)</li>
+                <li>Merchant unknown? → AI categorization</li>
+                <li>AI confidence < 60%? → Flag for human review</li>
+            </ul>
+
+            <p>Result: AI handles 70% of cases. Rules handle 20%. Humans handle 10%. Cheaper and more reliable than AI-only.</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Your "When to Use AI" Checklist</h2>
+
+            <ul class="checklist">
+                <li>Define the problem precisely (what are you solving?)</li>
+                <li>Check if it's objective or subjective</li>
+                <li>Count: Do you have >100 training examples?</li>
+                <li>Check alternatives: database, rules, humans</li>
+                <li>Compare cost: AI vs. alternative</li>
+                <li>Compare latency: AI vs. alternative</li>
+                <li>Compare accuracy: AI vs. alternative</li>
+                <li>Estimate: How long will this take to build?</li>
+                <li>Ask: Is AI actually the best solution here?</li>
+            </ul>
+
+            <div class="key-insight">
+                <strong>Final Insight:</strong> The best AI projects aren't the ones with the fanciest models. They're the ones that solved the right problem with the right tool. Sometimes the right tool isn't AI.
+            </div>
+        </div>
+
+        <footer>
+            <p>AI Fundamentals | Module 5 of 5 | Last updated June 2026</p>
+        </footer>
+    </div>
+</body>
+</html>
