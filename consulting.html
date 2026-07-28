@@ -24,6 +24,9 @@
     nav { display: flex; gap: 20px; align-items: center; }
     nav a { font-size: 14px; font-weight: 500; color: var(--muted); transition: color .15s; }
     nav a:hover { color: var(--text); }
+    .search-btn { background: none; border: none; cursor: pointer; padding: 0; font-size: 16px; color: var(--muted); transition: color .15s; display: flex; align-items: center; gap: 6px; }
+    .search-btn:hover { color: var(--text); }
+    .search-kbd { font-size: 11px; color: var(--muted); }
 
     .hero { max-width: 900px; margin: 0 auto; padding: 60px 24px 40px; }
     .hero-badge { display: inline-block; background: #eef2ff; color: var(--accent); font-size: 11px; font-weight: 700; padding: 6px 14px; border-radius: 99px; letter-spacing: .5px; text-transform: uppercase; margin-bottom: 16px; }
@@ -96,6 +99,7 @@
       <a href="/business.html">Business</a>
       <a href="/learning.html">Learning</a>
       <a href="/learn/">Learn →</a>
+      <button class="search-btn" onclick="window.location.href='/search.html'"><span>🔍</span><span class="search-kbd">(Cmd+K)</span></button>
     </nav>
   </div>
 </header>
@@ -220,5 +224,13 @@
   });
 </script>
 
+<script>
+document.addEventListener('keydown', function(e) {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    e.preventDefault();
+    window.location.href = '/search.html';
+  }
+});
+</script>
 </body>
 </html>

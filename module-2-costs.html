@@ -221,7 +221,13 @@
     </style>
 </head>
 <body>
-    <header>
+        <header style="background: white; border-bottom: 1px solid #ebebeb; position: sticky; top: 0; z-index: 100;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; height: 56px; display: flex; align-items: center; justify-content: space-between;">
+            <a href="/" style="font-size: 15px; font-weight: 800; letter-spacing: -0.4px; color: #111111; text-decoration: none;">Human<span style="color: #4f46e5;">.</span>Agency</a>
+            <button class="search-btn" onclick="window.location.href='/search.html'" style="background: none; border: none; cursor: pointer; padding: 0; font-size: 16px; color: #666666; transition: color .15s; display: flex; align-items: center; gap: 6px;"><span>🔍</span><span class="search-kbd" style="font-size: 11px; color: #666666;">(Cmd+K)</span></button>
+        </div>
+    </header>
+<header>
         <h1>Module 2: Real Cost Economics</h1>
         <p>Vendor quotes are lies. Why actual implementation costs 2.5-3.5x what vendors promise. How to forecast accurately.</p>
     </header>
@@ -519,5 +525,13 @@ Typical Range:
             <p>AI Fundamentals | Module 2 of 5 | Last updated June 2026</p>
         </footer>
     </div>
+<script>
+document.addEventListener('keydown', function(e) {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    e.preventDefault();
+    window.location.href = '/search.html';
+  }
+});
+</script>
 </body>
 </html>

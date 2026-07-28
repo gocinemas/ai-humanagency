@@ -228,7 +228,13 @@
     </style>
 </head>
 <body>
-    <header>
+        <header style="background: white; border-bottom: 1px solid #ebebeb; position: sticky; top: 0; z-index: 100;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; height: 56px; display: flex; align-items: center; justify-content: space-between;">
+            <a href="/" style="font-size: 15px; font-weight: 800; letter-spacing: -0.4px; color: #111111; text-decoration: none;">Human<span style="color: #4f46e5;">.</span>Agency</a>
+            <button class="search-btn" onclick="window.location.href='/search.html'" style="background: none; border: none; cursor: pointer; padding: 0; font-size: 16px; color: #666666; transition: color .15s; display: flex; align-items: center; gap: 6px;"><span>🔍</span><span class="search-kbd" style="font-size: 11px; color: #666666;">(Cmd+K)</span></button>
+        </div>
+    </header>
+<header>
         <h1>Module 1: Hallucinations & Reliability</h1>
         <p>Why models confidently output wrong information. Why it's not a prompt-engineering problem. What it means for your production systems.</p>
     </header>
@@ -434,5 +440,13 @@ Result: Zero hallucinations on facts. AI adds value (explanation, context) witho
             <p>AI Fundamentals | Module 1 of 5 | Last updated June 2026</p>
         </footer>
     </div>
+<script>
+document.addEventListener('keydown', function(e) {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    e.preventDefault();
+    window.location.href = '/search.html';
+  }
+});
+</script>
 </body>
 </html>

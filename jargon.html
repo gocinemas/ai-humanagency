@@ -112,6 +112,11 @@ footer { border-top: 1px solid var(--border); background: var(--surface); }
   .term-example { font-size: 12px; padding: 8px; }
   .footer-links a { font-size: 12px; }
 }
+
+.search-btn { background: none; border: none; cursor: pointer; padding: 0; font-size: 16px; color: var(--muted); transition: color .15s; display: flex; align-items: center; gap: 6px; }
+    .search-btn:hover { color: var(--text); }
+    .search-kbd { font-size: 11px; color: var(--muted); }
+  
 </style>
 </head>
 <body>
@@ -132,6 +137,7 @@ footer { border-top: 1px solid var(--border); background: var(--surface); }
       <a href="/business.html">Business</a>
       <a href="/learning.html">Learning</a>
       <a href="/learn/">Learn →</a>
+      <button class="search-btn" onclick="window.location.href='/search.html'"><span>🔍</span><span class="search-kbd">(Cmd+K)</span></button>
     </div>
   </div>
 </header>

@@ -24,6 +24,9 @@
     nav { display: flex; gap: 20px; align-items: center; }
     nav a { font-size: 14px; font-weight: 500; color: var(--muted); transition: color .15s; }
     nav a:hover { color: var(--text); }
+    .search-btn { background: none; border: none; cursor: pointer; padding: 0; font-size: 16px; color: var(--muted); transition: color .15s; display: flex; align-items: center; gap: 6px; }
+    .search-btn:hover { color: var(--text); }
+    .search-kbd { font-size: 11px; color: var(--muted); }
 
     .content { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
 
@@ -69,6 +72,7 @@
       <a href="/business.html">Business</a>
       <a href="/learning.html">Learning</a>
       <a href="/learn/">Learn →</a>
+      <button class="search-btn" onclick="window.location.href='/search.html'"><span>🔍</span><span class="search-kbd">(Cmd+K)</span></button>
     </nav>
   </div>
 </header>
@@ -141,5 +145,13 @@ searchInput.addEventListener('keyup', search);
 searchInput.addEventListener('change', search);
 </script>
 
+<script>
+document.addEventListener('keydown', function(e) {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    e.preventDefault();
+    window.location.href = '/search.html';
+  }
+});
+</script>
 </body>
 </html>
