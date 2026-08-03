@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ — Claude Cowork — AI Learning Hub</title>
+  <meta name="description" content="Answers to common questions about Claude Cowork, skills, connectors, and setup.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f9f8f6;
+      --surface: #ffffff;
+      --border: #ebebeb;
+      --text: #111111;
+      --muted: #666666;
+      --accent: #4f46e5;
+      --good: #10b981;
+      --warn: #f59e0b;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f0f0f;
+        --surface: #1a1a1a;
+        --border: #2a2a2a;
+        --text: #f5f5f5;
+        --muted: #999999;
+      }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+      color: var(--text);
+    }
+
+    .logo .dot { color: var(--accent); }
+
+    nav {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    nav a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      transition: color 0.15s;
+    }
+
+    nav a:hover { color: var(--text); text-decoration: none; }
+
+    .nav-mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 56px 24px 80px;
+    }
+
+    .page-header {
+      margin-bottom: 48px;
+    }
+
+    .page-header h1 {
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 900;
+      letter-spacing: -0.8px;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+
+    .page-header p {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 700px;
+    }
+
+    .section {
+      margin-bottom: 56px;
+    }
+
+    .section h2 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+      margin-bottom: 24px;
+    }
+
+    .faq-item {
+      margin: 28px 0;
+      padding: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .faq-q {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .faq-a {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .faq-a p {
+      margin-bottom: 12px;
+    }
+
+    .faq-a ul {
+      list-style: none;
+      margin: 16px 0;
+      padding-left: 0;
+    }
+
+    .faq-a li {
+      padding: 8px 0;
+      padding-left: 24px;
+      position: relative;
+      font-size: 14px;
+    }
+
+    .faq-a li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .highlight {
+      background: var(--bg);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+    }
+
+    .insight-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 24px 0;
+    }
+
+    .insight-box p {
+      font-size: 14px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .footer-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 32px 24px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 768px) {
+      .header-inner { padding: 0 16px; }
+
+      nav {
+        display: none;
+        position: absolute;
+        top: 56px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        gap: 0;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        padding: 12px 0;
+      }
+
+      nav.active { display: flex; }
+
+      nav a {
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border);
+        font-size: 14px;
+      }
+
+      .nav-mobile-toggle { display: block; }
+
+      .content { padding: 40px 16px 60px; }
+      .page-header h1 { font-size: 24px; }
+
+      .footer-inner { padding: 24px 16px; }
+    }
+
+    @media (max-width: 480px) {
+      .header-inner { padding: 0 12px; }
+      .logo { font-size: 13px; }
+      .content { padding: 32px 12px 40px; }
+      .page-header h1 { font-size: 20px; }
+      .footer-inner { padding: 20px 12px; font-size: 11px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <nav id="nav">
+      <a href="/cowork-hub.html">Cowork Hub</a>
+      <a href="/cowork-overview.html">Overview</a>
+      <a href="/cowork-skills.html">Build a Skill</a>
+      <a href="/cowork-examples.html">Examples</a>
+      <a href="mailto:mekala@gmail.com">Questions?</a>
+    </nav>
+    <button class="nav-mobile-toggle" id="nav-toggle">☰</button>
+  </div>
+</header>
+
+<div class="content">
+  <div class="page-header">
+    <h1>FAQ</h1>
+    <p>Answers to questions about Cowork, skills, connectors, security, and getting started.</p>
+  </div>
+
+  <div class="section">
+    <h2>Getting Started</h2>
+
+    <div class="faq-item">
+      <div class="faq-q">Do I need to be technical to use Cowork?</div>
+      <div class="faq-a">
+        <p><strong>No.</strong> You talk to Claude in plain English. You say "I want to automate X." Claude asks clarifying questions. You answer. Claude builds the skill. You click save. That's it.</p>
+        <p>You don't write code. You don't understand the internals. You just tell Claude what you want.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">What's the difference between Cowork and ChatGPT?</div>
+      <div class="faq-a">
+        <p>ChatGPT is a chat. You type something. It responds. You can't save the conversation. It doesn't have access to your email or calendar. It doesn't run on a schedule.</p>
+        <p>Cowork is different:</p>
+        <ul>
+          <li>Runs on your computer (not a browser tab)</li>
+          <li>Connects to your tools (Gmail, Google Drive, Slack, etc.)</li>
+          <li>Runs on a schedule (while you sleep)</li>
+          <li>Remembers your voice and preferences</li>
+          <li>Actually takes actions (sends emails, updates docs, creates calendar events)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">How much does Cowork cost?</div>
+      <div class="faq-a">
+        <p>Cowork is free to download and use. You only pay for Claude API calls (when Cowork runs tasks). Most people spend $5-20/month on API costs. A few power users spend $50-100/month.</p>
+        <p>That's roughly: 1 skill = $0.50-1/month. 10 skills = $5-10/month.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Can I use Cowork on my phone?</div>
+      <div class="faq-a">
+        <p>Not yet. Cowork is desktop-only (Mac and Windows). You can view your skill results in an app, but you can't build skills on mobile.</p>
+        <p>iOS and Android apps are in development.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Skills & Tasks</h2>
+
+    <div class="faq-item">
+      <div class="faq-q">What's a skill, exactly?</div>
+      <div class="faq-a">
+        <p>A skill is a set of instructions you write (conversationally) that tells Claude what to do repeatedly. Example: "Every Monday at 9am, read my emails from the past week, extract key decisions, write a summary, and send it to me."</p>
+        <p>Once you save it, Cowork runs it automatically. You never have to think about it again.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">How often can I run a skill?</div>
+      <div class="faq-a">
+        <p>As often as you want. Hourly, daily, weekly, monthly, or manually whenever you click "Run Now."</p>
+        <p>There's no limit. The only cost is the API calls (cents per run).</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Can skills do anything?</div>
+      <div class="faq-a">
+        <p>Almost anything that doesn't require human judgment. Good examples:</p>
+        <ul>
+          <li>Summarize emails</li>
+          <li>Draft documents</li>
+          <li>Update spreadsheets</li>
+          <li>Monitor Slack</li>
+          <li>Research topics</li>
+        </ul>
+        <p><strong>Bad examples:</strong> Approve expenses (needs human judgment). Make major business decisions. Delete things.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Can I edit a skill after I create it?</div>
+      <div class="faq-a">
+        <p><strong>Yes.</strong> Click "Edit" and change the instructions. Cowork will ask clarifying questions. Save the new version. The skill updates immediately.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Connectors & Security</h2>
+
+    <div class="faq-item">
+      <div class="faq-q">Is my data safe with Cowork?</div>
+      <div class="faq-a">
+        <p><strong>Yes.</strong> Here's why:</p>
+        <ul>
+          <li>Cowork runs on your computer. Your data doesn't leave your machine unless you ask it to.</li>
+          <li>Authentication happens through official channels (Google OAuth, Slack OAuth, etc.). You control what Cowork can access.</li>
+          <li>Cowork doesn't store your data. It fetches what it needs, uses it, then forgets it.</li>
+          <li>You can revoke access to any tool anytime. Cowork immediately loses permission.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">What connectors are available?</div>
+      <div class="faq-a">
+        <p>Currently supported:</p>
+        <ul>
+          <li>Gmail (read emails, search, send)</li>
+          <li>Google Calendar (view events)</li>
+          <li>Google Drive (read/write files)</li>
+          <li>Slack (read channels, post messages)</li>
+          <li>Asana (view tasks, create projects)</li>
+          <li>Figma (view files)</li>
+          <li>Stripe (view transactions)</li>
+          <li>Linear / Jira (view issues)</li>
+        </ul>
+        <p>More connectors are being added constantly.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Can Cowork delete or modify my data?</div>
+      <div class="faq-a">
+        <p>Only if you tell it to. By default, Cowork has read-only access to most tools. If you want it to write (send emails, update docs), you have to explicitly grant permission and specify what it can change.</p>
+        <p>You can always revoke write access.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Does Anthropic see my data?</div>
+      <div class="faq-a">
+        <p>When Cowork calls the Claude API, it sends the data it needs to process your task. Like any API call, this goes over the internet to Anthropic's servers.</p>
+        <p>Anthropic has a privacy policy: they don't store your data after processing and don't use it to train models.</p>
+        <p>If you're handling sensitive data, you can configure Cowork to redact or anonymize before sending.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Troubleshooting</h2>
+
+    <div class="faq-item">
+      <div class="faq-q">My skill ran but the output looks wrong</div>
+      <div class="faq-a">
+        <p>Common fixes:</p>
+        <ul>
+          <li><strong>Check the logs:</strong> Click "View Logs" to see exactly what Claude did.</li>
+          <li><strong>Edit the instructions:</strong> If the instructions were vague, make them more specific. Example: instead of "summarize this," say "extract 3 bullet points with dates and numbers."</li>
+          <li><strong>Test manually:</strong> Click "Run Now" to test before the next scheduled run.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Skill won't run / says "Authentication failed"</div>
+      <div class="faq-a">
+        <p><strong>Fix:</strong> Your connection to that tool expired. Click the tool in Connectors and re-authenticate. Then try the skill again.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Skill is too slow / times out</div>
+      <div class="faq-a">
+        <p><strong>Possible causes:</strong></p>
+        <ul>
+          <li>You're asking it to process too much data (1000 emails is too many)</li>
+          <li>The task is genuinely complex</li>
+          <li>Internet is slow</li>
+        </ul>
+        <p><strong>Fixes:</strong> Break into smaller skills. Instead of "summarize all 2024 emails," do "summarize emails from the past 7 days."</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">I want to give Cowork feedback or report a bug</div>
+      <div class="faq-a">
+        <p>Email <strong>support@humanagency.co</strong> with details. Include:</p>
+        <ul>
+          <li>What you were trying to do</li>
+          <li>The error message (screenshot or copy-paste)</li>
+          <li>Logs from "View Logs" if available</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Advanced Questions</h2>
+
+    <div class="faq-item">
+      <div class="faq-q">Can I run Python / SQL / code in a skill?</div>
+      <div class="faq-a">
+        <p>Not directly. Skills are conversational instructions, not code.</p>
+        <p>But you can ask Claude to: fetch data, process it, and output results. If you need complex logic, you can build a tool that Cowork calls. That's more advanced.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Can I share skills with teammates?</div>
+      <div class="faq-a">
+        <p>Yes. Click "Share" and generate a link or send to a teammate's email. They can use your skill as a template and customize it.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Can skills access databases / APIs outside Google?</div>
+      <div class="faq-a">
+        <p>Yes, with connectors. Cowork supports Stripe, Linear, Jira, Asana, and more. You can also connect custom APIs by providing an API key.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">What happens if I run out of API credits?</div>
+      <div class="faq-a">
+        <p>Skills won't run. You'll get a notification. Add billing information to your Claude account and credits will resume.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="insight-box">
+      <p><strong>Still have questions?</strong> Email <strong>support@humanagency.co</strong> or visit the <strong><a href="/cowork-hub.html">Cowork Hub</a></strong> to read more guides.</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <p>AI Learning Hub — No hype, no theory. Just understanding. © 2026 Human Agency</p>
+  </div>
+</footer>
+
+<script>
+const navToggle = document.getElementById('nav-toggle');
+const nav = document.getElementById('nav');
+
+navToggle.addEventListener('click', () => {
+  nav.classList.toggle('active');
+});
+
+nav.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    nav.classList.remove('active');
+  });
+});
+</script>
+
+</body>
+</html>

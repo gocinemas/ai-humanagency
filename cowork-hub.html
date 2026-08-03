@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Cowork Hub — AI Learning Hub</title>
+  <meta name="description" content="From chat to real work. Learn how to use Claude Cowork to automate your daily tasks, build skills, and work smarter.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f9f8f6;
+      --surface: #ffffff;
+      --border: #ebebeb;
+      --text: #111111;
+      --muted: #666666;
+      --accent: #4f46e5;
+      --good: #10b981;
+      --warn: #f59e0b;
+      --critical: #ef4444;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f0f0f;
+        --surface: #1a1a1a;
+        --border: #2a2a2a;
+        --text: #f5f5f5;
+        --muted: #999999;
+      }
+    }
+
+    :root[data-theme="light"] {
+      --bg: #f9f8f6;
+      --surface: #ffffff;
+      --border: #ebebeb;
+      --text: #111111;
+      --muted: #666666;
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #0f0f0f;
+      --surface: #1a1a1a;
+      --border: #2a2a2a;
+      --text: #f5f5f5;
+      --muted: #999999;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* Header */
+    header {
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .logo .dot { color: var(--accent); }
+
+    nav {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    nav a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      transition: color 0.15s;
+    }
+
+    nav a:hover { color: var(--text); }
+
+    .nav-mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    /* Hero */
+    .hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 80px 24px 60px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(32px, 6vw, 52px);
+      font-weight: 900;
+      letter-spacing: -1px;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto 32px;
+      line-height: 1.7;
+    }
+
+    /* CTA Buttons */
+    .cta-group {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    .cta-btn {
+      padding: 12px 24px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .cta-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .cta-btn.primary {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .cta-btn.primary:hover {
+      background: #4338ca;
+      border-color: #4338ca;
+    }
+
+    /* Content Grid */
+    .content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    .intro-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      margin-bottom: 60px;
+    }
+
+    .intro-box p {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .intro-box p:last-child { margin-bottom: 0; }
+
+    .intro-box strong { color: var(--text); }
+
+    /* Cards Grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      margin-bottom: 60px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .card-icon {
+      font-size: 32px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+      margin-bottom: 12px;
+    }
+
+    .card-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .card-cta {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .card a {
+      display: block;
+      text-decoration: none;
+      height: 100%;
+    }
+
+    /* Section */
+    .section {
+      margin-bottom: 60px;
+    }
+
+    .section h2 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+      margin-bottom: 24px;
+    }
+
+    .section p {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .checklist {
+      list-style: none;
+      margin: 24px 0;
+    }
+
+    .checklist li {
+      padding: 12px 0;
+      padding-left: 24px;
+      position: relative;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .checklist li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .footer-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 32px 24px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .header-inner { padding: 0 16px; }
+
+      nav {
+        display: none;
+        position: absolute;
+        top: 56px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        gap: 0;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        padding: 12px 0;
+      }
+
+      nav.active { display: flex; }
+
+      nav a {
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border);
+        font-size: 14px;
+      }
+
+      .nav-mobile-toggle { display: block; }
+
+      .hero { padding: 56px 16px 40px; }
+      .hero h1 { font-size: 28px; }
+      .hero p { font-size: 15px; }
+
+      .content { padding: 0 16px 60px; }
+      .intro-box { padding: 20px; }
+
+      .cta-group { gap: 8px; }
+      .cta-btn { padding: 10px 16px; font-size: 13px; }
+
+      .cards-grid { gap: 16px; }
+      .card { padding: 20px; }
+
+      .footer-inner { padding: 24px 16px; }
+    }
+
+    @media (max-width: 480px) {
+      .header-inner { padding: 0 12px; }
+      .logo { font-size: 13px; }
+      .hero { padding: 40px 12px 32px; }
+      .hero h1 { font-size: 24px; }
+      .content { padding: 0 12px 40px; }
+      .intro-box { padding: 16px; }
+      .cards-grid { grid-template-columns: 1fr; }
+      .footer-inner { padding: 20px 12px; font-size: 11px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <nav id="nav">
+      <a href="/">Home</a>
+      <a href="/start.html">Start Here</a>
+      <a href="/cowork-overview.html">Cowork Overview</a>
+      <a href="/cowork-skills.html">Build a Skill</a>
+      <a href="/cowork-quick-start.html">Quick Start</a>
+      <a href="mailto:mekala@gmail.com">Questions?</a>
+    </nav>
+    <button class="nav-mobile-toggle" id="nav-toggle">☰</button>
+  </div>
+</header>
+
+<div class="hero">
+  <h1>Claude Cowork</h1>
+  <p>From chat to real work. Learn how to build skills, automate tasks, and actually get things done with Claude.</p>
+  <div class="cta-group">
+    <a href="#overview" class="cta-btn primary">Get Started</a>
+    <a href="/cowork-skills.html" class="cta-btn">Build a Skill</a>
+    <a href="/cowork-examples.html" class="cta-btn">Real Examples</a>
+  </div>
+</div>
+
+<div class="content">
+  <div class="intro-box">
+    <p><strong>Cowork is the working version of Claude.</strong> It's not a chat. It's a desktop app that connects to your tools (Gmail, Google Drive, Slack, Asana, etc.), remembers what you care about, and does work for you on a schedule.</p>
+    <p>This is where "understanding AI" becomes "using AI to actually ship things."</p>
+  </div>
+
+  <div class="section" id="overview">
+    <h2>What You'll Learn</h2>
+    <div class="cards-grid">
+      <div class="card">
+        <a href="/cowork-overview.html">
+          <span class="card-icon">⚙️</span>
+          <div class="card-title">Cowork Overview</div>
+          <div class="card-desc">What Cowork is, how it differs from ChatGPT, and why it matters for real work.</div>
+          <div class="card-cta">Learn →</div>
+        </a>
+      </div>
+
+      <div class="card">
+        <a href="/cowork-skills.html">
+          <span class="card-icon">🛠️</span>
+          <div class="card-title">Build a Skill</div>
+          <div class="card-desc">Create your first skill. Step-by-step guide to automating something you do weekly.</div>
+          <div class="card-cta">Build →</div>
+        </a>
+      </div>
+
+      <div class="card">
+        <a href="/cowork-examples.html">
+          <span class="card-icon">💼</span>
+          <div class="card-title">Real Examples</div>
+          <div class="card-desc">Concrete workflows from people actually using Cowork to work smarter.</div>
+          <div class="card-cta">Explore →</div>
+        </a>
+      </div>
+
+      <div class="card">
+        <a href="/cowork-quick-start.html">
+          <span class="card-icon">🚀</span>
+          <div class="card-title">Quick Start</div>
+          <div class="card-desc">Set up Cowork in 10 minutes. Download, configure, and run your first task.</div>
+          <div class="card-cta">Start →</div>
+        </a>
+      </div>
+
+      <div class="card">
+        <a href="/cowork-voice.html">
+          <span class="card-icon">🎤</span>
+          <div class="card-title">Voice & Memory</div>
+          <div class="card-desc">Teach Claude how you sound. Build "brain docs" so it remembers you.</div>
+          <div class="card-cta">Learn →</div>
+        </a>
+      </div>
+
+      <div class="card">
+        <a href="/cowork-faq.html">
+          <span class="card-icon">❓</span>
+          <div class="card-title">FAQ</div>
+          <div class="card-desc">Common questions about Cowork, skills, connectors, and getting started.</div>
+          <div class="card-cta">Read →</div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Why This Matters</h2>
+    <p>You've learned how AI works. You understand what it's good at. Now comes the hard part: actually making it work in your real life.</p>
+    <p>Cowork is different because:</p>
+    <ul class="checklist">
+      <li>It connects to YOUR tools (Gmail, calendar, Slack, Google Drive, Asana, Figma, etc.)</li>
+      <li>It runs on YOUR computer, not in a browser tab</li>
+      <li>It can be scheduled to work while you sleep</li>
+      <li>It learns YOUR voice, preferences, and style</li>
+      <li>It works for boring, repetitive stuff — so you don't have to</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>The Path Forward</h2>
+    <p><strong>Week 1:</strong> Understand what Cowork is and how it works. Read the overview, watch the setup videos.</p>
+    <p><strong>Week 2:</strong> Build your first skill. Pick something you do every week that bores you. Automate it.</p>
+    <p><strong>Week 3:</strong> Add more skills. Connect more tools. Start experiencing what "AI as a productivity layer" actually feels like.</p>
+    <p><strong>Week 4+:</strong> Build stuff that actually matters to you. Get weird. Experiment.</p>
+  </div>
+
+  <div class="section">
+    <h2>Real Talk</h2>
+    <p><strong>This is the messy part.</strong> Cowork isn't as polished as ChatGPT. You might hit bugs. You'll probably feel lost at first. That's normal.</p>
+    <p>But here's the thing: the people who figure this out first get an unfair advantage. They're working 10x faster than their peers. Their competitors don't even know Cowork exists yet.</p>
+    <p>That could be you.</p>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <p>AI Learning Hub — No hype, no theory. Just understanding. © 2026 Human Agency</p>
+  </div>
+</footer>
+
+<script>
+const navToggle = document.getElementById('nav-toggle');
+const nav = document.getElementById('nav');
+
+navToggle.addEventListener('click', () => {
+  nav.classList.toggle('active');
+});
+
+nav.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    nav.classList.remove('active');
+  });
+});
+</script>
+
+</body>
+</html>

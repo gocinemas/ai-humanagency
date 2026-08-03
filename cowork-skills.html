@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Build Your First Skill — AI Learning Hub</title>
+  <meta name="description" content="Step-by-step guide to creating a Claude Cowork skill. Automate something you do every week.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f9f8f6;
+      --surface: #ffffff;
+      --border: #ebebeb;
+      --text: #111111;
+      --muted: #666666;
+      --accent: #4f46e5;
+      --good: #10b981;
+      --warn: #f59e0b;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f0f0f;
+        --surface: #1a1a1a;
+        --border: #2a2a2a;
+        --text: #f5f5f5;
+        --muted: #999999;
+      }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+      color: var(--text);
+    }
+
+    .logo .dot { color: var(--accent); }
+
+    nav {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    nav a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      transition: color 0.15s;
+    }
+
+    nav a:hover { color: var(--text); }
+
+    .nav-mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 56px 24px 80px;
+    }
+
+    .page-header {
+      margin-bottom: 48px;
+    }
+
+    .page-header h1 {
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 900;
+      letter-spacing: -0.8px;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+
+    .page-header p {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 700px;
+    }
+
+    .section {
+      margin-bottom: 56px;
+    }
+
+    .section h2 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+      margin-bottom: 24px;
+    }
+
+    .section h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      margin-top: 28px;
+    }
+
+    .section p {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .step-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      margin: 20px 0;
+    }
+
+    .step-number {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 32px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .step-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .step-desc {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .checklist {
+      list-style: none;
+      margin: 20px 0;
+    }
+
+    .checklist li {
+      padding: 12px 0;
+      padding-left: 24px;
+      position: relative;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .checklist li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .code-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .insight-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 24px 0;
+    }
+
+    .insight-box strong { color: var(--text); }
+
+    .cta-button {
+      display: inline-block;
+      padding: 12px 24px;
+      background: var(--accent);
+      color: white;
+      border-radius: 12px;
+      font-weight: 600;
+      margin-top: 16px;
+      transition: background 0.15s;
+    }
+
+    .cta-button:hover {
+      background: #4338ca;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .footer-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 32px 24px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 768px) {
+      .header-inner { padding: 0 16px; }
+
+      nav {
+        display: none;
+        position: absolute;
+        top: 56px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        gap: 0;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        padding: 12px 0;
+      }
+
+      nav.active { display: flex; }
+
+      nav a {
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border);
+        font-size: 14px;
+      }
+
+      .nav-mobile-toggle { display: block; }
+
+      .content { padding: 40px 16px 60px; }
+      .page-header h1 { font-size: 24px; }
+
+      .footer-inner { padding: 24px 16px; }
+    }
+
+    @media (max-width: 480px) {
+      .header-inner { padding: 0 12px; }
+      .logo { font-size: 13px; }
+      .content { padding: 32px 12px 40px; }
+      .page-header h1 { font-size: 20px; }
+      .footer-inner { padding: 20px 12px; font-size: 11px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <nav id="nav">
+      <a href="/cowork-hub.html">Cowork Hub</a>
+      <a href="/cowork-overview.html">Overview</a>
+      <a href="/cowork-examples.html">Examples</a>
+      <a href="/cowork-quick-start.html">Quick Start</a>
+      <a href="mailto:mekala@gmail.com">Questions?</a>
+    </nav>
+    <button class="nav-mobile-toggle" id="nav-toggle">☰</button>
+  </div>
+</header>
+
+<div class="content">
+  <div class="page-header">
+    <h1>Build Your First Skill</h1>
+    <p>A skill is just instructions you write (conversationally) that Claude follows to do something repeatedly. Here's how to build one in under an hour.</p>
+  </div>
+
+  <div class="section">
+    <h2>Pick Your Task</h2>
+    <p><strong>The golden rule:</strong> Pick something boring that you do at least once a week.</p>
+    <p>Good examples:</p>
+    <ul class="checklist">
+      <li>Write a weekly status update email</li>
+      <li>Summarize the past week's Slack messages</li>
+      <li>Draft a daily digest of important emails</li>
+      <li>Update a tracking spreadsheet</li>
+      <li>Create a competitive intelligence report</li>
+      <li>Auto-draft replies to common email patterns</li>
+    </ul>
+    <p><strong>Bad examples:</strong> Things that happen once. Things that change every week. Things that need human judgment.</p>
+    <div class="insight-box">
+      <strong>Pro tip:</strong> Pick something that takes 20+ minutes. That's your payoff threshold. If it takes 5 minutes, it's not worth automating (yet).
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>The 5-Step Process</h2>
+
+    <div class="step-box">
+      <div class="step-number">1</div>
+      <div class="step-title">Write Out The Task (Manually)</div>
+      <div class="step-desc">
+        <p>Do the task yourself once. Write down every single step. Be obsessively specific. Don't skip anything because "it's obvious."</p>
+        <p><strong>Example:</strong> Instead of "write a weekly summary," write:</p>
+        <div class="code-block">1. Check emails from Mon-Fri
+2. Read Slack #announcements channel
+3. Check Google Calendar for important meetings
+4. Extract: dates, topics, decisions made
+5. Sort chronologically
+6. Write in friendly tone (not formal)
+7. Send to team@company.com</div>
+        <p>This is your script. Claude will follow it.</p>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-number">2</div>
+      <div class="step-title">Open a New Cowork Chat</div>
+      <div class="step-desc">
+        <p>Don't use an existing chat. Start fresh. This keeps things clean and skips the noise.</p>
+        <p>In Claude Cowork, click "New Task" and select the project you want this in (or create a new one).</p>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-number">3</div>
+      <div class="step-title">Paste the Skill-Creation Prompt</div>
+      <div class="step-desc">
+        <p>Use this prompt (it's in the FAQ). It tells Claude exactly what format you need. Start a conversation with Claude using this template:</p>
+        <div class="code-block">I want to create a skill for [task name].
+
+Here's what I want:
+[Paste your manual steps]
+
+Please ask me questions to clarify this,
+then we'll build the skill together.
+
+I'm not technical — just guide me through
+what I need to tell you.</div>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-number">4</div>
+      <div class="step-title">Claude Asks Questions</div>
+      <div class="step-desc">
+        <p>Claude will ask clarifying questions. Answer them. This is normal. Examples:</p>
+        <ul class="checklist">
+          <li>"Should this run every Monday at 9am or 7am?"</li>
+          <li>"Who should get the email — just you or the whole team?"</li>
+          <li>"Should it look like it came from you or from a bot?"</li>
+        </ul>
+        <p>Answer everything. This is how Claude learns to automate it correctly.</p>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-number">5</div>
+      <div class="step-title">Claude Creates the Skill</div>
+      <div class="step-desc">
+        <p>Claude will write out a markdown file (.md). This is your skill. Don't worry about understanding it — you don't need to. Just say "save the skill" and Claude handles everything.</p>
+        <p>Done. It runs automatically now.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Real Example: Weekly Email Digest</h2>
+    <p><strong>The task:</strong> Every Monday at 7am, send yourself a digest of important emails from the past week.</p>
+
+    <h3>Step 1: Write It Out</h3>
+    <div class="code-block">1. Search Gmail for emails from Mon-Fri (last week)
+2. Filter: only from [important people list]
+3. Read each one
+4. Extract: sender, subject, one-line summary
+5. Sort by importance (personal first, then work)
+6. Write friendly email to self
+7. Send to my Gmail account</div>
+
+    <h3>Step 2-3: Open Chat & Paste Prompt</h3>
+    <p>"I want to create a skill for weekly email digest. Here's what I want: [paste above]"</p>
+
+    <h3>Step 4: Claude Asks</h3>
+    <p>"Who counts as 'important people'? Give me a list or a rule."</p>
+    <p>You answer: "Founders, board members, and clients."</p>
+
+    <h3>Step 5: Skill Created</h3>
+    <p>Claude writes the skill. You click save. Every Monday morning, you get your digest automatically.</p>
+
+    <div class="insight-box">
+      <strong>That's it.</strong> You just automated 20 minutes of your week. Do 5 of these and you've freed up 100 minutes. Do 10 and you're back to having time to think.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Common Mistakes (Avoid These)</h2>
+    <ul class="checklist">
+      <li><strong>Starting too ambitious:</strong> Pick something small. A 10-minute task. Get one win first.</li>
+      <li><strong>Being vague:</strong> "Write a summary" is not specific. "Summarize the past 7 days of Slack #engineering into 3 bullets" is.</li>
+      <li><strong>Not being honest about time:</strong> If it only takes 5 minutes, don't automate it yet. Wait until you have a task that takes 20+.</li>
+      <li><strong>Treating the skill like code:</strong> You don't need to "understand" the markdown. Claude handles it. Trust it.</li>
+      <li><strong>Not testing it:</strong> Before scheduling it for production, run it once manually and review the output.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>The Real Power</h2>
+    <p>One skill saves you 1 hour a week = 50 hours a year.</p>
+    <p>Five skills = 250 hours a year.</p>
+    <p>That's 6 weeks of work you just got back.</p>
+    <p><strong>And you only had to think about it once.</strong></p>
+    <p>This is why people with Cowork are so much faster. They're not smarter or working harder. They're just not doing stuff that a computer can do.</p>
+  </div>
+
+  <div class="section">
+    <p><a href="/cowork-quick-start.html" class="cta-button">Next: Quick Start Guide →</a></p>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <p>AI Learning Hub — No hype, no theory. Just understanding. © 2026 Human Agency</p>
+  </div>
+</footer>
+
+<script>
+const navToggle = document.getElementById('nav-toggle');
+const nav = document.getElementById('nav');
+
+navToggle.addEventListener('click', () => {
+  nav.classList.toggle('active');
+});
+
+nav.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    nav.classList.remove('active');
+  });
+});
+</script>
+
+</body>
+</html>

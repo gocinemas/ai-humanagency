@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real Examples — Cowork Skills in Action — AI Learning Hub</title>
+  <meta name="description" content="See how real people use Claude Cowork. Concrete workflows by role: marketers, engineers, operators, founders.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f9f8f6;
+      --surface: #ffffff;
+      --border: #ebebeb;
+      --text: #111111;
+      --muted: #666666;
+      --accent: #4f46e5;
+      --good: #10b981;
+      --warn: #f59e0b;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f0f0f;
+        --surface: #1a1a1a;
+        --border: #2a2a2a;
+        --text: #f5f5f5;
+        --muted: #999999;
+      }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+      color: var(--text);
+    }
+
+    .logo .dot { color: var(--accent); }
+
+    nav {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    nav a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      transition: color 0.15s;
+    }
+
+    nav a:hover { color: var(--text); }
+
+    .nav-mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 56px 24px 80px;
+    }
+
+    .page-header {
+      margin-bottom: 48px;
+    }
+
+    .page-header h1 {
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 900;
+      letter-spacing: -0.8px;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+
+    .page-header p {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 700px;
+    }
+
+    .section {
+      margin-bottom: 56px;
+    }
+
+    .section h2 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+      margin-bottom: 24px;
+    }
+
+    .section h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      margin-top: 28px;
+    }
+
+    .section p {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .example-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      margin: 20px 0;
+    }
+
+    .role-badge {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .what-they-do {
+      font-size: 15px;
+      color: var(--text);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .the-problem {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 16px;
+      padding-left: 16px;
+      border-left: 3px solid var(--warn);
+    }
+
+    .the-skill {
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.7;
+      margin-bottom: 16px;
+      background: var(--bg);
+      padding: 16px;
+      border-radius: 8px;
+    }
+
+    .impact {
+      font-size: 14px;
+      color: var(--good);
+      font-weight: 600;
+      padding-left: 16px;
+      border-left: 3px solid var(--good);
+    }
+
+    .checklist {
+      list-style: none;
+      margin: 16px 0;
+      padding-left: 16px;
+    }
+
+    .checklist li {
+      padding: 8px 0;
+      padding-left: 24px;
+      position: relative;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .checklist li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .insight-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 24px 0;
+    }
+
+    .insight-box strong { color: var(--text); }
+
+    .button {
+      display: inline-block;
+      padding: 12px 24px;
+      background: var(--accent);
+      color: white;
+      border-radius: 12px;
+      font-weight: 600;
+      margin-top: 16px;
+      transition: background 0.15s;
+    }
+
+    .button:hover {
+      background: #4338ca;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .footer-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 32px 24px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 768px) {
+      .header-inner { padding: 0 16px; }
+
+      nav {
+        display: none;
+        position: absolute;
+        top: 56px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        gap: 0;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        padding: 12px 0;
+      }
+
+      nav.active { display: flex; }
+
+      nav a {
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border);
+        font-size: 14px;
+      }
+
+      .nav-mobile-toggle { display: block; }
+
+      .content { padding: 40px 16px 60px; }
+      .page-header h1 { font-size: 24px; }
+
+      .footer-inner { padding: 24px 16px; }
+    }
+
+    @media (max-width: 480px) {
+      .header-inner { padding: 0 12px; }
+      .logo { font-size: 13px; }
+      .content { padding: 32px 12px 40px; }
+      .page-header h1 { font-size: 20px; }
+      .footer-inner { padding: 20px 12px; font-size: 11px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <nav id="nav">
+      <a href="/cowork-hub.html">Cowork Hub</a>
+      <a href="/cowork-overview.html">Overview</a>
+      <a href="/cowork-skills.html">Build a Skill</a>
+      <a href="/cowork-quick-start.html">Quick Start</a>
+      <a href="mailto:mekala@gmail.com">Questions?</a>
+    </nav>
+    <button class="nav-mobile-toggle" id="nav-toggle">☰</button>
+  </div>
+</header>
+
+<div class="content">
+  <div class="page-header">
+    <h1>Real Examples</h1>
+    <p>How actual people use Cowork to save 5-10 hours a week. Concrete workflows by role.</p>
+  </div>
+
+  <div class="section">
+    <h2>The Marketing Manager</h2>
+
+    <div class="example-card">
+      <div class="role-badge">Workflow</div>
+      <div class="what-they-do">Social Media Monitoring</div>
+      <div class="the-problem">
+        Every morning, Sarah spends 40 minutes checking Twitter, LinkedIn, Slack, and email for mentions of her brand and competitors. It's boring, repetitive, and she always misses something.
+      </div>
+      <div class="the-skill">
+        <strong>Skill:</strong> "Every weekday at 8am, search Twitter and LinkedIn for brand mentions + competitive keywords. Rank by relevance. Extract quotes. Send email summary with action items."
+      </div>
+      <div class="impact">
+        ⏱️ Saves 40 min/week. Never misses a competitor announcement again.
+      </div>
+    </div>
+
+    <div class="example-card">
+      <div class="role-badge">Workflow</div>
+      <div class="what-they-do">Weekly Competitive Report</div>
+      <div class="the-problem">
+        Sarah's CEO asks for a weekly competitive update. She spends Friday afternoon reading news, blogs, and competitor websites. By Monday morning, it's outdated.
+      </div>
+      <div class="the-skill">
+        <strong>Skill:</strong> "Every Friday at 4pm, fetch the past week's news about our industry + top 5 competitors. Categorize: product launches, pricing changes, hiring, funding. Summarize. Add links. Save to Google Drive."
+      </div>
+      <div class="impact">
+        ⏱️ Saves 3 hours/week. Report is ready Friday night, not Saturday.
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>The Startup Founder</h2>
+
+    <div class="example-card">
+      <div class="role-badge">Workflow</div>
+      <div class="what-they-do">Daily Briefing</div>
+      <div class="the-problem">
+        Every morning, Alex checks email, calendar, Slack, and analytics dashboards to understand what happened overnight. Between time zones, it's scattered across 5 apps. Takes 30 minutes.
+      </div>
+      <div class="the-skill">
+        <strong>Skill:</strong> "At 6am, fetch: today's calendar + urgent emails + Slack announcements + analytics (DAU, churn, MRR from yesterday). Write like you're talking to me. Put it in one email."
+      </div>
+      <div class="impact">
+        ⏱️ Saves 30 min/week. Arrives at desk already knowing what matters.
+      </div>
+    </div>
+
+    <div class="example-card">
+      <div class="role-badge">Workflow</div>
+      <div class="what-they-do">Investor Memo</div>
+      <div class="the-problem">
+        Monthly, Alex drafts an investor update. Pulls data from Google Sheets, Slack announcements, calendar milestones. Takes 2 hours. It's never comprehensive because Alex forgets something.
+      </div>
+      <div class="the-skill">
+        <strong>Skill:</strong> "On the 25th of each month at 5pm, compile: monthly metrics (fetch from Sheet), team announcements (from Slack #announcements), upcoming milestones (from calendar), fundraising status. Draft memo in investor-friendly format. Save to Drive."
+      </div>
+      <div class="impact">
+        ⏱️ Saves 2 hours/month. Never miss a metric again.
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>The Sales Rep</h2>
+
+    <div class="example-card">
+      <div class="role-badge">Workflow</div>
+      <div class="what-they-do">CRM Auto-Update</div>
+      <div class="the-problem">
+        Marcus manually updates his CRM (Salesforce) with emails, calls, and deal notes. He forgets half the time. His manager's reports are always incomplete.
+      </div>
+      <div class="the-skill">
+        <strong>Skill:</strong> "Every 4 hours, check Gmail for new emails from customers. Extract: company, contact name, deal stage, next step. Log to Salesforce automatically."
+      </div>
+      <div class="impact">
+        ⏱️ Saves 5 hours/week. CRM is always up to date. Manager reports are accurate.
+      </div>
+    </div>
+
+    <div class="example-card">
+      <div class="role-badge">Workflow</div>
+      <div class="what-they-do">Prospect Research</div>
+      <div class="the-problem">
+        Before cold-calling, Marcus researches each prospect: company size, recent news, LinkedIn. Takes 15 minutes per lead. With 20 leads a week, that's 5 hours just on research.
+      </div>
+      <div class="the-skill">
+        <strong>Skill:</strong> "For each prospect on my list, search the web for: company size, funding, recent announcements, leadership team. Write a 2-line summary + talking points. Save to Google Sheet."
+      </div>
+      <div class="impact">
+        ⏱️ Saves 5 hours/week. Marcus calls prepared with context.
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>The Software Engineer</h2>
+
+    <div class="example-card">
+      <div class="role-badge">Workflow</div>
+      <div class="what-they-do">Daily Standup Notes</div>
+      <div class="the-problem">
+        Jade commits code multiple times a day, but struggles to remember what they did for standup. They ramble. They forget yesterday's work.
+      </div>
+      <div class="the-skill">
+        <strong>Skill:</strong> "Every evening, fetch my git commits + closed Jira tickets for today. Write standup summary: 'Yesterday did X. Today doing Y. Blocked by Z.'"
+      </div>
+      <div class="impact">
+        ⏱️ Saves 15 min/day. Standup is crisp. Manager gets accurate progress tracking.
+      </div>
+    </div>
+
+    <div class="example-card">
+      <div class="role-badge">Workflow</div>
+      <div class="what-they-do">Code Review Digest</div>
+      <div class="the-problem">
+        Jade gets pinged for code reviews constantly. By end of day, there are 8 PRs waiting. It's chaotic.
+      </div>
+      <div class="the-skill">
+        <strong>Skill:</strong> "At 5pm, fetch all open PRs awaiting my review. Sort by: urgent (blocking deploys) first, then by files I own, then by age. Send summary email with links."
+      </div>
+      <div class="impact">
+        ⏱️ Saves 20 min/day. Never lose a PR in the chaos again.
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>The Operator</h2>
+
+    <div class="example-card">
+      <div class="role-badge">Workflow</div>
+      <div class="what-they-do">Customer Support Triage</div>
+      <div class="the-problem">
+        Jamie handles support tickets. Each morning, 20+ tickets arrive in Slack and email. Jamie manually categorizes them, routes them, and prioritizes. Takes an hour.
+      </div>
+      <div class="the-skill">
+        <strong>Skill:</strong> "Every hour, check #support-inbox. For each ticket: extract company name, issue type (bug/feature/billing), severity, attach to customer profile. Route to right team. Update status."
+      </div>
+      <div class="impact">
+        ⏱️ Saves 5 hours/week. Tickets never pile up. Response time improves.
+      </div>
+    </div>
+
+    <div class="example-card">
+      <div class="role-badge">Workflow</div>
+      <div class="what-they-do">Onboarding Checklist</div>
+      <div class="the-problem">
+        Each new customer needs 15 manual steps: add to CRM, provision account, send welcome email, schedule intro call. Jamie does these one by one. Takes 1 hour per customer.
+      </div>
+      <div class="the-skill">
+        <strong>Skill:</strong> "When new customer arrives (via email), automatically: add to Salesforce, create user account, send welcome email, schedule 15-min intro call, log in project tracker."
+      </div>
+      <div class="impact">
+        ⏱️ Saves 1 hour/customer. First-day experience is frictionless. Scales to 10x customers.
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>The Pattern</h2>
+    <p><strong>They all started the same way:</strong> Identify one boring, repetitive task. Connect one tool. Run it once. See it work. Then add more.</p>
+    <p><strong>By week 4, they had 5-8 skills running.</strong> Combined, these saved them 8-15 hours a week.</p>
+    <p>That's a month's worth of work they got back.</p>
+
+    <div class="insight-box">
+      <strong>The real win:</strong> It's not that Cowork saves time. It's that once you automate the boring stuff, you finally have time to think.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Your Turn</h2>
+    <p>Pick your role. Which skill from your job could Cowork automate?</p>
+    <p><a href="/cowork-skills.html" class="button">Build Your First Skill →</a></p>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <p>AI Learning Hub — No hype, no theory. Just understanding. © 2026 Human Agency</p>
+  </div>
+</footer>
+
+<script>
+const navToggle = document.getElementById('nav-toggle');
+const nav = document.getElementById('nav');
+
+navToggle.addEventListener('click', () => {
+  nav.classList.toggle('active');
+});
+
+nav.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    nav.classList.remove('active');
+  });
+});
+</script>
+
+</body>
+</html>
