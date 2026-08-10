@@ -379,7 +379,13 @@ function filterAndRender() {
       company.location.toLowerCase().includes(searchTerm);
 
     const matchesActivity = activityTerm === '' || company.activity.toLowerCase().includes(activityTerm);
-    const matchesProfit = profitTerm === '' || company.profit === profitTerm.toUpperCase();
+
+    let matchesProfit = true;
+    if (profitTerm === 'yes') {
+      matchesProfit = company.profit === 'Y';
+    } else if (profitTerm === 'no') {
+      matchesProfit = company.profit === 'N';
+    }
 
     return matchesSearch && matchesActivity && matchesProfit;
   });
@@ -449,13 +455,19 @@ function updateStats() {
   document.getElementById('profitable-count').textContent = profitableCount;
 }
 
-searchInput.addEventListener('input', filterAndRender);
-activityFilter.addEventListener('change', filterAndRender);
-profitableFilter.addEventListener('change', filterAndRender);
-sortSelect.addEventListener('change', filterAndRender);
+function init() {
+  searchInput.addEventListener('input', filterAndRender);
+  activityFilter.addEventListener('change', filterAndRender);
+  profitableFilter.addEventListener('change', filterAndRender);
+  sortSelect.addEventListener('change', filterAndRender);
+  filterAndRender();
+}
 
-// Initial render
-filterAndRender();
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
 </script>
 
 </body>
