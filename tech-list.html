@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sunday Times 100 Tech 2026 — Private</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f9f8f6;
+      --surface: #ffffff;
+      --border: #ebebeb;
+      --text: #111111;
+      --muted: #666666;
+      --accent: #4f46e5;
+      --good: #10b981;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f0f0f;
+        --surface: #1a1a1a;
+        --border: #2a2a2a;
+        --text: #f5f5f5;
+        --muted: #999999;
+      }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin-bottom: 32px;
+      font-size: 14px;
+    }
+
+    .controls {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .control-group label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    input, select {
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--surface);
+      color: var(--text);
+      font-size: 14px;
+      font-family: inherit;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th {
+      background: var(--surface);
+      padding: 16px;
+      text-align: left;
+      font-weight: 600;
+      border-bottom: 2px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    th:hover {
+      background: var(--bg);
+    }
+
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    tr:hover {
+      background: var(--bg);
+    }
+
+    .rank {
+      font-weight: 700;
+      color: var(--accent);
+      width: 50px;
+    }
+
+    .name {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .activity {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .location {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .sales {
+      font-weight: 500;
+    }
+
+    .growth {
+      font-weight: 600;
+      color: var(--good);
+    }
+
+    .profit {
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .profit.yes {
+      color: var(--good);
+    }
+
+    .profit.no {
+      color: var(--muted);
+    }
+
+    .stats {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+      text-align: center;
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--accent);
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .sort-indicator {
+      font-size: 10px;
+      margin-left: 4px;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 768px) {
+      .controls {
+        grid-template-columns: 1fr;
+      }
+      table { font-size: 12px; }
+      th, td { padding: 10px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Sunday Times 100 Tech 2026</h1>
+  <p class="subtitle">Top UK tech companies by growth. Search, filter, and sort for roles.</p>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-value" id="total-count">50</div>
+      <div class="stat-label">Companies</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="avg-growth">0%</div>
+      <div class="stat-label">Avg Growth</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="profitable-count">0</div>
+      <div class="stat-label">Profitable</div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="control-group">
+      <label for="search">Search</label>
+      <input type="text" id="search" placeholder="Company name, activity, location...">
+    </div>
+    <div class="control-group">
+      <label for="activity-filter">Activity Type</label>
+      <select id="activity-filter">
+        <option value="">All Activities</option>
+        <option value="fintech">Fintech</option>
+        <option value="AI">AI</option>
+        <option value="platform">Platform</option>
+        <option value="software">Software</option>
+        <option value="pharmacy">Pharmacy</option>
+        <option value="payments">Payments</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label for="profitable-filter">Profitability</label>
+      <select id="profitable-filter">
+        <option value="">All</option>
+        <option value="yes">Profitable (Y)</option>
+        <option value="no">Not Yet (N)</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label for="sort">Sort By</label>
+      <select id="sort">
+        <option value="rank">Rank (1-50)</option>
+        <option value="growth-desc">Growth (High to Low)</option>
+        <option value="growth-asc">Growth (Low to High)</option>
+        <option value="sales-desc">Sales (High to Low)</option>
+        <option value="name">Name (A-Z)</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="table-wrapper">
+    <table id="tech-table">
+      <thead>
+        <tr>
+          <th class="rank">Rank</th>
+          <th class="name">Company</th>
+          <th class="activity">Activity</th>
+          <th class="location">Location</th>
+          <th class="sales">Sales</th>
+          <th class="growth">Growth <span class="sort-indicator">↕</span></th>
+          <th class="profit">Profit</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+      </tbody>
+    </table>
+  </div>
+
+  <div class="no-results" id="no-results" style="display: none;">
+    No companies match your filters. Try adjusting your search.
+  </div>
+</div>
+
+<script>
+const techData = [
+  {rank: 1, name: "Abound", activity: "Lending fintech", location: "London", sales: "£66.8m", growth: 490.24, profit: "Y"},
+  {rank: 2, name: "Vertice", activity: "AI procurement platform", location: "London", sales: "£27.0m", growth: 437.37, profit: "N"},
+  {rank: 3, name: "Oxbury Bank", activity: "Banking fintech", location: "Chester", sales: "£112.5m", growth: 399.21, profit: "Y"},
+  {rank: 4, name: "Bondaval", activity: "Credit insurance", location: "London", sales: "£11.4m", growth: 334.47, profit: "N"},
+  {rank: 5, name: "Lindus Health", activity: "Clinical trials platform", location: "London", sales: "£8.2m", growth: 265.74, profit: "N"},
+  {rank: 6, name: "OneDome", activity: "Property platform", location: "London", sales: "£20.0m", growth: 246.58, profit: "Y"},
+  {rank: 7, name: "Hived", activity: "Tech-enabled courier", location: "London", sales: "£8.2m", growth: 221.97, profit: "N"},
+  {rank: 8, name: "Carmoola", activity: "Digital car finance", location: "London", sales: "£16.0m", growth: 218.25, profit: "N"},
+  {rank: 9, name: "LendingCrowd", activity: "Lending fintech", location: "Edinburgh", sales: "£12.1m", growth: 207.08, profit: "Y"},
+  {rank: 10, name: "Scan.com", activity: "Medical imaging services", location: "London", sales: "£40.7m", growth: 200.47, profit: "Y"},
+  {rank: 11, name: "Synthesia", activity: "AI video creator", location: "London", sales: "£45.7m", growth: 196.86, profit: "N"},
+  {rank: 12, name: "PolyAI", activity: "AI voice assistants", location: "London", sales: "£11.9m", growth: 186.85, profit: "N"},
+  {rank: 13, name: "Phlo", activity: "Digital pharmacy", location: "Glasgow", sales: "£23.1m", growth: 180.14, profit: "N"},
+  {rank: 14, name: "Sessions", activity: "Food delivery platform", location: "London", sales: "£13.8m", growth: 177.04, profit: "N"},
+  {rank: 15, name: "Payhawk", activity: "Spend management software", location: "London", sales: "£20.6m", growth: 150.85, profit: "N"},
+  {rank: 16, name: "Chip", activity: "Investment and savings fintech", location: "London", sales: "£23.8m", growth: 148.00, profit: "N"},
+  {rank: 17, name: "Creditspring", activity: "Lending fintech", location: "London", sales: "£32.8m", growth: 135.17, profit: "Y"},
+  {rank: 18, name: "Connectd", activity: "Fractional working platform", location: "London", sales: "£5.1m", growth: 135.11, profit: "N"},
+  {rank: 19, name: "Cleo AI", activity: "Personal finance fintech", location: "London", sales: "£106.2m", growth: 132.34, profit: "Y"},
+  {rank: 20, name: "Lottie", activity: "Care home marketplace", location: "London", sales: "£5.0m", growth: 126.19, profit: "N"},
+  {rank: 21, name: "Moneybox", activity: "Personal finance fintech", location: "London", sales: "£115.9m", growth: 125.17, profit: "Y"},
+  {rank: 22, name: "Peppy Health", activity: "Employee benefits platform", location: "London", sales: "£10.4m", growth: 124.15, profit: "N"},
+  {rank: 23, name: "MiFinity", activity: "Payment services", location: "Belfast", sales: "£21.5m", growth: 124.14, profit: "Y"},
+  {rank: 24, name: "9fin", activity: "Corporate debt analytics", location: "London", sales: "£14.7m", growth: 117.75, profit: "N"},
+  {rank: 25, name: "Zilch Technology", activity: "Lending fintech", location: "London", sales: "£110.3m", growth: 115.88, profit: "N"},
+  {rank: 26, name: "Flagstone", activity: "Savings fintech", location: "London", sales: "£55.3m", growth: 111.25, profit: "Y"},
+  {rank: 27, name: "Zinc", activity: "Employee screening", location: "London", sales: "£11.2m", growth: 110.83, profit: "N"},
+  {rank: 28, name: "Juro", activity: "AI legal services", location: "London", sales: "£7.0m", growth: 110.17, profit: "N"},
+  {rank: 29, name: "Evaro", activity: "Digital pharmacy", location: "Norwich", sales: "£12.1m", growth: 109.72, profit: "Y"},
+  {rank: 30, name: "Envelop Risk", activity: "Cyber reinsurance", location: "Bristol", sales: "£34.6m", growth: 104.94, profit: "Y"},
+  {rank: 31, name: "Zen Educate", activity: "Education staffing platform", location: "London", sales: "£67.9m", growth: 104.25, profit: "N"},
+  {rank: 32, name: "ANNA Money", activity: "Business accountancy services", location: "London", sales: "£19.2m", growth: 100.99, profit: "N"},
+  {rank: 33, name: "Hyperexponential", activity: "Insurance pricing software", location: "London", sales: "£24.4m", growth: 98.24, profit: "N"},
+  {rank: 34, name: "TrueLayer", activity: "Payments fintech", location: "London", sales: "£20.3m", growth: 97.20, profit: "N"},
+  {rank: 35, name: "Yoto", activity: "Children's audio platform", location: "London", sales: "£94.8m", growth: 96.33, profit: "N"},
+  {rank: 36, name: "Halo Service Solutions", activity: "Outsourced IT support", location: "Suffolk", sales: "£74.3m", growth: 96.22, profit: "Y"},
+  {rank: 37, name: "Xelix", activity: "AI accounts software", location: "London", sales: "£6.4m", growth: 95.22, profit: "Y"},
+  {rank: 38, name: "AutogenAI", activity: "Bid writing software", location: "London/New York", sales: "£10.7m", growth: 94.05, profit: "N"},
+  {rank: 39, name: "iplicit", activity: "Business finance software", location: "Bournemouth", sales: "£6.3m", growth: 92.91, profit: "N"},
+  {rank: 40, name: "Veremark", activity: "Employee screening", location: "London", sales: "£5.0m", growth: 92.04, profit: "N"},
+  {rank: 41, name: "Vitesse", activity: "Treasury and payment insurtech", location: "London", sales: "£32.9m", growth: 89.74, profit: "N"},
+  {rank: 42, name: "HeliosX", activity: "Digital pharmacy", location: "London", sales: "£178.4m", growth: 88.36, profit: "N"},
+  {rank: 43, name: "Stream", activity: "Employee benefits fintech", location: "London", sales: "£36.9m", growth: 87.23, profit: "N"},
+  {rank: 44, name: "Monavate", activity: "Payments platform", location: "Cambridge", sales: "£39.0m", growth: 86.18, profit: "N"},
+  {rank: 45, name: "Content Ignite", activity: "Advertising technology", location: "Bournemouth", sales: "£8.7m", growth: 84.87, profit: "Y"},
+  {rank: 46, name: "Tandem", activity: "Banking fintech", location: "Blackpool", sales: "£87.5m", growth: 84.70, profit: "Y"},
+  {rank: 47, name: "Yoti", activity: "Digital ID provider", location: "London", sales: "£20.3m", growth: 83.79, profit: "N"},
+  {rank: 48, name: "Gravitee", activity: "Software API manager", location: "London/Denver", sales: "£11.1m", growth: 82.16, profit: "N"},
+  {rank: 49, name: "Sokin", activity: "Payments platform", location: "London", sales: "£16.8m", growth: 81.04, profit: "Y"},
+  {rank: 50, name: "Reincubate", activity: "AI video enhancement", location: "London", sales: "£6.8m", growth: 80.47, profit: "Y"}
+];
+
+let filteredData = [...techData];
+
+const searchInput = document.getElementById('search');
+const activityFilter = document.getElementById('activity-filter');
+const profitableFilter = document.getElementById('profitable-filter');
+const sortSelect = document.getElementById('sort');
+const tableBody = document.getElementById('table-body');
+const noResults = document.getElementById('no-results');
+
+function filterAndRender() {
+  const searchTerm = searchInput.value.toLowerCase();
+  const activityTerm = activityFilter.value.toLowerCase();
+  const profitTerm = profitableFilter.value;
+
+  filteredData = techData.filter(company => {
+    const matchesSearch = searchTerm === '' ||
+      company.name.toLowerCase().includes(searchTerm) ||
+      company.activity.toLowerCase().includes(searchTerm) ||
+      company.location.toLowerCase().includes(searchTerm);
+
+    const matchesActivity = activityTerm === '' || company.activity.toLowerCase().includes(activityTerm);
+    const matchesProfit = profitTerm === '' || company.profit === profitTerm.toUpperCase();
+
+    return matchesSearch && matchesActivity && matchesProfit;
+  });
+
+  sortData();
+  render();
+  updateStats();
+}
+
+function sortData() {
+  const sortBy = sortSelect.value;
+
+  switch(sortBy) {
+    case 'growth-desc':
+      filteredData.sort((a, b) => b.growth - a.growth);
+      break;
+    case 'growth-asc':
+      filteredData.sort((a, b) => a.growth - b.growth);
+      break;
+    case 'sales-desc':
+      filteredData.sort((a, b) => {
+        const aVal = parseFloat(a.sales.replace(/[£m]/g, ''));
+        const bVal = parseFloat(b.sales.replace(/[£m]/g, ''));
+        return bVal - aVal;
+      });
+      break;
+    case 'name':
+      filteredData.sort((a, b) => a.name.localeCompare(b.name));
+      break;
+    default:
+      filteredData.sort((a, b) => a.rank - b.rank);
+  }
+}
+
+function render() {
+  tableBody.innerHTML = '';
+
+  if (filteredData.length === 0) {
+    noResults.style.display = 'block';
+    return;
+  }
+
+  noResults.style.display = 'none';
+
+  filteredData.forEach(company => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td class="rank">${company.rank}</td>
+      <td class="name">${company.name}</td>
+      <td class="activity">${company.activity}</td>
+      <td class="location">${company.location}</td>
+      <td class="sales">${company.sales}</td>
+      <td class="growth">${company.growth.toFixed(2)}%</td>
+      <td class="profit ${company.profit === 'Y' ? 'yes' : 'no'}">${company.profit}</td>
+    `;
+    tableBody.appendChild(row);
+  });
+}
+
+function updateStats() {
+  const count = filteredData.length;
+  const avgGrowth = count > 0 ? (filteredData.reduce((sum, c) => sum + c.growth, 0) / count).toFixed(1) : 0;
+  const profitableCount = filteredData.filter(c => c.profit === 'Y').length;
+
+  document.getElementById('total-count').textContent = count;
+  document.getElementById('avg-growth').textContent = avgGrowth + '%';
+  document.getElementById('profitable-count').textContent = profitableCount;
+}
+
+searchInput.addEventListener('input', filterAndRender);
+activityFilter.addEventListener('change', filterAndRender);
+profitableFilter.addEventListener('change', filterAndRender);
+sortSelect.addEventListener('change', filterAndRender);
+
+// Initial render
+filterAndRender();
+</script>
+
+</body>
+</html>
