@@ -244,13 +244,162 @@
             color: #cbd5e1;
             margin-bottom: 20px;
         }
+
+        .choice-container {
+            text-align: center;
+        }
+
+        .choice-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: #14b8a6;
+        }
+
+        .choice-desc {
+            color: #cbd5e1;
+            margin-bottom: 40px;
+            font-size: 15px;
+            line-height: 1.6;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .choice-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .choice-card {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+            border: 2px solid #334155;
+            border-radius: 12px;
+            padding: 28px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .choice-card:hover {
+            border-color: #14b8a6;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(20, 184, 166, 0.2);
+        }
+
+        .choice-card.selected {
+            border-color: #14b8a6;
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+        }
+
+        .choice-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        .choice-name {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #f1f5f9;
+        }
+
+        .choice-details {
+            font-size: 13px;
+            color: #cbd5e1;
+            line-height: 1.6;
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        .choice-details strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #14b8a6;
+        }
+
+        .choice-pros {
+            text-align: left;
+            font-size: 12px;
+            color: #cbd5e1;
+        }
+
+        .choice-pros li {
+            margin-bottom: 4px;
+            margin-left: 16px;
+        }
+
+        .choice-start-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 13px;
+        }
+
+        .choice-start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(20, 184, 166, 0.3);
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🚀 Claude CLI Setup Guide</h1>
-            <p class="subtitle">Interactive step-by-step installation for beginners</p>
+            <h1>🚀 Claude Setup Guide</h1>
+            <p class="subtitle">Choose how you want to use Claude</p>
+        </div>
+
+        <!-- CHOICE SCREEN -->
+        <div class="step-container active" id="choice">
+            <div class="choice-container">
+                <div class="choice-title">How do you want to use Claude?</div>
+                <div class="choice-desc">Pick your preferred way to access Claude. You can always switch later!</div>
+
+                <div class="choice-grid">
+                    <div class="choice-card" onclick="selectChoice(this, 'cli')">
+                        <div class="choice-icon">💻</div>
+                        <div class="choice-name">Claude CLI</div>
+                        <div class="choice-details">
+                            <strong>Command Line</strong>
+                            Run Claude from your terminal
+                        </div>
+                        <ul class="choice-pros">
+                            <li>✓ Fastest to set up (5 min)</li>
+                            <li>✓ Perfect for scripts</li>
+                            <li>✓ Automation workflows</li>
+                            <li>✓ Lightweight</li>
+                        </ul>
+                        <button class="choice-start-btn" onclick="startSetup('cli', event)">Start CLI Setup →</button>
+                    </div>
+
+                    <div class="choice-card" onclick="selectChoice(this, 'desktop')">
+                        <div class="choice-icon">🖥️</div>
+                        <div class="choice-name">Claude Code Desktop</div>
+                        <div class="choice-details">
+                            <strong>Native App</strong>
+                            Full IDE in a native application
+                        </div>
+                        <ul class="choice-pros">
+                            <li>✓ Native Mac/Windows app</li>
+                            <li>✓ Full IDE experience</li>
+                            <li>✓ Code with AI assistance</li>
+                            <li>✓ Fast & responsive</li>
+                        </ul>
+                        <button class="choice-start-btn" onclick="startSetup('desktop', event)">Start Desktop Setup →</button>
+                    </div>
+                </div>
+
+                <p style="color: #94a3b8; font-size: 12px; margin-top: 20px;">
+                    Not sure? The <strong>Desktop app</strong> is best for coding. The <strong>CLI</strong> is best for automation.
+                </p>
+            </div>
         </div>
 
         <div class="progress-bar">
@@ -501,6 +650,24 @@
         function toggleCheck(el) {
             el.classList.toggle('checked');
             el.textContent = el.classList.contains('checked') ? '✓' : '';
+        }
+
+        function selectChoice(cardEl, type) {
+            document.querySelectorAll('.choice-card').forEach(c => c.classList.remove('selected'));
+            cardEl.classList.add('selected');
+        }
+
+        function startSetup(type, event) {
+            event.stopPropagation();
+            if (type === 'desktop') {
+                window.location.href = '/setup-claude-desktop.html';
+            } else {
+                // Show CLI steps
+                document.getElementById('choice').style.display = 'none';
+                document.getElementById('step1').classList.add('active');
+                currentStepNum = 1;
+                showStep(1);
+            }
         }
     </script>
 </body>
