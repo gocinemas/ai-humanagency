@@ -101,6 +101,95 @@
 
     nav a:hover { color: var(--text); }
 
+    /* Setup Guides Section */
+    .setup-section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+    }
+
+    .setup-title {
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .setup-subtitle {
+      font-size: 16px;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 40px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .setup-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .setup-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .setup-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .setup-card a {
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      height: 100%;
+    }
+
+    .setup-icon {
+      font-size: 28px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+    }
+
+    .setup-name {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+      text-align: left;
+    }
+
+    .setup-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+      flex: 1;
+      text-align: left;
+    }
+
+    .setup-cta {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
     .nav-mobile-toggle {
       display: none;
       background: none;
@@ -333,6 +422,7 @@
       <a href="/ai-fundamentals.html">Fundamentals</a>
       <a href="/jargon.html">Jargon</a>
       <a href="/cowork-hub.html">Cowork</a>
+      <a href="#setup">Setup</a>
       <a href="mailto:mekala@gmail.com">Questions?</a>
     </nav>
     <button class="nav-mobile-toggle" id="nav-toggle">☰</button>
@@ -410,6 +500,49 @@
       <li><strong>Need to use AI at work?</strong> Use When to Use AI + your role's course.</li>
       <li><strong>Curious about the tools?</strong> Compare them side-by-side, then pick one to learn.</li>
     </ul>
+  </div>
+
+  <div class="setup-section" id="setup">
+    <h2 class="setup-title">🚀 Getting Started</h2>
+    <p class="setup-subtitle">Step-by-step guides to set up Claude CLI, Codex, build your portfolio, and integrate with the tools you need.</p>
+
+    <div class="setup-grid">
+      <div class="setup-card">
+        <a href="setup-claude.html">
+          <div class="setup-icon">💻</div>
+          <div class="setup-name">Claude CLI</div>
+          <div class="setup-desc">Install and run Claude from your terminal. Perfect for automation and scripting. 5-minute setup.</div>
+          <div class="setup-cta">Setup Guide →</div>
+        </a>
+      </div>
+
+      <div class="setup-card">
+        <a href="setup-codex.html">
+          <div class="setup-icon">⚙️</div>
+          <div class="setup-name">Codex IDE</div>
+          <div class="setup-desc">Claude in your IDE. Code faster with AI-powered suggestions and instant answers. Step-by-step.</div>
+          <div class="setup-cta">Setup Guide →</div>
+        </a>
+      </div>
+
+      <div class="setup-card">
+        <a href="setup-portfolio.html">
+          <div class="setup-icon">🎯</div>
+          <div class="setup-name">Build Your Portfolio</div>
+          <div class="setup-desc">GitHub + Supabase + Railway = live projects. Complete roadmap from zero to deployed.</div>
+          <div class="setup-cta">Get Started →</div>
+        </a>
+      </div>
+
+      <div class="setup-card">
+        <a href="setup-integrations.html">
+          <div class="setup-icon">🔗</div>
+          <div class="setup-name">Integrations</div>
+          <div class="setup-desc">Connect GitHub, Supabase, Railway, and deploy your first app. All the wiring explained.</div>
+          <div class="setup-cta">Learn More →</div>
+        </a>
+      </div>
+    </div>
   </div>
 </div>
 
