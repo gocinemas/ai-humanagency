@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Getting Started — Setup Guides</title>
+  <meta name="description" content="Step-by-step guides to install Claude CLI, Codex IDE, build your portfolio, and set up integrations.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f9f8f6;
+      --surface: #ffffff;
+      --border: #ebebeb;
+      --text: #111111;
+      --muted: #666666;
+      --accent: #4f46e5;
+      --good: #10b981;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f0f0f;
+        --surface: #1a1a1a;
+        --border: #2a2a2a;
+        --text: #f5f5f5;
+        --muted: #999999;
+      }
+    }
+
+    :root[data-theme="light"] {
+      --bg: #f9f8f6;
+      --surface: #ffffff;
+      --border: #ebebeb;
+      --text: #111111;
+      --muted: #666666;
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #0f0f0f;
+      --surface: #1a1a1a;
+      --border: #2a2a2a;
+      --text: #f5f5f5;
+      --muted: #999999;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* Header */
+    header {
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .logo .dot { color: var(--accent); }
+
+    nav {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    nav a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      transition: color 0.15s;
+    }
+
+    nav a:hover { color: var(--text); }
+    nav a.active { color: var(--accent); font-weight: 600; }
+
+    /* Hero */
+    .hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 72px 24px 48px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(32px, 6vw, 48px);
+      font-weight: 900;
+      letter-spacing: -1px;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* Main Content */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    /* Guide Grid */
+    .guides-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-bottom: 60px;
+    }
+
+    .guide-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .guide-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.1);
+      transform: translateY(-4px);
+    }
+
+    .guide-card a {
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      height: 100%;
+    }
+
+    .guide-icon {
+      font-size: 40px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+    }
+
+    .guide-title {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+
+    .guide-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+      flex: 1;
+    }
+
+    .guide-meta {
+      display: flex;
+      gap: 16px;
+      font-size: 12px;
+      color: var(--muted);
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .guide-cta {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      margin-top: 8px;
+    }
+
+    /* Path Section */
+    .path-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 40px;
+      margin-bottom: 60px;
+    }
+
+    .path-title {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 24px;
+    }
+
+    .paths {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .path {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+    }
+
+    .path-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .path-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .path-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .path-step {
+      font-size: 13px;
+      color: var(--text);
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .path-step::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* FAQ Section */
+    .faq-section {
+      margin-bottom: 60px;
+    }
+
+    .faq-title {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 24px;
+    }
+
+    .faq-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+
+    .faq-q {
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+      font-size: 15px;
+    }
+
+    .faq-a {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      padding: 40px 0;
+      text-align: center;
+    }
+
+    .footer-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Mobile */
+    @media (max-width: 640px) {
+      .guides-grid { gap: 16px; }
+      .guide-card { padding: 24px; }
+      .path-section { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <nav>
+      <a href="/start.html">Start Here</a>
+      <a href="/quick-reference.html">Quick Ref</a>
+      <a href="/ai-fundamentals.html">Fundamentals</a>
+      <a href="/jargon.html">Jargon</a>
+      <a href="/cowork-hub.html">Cowork</a>
+      <a href="/setup.html" class="active">Setup</a>
+      <a href="mailto:mekala@gmail.com">Questions?</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <h1>🚀 Getting Started</h1>
+  <p>Learn to build with AI. Step-by-step guides for Claude CLI, Codex, portfolios, and integrations. From zero to deployed in hours.</p>
+</div>
+
+<div class="container">
+  <!-- Main Guides -->
+  <div class="guides-grid">
+    <div class="guide-card">
+      <a href="setup-claude.html">
+        <div class="guide-icon">💻</div>
+        <div class="guide-title">Claude CLI</div>
+        <div class="guide-desc">Install Claude on your terminal. Run AI queries directly from your command line. Perfect for automation, scripting, and workflows.</div>
+        <div class="guide-meta">
+          <div class="meta-item">⏱️ 5 minutes</div>
+          <div class="meta-item">🎯 Beginner</div>
+        </div>
+        <div class="guide-cta">Start Setup →</div>
+      </a>
+    </div>
+
+    <div class="guide-card">
+      <a href="setup-codex.html">
+        <div class="guide-icon">⚙️</div>
+        <div class="guide-title">Codex IDE</div>
+        <div class="guide-desc">Get Claude in your code editor. AI-powered suggestions, instant debugging, and coding assistance. VS Code & JetBrains supported.</div>
+        <div class="guide-meta">
+          <div class="meta-item">⏱️ 5 minutes</div>
+          <div class="meta-item">🎯 Beginner</div>
+        </div>
+        <div class="guide-cta">Setup Guide →</div>
+      </a>
+    </div>
+
+    <div class="guide-card">
+      <a href="setup-portfolio.html">
+        <div class="guide-icon">🎯</div>
+        <div class="guide-title">Build Your Portfolio</div>
+        <div class="guide-desc">GitHub + Supabase + Railway = deployed projects. Complete roadmap from creating your first repo to going live in production.</div>
+        <div class="guide-meta">
+          <div class="meta-item">⏱️ 30 minutes</div>
+          <div class="meta-item">🎯 Intermediate</div>
+        </div>
+        <div class="guide-cta">Get Started →</div>
+      </a>
+    </div>
+
+    <div class="guide-card">
+      <a href="setup-integrations.html">
+        <div class="guide-icon">🔗</div>
+        <div class="guide-title">Integrations</div>
+        <div class="guide-desc">Connect your tools. GitHub, Supabase, Railway, and more. All the wiring and configuration explained for beginners.</div>
+        <div class="guide-meta">
+          <div class="meta-item">⏱️ 20 minutes</div>
+          <div class="meta-item">🎯 Intermediate</div>
+        </div>
+        <div class="guide-cta">Learn More →</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Learning Paths -->
+  <div class="path-section">
+    <h2 class="path-title">📍 Choose Your Path</h2>
+    <div class="paths">
+      <div class="path">
+        <div class="path-name">🔰 Complete Beginner</div>
+        <div class="path-desc">Never coded before? Start here and go step-by-step.</div>
+        <div class="path-steps">
+          <div class="path-step">Claude CLI Setup</div>
+          <div class="path-step">Codex IDE Setup</div>
+          <div class="path-step">Build Your Portfolio</div>
+          <div class="path-step">Integrations Guide</div>
+        </div>
+      </div>
+
+      <div class="path">
+        <div class="path-name">💻 Developer</div>
+        <div class="path-desc">You code already. Get Claude in your workflow fast.</div>
+        <div class="path-steps">
+          <div class="path-step">Codex IDE Setup</div>
+          <div class="path-step">Build Your Portfolio</div>
+          <div class="path-step">Integrations Guide</div>
+        </div>
+      </div>
+
+      <div class="path">
+        <div class="path-name">🚀 DevOps / Automation</div>
+        <div class="path-desc">Command-line focused. Integrate Claude into scripts.</div>
+        <div class="path-steps">
+          <div class="path-step">Claude CLI Setup</div>
+          <div class="path-step">Integrations Guide</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq-section">
+    <h2 class="faq-title">❓ Common Questions</h2>
+
+    <div class="faq-item">
+      <div class="faq-q">Do I need to pay for Claude?</div>
+      <div class="faq-a">Claude CLI and Codex require an Anthropic API key (paid usage). Free tier available. GitHub and Railway have generous free tiers for portfolio building.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Which setup should I do first?</div>
+      <div class="faq-a">If you're new to coding: start with Claude CLI to learn commands, then move to Codex in an editor. If you already code: start with Codex or go straight to building a portfolio.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Can I skip Integrations?</div>
+      <div class="faq-a">If you're just using Claude personally, you can skip it. But if you're building projects or deploying to production, Integrations explains all the essential connections.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">What OS do I need?</div>
+      <div class="faq-a">All guides work on Mac, Linux, and Windows. We call out OS-specific steps where they matter.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">How long does this actually take?</div>
+      <div class="faq-a">Claude CLI: 5 minutes. Codex: 5 minutes. Portfolio: 30 minutes first time. Integrations: 20 minutes. Total: under 2 hours to go from zero to deployed.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">I got stuck. What now?</div>
+      <div class="faq-a">Each guide has a troubleshooting section for common errors. Still stuck? Email mekala@gmail.com with the error and guide number.</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <p>AI Learning Hub — No hype, no theory. Just understanding. © 2026 Human Agency</p>
+  </div>
+</footer>
+
+</body>
+</html>
