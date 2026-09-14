@@ -252,6 +252,60 @@
             color: #cbd5e1;
             margin-bottom: 20px;
         }
+
+        .download-banner {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .download-banner p {
+            color: #cbd5e1;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .download-banner a {
+            display: inline-block;
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .download-banner a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+        }
+
+        .back-to-choice {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .back-to-choice a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .back-to-choice a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -259,6 +313,17 @@
         <div class="header">
             <h1>🖥️ Claude Code Desktop</h1>
             <p class="subtitle">Native app for Mac & Windows — Interactive setup guide</p>
+        </div>
+
+        <!-- Download Banner -->
+        <div class="download-banner">
+            <p>Ready to download Claude Code Desktop?</p>
+            <a href="https://claude.ai/download" target="_blank">📥 Download for Mac or Windows →</a>
+        </div>
+
+        <!-- Back to Choice Link -->
+        <div class="back-to-choice">
+            <a href="setup-claude.html">← Choose a different Claude setup</a>
         </div>
 
         <div class="progress-bar">

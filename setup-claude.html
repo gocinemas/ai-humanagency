@@ -347,13 +347,121 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 24px rgba(20, 184, 166, 0.3);
         }
+
+        .download-banner {
+            display: none;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .download-banner.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .download-banner p {
+            color: #cbd5e1;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .download-banner a {
+            display: inline-block;
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .download-banner a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+        }
+
+        .guide-header {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            text-align: center;
+            display: none;
+        }
+
+        .guide-header.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        .guide-header .guide-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #14b8a6;
+            margin-bottom: 4px;
+        }
+
+        .guide-header .guide-timer {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .back-to-choice {
+            display: none;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .back-to-choice.active {
+            display: block;
+        }
+
+        .back-to-choice a {
+            color: #14b8a6;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .back-to-choice a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🚀 Claude Setup Guide</h1>
-            <p class="subtitle">Choose how you want to use Claude</p>
+            <h1 id="mainTitle">🚀 Claude Setup Guide</h1>
+            <p class="subtitle" id="mainSubtitle">Choose how you want to use Claude</p>
+        </div>
+
+        <!-- Download Banner (Desktop only) -->
+        <div class="download-banner" id="downloadBanner">
+            <p>Ready to download Claude Code Desktop?</p>
+            <a href="https://claude.ai/download" target="_blank">📥 Download for Mac or Windows →</a>
+        </div>
+
+        <!-- Guide Header (shown after choice) -->
+        <div class="guide-header" id="guideHeader">
+            <div class="guide-name" id="guideName">Claude CLI Setup</div>
+            <div class="guide-timer">⏱️ ~5 minutes to complete</div>
+        </div>
+
+        <!-- Back to Choice Link -->
+        <div class="back-to-choice" id="backToChoice">
+            <a href="#" onclick="backToChoice(event)">← Change your choice</a>
         </div>
 
         <!-- CHOICE SCREEN -->
@@ -652,22 +760,67 @@
             el.textContent = el.classList.contains('checked') ? '✓' : '';
         }
 
+        let selectedType = null;
+
         function selectChoice(cardEl, type) {
             document.querySelectorAll('.choice-card').forEach(c => c.classList.remove('selected'));
             cardEl.classList.add('selected');
+            selectedType = type;
         }
 
         function startSetup(type, event) {
             event.stopPropagation();
+            selectedType = type;
+
             if (type === 'desktop') {
-                window.location.href = '/setup-claude-desktop.html';
+                // Update page for Desktop
+                document.getElementById('mainTitle').textContent = '🖥️ Claude Code Desktop Setup';
+                document.getElementById('mainSubtitle').textContent = 'Install Claude on your Mac or Windows';
+                document.getElementById('guideName').textContent = 'Claude Code Desktop Setup';
+                document.getElementById('downloadBanner').classList.add('active');
+                document.getElementById('guideHeader').classList.add('active');
+                document.getElementById('backToChoice').classList.add('active');
+
+                // Hide choice, show desktop guide
+                document.getElementById('choice').style.display = 'none';
+                setTimeout(() => {
+                    window.location.href = '/setup-claude-desktop.html';
+                }, 500);
             } else {
+                // Update page for CLI
+                document.getElementById('mainTitle').textContent = '💻 Claude CLI Setup';
+                document.getElementById('mainSubtitle').textContent = 'Run Claude from your terminal';
+                document.getElementById('guideName').textContent = 'Claude CLI Setup';
+                document.getElementById('downloadBanner').classList.remove('active');
+                document.getElementById('guideHeader').classList.add('active');
+                document.getElementById('backToChoice').classList.add('active');
+
                 // Show CLI steps
                 document.getElementById('choice').style.display = 'none';
                 document.getElementById('step1').classList.add('active');
                 currentStepNum = 1;
                 showStep(1);
             }
+        }
+
+        function backToChoice(event) {
+            event.preventDefault();
+            // Reset to choice screen
+            selectedType = null;
+            document.getElementById('mainTitle').textContent = '🚀 Claude Setup Guide';
+            document.getElementById('mainSubtitle').textContent = 'Choose how you want to use Claude';
+            document.getElementById('guideHeader').classList.remove('active');
+            document.getElementById('backToChoice').classList.remove('active');
+            document.getElementById('downloadBanner').classList.remove('active');
+
+            // Hide all steps and show choice
+            document.querySelectorAll('.step-container').forEach(s => s.classList.remove('active'));
+            document.getElementById('choice').style.display = 'block';
+            document.getElementById('choice').classList.add('active');
+
+            // Reset progress
+            currentStepNum = 1;
+            document.getElementById('progressFill').style.width = '0%';
         }
     </script>
 </body>
