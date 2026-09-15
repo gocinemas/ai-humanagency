@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learning Path — Master AI Development</title>
+  <meta name="description" content="Complete roadmap to master Claude, build agents, and deploy AI apps. From fundamentals to production.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f0f0f;
+      --surface: #1a1a1a;
+      --border: #2a2a2a;
+      --text: #f5f5f5;
+      --muted: #999999;
+      --accent: #4f46e5;
+      --accent-alt: #14b8a6;
+      --good: #10b981;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* Header */
+    header {
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .logo .dot { color: var(--accent); }
+
+    nav {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    nav a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      transition: color 0.15s;
+    }
+
+    nav a:hover { color: var(--text); }
+    nav a.active { color: var(--accent); font-weight: 600; }
+
+    /* Hero */
+    .hero {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 72px 24px 48px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(32px, 6vw, 48px);
+      font-weight: 900;
+      letter-spacing: -1px;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* Main Content */
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    /* Timeline/Phases */
+    .phases-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      margin-bottom: 60px;
+    }
+
+    .phase-card {
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.05) 0%, rgba(20, 184, 166, 0.05) 100%);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .phase-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--accent-alt) 100%);
+    }
+
+    .phase-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(79, 70, 229, 0.15);
+    }
+
+    .phase-card a {
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      height: 100%;
+    }
+
+    .phase-number {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .phase-title {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+
+    .phase-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .phase-topics {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .phase-topics strong {
+      color: var(--accent-alt);
+    }
+
+    .phase-time {
+      font-size: 13px;
+      color: var(--accent);
+      font-weight: 600;
+      margin-top: auto;
+    }
+
+    /* Stats */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 60px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    /* Getting Started */
+    .getting-started {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      margin-bottom: 60px;
+    }
+
+    .getting-started h2 {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .getting-started-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .step {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .step-num {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      letter-spacing: 0.4px;
+    }
+
+    .step-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .step-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* Roadmap Visual */
+    .roadmap {
+      position: relative;
+      padding: 40px 0;
+      margin-bottom: 60px;
+    }
+
+    .roadmap-line {
+      display: none;
+    }
+
+    /* Prerequisites */
+    .prerequisites {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.05) 0%, rgba(34, 197, 94, 0.02) 100%);
+      border: 1px solid rgba(34, 197, 94, 0.2);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 60px;
+    }
+
+    .prerequisites h3 {
+      color: var(--good);
+      margin-bottom: 12px;
+      font-size: 16px;
+    }
+
+    .prerequisites ul {
+      list-style: none;
+      margin-left: 0;
+    }
+
+    .prerequisites li {
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .prerequisites li::before {
+      content: '✓ ';
+      color: var(--good);
+      font-weight: 600;
+      margin-right: 8px;
+    }
+
+    /* FAQ */
+    .faq {
+      margin-bottom: 60px;
+    }
+
+    .faq h2 {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 24px;
+    }
+
+    .faq-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 12px;
+    }
+
+    .faq-q {
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+      font-size: 15px;
+    }
+
+    .faq-a {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      padding: 40px 0;
+      text-align: center;
+    }
+
+    .footer-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 24px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Mobile */
+    @media (max-width: 640px) {
+      .phases-grid { gap: 16px; }
+      .phase-card { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <nav>
+      <a href="/setup.html">Setup</a>
+      <a href="/learn.html" class="active">Learn</a>
+      <a href="/resources.html">Resources</a>
+      <a href="mailto:mekala@gmail.com">Questions?</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <h1>📚 Master AI Development</h1>
+  <p>Complete roadmap from setup to production. 4 phases, 30+ hours of learning, build your first AI product.</p>
+</div>
+
+<div class="container">
+  <!-- Quick Stats -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-number">4</div>
+      <div class="stat-label">Phases</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">30+h</div>
+      <div class="stat-label">Total Time</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">100%</div>
+      <div class="stat-label">Free</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">∞</div>
+      <div class="stat-label">Projects</div>
+    </div>
+  </div>
+
+  <!-- Prerequisites -->
+  <div class="prerequisites">
+    <h3>✓ Prerequisites</h3>
+    <ul>
+      <li>Completed <strong>Setup Guides</strong> (Claude CLI or Desktop)</li>
+      <li>Basic command-line familiarity (cd, git, npm)</li>
+      <li>30-60 mins per phase (flexible schedule)</li>
+      <li>Willingness to build real projects</li>
+    </ul>
+  </div>
+
+  <!-- Learning Path -->
+  <div class="phases-grid">
+    <div class="phase-card">
+      <a href="learn-fundamentals.html">
+        <div class="phase-number">Phase 1</div>
+        <div class="phase-title">Fundamentals</div>
+        <div class="phase-desc">Understand how Claude works. Learn agent architecture. Build your first real thing.</div>
+        <div class="phase-topics">
+          <strong>Topics:</strong> Agents • Context • Reasoning • Architecture
+        </div>
+        <div class="phase-time">⏱️ 6-8 hours</div>
+      </a>
+    </div>
+
+    <div class="phase-card">
+      <a href="learn-prompting.html">
+        <div class="phase-number">Phase 2</div>
+        <div class="phase-title">Prompting Mastery</div>
+        <div class="phase-desc">Write prompts that work. Master prompt engineering. Learn the CLAUDE.md system.</div>
+        <div class="phase-topics">
+          <strong>Topics:</strong> Prompting • CLAUDE.md • Memory • Context
+        </div>
+        <div class="phase-time">⏱️ 5-7 hours</div>
+      </a>
+    </div>
+
+    <div class="phase-card">
+      <a href="learn-automation.html">
+        <div class="phase-number">Phase 3</div>
+        <div class="phase-title">Automation & Integration</div>
+        <div class="phase-desc">Connect Claude to APIs. Build MCP connections. Create reusable skills.</div>
+        <div class="phase-topics">
+          <strong>Topics:</strong> MCP • Skills • APIs • Integrations
+        </div>
+        <div class="phase-time">⏱️ 8-10 hours</div>
+      </a>
+    </div>
+
+    <div class="phase-card">
+      <a href="learn-advanced.html">
+        <div class="phase-number">Phase 4</div>
+        <div class="phase-title">Production & Scale</div>
+        <div class="phase-desc">Deploy real AI products. Build multi-agent systems. Optimize for production.</div>
+        <div class="phase-topics">
+          <strong>Topics:</strong> Deployment • Production • Scale • Multi-agent
+        </div>
+        <div class="phase-time">⏱️ 8-10 hours</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Getting Started -->
+  <div class="getting-started">
+    <h2>🚀 How to Use This Path</h2>
+    <p style="color: var(--muted); margin-bottom: 20px;">Follow the phases in order, or jump to what you need:</p>
+    <div class="getting-started-steps">
+      <div class="step">
+        <div class="step-num">Step 1</div>
+        <div class="step-title">Complete Setup</div>
+        <div class="step-desc">Did you do the setup guides? If not, start there.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">Step 2</div>
+        <div class="step-title">Pick a Phase</div>
+        <div class="step-desc">Start with Fundamentals (Phase 1) unless you know what you need.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">Step 3</div>
+        <div class="step-title">Build Projects</div>
+        <div class="step-desc">Each phase has real project ideas. Do them. Don't skip.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">Step 4</div>
+        <div class="step-title">Deploy & Share</div>
+        <div class="step-desc">Push to GitHub. Deploy on Railway. Show the world.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq">
+    <h2>❓ Common Questions</h2>
+
+    <div class="faq-item">
+      <div class="faq-q">How long does this take?</div>
+      <div class="faq-a">30+ hours total if you do all 4 phases. But you can do one phase in a weekend. It's self-paced.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Do I need to know how to code?</div>
+      <div class="faq-a">Basic JavaScript/Python helps, but Claude Code can write the actual code. Focus on understanding concepts, not syntax.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">What if I skip Phase 1?</div>
+      <div class="faq-a">You'll struggle. Agents are the core of everything. Spend 6-8 hours on Phase 1 fundamentals. It's worth it.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Can I do these in a different order?</div>
+      <div class="faq-a">Phase 1 first, yes. After that, you can mix and match. But Prompting (Phase 2) is critical for everything else.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">What projects will I build?</div>
+      <div class="faq-a">Real apps: automated research agent, code assistant, personal AI assistant, automated workflow bot. All deployment-ready.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Is this free?</div>
+      <div class="faq-a">100%. You'll need an Anthropic API key (paid usage after free tier), but the learning material is completely free.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Where do I get help?</div>
+      <div class="faq-a">Email mekala@gmail.com with specific questions. Each phase has links to official docs and community resources.</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <p>AI Learning Hub — Master Claude. Build agents. Deploy AI products. © 2026 Human Agency</p>
+  </div>
+</footer>
+
+</body>
+</html>

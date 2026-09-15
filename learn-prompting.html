@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phase 2: Prompting Mastery — Write Prompts That Work</title>
+  <meta name="description" content="Master prompt engineering, learn CLAUDE.md project memory, and write prompts that get the best results.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f0f0f;
+      --surface: #1a1a1a;
+      --border: #2a2a2a;
+      --text: #f5f5f5;
+      --muted: #999999;
+      --accent: #8b5cf6;
+      --accent-alt: #14b8a6;
+      --good: #22c55e;
+      --bad: #ef4444;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+    }
+
+    .logo .dot { color: var(--accent); }
+
+    nav {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    nav a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      transition: color 0.15s;
+    }
+
+    nav a:hover { color: var(--text); }
+
+    .hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 24px 40px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    .breadcrumb {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .breadcrumb a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    .section {
+      margin-bottom: 60px;
+    }
+
+    .section h2 {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+
+    .code-block {
+      background: #0a0a0a;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      margin: 20px 0;
+      font-family: 'Monaco', 'Courier New', monospace;
+      font-size: 12px;
+      color: var(--text);
+      overflow-x: auto;
+      line-height: 1.5;
+    }
+
+    .before-after {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .before, .after {
+      border-radius: 8px;
+      padding: 16px;
+      border: 1px solid var(--border);
+    }
+
+    .before {
+      background: rgba(239, 68, 68, 0.05);
+      border-color: rgba(239, 68, 68, 0.2);
+    }
+
+    .before h4 {
+      color: var(--bad);
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    .after {
+      background: rgba(34, 197, 94, 0.05);
+      border-color: rgba(34, 197, 94, 0.2);
+    }
+
+    .after h4 {
+      color: var(--good);
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    .before p, .after p {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0;
+      font-family: 'Monaco', monospace;
+      line-height: 1.5;
+    }
+
+    .levels {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .level {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+    }
+
+    .level h4 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .level-1 h4 { color: #f59e0b; }
+    .level-2 h4 { color: #3b82f6; }
+    .level-3 h4 { color: #8b5cf6; }
+    .level-4 h4 { color: #ec4899; }
+    .level-5 h4 { color: var(--good); }
+
+    .level p {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .claude-md-section {
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(79, 70, 229, 0.05) 100%);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .claude-md-section h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--accent);
+    }
+
+    .claude-md-section p {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 12px;
+      line-height: 1.6;
+    }
+
+    .tips {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px;
+      margin: 20px 0;
+    }
+
+    .tips h4 {
+      color: var(--accent);
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .tips ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .tips li {
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: var(--muted);
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .tips li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 60px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .nav-btn {
+      padding: 12px 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+
+    .nav-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      padding: 40px 0;
+      text-align: center;
+    }
+
+    .footer-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 640px) {
+      .before-after { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <nav>
+      <a href="/setup.html">Setup</a>
+      <a href="/learn.html">Learn</a>
+      <a href="/resources.html">Resources</a>
+      <a href="mailto:mekala@gmail.com">Questions?</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <h1>✍️ Phase 2: Prompting Mastery</h1>
+  <p>Write prompts that work. Master the art and science of asking Claude the right questions. Learn the CLAUDE.md system.</p>
+  <div class="breadcrumb">
+    <a href="/learn.html">← Back to Learning Hub</a>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Introduction -->
+  <div class="section">
+    <h2>🎯 Why Prompting Matters</h2>
+    <p>A bad prompt gets a bad answer. A good prompt gets a great answer. The difference? A 2-minute rewrite.</p>
+    <p>This is the highest ROI skill you can learn. Get prompting right, and Claude becomes 10x more useful. Everything else in Phase 3 and 4 depends on this.</p>
+  </div>
+
+  <!-- The Framework -->
+  <div class="section">
+    <h2>🏗️ The 4-Part Prompt Structure</h2>
+    <p>Every good prompt has these 4 parts. Use them in order:</p>
+
+    <div class="code-block">ROLE:
+"You are a [specific expertise]. You know [specific domain knowledge]."
+
+TASK:
+"Write/Build/Debug/Analyze [specific output]. The output should [specific requirements]."
+
+CONTEXT:
+"Here's the background: [relevant information]. Constraints: [limits]."
+
+FORMAT:
+"Return the output as [format]. Structure it like [example or structure]."
+    </div>
+
+    <div class="before-after">
+      <div class="before">
+        <h4>❌ Bad Prompt</h4>
+        <p>Write me a Python script.</p>
+      </div>
+      <div class="after">
+        <h4>✅ Good Prompt</h4>
+        <p>You are an expert Python developer. Write a Python script that parses CSV files and exports them as JSON. It should handle errors gracefully and log all operations. Return the complete code with comments.</p>
+      </div>
+    </div>
+
+    <div class="tips">
+      <h4>Pro Tips</h4>
+      <ul>
+        <li>Be specific. "Make it better" → "Add error handling for network timeouts"</li>
+        <li>Show examples. "Format like this: ..." → Claude copies your style</li>
+        <li>Add constraints. "Keep it under 200 tokens" → Claude optimizes</li>
+        <li>State the WHY. "This is for a startup MVP" → Claude prioritizes speed over perfection</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- The 5 Levels -->
+  <div class="section">
+    <h2>📈 5 Levels of Prompting</h2>
+    <p>Master these one by one. Level 1 → Level 5 = 100x better results.</p>
+
+    <div class="levels">
+      <div class="level level-1">
+        <h4>Level 1: Basic</h4>
+        <p>Single sentence. No context. "Write a poem." Works but messy output.</p>
+      </div>
+      <div class="level level-2">
+        <h4>Level 2: Structured</h4>
+        <p>Use the 4-part framework. Claude gives you what you asked for.</p>
+      </div>
+      <div class="level level-3">
+        <h4>Level 3: Examples</h4>
+        <p>Show Claude examples of good output. It copies your style exactly.</p>
+      </div>
+      <div class="level level-4">
+        <h4>Level 4: Reasoning</h4>
+        <p>Ask Claude to "think out loud" first. Better for complex problems.</p>
+      </div>
+      <div class="level level-5">
+        <h4>Level 5: Expert</h4>
+        <p>Combine all of the above. Use CLAUDE.md for context. Perfect results every time.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Level 3: Examples -->
+  <div class="section">
+    <h2>💡 Level 3: Show Examples (The Game Changer)</h2>
+    <p>Claude doesn't just follow instructions—it copies patterns. Show it what you want, and it replicates it perfectly.</p>
+
+    <div class="code-block">You are a technical writer. Rewrite this in YOUR style:
+
+EXAMPLE OF YOUR STYLE:
+- Title: starts with emoji + action verb
+- Tone: conversational, not corporate
+- Length: 2-3 sentences max
+- Format: bullets with arrows
+
+Here's the text to rewrite: [text here]
+
+Match my style exactly. Use emoji, short sentences, action verbs.
+    </div>
+
+    <p><strong>Why this works:</strong> Claude learns from examples better than from instructions. Show, don't tell.</p>
+  </div>
+
+  <!-- Chain of Thought -->
+  <div class="section">
+    <h2>🧠 Level 4: Chain of Thought (The Reasoning Hack)</h2>
+    <p>For complex problems, ask Claude to think before answering.</p>
+
+    <div class="code-block">I need to debug this Python error: [error message]
+
+Please:
+1. Think out loud about what could cause this
+2. Consider the most likely causes first
+3. Propose 3 solutions from most to least likely
+4. Show code for each solution
+
+Think through this step-by-step before answering.
+    </div>
+
+    <p><strong>Why this works:</strong> "Think first" mode takes more tokens but gives way better answers for complex problems.</p>
+  </div>
+
+  <!-- CLAUDE.md Section -->
+  <div class="section">
+    <div class="claude-md-section">
+      <h3>🎯 The CLAUDE.md System (Level 5)</h3>
+      <p><strong>This is the secret that changes everything.</strong></p>
+      <p>CLAUDE.md is a file you create in your project. It stores rules, context, and preferences that Claude remembers across all your messages. No more repeating yourself.</p>
+
+      <p><strong>What goes in CLAUDE.md:</strong></p>
+      <ul style="list-style: none; padding: 0; margin: 16px 0;">
+        <li style="margin-bottom: 12px; font-size: 13px; color: var(--muted);"><strong>Code style preferences:</strong> "Use TypeScript, no semicolons, 2-space indent"</li>
+        <li style="margin-bottom: 12px; font-size: 13px; color: var(--muted);"><strong>Project context:</strong> "This is a React app for [purpose]. Stack: [technologies]"</li>
+        <li style="margin-bottom: 12px; font-size: 13px; color: var(--muted);"><strong>Rules:</strong> "Never use X library. Always add error handling. Include tests."</li>
+        <li style="margin-bottom: 12px; font-size: 13px; color: var(--muted);"><strong>Target audience:</strong> "This is for beginners. Explain everything."</li>
+        <li style="margin-bottom: 12px; font-size: 13px; color: var(--muted);"><strong>Quality standards:</strong> "Add 100% test coverage. Performance critical—optimize first."</li>
+      </ul>
+
+      <p style="margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(139, 92, 246, 0.2);"><strong>Example CLAUDE.md:</strong></p>
+      <div class="code-block"># Miru Project
+
+## What This Is
+- WhatsApp AI assistant for UK daily life
+- Python + Flask backend, Supabase DB, Twilio integration
+- Deployed to Railway (auto-deploy on git push main)
+
+## Rules (ALWAYS FOLLOW)
+- Use Python 3.11+
+- Add error handling for all API calls
+- Never hardcode secrets (use .env)
+- Test with real phone numbers, not fake ones
+- Always include docstrings
+
+## Code Style
+- 2-space indent
+- Type hints everywhere
+- No wildcard imports
+- Class names: PascalCase, functions: snake_case
+
+## Team
+- Vikram built this. Know his style: pragmatic, ship fast, focus on user value
+- When unsure about design, ask: "Would Vikram do this?"
+
+## Next Priority
+- Fix school comms polling
+- Add motivation features
+- Deploy by Friday
+      </div>
+
+      <p style="margin-top: 16px;"><strong>How to use it:</strong> Just put CLAUDE.md in your project root. Claude Code reads it automatically and follows all your rules.</p>
+    </div>
+  </div>
+
+  <!-- Common Mistakes -->
+  <div class="section">
+    <h2>⚠️ Common Mistakes (Don't Do These)</h2>
+
+    <div class="before-after">
+      <div class="before">
+        <h4>❌ Too Vague</h4>
+        <p>"Make this function faster"</p>
+      </div>
+      <div class="after">
+        <h4>✅ Specific</h4>
+        <p>"This function processes 10k records and takes 30s. Target: under 5s. Profile shows 80% time in database queries."</p>
+      </div>
+    </div>
+
+    <div class="before-after">
+      <div class="before">
+        <h4>❌ Rambling</h4>
+        <p>"I have this problem where the thing isn't doing the other thing and I'm not sure why but it might be because of..."</p>
+      </div>
+      <div class="after">
+        <h4>✅ Concise</h4>
+        <p>"Error: 'NoneType' object is not iterable. Line 42. Variable 'x' is None when it shouldn't be."</p>
+      </div>
+    </div>
+
+    <div class="before-after">
+      <div class="before">
+        <h4>❌ No Context</h4>
+        <p>"Debug this" [pastes code snippet]</p>
+      </div>
+      <div class="after">
+        <h4>✅ With Context</h4>
+        <p>"This code runs on Railway with Supabase. When user uploads a file over 50MB, it fails. I've added logging—see attached."</p>
+      </div>
+    </div>
+
+    <div class="tips">
+      <h4>The "Prompt Audit" Checklist</h4>
+      <ul>
+        <li>Is the ROLE clear? (Who should Claude be?)</li>
+        <li>Is the TASK specific? (What exactly do you want?)</li>
+        <li>Is there CONTEXT? (What's the background?)</li>
+        <li>Is the FORMAT defined? (How should it be returned?)</li>
+        <li>Can you read it to someone else in 30 seconds?</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Practice Exercise -->
+  <div class="section">
+    <h2>🎯 Practice Exercise</h2>
+    <p><strong>Rewrite this bad prompt into a good one:</strong></p>
+    <div class="code-block">Write me a function to do stuff with data.</div>
+
+    <p style="margin-top: 20px;"><strong>Good answer should have:</strong></p>
+    <ul style="list-style: none; padding: 0; margin: 12px 0;">
+      <li style="margin-bottom: 8px; font-size: 13px; color: var(--muted);">✓ ROLE: "You are a [type] developer"</li>
+      <li style="margin-bottom: 8px; font-size: 13px; color: var(--muted);">✓ TASK: "Write a function that [specific behavior]"</li>
+      <li style="margin-bottom: 8px; font-size: 13px; color: var(--muted);">✓ CONTEXT: "It takes [input], returns [output]"</li>
+      <li style="margin-bottom: 8px; font-size: 13px; color: var(--muted);">✓ FORMAT: "Return [language] code with [comments/tests]"</li>
+    </ul>
+  </div>
+
+  <!-- Key Takeaway -->
+  <div class="section">
+    <h2>💪 Key Takeaway</h2>
+    <p><strong>Perfect prompt = 10 seconds thinking + 2 minutes writing.</strong></p>
+    <p>The time you spend writing a good prompt saves you 10x the time dealing with bad output. It's the highest-ROI skill you can learn this week.</p>
+  </div>
+
+  <!-- Navigation -->
+  <div class="nav-buttons">
+    <a href="learn-fundamentals.html" class="nav-btn">← Phase 1: Fundamentals</a>
+    <a href="learn-automation.html" class="nav-btn">Phase 3: Automation →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <p>AI Learning Hub — Phase 2: Master Prompting. Ready to automate? © 2026 Human Agency</p>
+  </div>
+</footer>
+
+</body>
+</html>

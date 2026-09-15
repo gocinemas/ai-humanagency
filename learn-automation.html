@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phase 3: Automation — MCP, Skills, APIs</title>
+  <meta name="description" content="Master MCP protocol, build reusable skills, connect Claude to real-world APIs and databases.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f0f0f;
+      --surface: #1a1a1a;
+      --border: #2a2a2a;
+      --text: #f5f5f5;
+      --muted: #999999;
+      --accent: #06b6d4;
+      --accent-alt: #14b8a6;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+    }
+
+    .logo .dot { color: var(--accent); }
+
+    nav {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    nav a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      transition: color 0.15s;
+    }
+
+    nav a:hover { color: var(--text); }
+
+    .hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 24px 40px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    .breadcrumb {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .breadcrumb a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    .section {
+      margin-bottom: 60px;
+    }
+
+    .section h2 {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+
+    .section p {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .code-block {
+      background: #0a0a0a;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      margin: 20px 0;
+      font-family: 'Monaco', 'Courier New', monospace;
+      font-size: 12px;
+      color: var(--text);
+      overflow-x: auto;
+      line-height: 1.5;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+    }
+
+    .card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--accent);
+    }
+
+    .card p {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .feature-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .feature-list li {
+      margin-bottom: 12px;
+      font-size: 13px;
+      color: var(--muted);
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .feature-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .project-box {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.05) 0%, rgba(79, 70, 229, 0.05) 100%);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .project-box h3 {
+      color: var(--accent);
+      margin-bottom: 12px;
+      font-size: 16px;
+    }
+
+    .project-box p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .integration-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .integration {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .integration-icon {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .integration-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .integration-desc {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 60px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .nav-btn {
+      padding: 12px 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+
+    .nav-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      padding: 40px 0;
+      text-align: center;
+    }
+
+    .footer-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <nav>
+      <a href="/setup.html">Setup</a>
+      <a href="/learn.html">Learn</a>
+      <a href="/resources.html">Resources</a>
+      <a href="mailto:mekala@gmail.com">Questions?</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <h1>⚙️ Phase 3: Automation & Integration</h1>
+  <p>Connect Claude to the real world. Master MCP protocol. Build reusable skills. Automate everything.</p>
+  <div class="breadcrumb">
+    <a href="/learn.html">← Back to Learning Hub</a>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Overview -->
+  <div class="section">
+    <h2>🚀 What's Phase 3 About?</h2>
+    <p><strong>Phase 1</strong> taught you how agents work. <strong>Phase 2</strong> taught you how to prompt. <strong>Phase 3</strong> teaches you how to connect Claude to everything else—APIs, databases, your tools.</p>
+    <p>This is where AI becomes <em>actually useful</em>. Agents that can only chat aren't agents—they're chatbots. Agents that can read your database, call APIs, and write files? Those are agents that work.</p>
+  </div>
+
+  <!-- Part 1: MCP Protocol -->
+  <div class="section">
+    <h2>🔌 Part 1: MCP Protocol (The Game Changer)</h2>
+    <p><strong>MCP = Model Context Protocol.</strong> It's the standard way Claude connects to external systems.</p>
+    <p>Think of it like USB for AI. Instead of writing custom code to connect to GitHub, Slack, your database—you use MCP. It's standardized, it's fast, and it's the future.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>What MCP Does</h3>
+        <ul class="feature-list">
+          <li>Claude calls your APIs automatically</li>
+          <li>Access databases in real-time</li>
+          <li>Read/write files on your system</li>
+          <li>All without you writing integration code</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Common MCP Servers</h3>
+        <ul class="feature-list">
+          <li>GitHub (read PRs, write code)</li>
+          <li>Slack (read messages, send alerts)</li>
+          <li>Postgres (query databases)</li>
+          <li>Your custom servers</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Why It Matters</h3>
+        <ul class="feature-list">
+          <li>No more "make an API call" workarounds</li>
+          <li>Claude can be trusted with real systems</li>
+          <li>Agents can actually do work</li>
+          <li>It's the standard everyone will use</li>
+        </ul>
+      </div>
+    </div>
+
+    <p><strong>Example:</strong> "Claude, read the last 5 GitHub issues, analyze them, and write a summary. Then post it in #ai-updates on Slack."</p>
+    <p>With MCP, Claude does all that automatically. No manual steps.</p>
+  </div>
+
+  <!-- Part 2: Skills -->
+  <div class="section">
+    <h2>🛠️ Part 2: Skills (Reusable Workflows)</h2>
+    <p>A "Skill" is a reusable function Claude can call. It's how you teach Claude to do repetitive tasks your way.</p>
+
+    <p><strong>Why Skills matter:</strong></p>
+    <ul class="feature-list">
+      <li>Write once, use forever</li>
+      <li>Consistent output every time</li>
+      <li>Don't repeat instructions</li>
+      <li>Team members can reuse them</li>
+    </ul>
+
+    <p style="margin-top: 20px;"><strong>Example Skill:</strong></p>
+    <div class="code-block">Skill: "Analyze Product"
+Input: product URL
+Steps:
+  1. Fetch product page
+  2. Extract: price, reviews, description
+  3. Compare to competitors
+  4. Rate market fit 1-10
+  5. Return formatted report
+
+Claude can now call this anytime without repeating instructions.
+    </div>
+
+    <p style="margin-top: 20px;">You build skills in JavaScript or Python. Claude Code helps you write them.</p>
+  </div>
+
+  <!-- Part 3: APIs -->
+  <div class="section">
+    <h2>🌐 Part 3: APIs (The Connectors)</h2>
+    <p>Most useful data lives in APIs. Your SaaS tools, databases, cloud services—they all have APIs.</p>
+
+    <p><strong>Common APIs Claude uses:</strong></p>
+    <div class="integration-grid">
+      <div class="integration">
+        <div class="integration-icon">🐙</div>
+        <div class="integration-name">GitHub</div>
+        <div class="integration-desc">Read code, create PRs</div>
+      </div>
+      <div class="integration">
+        <div class="integration-icon">💬</div>
+        <div class="integration-name">Slack</div>
+        <div class="integration-desc">Send messages</div>
+      </div>
+      <div class="integration">
+        <div class="integration-icon">📧</div>
+        <div class="integration-name">Email</div>
+        <div class="integration-desc">Send/read emails</div>
+      </div>
+      <div class="integration">
+        <div class="integration-icon">📊</div>
+        <div class="integration-name">Sheets</div>
+        <div class="integration-desc">Read/write data</div>
+      </div>
+      <div class="integration">
+        <div class="integration-icon">🗄️</div>
+        <div class="integration-name">Postgres</div>
+        <div class="integration-desc">Query databases</div>
+      </div>
+      <div class="integration">
+        <div class="integration-icon">🔍</div>
+        <div class="integration-name">Custom</div>
+        <div class="integration-desc">Your APIs</div>
+      </div>
+    </div>
+
+    <p style="margin-top: 20px;"><strong>How it works:</strong> You give Claude API credentials (stored securely). It can then call APIs directly using MCP.</p>
+  </div>
+
+  <!-- Real Project -->
+  <div class="section">
+    <h2>🚀 Your Phase 3 Project</h2>
+
+    <div class="project-box">
+      <h3>🤖 Build an Automated Research Agent</h3>
+      <p><strong>What it does:</strong> You give it a topic. It researches it, finds sources, writes a report, and emails you the results—all automated.</p>
+
+      <p><strong>What you'll learn:</strong></p>
+      <ul class="feature-list">
+        <li>Connect to Google Search API for research</li>
+        <li>Store findings in a database (Postgres or similar)</li>
+        <li>Send emails via SMTP</li>
+        <li>Set up MCP connections</li>
+        <li>Create a reusable Skill</li>
+      </ul>
+
+      <p style="margin-top: 16px;"><strong>End result:</strong> An agent you can ask "Research AI safety" and it handles everything.</p>
+      <p><strong>Time to build:</strong> 8-10 hours</p>
+    </div>
+  </div>
+
+  <!-- Real-World Examples -->
+  <div class="section">
+    <h2>💡 Real-World Use Cases</h2>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>🏢 Sales Team</h3>
+        <p>Agent reads new leads, looks them up on LinkedIn, writes personalized emails, posts to Slack. All automated.</p>
+      </div>
+      <div class="card">
+        <h3>👨‍💻 Dev Team</h3>
+        <p>Agent monitors GitHub issues, suggests fixes, writes code, creates PRs. Dev reviews and merges.</p>
+      </div>
+      <div class="card">
+        <h3>📊 Analytics</h3>
+        <p>Agent pulls daily data from 5 sources, analyzes trends, sends reports. Every morning, ready to read.</p>
+      </div>
+      <div class="card">
+        <h3>🛍️ E-commerce</h3>
+        <p>Agent monitors competitor pricing, updates your prices, alerts your team on price wars.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Learning Path -->
+  <div class="section">
+    <h2>📚 What to Learn (In Order)</h2>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>Step 1: MCP Basics</h3>
+        <p>Understand what MCP is. Read the official protocol. See examples.</p>
+      </div>
+      <div class="card">
+        <h3>Step 2: Connect to 1 API</h3>
+        <p>Pick one tool (GitHub, Slack, etc). Set up the MCP connection. Test it.</p>
+      </div>
+      <div class="card">
+        <h3>Step 3: Create a Skill</h3>
+        <p>Build your first skill. Use it. Iterate. Make it perfect.</p>
+      </div>
+      <div class="card">
+        <h3>Step 4: Multi-API Agent</h3>
+        <p>Combine multiple APIs. Build the research agent project.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resources -->
+  <div class="section">
+    <h2>📖 Getting Started</h2>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>📘 Official MCP Docs</h3>
+        <p>The complete guide to Model Context Protocol.</p>
+      </div>
+      <div class="card">
+        <h3>🔧 Claude Code Docs</h3>
+        <p>How to build Skills with Claude Code.</p>
+      </div>
+      <div class="card">
+        <h3>🎓 Free Courses</h3>
+        <p>Anthropic's official training on automation.</p>
+      </div>
+      <div class="card">
+        <h3>💬 Community</h3>
+        <p>Join the community. Share your automations.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="nav-buttons">
+    <a href="learn-prompting.html" class="nav-btn">← Phase 2: Prompting</a>
+    <a href="learn-advanced.html" class="nav-btn">Phase 4: Production →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <p>AI Learning Hub — Phase 3: Connect Claude to Everything. Ready for production? © 2026 Human Agency</p>
+  </div>
+</footer>
+
+</body>
+</html>
