@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coworking Platforms & Codex Systems — AI Learning Hub</title>
+  <meta name="description" content="Compare Claude Code, Claude Cowork, Managed Agents, and other AI codex platforms. Choose the right tool for your workflow.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f9f8f6;
+      --surface: #ffffff;
+      --border: #ebebeb;
+      --text: #111111;
+      --muted: #666666;
+      --accent: #14b8a6;
+      --accent-alt: #8b5cf6;
+      --good: #10b981;
+      --warn: #f59e0b;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+      color: var(--text);
+    }
+
+    .logo .dot { color: var(--accent); }
+
+    nav {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    nav a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      transition: color 0.15s;
+    }
+
+    nav a:hover { color: var(--text); }
+
+    .hero {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 60px 24px 40px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    .breadcrumb {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    .section {
+      margin-bottom: 60px;
+    }
+
+    .section h2 {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+      margin-bottom: 20px;
+    }
+
+    .section h3 {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+      margin-top: 28px;
+      margin-bottom: 12px;
+    }
+
+    .section p {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .section p strong { color: var(--text); }
+
+    /* Comparison Table */
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 28px 0;
+    }
+
+    .comparison-table th {
+      background: linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+      padding: 16px;
+      text-align: left;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    .comparison-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    .comparison-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .comparison-table td:first-child {
+      font-weight: 600;
+      width: 25%;
+    }
+
+    .check { color: var(--good); font-weight: 700; }
+    .cross { color: var(--warn); opacity: 0.6; }
+
+    /* Platform Cards */
+    .platforms-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin: 28px 0;
+    }
+
+    .platform-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .platform-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 8px 24px rgba(20, 184, 166, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .platform-icon {
+      font-size: 40px;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .platform-name {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+      margin-bottom: 8px;
+    }
+
+    .platform-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .platform-features {
+      list-style: none;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .platform-features li {
+      padding: 6px 0;
+      padding-left: 16px;
+      position: relative;
+    }
+
+    .platform-features li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .platform-badge {
+      display: inline-block;
+      background: rgba(20, 184, 166, 0.1);
+      color: var(--accent);
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-top: 12px;
+    }
+
+    /* Use Case Cards */
+    .usecase-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .usecase-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .usecase-card h4 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .usecase-card p {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 0;
+    }
+
+    .usecase-card strong {
+      color: var(--text);
+      font-size: 13px;
+    }
+
+    /* Highlight */
+    .highlight {
+      background: linear-gradient(135deg, rgba(20, 184, 166, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+      border: 1px solid rgba(20, 184, 166, 0.2);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    .highlight p {
+      margin-bottom: 0;
+    }
+
+    /* Lists */
+    .checklist {
+      list-style: none;
+      margin: 20px 0;
+    }
+
+    .checklist li {
+      padding: 10px 0;
+      padding-left: 24px;
+      position: relative;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .checklist li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .footer-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 24px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .footer-links {
+      margin-top: 16px;
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .footer-links a:hover { text-decoration: underline; }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 28px; }
+      .container { padding: 0 16px 60px; }
+      .comparison-table { font-size: 12px; }
+      .comparison-table td, .comparison-table th { padding: 12px; }
+      .platforms-grid { grid-template-columns: 1fr; }
+      .usecase-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <nav id="nav">
+      <a href="/start.html">Start Here</a>
+      <a href="/quick-reference.html">Quick Ref</a>
+      <a href="/jargon.html">Jargon</a>
+      <a href="/use-cases.html">Use Cases</a>
+      <a href="/compare.html">Compare</a>
+      <a href="/setup.html">Setup</a>
+      <a href="/learn.html">Learn</a>
+      <a href="/resources.html">Resources</a>
+      <a href="/search.html" style="display: flex; align-items: center; gap: 6px; margin-left: 12px; padding-left: 12px; border-left: 1px solid var(--border);">🔍</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <h1>🛠️ Coworking Platforms & Codex Systems</h1>
+  <p>Compare Claude Code, Claude Cowork, Managed Agents, and alternative AI platforms. Choose the right tool for your workflow.</p>
+  <div class="breadcrumb">← <a href="/learn.html">Back to Learning Path</a></div>
+</div>
+
+<div class="container">
+
+  <div class="section">
+    <h2>What Is a "Codex" System?</h2>
+    <p><strong>Codex</strong> is the umbrella term for AI systems that execute work autonomously. Unlike chat interfaces where you describe tasks, codex systems can read your code, access your tools, make changes, and execute complex workflows.</p>
+
+    <p>Key characteristics of codex systems:</p>
+    <ul class="checklist">
+      <li>Access to files, terminals, and APIs (not just text chat)</li>
+      <li>Execute code and see real results immediately</li>
+      <li>Maintain context across complex multi-step workflows</li>
+      <li>Integrate deeply with your existing tools and services</li>
+      <li>Can be scheduled to work autonomously 24/7</li>
+    </ul>
+
+    <p style="margin-top: 20px;">The "codex for work" means: AI that does your work, not just explains how.</p>
+  </div>
+
+  <div class="section">
+    <h2>Core Coworking Platforms</h2>
+
+    <div class="platforms-grid">
+      <div class="platform-card">
+        <span class="platform-icon">⌨️</span>
+        <div class="platform-name">Claude Code CLI</div>
+        <div class="platform-desc">Terminal-based interface for developers. Direct access to files, git, shell, and APIs.</div>
+        <ul class="platform-features">
+          <li>Full file read/edit/delete capabilities</li>
+          <li>Git integration with automatic commits</li>
+          <li>Shell execution and process management</li>
+          <li>Best for: Engineers, DevOps, developers</li>
+          <li>Learning curve: Medium (CLI familiarity needed)</li>
+        </ul>
+        <span class="platform-badge">Most Powerful</span>
+      </div>
+
+      <div class="platform-card">
+        <span class="platform-icon">🖥️</span>
+        <div class="platform-name">Claude Cowork</div>
+        <div class="platform-desc">Desktop app with GUI for building and managing skills. Better UX than CLI, same capabilities.</div>
+        <ul class="platform-features">
+          <li>Visual skill builder interface</li>
+          <li>Point-and-click tool configuration</li>
+          <li>Scheduled task management</li>
+          <li>Best for: Non-technical users, teams</li>
+          <li>Learning curve: Low (GUI-based)</li>
+        </ul>
+        <span class="platform-badge">Most Accessible</span>
+      </div>
+
+      <div class="platform-card">
+        <span class="platform-icon">☁️</span>
+        <div class="platform-name">Managed Agents</div>
+        <div class="platform-desc">Deploy agents to Anthropic's cloud. 24/7 uptime, automatic scaling, monitoring built-in.</div>
+        <ul class="platform-features">
+          <li>No server management needed</li>
+          <li>Guaranteed uptime and scaling</li>
+          <li>Built-in monitoring and logging</li>
+          <li>Best for: Production workloads</li>
+          <li>Learning curve: Low (managed service)</li>
+        </ul>
+        <span class="platform-badge">Production-Ready</span>
+      </div>
+
+      <div class="platform-card">
+        <span class="platform-icon">🔌</span>
+        <div class="platform-name">Claude API + SDK</div>
+        <div class="platform-desc">Build custom AI apps for your users. Full control over agent behavior and UI.</div>
+        <ul class="platform-features">
+          <li>Custom agent logic and prompts</li>
+          <li>Embed in your own products</li>
+          <li>Per-user billing and customization</li>
+          <li>Best for: SaaS companies, platforms</li>
+          <li>Learning curve: High (requires engineering)</li>
+        </ul>
+        <span class="platform-badge">Most Flexible</span>
+      </div>
+
+      <div class="platform-card">
+        <span class="platform-icon">🔗</span>
+        <div class="platform-name">MCP Servers</div>
+        <div class="platform-desc">Open protocol for connecting tools to Claude. Build once, use across all platforms.</div>
+        <ul class="platform-features">
+          <li>Connect proprietary tools to Claude</li>
+          <li>Published by you or community</li>
+          <li>Works in Code, Chat, API, and Cowork</li>
+          <li>Best for: Integration layers, tools</li>
+          <li>Learning curve: Medium (custom development)</li>
+        </ul>
+        <span class="platform-badge">Most Connected</span>
+      </div>
+
+      <div class="platform-card">
+        <span class="platform-icon">🤝</span>
+        <div class="platform-name">n8n / Zapier + Claude</div>
+        <div class="platform-desc">Visual workflow builders with Claude integration. No-code automation.</div>
+        <ul class="platform-features">
+          <li>Drag-and-drop workflow design</li>
+          <li>Pre-built connectors to 1000+ services</li>
+          <li>Cloud-hosted automation</li>
+          <li>Best for: Non-technical teams</li>
+          <li>Learning curve: Very Low (no code)</li>
+        </ul>
+        <span class="platform-badge">Easiest Start</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Detailed Comparison</h2>
+
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Claude Code</th>
+          <th>Cowork</th>
+          <th>Managed Agents</th>
+          <th>API + SDK</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Local development</td>
+          <td><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="check">✓</span></td>
+        </tr>
+        <tr>
+          <td>Cloud deployment</td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
+        </tr>
+        <tr>
+          <td>Server management required</td>
+          <td>Your machine</td>
+          <td>Your machine</td>
+          <td><span class="check">None</span></td>
+          <td>You choose</td>
+        </tr>
+        <tr>
+          <td>File access</td>
+          <td><span class="check">Full</span></td>
+          <td><span class="check">Full</span></td>
+          <td><span class="check">Full</span></td>
+          <td>Custom</td>
+        </tr>
+        <tr>
+          <td>Shell execution</td>
+          <td><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
+          <td>Via custom tools</td>
+        </tr>
+        <tr>
+          <td>Scheduling (cron)</td>
+          <td><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
+        </tr>
+        <tr>
+          <td>Multi-agent orchestration</td>
+          <td>Manual scripting</td>
+          <td><span class="check">Built-in</span></td>
+          <td><span class="check">Built-in</span></td>
+          <td><span class="check">Built-in</span></td>
+        </tr>
+        <tr>
+          <td>Cost model</td>
+          <td>API calls only</td>
+          <td>API calls + seat</td>
+          <td>API calls + hosting</td>
+          <td>Per-request pricing</td>
+        </tr>
+        <tr>
+          <td>Best for</td>
+          <td>Personal dev</td>
+          <td>Teams</td>
+          <td>Production apps</td>
+          <td>SaaS integration</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>Choosing Your Platform</h2>
+
+    <h3>Ask Yourself These Questions:</h3>
+    <ul class="checklist">
+      <li><strong>Is this for me or for users?</strong> → Personal = Code/Cowork, Users = API/Managed Agents</li>
+      <li><strong>Does it need 24/7 uptime?</strong> → Yes = Managed Agents, No = Code/Cowork</li>
+      <li><strong>Am I comfortable with CLI?</strong> → Yes = Code, No = Cowork/No-Code</li>
+      <li><strong>How technical are my users?</strong> → Highly technical = Code, Non-technical = Cowork/No-Code</li>
+      <li><strong>Do I need to embed this in my product?</strong> → Yes = API/SDK, No = Code/Cowork</li>
+    </ul>
+
+    <h3>Recommended Paths</h3>
+    <div class="usecase-grid">
+      <div class="usecase-card">
+        <h4>Solo Developer</h4>
+        <p><strong>Use:</strong> Claude Code</p>
+        <p>Full power, no constraints. Run locally, experiment freely.</p>
+      </div>
+
+      <div class="usecase-card">
+        <h4>Small Team</h4>
+        <p><strong>Use:</strong> Claude Cowork + Managed Agents</p>
+        <p>Cowork for building, Managed Agents for production tasks.</p>
+      </div>
+
+      <div class="usecase-card">
+        <h4>Enterprise/SaaS</h4>
+        <p><strong>Use:</strong> Claude API + Managed Agents</p>
+        <p>Full control, custom UI, per-user billing and features.</p>
+      </div>
+
+      <div class="usecase-card">
+        <h4>No-Code Power User</h4>
+        <p><strong>Use:</strong> n8n / Zapier + Claude</p>
+        <p>Visual workflows, zero code, 1000+ integrations.</p>
+      </div>
+
+      <div class="usecase-card">
+        <h4>Tool/Platform Builder</h4>
+        <p><strong>Use:</strong> MCP + Custom Implementation</p>
+        <p>Build connectors, package as standard, sell or open-source.</p>
+      </div>
+
+      <div class="usecase-card">
+        <h4>Academic/Research</h4>
+        <p><strong>Use:</strong> Claude API directly</p>
+        <p>Build custom agents for specific research workflows.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>The Coworking Stack in Practice</h2>
+
+    <h3>Scenario: Building a Production Research Assistant</h3>
+    <p><strong>Step 1: Develop locally with Claude Code</strong></p>
+    <ul class="checklist">
+      <li>Build and test the agent locally</li>
+      <li>Develop prompts and tool integrations</li>
+      <li>Iterate quickly using Claude Code CLI</li>
+    </ul>
+
+    <p style="margin-top: 24px;"><strong>Step 2: Use Cowork for team collaboration</strong></p>
+    <ul class="checklist">
+      <li>Share skills with your team</li>
+      <li>Build skills together in the GUI</li>
+      <li>Schedule test runs and collect feedback</li>
+    </ul>
+
+    <p style="margin-top: 24px;"><strong>Step 3: Deploy with Managed Agents</strong></p>
+    <ul class="checklist">
+      <li>Move to cloud for 24/7 availability</li>
+      <li>No server management, automatic scaling</li>
+      <li>Production monitoring and alerting</li>
+    </ul>
+
+    <p style="margin-top: 24px;"><strong>Step 4: Integrate via API if building for users</strong></p>
+    <ul class="checklist">
+      <li>Expose agents via custom API endpoints</li>
+      <li>Embed in web app or mobile</li>
+      <li>Per-user authentication and billing</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Alternative Codex Systems (Non-Claude)</h2>
+
+    <h3>When to Use Others</h3>
+    <p>Claude is the best choice for most workflows, but alternatives exist for specific use cases:</p>
+
+    <div class="usecase-grid">
+      <div class="usecase-card">
+        <h4>GPT-4 + Code Interpreter</h4>
+        <p><strong>When:</strong> Deep Python/data analysis</p>
+        <p>Excellent for Jupyter-style interactive computing.</p>
+      </div>
+
+      <div class="usecase-card">
+        <h4>LangChain / LlamaIndex</h4>
+        <p><strong>When:</strong> Custom frameworks</p>
+        <p>Build complex agentic systems with full control.</p>
+      </div>
+
+      <div class="usecase-card">
+        <h4>AutoGPT / AgentGPT</h4>
+        <p><strong>When:</strong> Autonomous goal-seeking</p>
+        <p>More experimental, less stable than Claude.</p>
+      </div>
+
+      <div class="usecase-card">
+        <h4>n8n / Zapier (no Claude)</h4>
+        <p><strong>When:</strong> Workflow automation only</p>
+        <p>Works without AI, but AI makes it smarter.</p>
+      </div>
+    </div>
+
+    <p style="margin-top: 20px;"><strong>Reality check:</strong> Claude's combination of reasoning, reliability, and API access makes it the best default choice. Unless you have a specific reason, start with Claude.</p>
+  </div>
+
+  <div class="highlight">
+    <p><strong>⚡ Key Insight:</strong> The coworking platform you choose matters far less than starting. Pick the one that feels right for your experience level, then build something. You can always migrate or combine platforms later.</p>
+  </div>
+
+  <div class="section">
+    <h2>Learn by Doing: Common Patterns</h2>
+    <p>The best way to learn coworking is to build something real. Check out <a href="/learn-cowork-patterns.html" style="color: var(--accent); text-decoration: underline;">Coworking Patterns</a> for battle-tested solutions:</p>
+    <ul class="checklist">
+      <li>Research Agent — automated data gathering and reporting</li>
+      <li>Code Review Automation — PR reviews at scale</li>
+      <li>Data Pipelines — scheduled fetching and transformation</li>
+      <li>Email/Slack Bots — natural language command handlers</li>
+      <li>Monitoring & Alerts — 24/7 system watchdogs</li>
+      <li>And 4+ more patterns with implementation sketches</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Getting Started: Which Platform First?</h2>
+
+    <h3>If you're a developer:</h3>
+    <p>Start with <strong>Claude Code CLI</strong>. Power, flexibility, and speed. 30-minute setup, then build immediately.</p>
+
+    <h3>If you're non-technical:</h3>
+    <p>Start with <strong>Claude Cowork desktop app</strong>. GUI makes it feel familiar. Build your first skill in an hour.</p>
+
+    <h3>If you want production-ready immediately:</h3>
+    <p>Start with <strong>Managed Agents</strong>. Let Anthropic handle infrastructure, you focus on agent logic.</p>
+
+    <h3>If you're building for users:</h3>
+    <p>Start with <strong>Claude API + SDK</strong>. Custom control, embed in your product, scale however you want.</p>
+
+    <h3>If you just want results (no coding):</h3>
+    <p>Start with <strong>n8n or Zapier + Claude</strong>. No code needed, visual builder, thousands of integrations.</p>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <p>AI Learning Hub — Choose your platform. Build your workflows. Deploy your future. © 2026 Human Agency</p>
+    <div class="footer-links">
+      <a href="/learn.html">← Back to Learning Path</a>
+      <a href="/learn-claude-code.html">Claude Code Guide</a>
+      <a href="/learn-cowork-patterns.html">Common Patterns</a>
+      <a href="/setup.html">Setup Instructions</a>
+      <a href="/resources.html">Resources</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.addEventListener("keydown", (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+    e.preventDefault();
+    window.location.href = "/search.html";
+  }
+});
+</script>
+
+</body>
+</html>

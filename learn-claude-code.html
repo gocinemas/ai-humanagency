@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code & Coworking — From Chat to Real Work</title>
+  <meta name="description" content="Master Claude Code, build autonomous agents, orchestrate multi-agent workflows, and deploy production AI systems.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f9f8f6;
+      --surface: #ffffff;
+      --border: #ebebeb;
+      --text: #111111;
+      --muted: #666666;
+      --accent: #8b5cf6;
+      --accent-alt: #06b6d4;
+      --good: #10b981;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+      color: var(--text);
+    }
+
+    .logo .dot { color: var(--accent); }
+
+    nav {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    nav a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      transition: color 0.15s;
+    }
+
+    nav a:hover { color: var(--text); }
+
+    .hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 24px 40px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    .breadcrumb {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    /* Section */
+    .section {
+      margin-bottom: 60px;
+    }
+
+    .section h2 {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+      margin-bottom: 20px;
+    }
+
+    .section h3 {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+      margin-top: 28px;
+      margin-bottom: 12px;
+    }
+
+    .section p {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .section p strong { color: var(--text); }
+
+    /* Cards Grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      margin: 28px 0;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 8px 24px rgba(139, 92, 246, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .card-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+      margin-bottom: 8px;
+    }
+
+    .card-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* Lists */
+    .checklist {
+      list-style: none;
+      margin: 20px 0;
+    }
+
+    .checklist li {
+      padding: 10px 0;
+      padding-left: 24px;
+      position: relative;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .checklist li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* Code Block Style */
+    .code-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      margin: 20px 0;
+      font-family: 'Monaco', 'Courier New', monospace;
+      font-size: 13px;
+      color: var(--muted);
+      overflow-x: auto;
+    }
+
+    /* Highlight Box */
+    .highlight {
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(6, 182, 212, 0.05) 100%);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    .highlight p {
+      margin-bottom: 0;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .footer-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .footer-links {
+      margin-top: 16px;
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .footer-links a:hover { text-decoration: underline; }
+
+    /* Mobile */
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 28px; }
+      .hero p { font-size: 14px; }
+      .container { padding: 0 16px 60px; }
+      .section h2 { font-size: 22px; }
+      .cards-grid { gap: 16px; }
+      .card { padding: 16px; }
+      .footer-inner { padding: 24px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <nav id="nav">
+      <a href="/start.html">Start Here</a>
+      <a href="/quick-reference.html">Quick Ref</a>
+      <a href="/jargon.html">Jargon</a>
+      <a href="/use-cases.html">Use Cases</a>
+      <a href="/compare.html">Compare</a>
+      <a href="/setup.html">Setup</a>
+      <a href="/learn.html">Learn</a>
+      <a href="/resources.html">Resources</a>
+      <a href="/search.html" style="display: flex; align-items: center; gap: 6px; margin-left: 12px; padding-left: 12px; border-left: 1px solid var(--border);">🔍</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <h1>💻 Claude Code & Coworking</h1>
+  <p>The practical layer. Build autonomous agents, orchestrate workflows, and deploy real AI systems that do the work for you.</p>
+  <div class="breadcrumb">← <a href="/learn.html">Back to Learning Path</a></div>
+</div>
+
+<div class="container">
+
+  <div class="section">
+    <h2>What Is Claude Code?</h2>
+    <p><strong>Claude Code is the working version of Claude.</strong> While chat interfaces are for thinking, Claude Code is for doing. It's the CLI and desktop app that connects Claude to your tools, files, and workflows—then actually executes work on your behalf.</p>
+
+    <p>Think of it as the difference between:</p>
+    <ul class="checklist">
+      <li><strong>Claude Chat:</strong> "How do I optimize my database?" → Claude explains concepts</li>
+      <li><strong>Claude Code:</strong> "Optimize my database" → Claude reads your schema, runs tests, and commits the fix</li>
+    </ul>
+
+    <p style="margin-top: 20px;">Claude Code handles the things that take hours in chat but feel instantaneous when automated: code review, file editing, git operations, running tests, interacting with APIs, and executing multi-step workflows.</p>
+
+    <h3>Why It Matters</h3>
+    <p>The real work isn't understanding AI. It's making AI do your work. Claude Code is where that happens. People who master this will:</p>
+    <ul class="checklist">
+      <li>Move 10x faster than peers using chat interfaces</li>
+      <li>Automate entire categories of daily tasks</li>
+      <li>Build and deploy AI products in weeks instead of months</li>
+      <li>Have time to think about strategy instead of execution</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>The Four Pillars of Coworking</h2>
+
+    <div class="cards-grid">
+      <div class="card">
+        <span class="card-icon">🔧</span>
+        <div class="card-title">Code as Interface</div>
+        <div class="card-desc">Read, edit, debug, and deploy code without leaving Claude. Your files become Claude's workspace.</div>
+      </div>
+
+      <div class="card">
+        <span class="card-icon">🔗</span>
+        <div class="card-title">Tool Connections</div>
+        <div class="card-desc">Connect to Git, APIs, databases, email, Slack, and 100+ services. Claude controls your toolchain.</div>
+      </div>
+
+      <div class="card">
+        <span class="card-icon">🤖</span>
+        <div class="card-title">Autonomous Agents</div>
+        <div class="card-desc">Create agents that reason, plan, and execute work across multiple steps with minimal supervision.</div>
+      </div>
+
+      <div class="card">
+        <span class="card-icon">⚙️</span>
+        <div class="card-title">Orchestration</div>
+        <div class="card-desc">Chain multiple agents, run them on schedules, and coordinate complex workflows at scale.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Core Concepts You'll Master</h2>
+
+    <h3>1. The Claude Code CLI</h3>
+    <p>The CLI is your primary interface. It gives Claude direct access to your filesystem, git history, running processes, and shell commands. Unlike web chat, the CLI doesn't buffer output—it streams changes in real-time and maintains full context across your session.</p>
+    <ul class="checklist">
+      <li><strong>File operations:</strong> Read, edit, create, delete with full diff tracking</li>
+      <li><strong>Git integration:</strong> Commit, branch, review, merge with context awareness</li>
+      <li><strong>Shell execution:</strong> Run tests, deploy, and interact with APIs directly</li>
+      <li><strong>Memory & context:</strong> Persistent session state and project configuration</li>
+    </ul>
+
+    <h3>2. MCP (Model Context Protocol)</h3>
+    <p>MCP is the standard for connecting Claude to external tools. Instead of writing custom integrations, you define what resources Claude can access, and MCP handles the connection.</p>
+    <ul class="checklist">
+      <li>Connect Claude to databases, APIs, file systems, and services</li>
+      <li>Define prompts, tools, and resources that Claude can use</li>
+      <li>Build once, use across Claude Code, web chat, and agents</li>
+      <li>Open ecosystem: 1000+ pre-built servers from Anthropic and community</li>
+    </ul>
+
+    <h3>3. Skills & Workflows</h3>
+    <p>Skills are reusable automations. They're instructions Claude follows to handle specific tasks. Workflows chain multiple skills and agents to solve complex problems.</p>
+    <ul class="checklist">
+      <li><strong>Skills:</strong> Single-purpose automation (e.g., "Review pull request," "Generate report")</li>
+      <li><strong>Workflows:</strong> Multi-step orchestration (e.g., "Research topic → Write draft → Review → Publish")</li>
+      <li><strong>Scheduling:</strong> Run skills on cron schedules or triggered by events</li>
+      <li><strong>Memory:</strong> Skills learn your preferences over time</li>
+    </ul>
+
+    <h3>4. Multi-Agent Orchestration</h3>
+    <p>Deploy multiple specialized agents that work together. One agent might research while another writes, a third reviews. They coordinate work, handle errors, and scale beyond what a single agent can do.</p>
+    <ul class="checklist">
+      <li>Parallel processing: Multiple agents working simultaneously on independent tasks</li>
+      <li>Sequential pipelines: Agent A produces output that Agent B consumes</li>
+      <li>Error handling: Agents verify and retry failed steps automatically</li>
+      <li>Quality gates: Review agents validate work before it ships</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Getting Started: Real Examples</h2>
+
+    <h3>Example 1: Code Review Automation</h3>
+    <p>Every pull request reviewed by Claude Code before human review:</p>
+    <div class="code-block">
+# Install Claude Code
+$ brew install claude-code
+
+# Set up the skill
+$ claude skill create --name "review-pr"
+$ claude config add github-token YOUR_TOKEN
+
+# Now Claude reviews every PR you link to
+$ claude review-pr https://github.com/user/repo/pull/123
+    </div>
+    <p><strong>What happens:</strong> Claude reads your code, runs tests, checks for bugs, suggests optimizations, and posts findings as PR comments. You review Claude's review, then ship.</p>
+
+    <h3>Example 2: Research & Reporting</h3>
+    <p>Every Monday, Claude researches market trends and drafts a report:</p>
+    <ul class="checklist">
+      <li>Fetch data from APIs (news, stock prices, company updates)</li>
+      <li>Analyze and synthesize findings</li>
+      <li>Generate a formatted report</li>
+      <li>Send via email or Slack</li>
+      <li>All automated on a schedule, 0 manual work</li>
+    </ul>
+
+    <h3>Example 3: Multi-Agent Product Release</h3>
+    <p>Coordinate agents for a software release:</p>
+    <ul class="checklist">
+      <li><strong>Agent 1:</strong> Runs tests and validates the build</li>
+      <li><strong>Agent 2:</strong> Updates documentation and changelogs</li>
+      <li><strong>Agent 3:</strong> Writes release notes and marketing copy</li>
+      <li><strong>Agent 4:</strong> Reviews everything and approves or flags issues</li>
+      <li><strong>Agent 5:</strong> Deploys to staging, then production</li>
+    </ul>
+    <p>Total time: 2 minutes (end-to-end, supervised). Human cost: checking a final summary.</p>
+  </div>
+
+  <div class="section">
+    <h2>The Coworking Mindset</h2>
+
+    <h3>Stop Thinking "AI Assistant," Start Thinking "AI Employee"</h3>
+    <p>In chat, you talk to Claude. In code, you hire Claude. The mental shift is crucial.</p>
+    <ul class="checklist">
+      <li><strong>Give context upfront:</strong> Leave CLAUDE.md files, docs, and preferences so Claude operates autonomously</li>
+      <li><strong>Be specific about scope:</strong> "Refactor this function" beats "Make the code better"</li>
+      <li><strong>Trust the work:</strong> Review the output, but don't micro-manage the process</li>
+      <li><strong>Iterate quickly:</strong> If Claude misunderstands, clarify once and move on</li>
+    </ul>
+
+    <h3>The CLAUDE.md Convention</h3>
+    <p>CLAUDE.md is a file you check into your repo that tells Claude how to work in your project:</p>
+    <div class="code-block">
+# My Project — Global Context
+
+## Code Style
+- 2-space indentation
+- Snake_case for variables
+- JSDoc for every function
+
+## Deployment
+- Railway on push to main
+- Tests must pass before deploy
+
+## Tools & Secrets
+- API keys in .env (never commit)
+- MCP servers configured in .claude/
+
+## When to Ask
+- Permission needed for: git push, delete branches, production changes
+    </div>
+    <p><strong>Result:</strong> Claude never asks "where should I put this?" or "what's your code style?" It just knows.</p>
+  </div>
+
+  <div class="section">
+    <h2>Practical Workflow: Your First Coworking Project</h2>
+
+    <h3>Week 1: Understand the Tools</h3>
+    <ul class="checklist">
+      <li>Install Claude Code CLI and desktop app</li>
+      <li>Run `claude --help` to see available commands</li>
+      <li>Read the 20-minute MCP quickstart</li>
+      <li>Watch a 10-minute demo of automated code review</li>
+    </ul>
+
+    <h3>Week 2: Build Your First Skill</h3>
+    <p>Pick something you do weekly that bores you. Examples:</p>
+    <ul class="checklist">
+      <li>Summarize meeting notes and send them to Slack</li>
+      <li>Review pull requests in your personal projects</li>
+      <li>Generate a weekly report from your database</li>
+      <li>Backup important files and send health checks</li>
+    </ul>
+    <p>Create the skill step-by-step, testing each part. By week 2 end, it should run unattended once a week.</p>
+
+    <h3>Week 3: Add Tool Connections</h3>
+    <p>Expand your skill to connect to external services:</p>
+    <ul class="checklist">
+      <li>Connect your GitHub repos via MCP</li>
+      <li>Link your email or Slack for notifications</li>
+      <li>Add database access for data fetching</li>
+      <li>Set up API authentication for external services</li>
+    </ul>
+
+    <h3>Week 4+: Scale & Orchestrate</h3>
+    <p>Now build complex workflows. Coordinate multiple agents, handle errors, and deploy production systems.</p>
+  </div>
+
+  <div class="section">
+    <h2>Advanced Patterns</h2>
+
+    <h3>Pattern 1: Feedback Loops</h3>
+    <p>Agent does work → You review → Agent learns. Claude remembers your corrections and applies them to future work.</p>
+
+    <h3>Pattern 2: Autonomous Review</h3>
+    <p>Never manually review code again. Deploy a specialized review agent that runs on every PR, finds issues, and suggests fixes before humans touch it.</p>
+
+    <h3>Pattern 3: 24/7 Monitoring</h3>
+    <p>Schedule an agent to run every 6 hours. It monitors your systems, checks health, detects anomalies, and alerts you only when something's wrong.</p>
+
+    <h3>Pattern 4: Knowledge Base Sync</h3>
+    <p>Agent periodically updates your internal docs from Slack, email, and GitHub. Your knowledge base stays current without anyone updating it manually.</p>
+
+    <h3>Pattern 5: Multi-Tenant Automation</h3>
+    <p>One agent manages workflows for multiple teams or projects. It stays organized, handles context switching, and scales without additional effort.</p>
+  </div>
+
+  <div class="highlight">
+    <p><strong>⚡ Key Insight:</strong> The people mastering Claude Code right now are gaining a 10x advantage over peers. Not because Claude Code is magically smart—it's not. But because automating just one tedious daily task saves 50 hours a year. Automate 10 things, and you've freed up 500 hours. That's two extra months of focused work, every year.</p>
+  </div>
+
+  <div class="section">
+    <h2>Beyond Claude Code: The Coworking Ecosystem</h2>
+
+    <h3>Claude Cowork (Desktop App)</h3>
+    <p>A more polished interface for building and managing skills. Better for people who prefer a GUI over CLI, though everything you build works in both.</p>
+
+    <h3>Claude API + Agents SDK</h3>
+    <p>If you're building AI products for others (SaaS, platforms, integrations), use the API directly. Build agents that work on behalf of your users.</p>
+
+    <h3>Managed Agents</h3>
+    <p>Deploy agents to Anthropic's cloud instead of your own servers. They run 24/7, handle scaling, and integrate with your existing systems.</p>
+
+    <h3>Custom MCP Servers</h3>
+    <p>Build your own MCP servers to connect Claude to proprietary tools, internal APIs, or specialized services that don't have pre-built connectors.</p>
+
+    <h3>Agent Marketplaces</h3>
+    <p>Publish skills you've built. Others use them, improve them, and contribute back. Get paid for automation that scales across thousands of users.</p>
+  </div>
+
+  <div class="section">
+    <h2>Next Steps</h2>
+    <ul class="checklist">
+      <li><strong>Install Claude Code:</strong> <code>brew install claude-code</code> or download from claude.com</li>
+      <li><strong>Read CLAUDE.md convention:</strong> Create one for your next project</li>
+      <li><strong>Compare platforms:</strong> Not sure which tool? Read <a href="/learn-cowork-platforms.html" style="color: var(--accent); text-decoration: underline;">Coworking Platforms & Codex Systems</a></li>
+      <li><strong>Join the community:</strong> Slack channel, GitHub discussions, Reddit r/ClaudeCode</li>
+      <li><strong>Build something:</strong> Pick one boring task and automate it this week</li>
+      <li><strong>Share your workflow:</strong> Post on LinkedIn, Twitter, or GitHub. Show what you built</li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <p>AI Learning Hub — Master Claude Code. Build autonomous agents. Deploy real work. © 2026 Human Agency</p>
+    <div class="footer-links">
+      <a href="/learn.html">← Back to Learning Path</a>
+      <a href="/learn-cowork-platforms.html">Compare Platforms</a>
+      <a href="/learn-cowork-patterns.html">Common Patterns</a>
+      <a href="/setup.html">Setup Guide</a>
+      <a href="/resources.html">Resources</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.addEventListener("keydown", (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+    e.preventDefault();
+    window.location.href = "/search.html";
+  }
+});
+</script>
+
+</body>
+</html>

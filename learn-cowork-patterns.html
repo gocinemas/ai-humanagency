@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coworking Patterns — Common Workflows & Solutions</title>
+  <meta name="description" content="Copy-paste workflows for common automation patterns. Research agents, code review, data pipelines, and more.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f9f8f6;
+      --surface: #ffffff;
+      --border: #ebebeb;
+      --text: #111111;
+      --muted: #666666;
+      --accent: #f59e0b;
+      --accent-alt: #14b8a6;
+      --good: #10b981;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+      color: var(--text);
+    }
+
+    .logo .dot { color: var(--accent); }
+
+    nav {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    nav a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      transition: color 0.15s;
+    }
+
+    nav a:hover { color: var(--text); }
+
+    .hero {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 60px 24px 40px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    .breadcrumb {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    .section {
+      margin-bottom: 60px;
+    }
+
+    .section h2 {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+      margin-bottom: 20px;
+    }
+
+    .section h3 {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+      margin-top: 28px;
+      margin-bottom: 12px;
+    }
+
+    .section p {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .section p strong { color: var(--text); }
+
+    /* Pattern Cards */
+    .patterns-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin: 28px 0;
+    }
+
+    .pattern-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .pattern-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 8px 24px rgba(245, 158, 11, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .pattern-icon {
+      font-size: 36px;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .pattern-name {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+      margin-bottom: 8px;
+    }
+
+    .pattern-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .pattern-meta {
+      font-size: 12px;
+      color: var(--muted);
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 12px;
+    }
+
+    .pattern-meta strong { color: var(--text); }
+
+    /* Code Block */
+    .code-block {
+      background: #1a1a1a;
+      color: #f5f5f5;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      margin: 20px 0;
+      font-family: 'Monaco', 'Courier New', monospace;
+      font-size: 12px;
+      overflow-x: auto;
+      line-height: 1.5;
+    }
+
+    /* Workflow Diagram */
+    .workflow {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    .workflow-step {
+      display: inline-block;
+      padding: 12px 20px;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(20, 184, 166, 0.1) 100%);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin: 8px 4px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .workflow-arrow {
+      display: inline-block;
+      color: var(--accent);
+      font-weight: 700;
+      margin: 0 8px;
+    }
+
+    /* Checklist */
+    .checklist {
+      list-style: none;
+      margin: 20px 0;
+    }
+
+    .checklist li {
+      padding: 10px 0;
+      padding-left: 24px;
+      position: relative;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .checklist li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* Highlight */
+    .highlight {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.05) 0%, rgba(20, 184, 166, 0.05) 100%);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    .highlight p { margin-bottom: 0; }
+
+    .badge {
+      display: inline-block;
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--accent);
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      margin: 4px 4px 4px 0;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .footer-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 24px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .footer-links {
+      margin-top: 16px;
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 28px; }
+      .container { padding: 0 16px 60px; }
+      .patterns-grid { grid-template-columns: 1fr; }
+      .workflow { overflow-x: auto; text-align: left; }
+      .workflow-step { display: block; margin: 8px 0; }
+      .workflow-arrow { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <nav id="nav">
+      <a href="/start.html">Start Here</a>
+      <a href="/quick-reference.html">Quick Ref</a>
+      <a href="/jargon.html">Jargon</a>
+      <a href="/use-cases.html">Use Cases</a>
+      <a href="/compare.html">Compare</a>
+      <a href="/setup.html">Setup</a>
+      <a href="/learn.html">Learn</a>
+      <a href="/resources.html">Resources</a>
+      <a href="/search.html" style="display: flex; align-items: center; gap: 6px; margin-left: 12px; padding-left: 12px; border-left: 1px solid var(--border);">🔍</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <h1>🔄 Coworking Patterns</h1>
+  <p>Battle-tested workflows for common automation tasks. Copy, adapt, deploy.</p>
+  <div class="breadcrumb">← <a href="/learn.html">Back to Learning Path</a></div>
+</div>
+
+<div class="container">
+
+  <div class="section">
+    <h2>What Are Coworking Patterns?</h2>
+    <p>Patterns are proven solutions to common problems. Instead of building from scratch, use a pattern as your starting point. Each pattern shows:</p>
+    <ul class="checklist">
+      <li><strong>What it does:</strong> The problem it solves</li>
+      <li><strong>When to use it:</strong> The right situations for this pattern</li>
+      <li><strong>How to build it:</strong> Step-by-step implementation</li>
+      <li><strong>What to customize:</strong> Where to add your business logic</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Core Patterns</h2>
+
+    <div class="patterns-grid">
+      <div class="pattern-card">
+        <span class="pattern-icon">🔍</span>
+        <div class="pattern-name">Research Agent</div>
+        <div class="pattern-desc">Automated research on any topic. Fetch data from APIs, aggregate findings, and generate reports.</div>
+        <div class="pattern-meta">
+          <strong>Difficulty:</strong> Medium | <strong>Time:</strong> 4 hours
+        </div>
+      </div>
+
+      <div class="pattern-card">
+        <span class="pattern-icon">📝</span>
+        <div class="pattern-name">Code Review Automation</div>
+        <div class="pattern-desc">Autonomous PR reviews. Analyze code changes, detect bugs, and post findings.</div>
+        <div class="pattern-meta">
+          <strong>Difficulty:</strong> Medium | <strong>Time:</strong> 3 hours
+        </div>
+      </div>
+
+      <div class="pattern-card">
+        <span class="pattern-icon">📊</span>
+        <div class="pattern-name">Data Pipeline</div>
+        <div class="pattern-desc">Scheduled data fetching, transformation, and storage. Update databases on a cron schedule.</div>
+        <div class="pattern-meta">
+          <strong>Difficulty:</strong> Medium | <strong>Time:</strong> 5 hours
+        </div>
+      </div>
+
+      <div class="pattern-card">
+        <span class="pattern-icon">💬</span>
+        <div class="pattern-name">Email/Slack Bot</div>
+        <div class="pattern-desc">Trigger agents via email or Slack. Process natural language commands autonomously.</div>
+        <div class="pattern-meta">
+          <strong>Difficulty:</strong> Easy | <strong>Time:</strong> 2 hours
+        </div>
+      </div>
+
+      <div class="pattern-card">
+        <span class="pattern-icon">🔐</span>
+        <div class="pattern-name">Monitoring & Alerts</div>
+        <div class="pattern-desc">Watch systems 24/7. Detect anomalies, alert humans only when necessary.</div>
+        <div class="pattern-meta">
+          <strong>Difficulty:</strong> Medium | <strong>Time:</strong> 4 hours
+        </div>
+      </div>
+
+      <div class="pattern-card">
+        <span class="pattern-icon">🚀</span>
+        <div class="pattern-name">Release Automation</div>
+        <div class="pattern-desc">Full release pipeline. Test, build, document, deploy, announce.</div>
+        <div class="pattern-meta">
+          <strong>Difficulty:</strong> Hard | <strong>Time:</strong> 6 hours
+        </div>
+      </div>
+
+      <div class="pattern-card">
+        <span class="pattern-icon">📚</span>
+        <div class="pattern-name">Knowledge Base Sync</div>
+        <div class="pattern-desc">Keep docs current. Extract info from Slack, email, GitHub, and update centrally.</div>
+        <div class="pattern-meta">
+          <strong>Difficulty:</strong> Medium | <strong>Time:</strong> 3 hours
+        </div>
+      </div>
+
+      <div class="pattern-card">
+        <span class="pattern-icon">📧</span>
+        <div class="pattern-name">Bulk Email Campaign</div>
+        <div class="pattern-desc">Personalized outreach at scale. Fetch recipient data, generate personalized emails, send.</div>
+        <div class="pattern-meta">
+          <strong>Difficulty:</strong> Easy | <strong>Time:</strong> 2 hours
+        </div>
+      </div>
+
+      <div class="pattern-card">
+        <span class="pattern-icon">🤖</span>
+        <div class="pattern-name">Multi-Agent Orchestration</div>
+        <div class="pattern-desc">Coordinate multiple agents. One researches, another writes, a third reviews.</div>
+        <div class="pattern-meta">
+          <strong>Difficulty:</strong> Hard | <strong>Time:</strong> 6 hours
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Pattern Deep Dive: Research Agent</h2>
+
+    <h3>What It Does</h3>
+    <p>Autonomous research on any topic. Fetches data from APIs (news, financial, weather, etc.), synthesizes findings, and generates a formatted report.</p>
+
+    <h3>When to Use It</h3>
+    <ul class="checklist">
+      <li>Weekly market research reports</li>
+      <li>Competitive intelligence gathering</li>
+      <li>News aggregation by topic</li>
+      <li>Financial data analysis</li>
+      <li>Trend monitoring and alerting</li>
+    </ul>
+
+    <h3>The Workflow</h3>
+    <div class="workflow">
+      <div class="workflow-step">Fetch Data</div>
+      <span class="workflow-arrow">→</span>
+      <div class="workflow-step">Analyze</div>
+      <span class="workflow-arrow">→</span>
+      <div class="workflow-step">Synthesize</div>
+      <span class="workflow-arrow">→</span>
+      <div class="workflow-step">Format</div>
+      <span class="workflow-arrow">→</span>
+      <div class="workflow-step">Send Report</div>
+    </div>
+
+    <h3>Implementation Sketch</h3>
+    <div class="code-block">
+# research-agent.js
+import { Anthropic } from '@anthropic-ai/sdk';
+
+const client = new Anthropic();
+
+async function runResearch(topic) {
+  // Step 1: Fetch data
+  const newsData = await fetchNews(topic);
+  const marketData = await fetchMarkets(topic);
+
+  // Step 2: Ask Claude to synthesize
+  const message = await client.messages.create({
+    model: "claude-opus-5",
+    max_tokens: 2000,
+    messages: [{
+      role: "user",
+      content: `Analyze this data and write a report:
+${newsData}
+${marketData}`
+    }]
+  });
+
+  // Step 3: Send report
+  await sendEmail('report@company.com', message.content[0].text);
+}
+    </div>
+
+    <h3>How to Customize</h3>
+    <ul class="checklist">
+      <li><strong>Data sources:</strong> Swap API keys and endpoints</li>
+      <li><strong>Analysis depth:</strong> Modify the prompt to ask different questions</li>
+      <li><strong>Output format:</strong> Change email to Slack, PDF, or database</li>
+      <li><strong>Scheduling:</strong> Run weekly, daily, or on-demand</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Pattern Deep Dive: Code Review Automation</h2>
+
+    <h3>What It Does</h3>
+    <p>Every pull request is reviewed by Claude. Find bugs, suggest optimizations, and post findings as PR comments. Humans review Claude's review, then ship.</p>
+
+    <h3>The Workflow</h3>
+    <div class="workflow">
+      <div class="workflow-step">PR Created</div>
+      <span class="workflow-arrow">→</span>
+      <div class="workflow-step">Fetch Changes</div>
+      <span class="workflow-arrow">→</span>
+      <div class="workflow-step">Run Tests</div>
+      <span class="workflow-arrow">→</span>
+      <div class="workflow-step">Claude Reviews</div>
+      <span class="workflow-arrow">→</span>
+      <div class="workflow-step">Post Comments</div>
+    </div>
+
+    <h3>Key Components</h3>
+    <ul class="checklist">
+      <li><strong>GitHub webhook:</strong> Trigger agent on PR creation/update</li>
+      <li><strong>Diff parsing:</strong> Extract only changed code (not whole file)</li>
+      <li><strong>Test execution:</strong> Run suite to catch failures early</li>
+      <li><strong>Multi-category review:</strong> Bugs, performance, security, style</li>
+      <li><strong>PR commenting:</strong> Post findings inline on changed lines</li>
+    </ul>
+
+    <h3>What Claude Looks For</h3>
+    <div class="badge">Correctness</div>
+    <div class="badge">Performance</div>
+    <div class="badge">Security</div>
+    <div class="badge">Maintainability</div>
+    <div class="badge">Test Coverage</div>
+    <div class="badge">Dependency Safety</div>
+  </div>
+
+  <div class="section">
+    <h2>Building Your First Pattern</h2>
+
+    <h3>Week 1: Setup</h3>
+    <ul class="checklist">
+      <li>Pick a pattern that solves something you do weekly</li>
+      <li>Read through the full implementation sketch</li>
+      <li>Set up your development environment (Claude Code CLI + API key)</li>
+      <li>Clone or create a test repo</li>
+    </ul>
+
+    <h3>Week 2: Implement Core</h3>
+    <ul class="checklist">
+      <li>Build the main agent logic with Claude's help</li>
+      <li>Connect to one data source (API or file system)</li>
+      <li>Test locally multiple times</li>
+      <li>Get the happy path working</li>
+    </ul>
+
+    <h3>Week 3: Add Integrations</h3>
+    <ul class="checklist">
+      <li>Connect output systems (email, Slack, database, etc.)</li>
+      <li>Handle errors and edge cases</li>
+      <li>Add logging and monitoring</li>
+      <li>Test with real data</li>
+    </ul>
+
+    <h3>Week 4: Deploy & Schedule</h3>
+    <ul class="checklist">
+      <li>Deploy to cloud (Railway, Vercel, AWS Lambda, etc.)</li>
+      <li>Set up cron schedule or webhook trigger</li>
+      <li>Monitor first few runs closely</li>
+      <li>Document and share with team</li>
+    </ul>
+  </div>
+
+  <div class="highlight">
+    <p><strong>⚡ Pro Tip:</strong> Don't build the perfect pattern. Build the minimum version that works, deploy it, and iterate based on real usage. A working pattern deployed beats a perfect one stuck in development.</p>
+  </div>
+
+  <div class="section">
+    <h2>Anti-Patterns: What NOT to Do</h2>
+
+    <h3>❌ Building without testing</h3>
+    <p>Never deploy an agent without running it 3+ times locally first. Edge cases always exist.</p>
+
+    <h3>❌ No error handling</h3>
+    <p>APIs fail. Files don't exist. Networks time out. Build in retry logic and graceful failures.</p>
+
+    <h3>❌ Forgetting to log</h3>
+    <p>If something breaks at 3 AM, logs are your only friend. Log everything important.</p>
+
+    <h3>❌ Hardcoding secrets</h3>
+    <p>Use environment variables. Never commit API keys or credentials to git.</p>
+
+    <h3>❌ Ignoring user feedback loops</h3>
+    <p>After deployment, ask users what worked and what didn't. Iterate quickly.</p>
+  </div>
+
+  <div class="section">
+    <h2>Pattern Library & Community</h2>
+    <p>The patterns above are just starting points. The community is building thousands of patterns:</p>
+    <ul class="checklist">
+      <li><strong>GitHub:</strong> Search "claude-pattern" for open-source implementations</li>
+      <li><strong>Anthropic Docs:</strong> Official pattern examples and SDKs</li>
+      <li><strong>Community Slack:</strong> Share patterns, ask questions, learn from others</li>
+      <li><strong>Marketplace:</strong> Buy/sell pre-built patterns and agents</li>
+    </ul>
+    <p>If you build a pattern that works, share it. Open-source or sell it. Help others work smarter.</p>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <p>AI Learning Hub — Build with patterns. Deploy with confidence. Work smarter. © 2026 Human Agency</p>
+    <div class="footer-links">
+      <a href="/learn.html">← Back to Learning Path</a>
+      <a href="/learn-claude-code.html">Claude Code Guide</a>
+      <a href="/learn-cowork-platforms.html">Compare Platforms</a>
+      <a href="/resources.html">Resources</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.addEventListener("keydown", (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+    e.preventDefault();
+    window.location.href = "/search.html";
+  }
+});
+</script>
+
+</body>
+</html>
