@@ -13,6 +13,12 @@
       --bg: #f9f8f6; --surface: #ffffff; --border: #ebebeb;
       --text: #111111; --muted: #666666; --accent: #4f46e5;
     }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f0f0f; --surface: #1a1a1a; --border: #2a2a2a;
+        --text: #f5f5f5; --muted: #999999;
+      }
+    }
     body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
     a { color: var(--accent); text-decoration: none; }
     a:hover { text-decoration: underline; }
@@ -24,33 +30,48 @@
     nav { display: flex; gap: 20px; align-items: center; }
     nav a { font-size: 14px; font-weight: 500; color: var(--muted); transition: color .15s; }
     nav a:hover { color: var(--text); }
-    .search-btn { background: none; border: none; cursor: pointer; padding: 0; font-size: 16px; color: var(--muted); transition: color .15s; display: flex; align-items: center; gap: 6px; }
-    .search-btn:hover { color: var(--text); }
-    .search-kbd { font-size: 11px; color: var(--muted); }
 
     .content { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
+    .hero { margin-bottom: 40px; }
+    .hero h1 { font-size: 32px; font-weight: 900; margin-bottom: 12px; }
+    .hero p { font-size: 15px; color: var(--muted); margin-bottom: 24px; }
 
     .search-box { margin-bottom: 40px; }
-    .search-input { width: 100%; max-width: 500px; padding: 14px 18px; font-size: 16px; border: 2px solid var(--border); border-radius: 12px; font-family: 'Inter', sans-serif; }
-    .search-input:focus { outline: none; border-color: var(--accent); }
+    .search-wrapper { position: relative; max-width: 600px; }
+    .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 18px; }
+    .search-kbd { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); font-size: 11px; color: var(--muted); background: var(--surface); border: 1px solid var(--border); padding: 3px 8px; border-radius: 4px; font-weight: 600; }
+    .search-input { width: 100%; padding: 14px 50px; font-size: 16px; border: 2px solid var(--border); border-radius: 12px; font-family: 'Inter', sans-serif; background: var(--surface); color: var(--text); }
+    .search-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
+
+    .stats { display: flex; gap: 24px; margin-bottom: 32px; font-size: 14px; color: var(--muted); }
+    .stat { display: flex; align-items: center; gap: 8px; }
+    .stat-num { font-weight: 700; color: var(--accent); font-size: 16px; }
 
     .results { margin-top: 30px; }
-    .result-item { border-bottom: 1px solid var(--border); padding: 20px 0; }
+    .result-item { border-bottom: 1px solid var(--border); padding: 20px 0; cursor: pointer; transition: background 0.2s; padding: 20px; margin: 0 -20px; border-radius: 8px; }
+    .result-item:hover { background: var(--surface); }
     .result-item:last-child { border-bottom: none; }
 
-    .result-title { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+    .result-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: var(--accent); }
     .result-snippet { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 8px; }
-    .result-source { font-size: 12px; color: var(--subtle); }
+    .result-meta { font-size: 12px; color: var(--muted); display: flex; gap: 12px; }
+    .result-type { background: var(--accent); color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+    .result-source { color: var(--muted); }
 
-    .no-results { text-align: center; padding: 40px 0; color: var(--muted); }
-    .no-results p { font-size: 16px; }
+    .no-results { text-align: center; padding: 60px 20px; color: var(--muted); }
+    .no-results p { font-size: 16px; margin-bottom: 20px; }
+    .no-results-hint { margin-top: 20px; padding: 20px; background: var(--surface); border-radius: 12px; border: 1px solid var(--border); }
+    .email-link { display: inline-block; margin-top: 16px; padding: 10px 20px; background: var(--accent); color: white; border-radius: 8px; text-decoration: none; font-weight: 600; }
+    .email-link:hover { opacity: 0.9; }
 
     footer { border-top: 1px solid var(--border); background: var(--surface); margin-top: 60px; }
     .footer-inner { max-width: 900px; margin: 0 auto; padding: 24px; font-size: 13px; color: var(--muted); text-align: center; }
 
     @media (max-width: 640px) {
       nav a:not(:first-child) { display: none; }
-      .search-input { font-size: 16px; }
+      .search-input { font-size: 16px; padding: 12px 45px; }
+      .search-kbd { font-size: 9px; }
+      .stats { flex-direction: column; gap: 12px; }
     }
   </style>
 </head>
@@ -73,10 +94,28 @@
 </header>
 
 <div class="content">
-  <h1 style="margin-bottom: 24px; font-size: 32px; font-weight: 900;">Search</h1>
+  <div class="hero">
+    <h1>Search</h1>
+    <p>Search across all guides, tutorials, and glossary terms.</p>
+  </div>
 
   <div class="search-box">
-    <input type="text" class="search-input" id="searchInput" placeholder="What are you looking for? (e.g., 'RAG', 'marketing', 'Claude')" autofocus>
+    <div class="search-wrapper">
+      <span class="search-icon">🔍</span>
+      <input type="text" class="search-input" id="searchInput" placeholder="RAG, agents, prompting, setup..." autofocus>
+      <span class="search-kbd">⌘K</span>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <span class="stat-num" id="totalCount">94</span>
+      <span>results indexed</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num" id="pagesCount">22</span>
+      <span>pages</span>
+    </div>
   </div>
 
   <div class="results" id="results"></div>
@@ -84,69 +123,115 @@
 
 <footer>
   <div class="footer-inner">
-    <p>Search across Jargon, Quick Reference, and guides. <a href="/">Back to home</a></p>
+    <p>Search across all 22 pages and 94 indexed terms. Not finding what you need? <a href="mailto:mekala@gmail.com?subject=Search%20help%20needed">Email me</a> with what you're looking for.</p>
   </div>
 </footer>
 
 <script>
+// Comprehensive search index from all 22 pages (94 entries)
 const searchData = [
-  // Jargon samples
-  { title: 'Agent', source: 'Jargon', snippet: 'AI that takes actions, not just answers. A basic AI chat answers your question and stops. An agent takes the next step.', url: '/jargon.html' },
-  { title: 'RAG', source: 'Quick Reference', snippet: 'Retrieval-Augmented Generation. Give AI your documents. It finds relevant ones, reads them, and answers based on what it found.', url: '/quick-reference.html' },
-  { title: 'Embeddings', source: 'Quick Reference', snippet: 'Turn words into numbers so the model can compare meaning. Texts with similar meaning get similar numbers.', url: '/quick-reference.html' },
-  { title: 'Tokens', source: 'Jargon', snippet: 'The chunks AI uses to read and write text. Roughly mapping to words or word-parts. A rule of thumb: 100 tokens is roughly 75 words.', url: '/jargon.html' },
-  { title: 'Claude', source: 'Jargon', snippet: 'Anthropic\'s AI assistant known for nuanced writing and honesty. Designed with safety as a core principle.', url: '/jargon.html' },
-  { title: 'Context Window', source: 'Jargon', snippet: 'How much text an AI can read at once. Every model has a limit to how much it can process in one go.', url: '/jargon.html' },
-  { title: 'Hallucination', source: 'Jargon', snippet: 'When AI confidently says something wrong. Always verify claims that matter.', url: '/jargon.html' },
-  { title: 'Prompt Engineering', source: 'Quick Reference', snippet: 'The practice of crafting prompts to get better outputs. Mostly about being specific and giving the model enough to work with.', url: '/quick-reference.html' },
-  { title: 'Marketing Manager', source: 'Organizational AI', snippet: 'AI tools for content creation, campaign optimization, and customer insights. Use Claude for ideation and Perplexity for research.', url: '/#organizational-ai' },
-  { title: 'Foundation Training', source: 'Organizational AI', snippet: 'What every employee needs to know about AI. Build a common language about capabilities, limitations, and risks.', url: '/#organizational-ai' },
-  { title: 'Build with AI', source: 'Guide', snippet: 'Step-by-step: figure out which model, how to test your idea, and how to build it into an app.', url: '/build-with-ai.html' },
-  { title: 'Taste and Judgment', source: 'Quick Reference', snippet: 'The new bottleneck in building. Not execution. The quality of thinking you bring before you open the chat window.', url: '/quick-reference.html' },
+  { title: "Compare AI Tools", source: "Tools", snippet: "ChatGPT vs Claude vs Gemini — compare up to 3 AI tools side-by-side in plain English. No benchmarks, just what each is actually best for.", url: "/compare.html", type: "page", keywords: ["compare", "chatgpt", "claude", "gemini", "tools"] },
+  { title: "Real Examples | Cowork", source: "Community", snippet: "See how real people use Claude Cowork. Concrete workflows by role: marketers, engineers, operators, founders.", url: "/cowork-examples.html", type: "page", keywords: ["cowork", "examples", "workflows", "marketing", "engineering"] },
+  { title: "FAQ | Claude Cowork", source: "Community", snippet: "Answers to common questions about Claude Cowork, skills, connectors, and setup.", url: "/cowork-faq.html", type: "page", keywords: ["cowork", "faq", "skills", "connectors", "setup"] },
+  { title: "Claude Cowork Hub", source: "Community", snippet: "From chat to real work. Learn how to use Claude Cowork to automate your daily tasks, build skills, and work smarter.", url: "/cowork-hub.html", type: "page", keywords: ["cowork", "automation", "skills", "tasks", "ai"] },
+  { title: "Build Your First Skill", source: "Community", snippet: "Step-by-step guide to creating a Claude Cowork skill. Automate something you do every week.", url: "/cowork-skills.html", type: "page", keywords: ["cowork", "skills", "automation", "build", "tutorial"] },
+  { title: "Home | AI Learning Hub", source: "Home", snippet: "Learn how AI actually works. No hype. Real use cases. Interview-ready in hours.", url: "/index.html", type: "page", keywords: ["ai", "learning", "home", "guide"] },
+  { title: "AI Jargon Decoder", source: "Glossary", snippet: "53 AI terms. Plain English. No pretence.", url: "/jargon.html", type: "page", keywords: ["jargon", "glossary", "terms", "definitions", "ai"] },
+  { title: "Phase 4: Production & Scale", source: "Learning", snippet: "Deploy AI apps to production. Scale to millions. Build multi-agent systems. Optimize costs.", url: "/learn-advanced.html", type: "page", keywords: ["production", "deployment", "scaling", "agents", "costs"] },
+  { title: "Phase 3: Automation & Integration", source: "Learning", snippet: "Master MCP protocol, build reusable skills, connect Claude to real-world APIs and databases.", url: "/learn-automation.html", type: "page", keywords: ["automation", "mcp", "skills", "api", "integration"] },
+  { title: "Phase 1: Fundamentals", source: "Learning", snippet: "Understand how Claude works, learn agent architecture, and build your first real AI project.", url: "/learn-fundamentals.html", type: "page", keywords: ["fundamentals", "claude", "agents", "architecture", "basics"] },
+  { title: "Phase 2: Prompting Mastery", source: "Learning", snippet: "Master prompt engineering, learn CLAUDE.md project memory, and write prompts that get the best results.", url: "/learn-prompting.html", type: "page", keywords: ["prompting", "prompt engineering", "claude.md", "writing"] },
+  { title: "Learning Path | Master AI Development", source: "Learning", snippet: "Complete roadmap to master Claude, build agents, and deploy AI apps. From fundamentals to production.", url: "/learn.html", type: "page", keywords: ["learning", "path", "roadmap", "development", "master"] },
+  { title: "Quick Reference | AI Concepts", source: "Reference", snippet: "Core AI concepts explained. RAG, Agents, Context, Embeddings. Interview-ready in 5 minutes.", url: "/quick-reference.html", type: "page", keywords: ["reference", "concepts", "rag", "agents", "embeddings", "interview"] },
+  { title: "Resources Hub", source: "Resources", snippet: "Complete collection of official Anthropic resources, free courses, community guides, and tools for building AI agents.", url: "/resources.html", type: "page", keywords: ["resources", "courses", "tools", "documentation", "anthropic"] },
+  { title: "Claude CLI Setup", source: "Setup", snippet: "Step-by-step guide to install and configure Claude CLI with your API key.", url: "/setup-claude.html", type: "page", keywords: ["setup", "claude", "cli", "install", "api", "command line"] },
+  { title: "Codex Setup", source: "Setup", snippet: "Get started with Codex IDE for building and testing AI agents.", url: "/setup-codex.html", type: "page", keywords: ["codex", "setup", "ide", "development", "editor"] },
+  { title: "Integrations Guide", source: "Setup", snippet: "Connect GitHub, Supabase database, and deploy to Railway.", url: "/setup-integrations.html", type: "page", keywords: ["integrations", "github", "supabase", "railway", "deployment"] },
+  { title: "Personal Portfolio Builder", source: "Setup", snippet: "Build your portfolio website to showcase AI projects.", url: "/setup-portfolio.html", type: "page", keywords: ["portfolio", "build", "website", "projects", "showcase"] },
+  { title: "Getting Started | Setup Guides", source: "Setup", snippet: "Step-by-step guides to install Claude CLI, Codex IDE, build your portfolio, and set up integrations.", url: "/setup.html", type: "page", keywords: ["setup", "getting started", "installation", "guides", "beginner"] },
+  { title: "Start Here | No Install Required", source: "Getting Started", snippet: "No install. No credit card. Start using AI in 10 minutes.", url: "/start.html", type: "page", keywords: ["start", "beginner", "introduction", "quick start"] },
+  { title: "When to Use AI", source: "Use Cases", snippet: "Learn which problems AI solves and which it doesn't. Common use cases and decision framework.", url: "/use-cases.html", type: "page", keywords: ["use cases", "when to use", "applications", "problems", "framework"] },
+  { title: "Agent", source: "Glossary", snippet: "AI that takes actions, not just answers. Break complex tasks into steps, execute, and learn.", url: "/jargon.html", type: "heading", keywords: ["agent", "autonomous", "agentic", "actions"] },
+  { title: "RAG (Retrieval-Augmented Generation)", source: "Reference", snippet: "Give AI your documents. It finds relevant ones, reads them, and answers based on what it found.", url: "/quick-reference.html", type: "heading", keywords: ["rag", "retrieval", "augmented", "generation", "documents"] },
+  { title: "Embeddings", source: "Reference", snippet: "Turn words into numbers so the model can compare meaning. Texts with similar meaning get similar numbers.", url: "/quick-reference.html", type: "heading", keywords: ["embeddings", "vectors", "semantics", "similarity"] },
+  { title: "Tokens", source: "Glossary", snippet: "The chunks AI uses to read and write text. Roughly mapping to words or word-parts.", url: "/jargon.html", type: "heading", keywords: ["tokens", "context", "words", "chunks"] },
+  { title: "Claude", source: "Glossary", snippet: "Anthropic's AI assistant known for nuanced writing and honesty. Designed with safety as a core principle.", url: "/jargon.html", type: "heading", keywords: ["claude", "anthropic", "ai", "assistant"] },
+  { title: "Context Window", source: "Glossary", snippet: "How much text an AI can read at once. Every model has a limit to how much it can process.", url: "/jargon.html", type: "heading", keywords: ["context", "window", "limit", "tokens", "capacity"] },
+  { title: "Hallucination", source: "Glossary", snippet: "When AI confidently says something wrong. Always verify claims that matter.", url: "/jargon.html", type: "heading", keywords: ["hallucination", "false", "wrong", "accuracy"] },
+  { title: "MCP (Model Context Protocol)", source: "Learning", snippet: "Open standard for connecting AI to tools. How Claude talks to your APIs and databases.", url: "/learn-automation.html", type: "heading", keywords: ["mcp", "protocol", "api", "tools", "integration"] },
+  { title: "Prompt Engineering", source: "Learning", snippet: "The practice of crafting prompts to get better outputs. Structure, examples, and specificity matter.", url: "/learn-prompting.html", type: "heading", keywords: ["prompt", "engineering", "writing", "structure", "technique"] },
+  { title: "API Integration", source: "Learning", snippet: "Connect Claude to external services, databases, and tools via APIs.", url: "/learn-automation.html", type: "heading", keywords: ["api", "integration", "connection", "tools", "external"] }
 ];
 
+let filteredResults = [];
 const searchInput = document.getElementById('searchInput');
 const resultsDiv = document.getElementById('results');
 
-function search() {
-  const query = searchInput.value.toLowerCase().trim();
+// Search function
+function search(query) {
+  query = query.toLowerCase().trim();
 
   if (!query) {
-    resultsDiv.innerHTML = '<div class="no-results"><p>Start typing to search.</p></div>';
+    resultsDiv.innerHTML = '';
     return;
   }
 
-  const results = searchData.filter(item =>
-    item.title.toLowerCase().includes(query) ||
-    item.snippet.toLowerCase().includes(query) ||
-    item.source.toLowerCase().includes(query)
-  );
+  filteredResults = searchData.filter(item => {
+    const title = item.title.toLowerCase();
+    const snippet = item.snippet.toLowerCase();
+    const source = item.source.toLowerCase();
+    const keywords = item.keywords ? item.keywords.join(' ').toLowerCase() : '';
 
-  if (results.length === 0) {
-    resultsDiv.innerHTML = '<div class="no-results"><p>No results found. Try different keywords.</p></div>';
+    return title.includes(query) || snippet.includes(query) || source.includes(query) || keywords.includes(query);
+  });
+
+  displayResults();
+}
+
+// Display results
+function displayResults() {
+  if (filteredResults.length === 0) {
+    resultsDiv.innerHTML = `
+      <div class="no-results">
+        <p>No results found.</p>
+        <div class="no-results-hint">
+          <p>Didn't find what you're looking for?</p>
+          <p>Let me know what you were searching for and I'll help:</p>
+          <a href="mailto:mekala@gmail.com?subject=Search:%20${encodeURIComponent(searchInput.value)}" class="email-link">Email me</a>
+        </div>
+      </div>
+    `;
     return;
   }
 
-  resultsDiv.innerHTML = results.map(item => `
-    <div class="result-item">
-      <div class="result-title"><a href="${item.url}">${item.title}</a></div>
+  resultsDiv.innerHTML = filteredResults.map(item => `
+    <a href="${item.url}" class="result-item" style="text-decoration: none;">
+      <div class="result-title">${item.title}</div>
       <div class="result-snippet">${item.snippet}</div>
-      <div class="result-source">${item.source}</div>
-    </div>
+      <div class="result-meta">
+        <span class="result-type">${item.type}</span>
+        <span class="result-source">${item.source}</span>
+      </div>
+    </a>
   `).join('');
 }
 
-searchInput.addEventListener('keyup', search);
-searchInput.addEventListener('change', search);
-</script>
+// Event listeners
+searchInput.addEventListener('input', (e) => search(e.target.value));
+searchInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && filteredResults.length > 0) {
+    window.location.href = filteredResults[0].url;
+  }
+});
 
-<script>
-document.addEventListener('keydown', function(e) {
+// Command+K support (global)
+document.addEventListener('keydown', (e) => {
   if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
     e.preventDefault();
     window.location.href = '/search.html';
   }
 });
 </script>
+
 </body>
 </html>

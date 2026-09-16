@@ -102,4 +102,12 @@
         </div>
     </div>
 </body>
+<script>
+document.addEventListener("keydown", (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+    e.preventDefault();
+    window.location.href = "/search.html";
+  }
+});
+</script>
 </html>
