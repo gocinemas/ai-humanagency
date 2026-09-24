@@ -163,7 +163,7 @@
     /* Use Case Cards */
     .case-grid {
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 16px;
       margin: 24px 0;
     }
@@ -174,6 +174,12 @@
       border-radius: 12px;
       padding: 24px;
       border-left: 4px solid;
+      transition: all 0.2s;
+    }
+
+    .case-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 4px 16px rgba(79, 70, 229, 0.1);
     }
 
     .case-good { border-left-color: var(--good); }
@@ -183,15 +189,24 @@
       font-size: 15px;
       font-weight: 700;
       display: block;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
+      color: var(--text);
     }
 
     .case-card p {
-      font-size: 14px;
+      font-size: 13px;
       margin-bottom: 10px;
+      line-height: 1.6;
+      color: var(--muted);
     }
 
     .case-card p:last-child { margin-bottom: 0; }
+
+    .case-card p strong {
+      color: var(--text);
+      font-weight: 600;
+      display: inline;
+    }
 
     /* Matrix */
     .matrix {
@@ -528,11 +543,16 @@
   </div>
 
   <div class="section">
-    <h2>AI by Industry</h2>
-    <p>Real use cases for your sector. Click to see what's working now.</p>
+    <h2>Real Use Cases by Industry</h2>
+    <p>See how leading companies are using AI to solve specific problems. Each use case shows the problem, solution, and business impact.</p>
+
+    <div style="margin: 40px 0; padding: 24px; background: linear-gradient(135deg, rgba(79, 70, 229, 0.05) 0%, rgba(20, 184, 166, 0.05) 100%); border-radius: 12px; border: 1px solid rgba(79, 70, 229, 0.2);">
+      <p style="margin: 0; font-size: 14px; color: var(--muted);"><strong style="color: var(--text);">Quick Navigation:</strong> Consumer Goods • Retail • Oil & Gas • Healthcare & Care • Education</p>
+    </div>
 
     <!-- CONSUMER GOODS -->
-    <h3>💰 Consumer Goods (P&G, Unilever, Nestlé)</h3>
+    <h3 style="margin-top: 48px;">💰 Consumer Goods</h3>
+    <p style="font-size: 14px; color: var(--muted); margin-bottom: 24px;">Leading brands like P&G, Unilever, and Nestlé use AI to optimize supply chains, accelerate product development, and scale marketing.</p>
     <div class="case-grid">
       <div class="case-card case-good">
         <strong>Supply Chain Optimization</strong>
@@ -567,7 +587,8 @@
     </div>
 
     <!-- RETAIL -->
-    <h3>🛍️ Retail (Target, Walmart, Sephora, H&M)</h3>
+    <h3 style="margin-top: 48px;">🛍️ Retail & E-Commerce</h3>
+    <p style="font-size: 14px; color: var(--muted); margin-bottom: 24px;">From dynamic pricing to fraud detection, retailers are using AI to increase margins, reduce waste, and improve customer satisfaction.</p>
     <div class="case-grid">
       <div class="case-card case-good">
         <strong>Dynamic Pricing</strong>
@@ -602,7 +623,8 @@
     </div>
 
     <!-- OIL & GAS -->
-    <h3>⛽ Oil & Gas</h3>
+    <h3 style="margin-top: 48px;">⛽ Energy & Resources</h3>
+    <p style="font-size: 14px; color: var(--muted); margin-bottom: 24px;">Predictive maintenance, production optimization, and cost forecasting help energy companies reduce downtime, increase output, and manage risk.</p>
     <div class="case-grid">
       <div class="case-card case-good">
         <strong>Predictive Maintenance</strong>
@@ -637,7 +659,8 @@
     </div>
 
     <!-- CARE HOMES -->
-    <h3>👴 Dementia & Old Age Care Homes</h3>
+    <h3 style="margin-top: 48px;">👴 Healthcare & Senior Care</h3>
+    <p style="font-size: 14px; color: var(--muted); margin-bottom: 24px;">Care facilities use AI for health monitoring, medication management, and family communication to improve resident safety and staff efficiency.</p>
     <div class="case-grid">
       <div class="case-card case-good">
         <strong>Health Monitoring</strong>
@@ -678,7 +701,8 @@
     </div>
 
     <!-- EDUCATION -->
-    <h3>🎓 Education (Schools, Universities, EdTech)</h3>
+    <h3 style="margin-top: 48px;">🎓 Education & Learning</h3>
+    <p style="font-size: 14px; color: var(--muted); margin-bottom: 24px;">Educational institutions use AI to personalize learning, automate grading, predict student performance, and improve outcomes at scale.</p>
     <div class="case-grid">
       <div class="case-card case-good">
         <strong>Personalized Learning Paths</strong>
