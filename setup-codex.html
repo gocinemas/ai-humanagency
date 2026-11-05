@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Codex Setup — Interactive Guide</title>
+    <title>Claude Code in Your IDE — Interactive Guide</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #f1f5f9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; min-height: 100vh; padding: 40px 20px; }
@@ -49,47 +49,47 @@
     </nav>
     <div class="container">
         <div class="header">
-            <h1>🔥 Codex Setup Guide</h1>
-            <p class="subtitle">AI-powered code editor — Interactive setup for beginners</p>
+            <h1>🔥 Claude Code in Your IDE</h1>
+            <p class="subtitle">Use Claude Code inside VS Code — interactive setup for beginners</p>
         </div>
         <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
         <div class="step-indicator">Step <span id="currentStep">1</span> of 5</div>
 
         <div class="step-container active" id="step1">
-            <div class="step-title">📥 Step 1: Download Codex</div>
-            <div class="step-description">Codex is an AI-powered IDE built on VSCode. Download it now.</div>
-            <p style="margin-bottom: 16px; color: #cbd5e1;"><strong>Download from:</strong> <a href="https://codex.run" target="_blank" style="color: #a855f7; text-decoration: underline; font-weight: 600;">codex.run</a></p>
-            <div class="screenshot">Choose your platform: macOS, Windows, or Linux</div>
+            <div class="step-title">📥 Step 1: Get VS Code</div>
+            <div class="step-description">Claude Code runs as an extension inside Visual Studio Code. If you don't have VS Code yet, install it first.</div>
+            <p style="margin-bottom: 16px; color: #cbd5e1;"><strong>Download from:</strong> <a href="https://code.visualstudio.com" target="_blank" style="color: #a855f7; text-decoration: underline; font-weight: 600;">code.visualstudio.com</a></p>
+            <div class="screenshot">Choose your system: macOS, Windows or Linux</div>
             <div class="troubleshooting">
                 <h4>❌ Troubleshooting</h4>
-                <div class="troubleshooting-item"><strong>Q: Can't find download?</strong><br>A: Visit codex.run and click "Get Started"</div>
+                <div class="troubleshooting-item"><strong>Q: Can't find download?</strong><br>A: Go to code.visualstudio.com and choose your system</div>
             </div>
         </div>
 
         <div class="step-container" id="step2">
-            <div class="step-title">⚙️ Step 2: Install Codex</div>
+            <div class="step-title">⚙️ Step 2: Install VS Code</div>
             <div class="step-description">Follow the installer. It's like any other app installation.</div>
-            <div class="screenshot">Drag Codex to Applications (Mac) or click Install (Windows)</div>
+            <div class="screenshot">Drag VS Code to Applications (Mac) or run the installer (Windows)</div>
         </div>
 
         <div class="step-container" id="step3">
             <div class="step-title">✅ Step 3: Launch & Connect</div>
-            <div class="step-description">Open Codex and connect your Claude API key.</div>
-            <p style="margin-bottom: 16px; color: #cbd5e1;">1. Open Codex</p>
-            <p style="margin-bottom: 16px; color: #cbd5e1;">2. Click "Settings" → "Claude API"</p>
-            <p style="margin-bottom: 16px; color: #cbd5e1;">3. Paste your API key (get it from <a href="https://console.anthropic.com/keys" target="_blank" style="color: #a855f7; text-decoration: underline; font-weight: 600;">console.anthropic.com</a>)</p>
+            <div class="step-description">Add the Claude Code extension and sign in.</div>
+            <p style="margin-bottom: 16px; color: #cbd5e1;">1. Open VS Code and go to the Extensions panel</p>
+            <p style="margin-bottom: 16px; color: #cbd5e1;">2. Search for "Claude Code", install the extension published by Anthropic</p>
+            <p style="margin-bottom: 16px; color: #cbd5e1;">3. Sign in with your Claude account, or with an API key (get one from <a href="https://console.anthropic.com/keys" target="_blank" style="color: #a855f7; text-decoration: underline; font-weight: 600;">console.anthropic.com</a>)</p>
         </div>
 
         <div class="step-container" id="step4">
             <div class="step-title">🚀 Step 4: Create Your First Project</div>
-            <div class="step-description">Use Codex to generate code with AI assistance.</div>
-            <div class="code-block"><span>Cmd+K: "Create a hello world in Python"</span><button class="copy-btn" onclick="alert('Codex creates code automatically!')">Try It</button></div>
+            <div class="step-description">Ask Claude Code to write code for you.</div>
+            <div class="code-block"><span>Open the Claude Code panel and ask: "Create a hello world script in Python"</span><button class="copy-btn" onclick="alert('Claude Code writes code in your project after you approve each change.')">Try It</button></div>
         </div>
 
         <div class="step-container" id="step5">
-            <div class="step-title">🎉 Step 5: Master Codex</div>
-            <div class="step-description">You're ready! Codex is now your AI coding partner.</div>
-            <p style="margin-bottom: 16px; color: #cbd5e1;"><strong>Pro tips:</strong><br>Cmd+K = Ask Claude anything<br>Cmd+I = Inline AI edits<br>/settings = Preferences</p>
+            <div class="step-title">🎉 Step 5: Keep Going</div>
+            <div class="step-description">You're ready! Claude Code is now your AI coding partner.</div>
+            <p style="margin-bottom: 16px; color: #cbd5e1;"><strong>Next:</strong> check the official Claude Code docs for the current commands and settings.</p>
         </div>
 
         <div class="nav-buttons">
@@ -109,7 +109,7 @@
             document.getElementById('nextBtn').textContent = n === totalSteps ? 'Complete ✓' : 'Next →';
         }
         function nextStep() {
-            if (currentStepNum < totalSteps) { currentStepNum++; showStep(currentStepNum); } else { alert('🎉 Codex setup complete!'); }
+            if (currentStepNum < totalSteps) { currentStepNum++; showStep(currentStepNum); } else { alert('🎉 Setup complete!'); }
         }
         function previousStep() {
             if (currentStepNum > 1) { currentStepNum--; showStep(currentStepNum); }
