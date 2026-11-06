@@ -184,6 +184,35 @@ header.site-header { position: sticky; top: 0; z-index: 100; background: var(--s
   .site-header nav.active, .site-header nav.open { display: flex; }
   .site-header nav a.nav-search { margin-left: 0; padding-left: 0; border-left: 0; }
 }
+
+/* ===== Style refresh: warm editorial (shared across the site) ===== */
+:root { --bg:#f7f2e8; --surface:#fffdf8; --border:#e4d9c6; --text:#1f1b16; --muted:#6b6154; --subtle:#a39a8a; --accent:#b4532a; }
+@media (prefers-color-scheme: dark) {
+  :root { --bg:#1a1612; --surface:#241f19; --border:#3a3229; --text:#f3ece0; --muted:#a79c8a; --subtle:#6f6557; --accent:#e08a5f; }
+}
+body { background: var(--bg) !important; color: var(--text); }
+h1, h2, h3 { font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif; font-weight: 500; letter-spacing: -0.01em; }
+h1 { line-height: 1.08; }
+h2 { line-height: 1.2; }
+a { color: var(--accent); }
+.logo, .site-header .logo { font-family: Georgia, 'Iowan Old Style', serif !important; font-weight: 500 !important; font-size: 18px !important; letter-spacing: 0 !important; }
+.site-header { background: color-mix(in srgb, var(--surface) 92%, transparent) !important; backdrop-filter: saturate(1.2) blur(8px); }
+.tag, .label, .hub-cta, .setup-cta, .guide-cta, .resource-tag { letter-spacing: .12em; }
+.hub-card, .setup-card, .guide-card, .card, .layer, .step, .featured, .note-card, .resource-card {
+  border-radius: 14px !important;
+  box-shadow: 0 1px 0 rgba(60,40,20,.04), 0 10px 24px -16px rgba(60,40,20,.28);
+}
+.hub-card:hover, .setup-card:hover, .guide-card:hover, .card:hover, .resource-card:hover { transform: translateY(-2px); transition: transform .2s ease, box-shadow .2s ease; box-shadow: 0 1px 0 rgba(60,40,20,.04), 0 16px 32px -18px rgba(60,40,20,.35); }
+.callout, .note { font-family: Georgia, 'Iowan Old Style', serif; font-size: 17px; }
+.item { border-bottom-color: var(--border) !important; }
+.pill-video { background: #f3e3d4 !important; color: #8a3b17 !important; }
+.pill-article { background: #e6efe0 !important; color: #3d6b2e !important; }
+.pill-case { background: #f6e6cf !important; color: #8a5a12 !important; }
+@media (prefers-color-scheme: dark) {
+  .pill-video { background: #3a2a20 !important; color: #f0b58f !important; }
+  .pill-article { background: #223020 !important; color: #b5d9a4 !important; }
+  .pill-case { background: #3a2d18 !important; color: #f0cc8a !important; }
+}
 </style>
 </head>
 <body>
