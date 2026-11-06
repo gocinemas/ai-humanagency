@@ -230,31 +230,6 @@ a { color: var(--accent); }
 .yt-grid.is-list { grid-template-columns:1fr; }
 .yt-grid.is-scroll { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; gap:18px; padding-bottom:12px; }
 .yt-grid.is-scroll .yt { flex:0 0 min(420px, 85%); scroll-snap-align:start; }
-
-.yt-view { display:flex; gap:6px; margin:4px 0 16px; }
-.yt-view button { font:inherit; font-size:13px; font-weight:600; padding:6px 14px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--muted); cursor:pointer; }
-.yt-view button[aria-pressed="true"] { background:var(--accent); border-color:var(--accent); color:#fff; }
-.yt-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin:8px 0 18px; }
-.yt-grid.is-list { grid-template-columns:1fr; }
-.yt-item { min-width:0; }
-.yt-card { position:relative; display:block; width:100%; padding:0; border:0; border-radius:12px; overflow:hidden; background:#000; cursor:pointer; aspect-ratio:16/9; }
-.yt-card img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .25s ease, opacity .25s ease; opacity:.92; }
-.yt-card:hover img, .yt-card:focus-visible img { transform:scale(1.03); opacity:1; }
-.yt-play { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:58px; height:58px; border-radius:50%; background:rgba(255,255,255,.92); color:#1f1b16; display:flex; align-items:center; justify-content:center; font-size:20px; padding-left:4px; box-shadow:0 6px 18px rgba(0,0,0,.35); }
-.yt-meta { margin-top:10px; }
-.yt-meta a { color:var(--text); font-weight:600; text-decoration:none; font-size:15px; line-height:1.35; }
-.yt-meta a:hover { color:var(--accent); }
-.yt-channel { font-size:13px; color:var(--muted); margin-top:2px; }
-.yt-grid.is-list .yt-item { display:grid; grid-template-columns:260px 1fr; gap:18px; align-items:start; }
-.yt-modal { position:fixed; inset:0; z-index:500; background:rgba(15,11,8,.85); display:flex; align-items:center; justify-content:center; padding:24px; }
-.yt-modal[hidden] { display:none; }
-.yt-dialog { position:relative; width:min(1000px, 100%); }
-.yt-frame iframe { width:100%; aspect-ratio:16/9; border:0; border-radius:12px; background:#000; display:block; }
-.yt-close { position:absolute; top:-44px; right:0; background:none; border:0; color:#fff; font-size:34px; line-height:1; cursor:pointer; padding:4px 10px; }
-@media (max-width:640px){
-  .yt-grid { grid-template-columns:1fr; }
-  .yt-grid.is-list .yt-item { grid-template-columns:1fr; }
-}
 </style>
 </head>
 <body>
@@ -293,143 +268,67 @@ a { color: var(--accent); }
 
   <section class="sec">
     <h2>Talks and interviews</h2>
-    <p>Long-form conversations with researchers, builders and analysts. Click a video to play it.</p>
-    <div class="yt-view" role="group" aria-label="Layout">
+    <p>Long-form conversations with researchers, builders and analysts.</p>
+    <div class="yt-view" role="group" aria-label="Video layout">
       <button type="button" data-view="grid" aria-pressed="true">Grid</button>
       <button type="button" data-view="list" aria-pressed="false">List</button>
+      <button type="button" data-view="scroll" aria-pressed="false">Scroll</button>
     </div>
     <div class="yt-grid" id="yt-list">
-      <div class="yt-item">
-        <button type="button" class="yt-card" data-id="7s-uWHNn5Xc" data-title="AI Eats the World: Benedict Evans on What Really Matters Now" aria-label="Play: AI Eats the World: Benedict Evans on What Really Matters Now">
-          <img src="https://i.ytimg.com/vi/7s-uWHNn5Xc/hqdefault.jpg" alt="" loading="lazy">
-          <span class="yt-play" aria-hidden="true">▶</span>
-        </button>
-        <div class="yt-meta">
-          <a href="https://youtu.be/7s-uWHNn5Xc" target="_blank" rel="noopener">AI Eats the World: Benedict Evans on What Really Matters Now</a>
-          <div class="yt-channel">The MAD Podcast with Matt Turck</div>
-        </div>
-      </div>
-      <div class="yt-item">
-        <button type="button" class="yt-card" data-id="gF6tDdYdBJY" data-title="World Leading Tech Analyst, Benedict Evans: Making Sense of AI" aria-label="Play: World Leading Tech Analyst, Benedict Evans: Making Sense of AI">
-          <img src="https://i.ytimg.com/vi/gF6tDdYdBJY/hqdefault.jpg" alt="" loading="lazy">
-          <span class="yt-play" aria-hidden="true">▶</span>
-        </button>
-        <div class="yt-meta">
-          <a href="https://youtu.be/gF6tDdYdBJY" target="_blank" rel="noopener">World Leading Tech Analyst, Benedict Evans: Making Sense of AI</a>
-          <div class="yt-channel">Giant Ideas</div>
-        </div>
-      </div>
-      <div class="yt-item">
-        <button type="button" class="yt-card" data-id="C3TqcUEFR58" data-title="AI Snake Oil: What Artificial Intelligence Can Do, What It Can’t, and How to Tell the Difference" aria-label="Play: AI Snake Oil: What Artificial Intelligence Can Do, What It Can’t, and How to Tell the Difference">
-          <img src="https://i.ytimg.com/vi/C3TqcUEFR58/hqdefault.jpg" alt="" loading="lazy">
-          <span class="yt-play" aria-hidden="true">▶</span>
-        </button>
-        <div class="yt-meta">
-          <a href="https://youtu.be/C3TqcUEFR58" target="_blank" rel="noopener">AI Snake Oil: What Artificial Intelligence Can Do, What It Can’t, and How to Tell the Difference</a>
-          <div class="yt-channel">MIT Stone Center on Inequality &amp; Shaping Work</div>
-        </div>
-      </div>
-      <div class="yt-item">
-        <button type="button" class="yt-card" data-id="QQu7KioCsnQ" data-title="AI and the Future of India’s IT Giants | Dr. Vishal Sikka | dAIlogues by Stellaris #ai" aria-label="Play: AI and the Future of India’s IT Giants | Dr. Vishal Sikka | dAIlogues by Stellaris #ai">
-          <img src="https://i.ytimg.com/vi/QQu7KioCsnQ/hqdefault.jpg" alt="" loading="lazy">
-          <span class="yt-play" aria-hidden="true">▶</span>
-        </button>
-        <div class="yt-meta">
-          <a href="https://youtu.be/QQu7KioCsnQ" target="_blank" rel="noopener">AI and the Future of India’s IT Giants | Dr. Vishal Sikka | dAIlogues by Stellaris #ai</a>
-          <div class="yt-channel">Stellaris Venture Partners</div>
-        </div>
-      </div>
-      <div class="yt-item">
-        <button type="button" class="yt-card" data-id="d1iXi2FQZZE" data-title="108: Etie Hertz - Why customer empathy is now the moat" aria-label="Play: 108: Etie Hertz - Why customer empathy is now the moat">
-          <img src="https://i.ytimg.com/vi/d1iXi2FQZZE/hqdefault.jpg" alt="" loading="lazy">
-          <span class="yt-play" aria-hidden="true">▶</span>
-        </button>
-        <div class="yt-meta">
-          <a href="https://youtu.be/d1iXi2FQZZE" target="_blank" rel="noopener">108: Etie Hertz - Why customer empathy is now the moat</a>
-          <div class="yt-channel">ProducTea with Leah</div>
-        </div>
-      </div>
-      <div class="yt-item">
-        <button type="button" class="yt-card" data-id="zzXyPGEtseI" data-title="Is human data enough? | David Silver" aria-label="Play: Is human data enough? | David Silver">
-          <img src="https://i.ytimg.com/vi/zzXyPGEtseI/hqdefault.jpg" alt="" loading="lazy">
-          <span class="yt-play" aria-hidden="true">▶</span>
-        </button>
-        <div class="yt-meta">
-          <a href="https://youtu.be/zzXyPGEtseI" target="_blank" rel="noopener">Is human data enough? | David Silver</a>
-          <div class="yt-channel">Google DeepMind</div>
-        </div>
-      </div>
-      <div class="yt-item">
-        <button type="button" class="yt-card" data-id="rYXeQbTuVl0" data-title="Mark Zuckerberg — AI will write most Meta code in 18 months" aria-label="Play: Mark Zuckerberg — AI will write most Meta code in 18 months">
-          <img src="https://i.ytimg.com/vi/rYXeQbTuVl0/hqdefault.jpg" alt="" loading="lazy">
-          <span class="yt-play" aria-hidden="true">▶</span>
-        </button>
-        <div class="yt-meta">
-          <a href="https://youtu.be/rYXeQbTuVl0" target="_blank" rel="noopener">Mark Zuckerberg — AI will write most Meta code in 18 months</a>
-          <div class="yt-channel">Dwarkesh Patel</div>
-        </div>
-      </div>
-      <div class="yt-item">
-        <button type="button" class="yt-card" data-id="7s9C92Pkcc0" data-title="Rick Rubin: Vibe Coding is the Punk Rock of Software" aria-label="Play: Rick Rubin: Vibe Coding is the Punk Rock of Software">
-          <img src="https://i.ytimg.com/vi/7s9C92Pkcc0/hqdefault.jpg" alt="" loading="lazy">
-          <span class="yt-play" aria-hidden="true">▶</span>
-        </button>
-        <div class="yt-meta">
-          <a href="https://youtu.be/7s9C92Pkcc0" target="_blank" rel="noopener">Rick Rubin: Vibe Coding is the Punk Rock of Software</a>
-          <div class="yt-channel">a16z</div>
-        </div>
-      </div>
-      <div class="yt-item">
-        <button type="button" class="yt-card" data-id="id4YRO7G0wE" data-title="The AI Revolution Is Underhyped | Eric Schmidt | TED" aria-label="Play: The AI Revolution Is Underhyped | Eric Schmidt | TED">
-          <img src="https://i.ytimg.com/vi/id4YRO7G0wE/hqdefault.jpg" alt="" loading="lazy">
-          <span class="yt-play" aria-hidden="true">▶</span>
-        </button>
-        <div class="yt-meta">
-          <a href="https://youtu.be/id4YRO7G0wE" target="_blank" rel="noopener">The AI Revolution Is Underhyped | Eric Schmidt | TED</a>
-          <div class="yt-channel">TED</div>
-        </div>
-      </div>
-      <div class="yt-item">
-        <button type="button" class="yt-card" data-id="giT0ytynSqg" data-title="Godfather of AI: They Keep Silencing Me But I’m Trying to Warn Them!" aria-label="Play: Godfather of AI: They Keep Silencing Me But I’m Trying to Warn Them!">
-          <img src="https://i.ytimg.com/vi/giT0ytynSqg/hqdefault.jpg" alt="" loading="lazy">
-          <span class="yt-play" aria-hidden="true">▶</span>
-        </button>
-        <div class="yt-meta">
-          <a href="https://youtu.be/giT0ytynSqg" target="_blank" rel="noopener">Godfather of AI: They Keep Silencing Me But I’m Trying to Warn Them!</a>
-          <div class="yt-channel">The Diary Of A CEO</div>
-        </div>
-      </div>
-      <div class="yt-item">
-        <button type="button" class="yt-card" data-id="AfYY9v0Q0X4" data-title="Brian Eno on AI, Art and What Makes Us Human" aria-label="Play: Brian Eno on AI, Art and What Makes Us Human">
-          <img src="https://i.ytimg.com/vi/AfYY9v0Q0X4/hqdefault.jpg" alt="" loading="lazy">
-          <span class="yt-play" aria-hidden="true">▶</span>
-        </button>
-        <div class="yt-meta">
-          <a href="https://youtu.be/AfYY9v0Q0X4" target="_blank" rel="noopener">Brian Eno on AI, Art and What Makes Us Human</a>
-          <div class="yt-channel">The Ezra Klein Show</div>
-        </div>
-      </div>
-      <div class="yt-item">
-        <button type="button" class="yt-card" data-id="c16gNWVbmPs" data-title="6 Creative Skills AI Can’t Replace" aria-label="Play: 6 Creative Skills AI Can’t Replace">
-          <img src="https://i.ytimg.com/vi/c16gNWVbmPs/hqdefault.jpg" alt="" loading="lazy">
-          <span class="yt-play" aria-hidden="true">▶</span>
-        </button>
-        <div class="yt-meta">
-          <a href="https://youtu.be/c16gNWVbmPs" target="_blank" rel="noopener">6 Creative Skills AI Can’t Replace</a>
-          <div class="yt-channel">The Futur</div>
-        </div>
-      </div>
-      <div class="yt-item">
-        <button type="button" class="yt-card" data-id="g9E7iCnYOoI" data-title="Box CEO on Enterprise AI Trends No One is Talking About Yet" aria-label="Play: Box CEO on Enterprise AI Trends No One is Talking About Yet">
-          <img src="https://i.ytimg.com/vi/g9E7iCnYOoI/hqdefault.jpg" alt="" loading="lazy">
-          <span class="yt-play" aria-hidden="true">▶</span>
-        </button>
-        <div class="yt-meta">
-          <a href="https://youtu.be/g9E7iCnYOoI" target="_blank" rel="noopener">Box CEO on Enterprise AI Trends No One is Talking About Yet</a>
-          <div class="yt-channel">The Logan Bartlett Show</div>
-        </div>
-      </div>
+      <figure class="yt">
+        <iframe src="https://www.youtube-nocookie.com/embed/7s-uWHNn5Xc" title="AI Eats the World: Benedict Evans on What Really Matters Now" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <figcaption><a href="https://youtu.be/7s-uWHNn5Xc" target="_blank" rel="noopener">AI Eats the World: Benedict Evans on What Really Matters Now</a> <span class="pill pill-video">Video</span></figcaption>
+      </figure>
+      <figure class="yt">
+        <iframe src="https://www.youtube-nocookie.com/embed/gF6tDdYdBJY" title="World Leading Tech Analyst, Benedict Evans: Making Sense of AI" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <figcaption><a href="https://youtu.be/gF6tDdYdBJY" target="_blank" rel="noopener">World Leading Tech Analyst, Benedict Evans: Making Sense of AI</a> <span class="pill pill-video">Video</span></figcaption>
+      </figure>
+      <figure class="yt">
+        <iframe src="https://www.youtube-nocookie.com/embed/C3TqcUEFR58" title="AI Snake Oil: What Artificial Intelligence Can Do, What It Can’t, and How to Tell the Difference" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <figcaption><a href="https://youtu.be/C3TqcUEFR58" target="_blank" rel="noopener">AI Snake Oil: What Artificial Intelligence Can Do, What It Can’t, and How to Tell the Difference</a> <span class="pill pill-video">Video</span></figcaption>
+      </figure>
+      <figure class="yt">
+        <iframe src="https://www.youtube-nocookie.com/embed/QQu7KioCsnQ" title="AI and the Future of India’s IT Giants (Dr. Vishal Sikka)" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <figcaption><a href="https://youtu.be/QQu7KioCsnQ" target="_blank" rel="noopener">AI and the Future of India’s IT Giants (Dr. Vishal Sikka)</a> <span class="pill pill-video">Video</span></figcaption>
+      </figure>
+      <figure class="yt">
+        <iframe src="https://www.youtube-nocookie.com/embed/d1iXi2FQZZE" title="Why customer empathy is now the moat (Etie Hertz)" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <figcaption><a href="https://youtu.be/d1iXi2FQZZE" target="_blank" rel="noopener">Why customer empathy is now the moat (Etie Hertz)</a> <span class="pill pill-video">Video</span></figcaption>
+      </figure>
+      <figure class="yt">
+        <iframe src="https://www.youtube-nocookie.com/embed/zzXyPGEtseI" title="Is Human Data Enough? With David Silver (Google DeepMind)" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <figcaption><a href="https://youtu.be/zzXyPGEtseI" target="_blank" rel="noopener">Is Human Data Enough? With David Silver (Google DeepMind)</a> <span class="pill pill-video">Video</span></figcaption>
+      </figure>
+      <figure class="yt">
+        <iframe src="https://www.youtube-nocookie.com/embed/rYXeQbTuVl0" title="Mark Zuckerberg: Meta’s AGI Plan (Dwarkesh Patel)" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <figcaption><a href="https://youtu.be/rYXeQbTuVl0" target="_blank" rel="noopener">Mark Zuckerberg: Meta’s AGI Plan (Dwarkesh Patel)</a> <span class="pill pill-video">Video</span></figcaption>
+      </figure>
+      <figure class="yt">
+        <iframe src="https://www.youtube-nocookie.com/embed/7s9C92Pkcc0" title="Rick Rubin: Vibe Coding is the Punk Rock of Software" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <figcaption><a href="https://youtu.be/7s9C92Pkcc0" target="_blank" rel="noopener">Rick Rubin: Vibe Coding is the Punk Rock of Software</a> <span class="pill pill-video">Video</span></figcaption>
+      </figure>
+      <figure class="yt">
+        <iframe src="https://www.youtube-nocookie.com/embed/id4YRO7G0wE" title="The AI Revolution Is Underhyped (Eric Schmidt)" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <figcaption><a href="https://youtu.be/id4YRO7G0wE" target="_blank" rel="noopener">The AI Revolution Is Underhyped (Eric Schmidt)</a> <span class="pill pill-video">Video</span></figcaption>
+      </figure>
+      <figure class="yt">
+        <iframe src="https://www.youtube-nocookie.com/embed/giT0ytynSqg" title="Godfather of AI: They Keep Silencing Me But I’m Trying to Warn Them" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <figcaption><a href="https://youtu.be/giT0ytynSqg" target="_blank" rel="noopener">Godfather of AI: They Keep Silencing Me But I’m Trying to Warn Them</a> <span class="pill pill-video">Video</span></figcaption>
+      </figure>
+      <figure class="yt">
+        <iframe src="https://www.youtube-nocookie.com/embed/AfYY9v0Q0X4" title="Brian Eno on AI, Art and What Makes Us Human" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <figcaption><a href="https://youtu.be/AfYY9v0Q0X4" target="_blank" rel="noopener">Brian Eno on AI, Art and What Makes Us Human</a> <span class="pill pill-video">Video</span></figcaption>
+      </figure>
+      <figure class="yt">
+        <iframe src="https://www.youtube-nocookie.com/embed/c16gNWVbmPs" title="6 Creative Skills AI Can’t Replace" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <figcaption><a href="https://youtu.be/c16gNWVbmPs" target="_blank" rel="noopener">6 Creative Skills AI Can’t Replace</a> <span class="pill pill-video">Video</span></figcaption>
+      </figure>
+      <figure class="yt">
+        <iframe src="https://www.youtube-nocookie.com/embed/g9E7iCnYOoI" title="AI BS you can use" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <figcaption><a href="https://youtu.be/g9E7iCnYOoI" target="_blank" rel="noopener">AI BS you can use</a> <span class="pill pill-video">Video</span></figcaption>
+      </figure>
     </div>
+
     <div class="item"><a href="https://another-podcast.simplecast.com/episodes/the-ai-presentation-m4UyqLa5" target="_blank" rel="noopener">Benedict Evans 2025 (the AI presentation)</a></div>
   </section>
 
@@ -437,7 +336,7 @@ a { color: var(--accent); }
     <h2>Articles and papers</h2>
     <p>Written pieces for going deeper.</p>
     <div class="item"><a href="https://www.ben-evans.com/benedictevans/2018/06/22/ways-to-think-about-machine-learning-8nefy" target="_blank" rel="noopener">Ways to think about machine learning (Benedict Evans, 2018)</a><span class="pill pill-article">Article or paper</span></div>
-    <div class="item"><a href="https://arxiv.org/pdf/2501.09223" target="_blank" rel="noopener">Foundations of Large Language Models (arXiv paper)</a><span class="pill pill-article">Article or paper</span></div>
+    <div class="item"><a href="https://arxiv.org/pdf/2501.09223" target="_blank" rel="noopener">Understanding AI & LLMs: From Basic Concepts to Real-World Applications (research paper)</a><span class="pill pill-article">Article or paper</span></div>
   </section>
 
   <section class="sec">
@@ -461,45 +360,19 @@ a { color: var(--accent); }
   });
 })();
 </script>
-<div class="yt-modal" id="yt-modal" hidden>
-  <div class="yt-dialog" role="dialog" aria-modal="true" aria-label="Video player">
-    <button type="button" class="yt-close" aria-label="Close video">×</button>
-    <div class="yt-frame" id="yt-frame"></div>
-  </div>
-</div>
 <script>
 (function () {
   var grid = document.getElementById('yt-list');
-  var views = document.querySelectorAll('.yt-view button');
-  var modal = document.getElementById('yt-modal');
-  var frame = document.getElementById('yt-frame');
-  var closeBtn = modal && modal.querySelector('.yt-close');
-  if (grid) {
-    views.forEach(function (b) {
-      b.addEventListener('click', function () {
-        var v = b.getAttribute('data-view');
-        grid.classList.toggle('is-list', v === 'list');
-        views.forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
-      });
+  var buttons = document.querySelectorAll('.yt-view button');
+  if (!grid || !buttons.length) return;
+  buttons.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var v = b.getAttribute('data-view');
+      grid.classList.toggle('is-list', v === 'list');
+      grid.classList.toggle('is-scroll', v === 'scroll');
+      buttons.forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
     });
-  }
-  function open(id, title) {
-    frame.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0" title="' + title.replace(/"/g, '&quot;') + '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
-    modal.hidden = false;
-    document.body.style.overflow = 'hidden';
-    closeBtn.focus();
-  }
-  function close() {
-    frame.innerHTML = '';
-    modal.hidden = true;
-    document.body.style.overflow = '';
-  }
-  document.querySelectorAll('.yt-card').forEach(function (c) {
-    c.addEventListener('click', function () { open(c.getAttribute('data-id'), c.getAttribute('data-title')); });
   });
-  closeBtn.addEventListener('click', close);
-  modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !modal.hidden) close(); });
 })();
 </script>
 </body>
