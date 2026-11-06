@@ -81,15 +81,14 @@
   <div class="header-inner">
     <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
     <nav id="nav">
-      <a href="/start.html">Start Here</a>
-      <a href="/quick-reference.html">Quick Ref</a>
+      <a href="/llm-explained.html">What is AI?</a>
       <a href="/jargon.html">Jargon</a>
+      <a href="/compare.html">Tools</a>
       <a href="/use-cases.html">Use Cases</a>
-      <a href="/compare.html">Compare</a>
       <a href="/setup.html">Setup</a>
-      <a href="/learn.html">Learn</a>
+      <a href="/reading.html">Reading</a>
       <a href="/resources.html">Resources</a>
-          <a href="/search.html" style="display: flex; align-items: center; gap: 6px; margin-left: 12px; padding-left: 12px; border-left: 1px solid var(--border);">🔍</a>
+      <a href="/search.html" style="display: flex; align-items: center; gap: 6px; margin-left: 12px; padding-left: 12px; border-left: 1px solid var(--border);">🔍</a>
     </nav>
   </div>
 </header>
@@ -132,36 +131,18 @@
 // Comprehensive search index from all 22 pages (94 entries)
 const searchData = [
   { title: "Compare AI Tools", source: "Tools", snippet: "ChatGPT vs Claude vs Gemini — compare up to 3 AI tools side-by-side in plain English. No benchmarks, just what each is actually best for.", url: "/compare.html", type: "page", keywords: ["compare", "chatgpt", "claude", "gemini", "tools"] },
-  { title: "Real Examples | Cowork", source: "Community", snippet: "See how real people use Claude Cowork. Concrete workflows by role: marketers, engineers, operators, founders.", url: "/cowork-examples.html", type: "page", keywords: ["cowork", "examples", "workflows", "marketing", "engineering"] },
-  { title: "FAQ | Claude Cowork", source: "Community", snippet: "Answers to common questions about Claude Cowork, skills, connectors, and setup.", url: "/cowork-faq.html", type: "page", keywords: ["cowork", "faq", "skills", "connectors", "setup"] },
-  { title: "Claude Cowork Hub", source: "Community", snippet: "From chat to real work. Learn how to use Claude Cowork to automate your daily tasks, build skills, and work smarter.", url: "/cowork-hub.html", type: "page", keywords: ["cowork", "automation", "skills", "tasks", "ai"] },
-  { title: "Build Your First Skill", source: "Community", snippet: "Step-by-step guide to creating a Claude Cowork skill. Automate something you do every week.", url: "/cowork-skills.html", type: "page", keywords: ["cowork", "skills", "automation", "build", "tutorial"] },
   { title: "Home | AI Learning Hub", source: "Home", snippet: "Learn how AI actually works. No hype. Real use cases. Interview-ready in hours.", url: "/index.html", type: "page", keywords: ["ai", "learning", "home", "guide"] },
   { title: "AI Jargon Decoder", source: "Glossary", snippet: "58 AI terms. Plain English. No pretence.", url: "/jargon.html", type: "page", keywords: ["jargon", "glossary", "terms", "definitions", "ai"] },
-  { title: "Phase 4: Production & Scale", source: "Learning", snippet: "Deploy AI apps to production. Scale to millions. Build multi-agent systems. Optimize costs.", url: "/learn-advanced.html", type: "page", keywords: ["production", "deployment", "scaling", "agents", "costs"] },
-  { title: "Phase 3: Automation & Integration", source: "Learning", snippet: "Master MCP protocol, build reusable skills, connect Claude to real-world APIs and databases.", url: "/learn-automation.html", type: "page", keywords: ["automation", "mcp", "skills", "api", "integration"] },
-  { title: "Phase 1: Fundamentals", source: "Learning", snippet: "Understand how Claude works, learn agent architecture, and build your first real AI project.", url: "/learn-fundamentals.html", type: "page", keywords: ["fundamentals", "claude", "agents", "architecture", "basics"] },
-  { title: "Phase 2: Prompting Mastery", source: "Learning", snippet: "Master prompt engineering, learn CLAUDE.md project memory, and write prompts that get the best results.", url: "/learn-prompting.html", type: "page", keywords: ["prompting", "prompt engineering", "claude.md", "writing"] },
-  { title: "Learning Path | Master AI Development", source: "Learning", snippet: "Complete roadmap to master Claude, build agents, and deploy AI apps. From fundamentals to production.", url: "/learn.html", type: "page", keywords: ["learning", "path", "roadmap", "development", "master"] },
-  { title: "Quick Reference | AI Concepts", source: "Reference", snippet: "Core AI concepts explained. RAG, Agents, Context, Embeddings. Interview-ready in 5 minutes.", url: "/quick-reference.html", type: "page", keywords: ["reference", "concepts", "rag", "agents", "embeddings", "interview"] },
   { title: "Resources Hub", source: "Resources", snippet: "Complete collection of official Anthropic resources, free courses, community guides, and tools for building AI agents.", url: "/resources.html", type: "page", keywords: ["resources", "courses", "tools", "documentation", "anthropic"] },
   { title: "Claude CLI Setup", source: "Setup", snippet: "Step-by-step guide to install and configure Claude CLI with your API key.", url: "/setup-claude.html", type: "page", keywords: ["setup", "claude", "cli", "install", "api", "command line"] },
   { title: "Claude Code in Your IDE", source: "Setup", snippet: "Set up Claude Code as an extension in VS Code.", url: "/setup-codex.html", type: "page", keywords: ["claude code", "setup", "ide", "vs code", "editor"] },
-  { title: "Integrations Guide", source: "Setup", snippet: "Connect GitHub, Supabase database, and deploy to Railway.", url: "/setup-integrations.html", type: "page", keywords: ["integrations", "github", "supabase", "railway", "deployment"] },
-  { title: "Personal Portfolio Builder", source: "Setup", snippet: "Build your portfolio website to showcase AI projects.", url: "/setup-portfolio.html", type: "page", keywords: ["portfolio", "build", "website", "projects", "showcase"] },
   { title: "Getting Started | Setup Guides", source: "Setup", snippet: "Step-by-step guides to install Claude CLI, Claude Code in your IDE, build your portfolio, and set up integrations.", url: "/setup.html", type: "page", keywords: ["setup", "getting started", "installation", "guides", "beginner"] },
-  { title: "Start Here | No Install Required", source: "Getting Started", snippet: "No install. No credit card. Start using AI in 10 minutes.", url: "/start.html", type: "page", keywords: ["start", "beginner", "introduction", "quick start"] },
   { title: "When to Use AI", source: "Use Cases", snippet: "Learn which problems AI solves and which it doesn't. Common use cases and decision framework.", url: "/use-cases.html", type: "page", keywords: ["use cases", "when to use", "applications", "problems", "framework"] },
   { title: "Agent", source: "Glossary", snippet: "AI that takes actions, not just answers. Break complex tasks into steps, execute, and learn.", url: "/jargon.html", type: "heading", keywords: ["agent", "autonomous", "agentic", "actions"] },
-  { title: "RAG (Retrieval-Augmented Generation)", source: "Reference", snippet: "Give AI your documents. It finds relevant ones, reads them, and answers based on what it found.", url: "/quick-reference.html", type: "heading", keywords: ["rag", "retrieval", "augmented", "generation", "documents"] },
-  { title: "Embeddings", source: "Reference", snippet: "Turn words into numbers so the model can compare meaning. Texts with similar meaning get similar numbers.", url: "/quick-reference.html", type: "heading", keywords: ["embeddings", "vectors", "semantics", "similarity"] },
   { title: "Tokens", source: "Glossary", snippet: "The chunks AI uses to read and write text. Roughly mapping to words or word-parts.", url: "/jargon.html", type: "heading", keywords: ["tokens", "context", "words", "chunks"] },
   { title: "Claude", source: "Glossary", snippet: "Anthropic's AI assistant known for nuanced writing and honesty. Designed with safety as a core principle.", url: "/jargon.html", type: "heading", keywords: ["claude", "anthropic", "ai", "assistant"] },
   { title: "Context Window", source: "Glossary", snippet: "How much text an AI can read at once. Every model has a limit to how much it can process.", url: "/jargon.html", type: "heading", keywords: ["context", "window", "limit", "tokens", "capacity"] },
   { title: "Hallucination", source: "Glossary", snippet: "When AI confidently says something wrong. Always verify claims that matter.", url: "/jargon.html", type: "heading", keywords: ["hallucination", "false", "wrong", "accuracy"] },
-  { title: "MCP (Model Context Protocol)", source: "Learning", snippet: "Open standard for connecting AI to tools. How Claude talks to your APIs and databases.", url: "/learn-automation.html", type: "heading", keywords: ["mcp", "protocol", "api", "tools", "integration"] },
-  { title: "Prompt Engineering", source: "Learning", snippet: "The practice of crafting prompts to get better outputs. Structure, examples, and specificity matter.", url: "/learn-prompting.html", type: "heading", keywords: ["prompt", "engineering", "writing", "structure", "technique"] },
-  { title: "API Integration", source: "Learning", snippet: "Connect Claude to external services, databases, and tools via APIs.", url: "/learn-automation.html", type: "heading", keywords: ["api", "integration", "connection", "tools", "external"] }
 ];
 
 let filteredResults = [];
