@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harness Engineering — Human Agency</title>
+<meta name="description" content="Harness engineering: the environment, tools, context, rules and feedback loops around an AI model.">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f9f8f6;
+  --surface: #ffffff;
+  --border: #ebebeb;
+  --text: #111111;
+  --muted: #666666;
+  --subtle: #aaaaaa;
+  --accent: #4f46e5;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --border: #2a2a2a;
+    --text: #f5f5f5;
+    --muted: #999999;
+    --subtle: #666666;
+  }
+}
+
+:root[data-theme="light"] {
+  --bg: #f9f8f6;
+  --surface: #ffffff;
+  --border: #ebebeb;
+  --text: #111111;
+  --muted: #666666;
+}
+
+:root[data-theme="dark"] {
+  --bg: #0f0f0f;
+  --surface: #1a1a1a;
+  --border: #2a2a2a;
+  --text: #f5f5f5;
+  --muted: #999999;
+}
+
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+
+header { border-bottom: 1px solid var(--border); background: var(--surface); position: sticky; top: 0; z-index: 100; }
+.header-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+.logo { font-size: 15px; font-weight: 800; letter-spacing: -0.4px; color: var(--text); text-decoration: none; }
+.logo .dot { color: var(--accent); }
+nav { display: flex; gap: 24px; align-items: center; }
+nav a { font-size: 13px; font-weight: 500; color: var(--muted); transition: color 0.15s; text-decoration: none; }
+nav a:hover { color: var(--text); }
+.nav-mobile-toggle { display: none; background: none; border: none; color: var(--muted); font-size: 18px; cursor: pointer; }
+
+.hero { max-width: 900px; margin: 0 auto; padding: 56px 24px 32px; }
+.hero h1 { font-size: clamp(28px, 5vw, 42px); font-weight: 900; letter-spacing: -0.8px; line-height: 1.15; color: var(--text); margin-bottom: 12px; }
+.hero-sub { font-size: 15px; color: var(--muted); margin-bottom: 24px; line-height: 1.7; }
+.search-wrap { position: relative; max-width: 440px; }
+.search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--subtle); font-size: 15px; pointer-events: none; }
+.search-input { width: 100%; font-family: 'Inter', sans-serif; font-size: 15px; padding: 12px 52px 12px 42px; border: 2px solid var(--border); border-radius: 12px; background: var(--surface); color: var(--text); outline: none; transition: border-color .15s; }
+.search-input:focus { border-color: var(--accent); }
+.search-input::placeholder { color: var(--subtle); }
+.search-kbd { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 10px; font-weight: 700; color: var(--subtle); background: var(--bg); border: 1px solid var(--border); border-radius: 5px; padding: 2px 6px; pointer-events: none; font-family: 'Inter', sans-serif; transition: opacity .15s; letter-spacing: .3px; }
+.search-input:focus ~ .search-kbd { opacity: 0; }
+.recent-strip { display: none; flex-wrap: wrap; gap: 6px; margin-top: 10px; align-items: center; }
+.recent-label { font-size: 11px; font-weight: 700; color: var(--subtle); white-space: nowrap; letter-spacing: .3px; }
+.recent-pill { font-family: 'Inter', sans-serif; font-size: 12px; color: var(--muted); background: var(--surface); border: 1px solid var(--border); border-radius: 99px; padding: 4px 12px; cursor: pointer; transition: all .15s; }
+.recent-pill:hover { color: var(--accent); border-color: var(--accent); }
+
+.filters { max-width: 900px; margin: 0 auto; padding: 20px 24px 24px; display: flex; gap: 8px; flex-wrap: wrap; }
+.pill { font-size: 13px; font-weight: 600; padding: 7px 16px; border-radius: 99px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); cursor: pointer; transition: all 0.15s; }
+.pill:hover { border-color: var(--accent); color: var(--accent); }
+.pill.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+.terms { max-width: 900px; margin: 0 auto; padding: 0 24px 80px; }
+
+.term-row { border-bottom: 1px solid var(--border); }
+.terms > .term-row:first-child { border-top: 1px solid var(--border); }
+
+.term-header { display: flex; align-items: center; gap: 16px; padding: 20px 0; cursor: pointer; user-select: none; }
+.term-name { font-size: 17px; font-weight: 800; letter-spacing: -0.3px; color: var(--text); width: 170px; flex-shrink: 0; transition: color .15s; }
+.term-row:hover .term-name { color: var(--accent); }
+.term-oneliner { font-size: 14px; color: var(--muted); flex: 1; line-height: 1.5; }
+.term-badge { font-size: 10px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; padding: 3px 9px; border-radius: 99px; flex-shrink: 0; white-space: nowrap; }
+.badge-basics      { background: #dcfce7; color: #166534; }
+.badge-intermediate { background: #fef9c3; color: #854d0e; }
+.badge-advanced    { background: #ede9fe; color: #5b21b6; }
+.term-arrow { font-size: 13px; color: var(--subtle); flex-shrink: 0; transition: transform .2s ease; }
+.term-row.open .term-arrow { transform: rotate(90deg); color: var(--accent); }
+
+.term-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .25s ease; }
+.term-row.open .term-body { grid-template-rows: 1fr; }
+.term-body-inner { overflow: hidden; }
+.term-body-text { padding: 0 0 22px 186px; font-size: 15px; color: #444; line-height: 1.85; }
+
+.no-results { padding: 56px 0; text-align: center; font-size: 15px; color: var(--muted); }
+
+footer { border-top: 1px solid var(--border); background: var(--surface); }
+.footer-inner { max-width: 900px; margin: 0 auto; padding: 32px 24px; text-align: center; font-size: 12px; color: var(--muted); }
+
+@media (max-width: 768px) {
+  .header-inner { padding: 0 16px; }
+  nav { display: none; position: absolute; top: 56px; left: 0; right: 0; flex-direction: column; gap: 0; background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 0; }
+  nav.active { display: flex; }
+  nav a { padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .nav-mobile-toggle { display: block; }
+  .hero { padding: 40px 16px 24px; }
+  .hero h1 { font-size: 24px; }
+  .search-wrap { max-width: 100%; }
+  .filters { padding: 16px 16px 12px; gap: 6px; }
+  .terms { padding: 0 16px 60px; }
+  .term-oneliner { font-size: 12px; }
+  .term-name { font-size: 16px; width: 100%; }
+  .term-body-text { padding: 0 0 16px 0; }
+  .footer-inner { padding: 24px 16px; }
+}
+
+@media (max-width: 480px) {
+  .header-inner { padding: 0 12px; }
+  .logo { font-size: 13px; }
+  .hero { padding: 32px 12px 20px; }
+  .hero h1 { font-size: 20px; }
+  .search-wrap { max-width: 100%; }
+  .filters { padding: 12px 12px 8px; gap: 4px; }
+  .terms { padding: 0 12px 40px; }
+  .term-name { font-size: 14px; }
+  .term-oneliner { font-size: 11px; }
+  .term-body-text { font-size: 13px; padding: 0 0 12px 0; }
+  .footer-inner { padding: 20px 12px; font-size: 11px; }
+}
+
+
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+.page-hero { padding: 56px 0 24px; }
+.page-hero h1 { font-size: 40px; line-height: 1.1; letter-spacing: -0.8px; margin-bottom: 14px; }
+.page-hero p { font-size: 18px; color: var(--muted); }
+.sec { padding: 36px 0; border-top: 1px solid var(--border); }
+.sec h2 { font-size: 24px; letter-spacing: -0.4px; margin-bottom: 12px; }
+.sec p { font-size: 16px; margin-bottom: 14px; }
+.sec ul, .sec ol { margin: 0 0 14px 22px; font-size: 16px; }
+.sec li { margin-bottom: 8px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px 22px; margin: 14px 0; }
+.card h3 { font-size: 16px; margin-bottom: 6px; }
+.card p { font-size: 15px; color: var(--muted); margin: 0; }
+.tag { font-size: 12px; font-weight: 600; color: var(--accent); letter-spacing: .04em; text-transform: uppercase; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 640px) { .two { grid-template-columns: 1fr; } .page-hero h1 { font-size: 32px; } }
+
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+.page-hero { padding: 56px 0 24px; }
+.page-hero h1 { font-size: 40px; line-height: 1.1; letter-spacing: -0.8px; margin-bottom: 14px; }
+.page-hero p { font-size: 18px; color: var(--muted); }
+.tag { font-size: 12px; font-weight: 600; color: var(--accent); letter-spacing: .04em; text-transform: uppercase; }
+.sec { padding: 32px 0; border-top: 1px solid var(--border); }
+.sec h2 { font-size: 24px; letter-spacing: -0.4px; margin-bottom: 12px; }
+.sec p { font-size: 16px; margin-bottom: 14px; }
+.layer { display:flex; gap:16px; background: var(--surface); border:1px solid var(--border); border-radius:10px; padding:18px 20px; margin:12px 0; }
+.layer .n { font-size:22px; font-weight:800; color:var(--accent); min-width:34px; }
+.layer h3 { font-size:17px; margin-bottom:4px; }
+.layer p { font-size:15px; color:var(--muted); margin:0; }
+.two { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.card { background: var(--surface); border:1px solid var(--border); border-radius:10px; padding:18px 20px; }
+.card h3 { font-size:16px; margin-bottom:6px; }
+.card p, .card li { font-size:15px; color:var(--muted); margin:0 0 6px; }
+.card ul { margin:6px 0 0 18px; }
+.note { font-size:13px; color:var(--muted); border-left:3px solid var(--accent); padding:4px 0 4px 14px; margin-top:28px; }
+@media (max-width:640px){ .two{grid-template-columns:1fr;} .page-hero h1{font-size:32px;} }
+
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+.page-hero { padding: 56px 0 24px; }
+.page-hero h1 { font-size: 40px; line-height: 1.1; letter-spacing: -0.8px; margin-bottom: 14px; }
+.page-hero p { font-size: 18px; color: var(--muted); }
+.tag { font-size: 12px; font-weight: 600; color: var(--accent); letter-spacing: .04em; text-transform: uppercase; }
+.sec { padding: 32px 0; border-top: 1px solid var(--border); }
+.sec h2 { font-size: 24px; letter-spacing: -0.4px; margin-bottom: 12px; }
+.sec h3 { font-size: 17px; margin: 18px 0 8px; }
+.sec p { font-size: 16px; margin-bottom: 14px; }
+.sec ul, .sec ol { margin: 0 0 14px 22px; font-size: 16px; }
+.sec li { margin-bottom: 8px; }
+.two { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.card { background: var(--surface); border:1px solid var(--border); border-radius:10px; padding:18px 20px; }
+.card h3 { font-size:16px; margin:0 0 6px; }
+.card p, .card li { font-size:15px; color:var(--muted); margin:0 0 6px; }
+.card ul { margin:6px 0 0 18px; }
+.step { display:flex; gap:14px; background: var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px 18px; margin:10px 0; }
+.step .n { font-weight:800; color:var(--accent); min-width:26px; font-size:18px; }
+.step p { margin:0; font-size:15px; color:var(--muted); }
+.callout { border-left:3px solid var(--accent); padding:4px 0 4px 16px; font-size:16px; margin:20px 0; }
+.note { font-size:13px; color:var(--muted); border-left:3px solid var(--border); padding:4px 0 4px 14px; margin-top:28px; }
+.src a { color:var(--accent); }
+@media (max-width:640px){ .two{grid-template-columns:1fr;} .page-hero h1{font-size:32px;} }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <nav id="nav">
+      <a href="/llm-explained.html">What is AI?</a>
+      <a href="/jargon.html">Jargon</a>
+      <a href="/compare.html">Tools</a>
+      <a href="/use-cases.html">Use Cases</a>
+      <a href="/setup.html">Setup</a>
+      <a href="/reading.html">Reading</a>
+      <a href="/resources.html">Resources</a>
+      <a href="/search.html" style="display: flex; align-items: center; gap: 6px; margin-left: 12px; padding-left: 12px; border-left: 1px solid var(--border);">🔍</a>
+    </nav>
+    <button class="nav-mobile-toggle" id="nav-toggle">☰</button>
+  </div>
+</header>
+<main class="wrap">
+  <section class="page-hero">
+    <div class="tag">Enterprise · Systems</div>
+    <h1>Harness Engineering</h1>
+    <p>Designing the environment, tools, context, rules and feedback loops around an AI model, so it can do real work reliably.</p>
+  </section>
+
+  <div class="callout"><strong>Agent = Model + Harness.</strong> The model is the engine; the harness is everything that turns it into a working car.</div>
+
+  <section class="sec">
+    <h2>The evolution</h2>
+    <ol>
+      <li><strong>Prompt engineering (2022 to 2024):</strong> what you <em>say</em> to the model. Message level. “How should I ask?”</li>
+      <li><strong>Context engineering (2025):</strong> what the model <em>sees</em>. Session level. “What information should it have?”</li>
+      <li><strong>Harness engineering (2026 onwards):</strong> the whole <em>system</em> it runs in. System level. “How does it execute reliably?”</li>
+    </ol>
+    <p>Each layer contains the one before: the prompt sits inside the context, and the context pipeline is a subsystem inside the harness. Same model, better harness, very different results.</p>
+  </section>
+
+  <section class="sec">
+    <h2>The 5 pillars</h2>
+
+    <div class="two">
+      <div class="card"><h3>1. Context</h3><p>What the model knows right now.</p><ul><li>System instructions, retrieved documents (RAG), skills loaded on demand</li><li>Memory and state that persist across steps and sessions</li><li>Compaction and summarising so long tasks don’t overflow the window</li></ul><p><em>Prevents:</em> hallucination from missing information, or confusion from too much noise.</p></div>
+      <div class="card"><h3>2. Action</h3><p>How the model touches the world.</p><ul><li>MCP servers, APIs, browser and computer use, code execution</li><li>Clear tool descriptions matter as much as the tools themselves</li></ul><p><em>Prevents:</em> a model that can only talk, not do.</p></div>
+      <div class="card"><h3>3. Orchestration</h3><p>How work is sequenced.</p><ul><li>Planning, state tracking, task breakdown, delegation to sub-agents, retries</li><li>Lets an agent run for hours without losing the thread</li></ul><p><em>Prevents:</em> drift, loops, and forgetting what it was doing.</p></div>
+      <div class="card"><h3>4. Control</h3><p>What the model is allowed to do.</p><ul><li>Guardrails, permissions, human approval for risky steps, output validation</li><li>Sandboxing (an isolated environment to work in), cost and time budgets</li></ul><p><em>Prevents:</em> irreversible mistakes, data leaks, runaway spend.</p></div>
+      <div class="card"><h3>5. Feedback</h3><p>How you know it’s working, and how it improves.</p><ul><li>Evals, logs and traces, monitoring, self-checks (for example, running tests before declaring “done”)</li><li><strong>The improvement loop:</strong> treat every agent mistake as a permanent signal. Each failure becomes a new rule, tool or check in the harness</li></ul><p><em>Prevents:</em> silent failure and “it worked in the demo”.</p></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>One-line test for any AI system</h2>
+    <div class="callout" style="margin-top:0">Does it know enough (context), can it act (action), does it stay on track (orchestration), is it safe (control), and can we prove it works and gets better (feedback)?</div>
+  </section>
+
+  <section class="sec">
+    <h2>Background and what’s next</h2>
+    <ul><li>The term was coined by Viv Trivedy, and formalised in early 2026, notably through OpenAI’s Codex experiments, where the harness, not the agent, turned out to be the hard part.</li><li>No single official list of components exists. These five pillars are the author’s own synthesis, and map closely to commonly cited ones: context delivery, tool interfaces, planning, verification, memory and sandboxes.</li><li><strong>Emerging next: loop engineering,</strong> where agents run in loops without a human pressing the button. The loop is the choreography; the harness is the stage.</li></ul>
+  </section>
+
+  <section class="sec">
+    <h2>Sources</h2>
+    <ul class="src"><li><a href="https://addyosmani.com/blog/agent-harness-engineering/" target="_blank" rel="noopener">Addy Osmani: Agent Harness Engineering</a></li><li><a href="https://concepts.dsebastien.net/concept/harness-engineering/" target="_blank" rel="noopener">Harness Engineering (concept note)</a></li><li><a href="https://atlan.com/know/harness-engineering-vs-prompt-engineering/" target="_blank" rel="noopener">Atlan: Harness vs Prompt vs Context Engineering</a></li><li><a href="https://www.aibuilderclub.com/blog/prompt-context-harness-evolution" target="_blank" rel="noopener">AI Builder Club: The 4 Shifts</a></li><li><a href="https://www.sourcepulse.org/projects/27899098" target="_blank" rel="noopener">awesome-harness-engineering</a></li></ul>
+  </section>
+
+
+  <p class="note">Based on a working document of the author’s. For terms, see the <a href="/jargon.html" style="color:var(--accent);">Jargon Decoder</a>. For how to measure the feedback pillar, see <a href="/evals.html" style="color:var(--accent);">AI Evals</a>.</p>
+
+</main>
+<footer>
+  <div class="footer-inner">
+    <p>AI Learning Hub — No hype, no theory. Just understanding. © 2026 Human Agency</p>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Evals — Human Agency</title>
+<meta name="description" content="How to test AI software whose answers are never exactly the same twice: model evals, product evals, rubrics and the eval loop.">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f9f8f6;
+  --surface: #ffffff;
+  --border: #ebebeb;
+  --text: #111111;
+  --muted: #666666;
+  --subtle: #aaaaaa;
+  --accent: #4f46e5;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --border: #2a2a2a;
+    --text: #f5f5f5;
+    --muted: #999999;
+    --subtle: #666666;
+  }
+}
+
+:root[data-theme="light"] {
+  --bg: #f9f8f6;
+  --surface: #ffffff;
+  --border: #ebebeb;
+  --text: #111111;
+  --muted: #666666;
+}
+
+:root[data-theme="dark"] {
+  --bg: #0f0f0f;
+  --surface: #1a1a1a;
+  --border: #2a2a2a;
+  --text: #f5f5f5;
+  --muted: #999999;
+}
+
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+
+header { border-bottom: 1px solid var(--border); background: var(--surface); position: sticky; top: 0; z-index: 100; }
+.header-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+.logo { font-size: 15px; font-weight: 800; letter-spacing: -0.4px; color: var(--text); text-decoration: none; }
+.logo .dot { color: var(--accent); }
+nav { display: flex; gap: 24px; align-items: center; }
+nav a { font-size: 13px; font-weight: 500; color: var(--muted); transition: color 0.15s; text-decoration: none; }
+nav a:hover { color: var(--text); }
+.nav-mobile-toggle { display: none; background: none; border: none; color: var(--muted); font-size: 18px; cursor: pointer; }
+
+.hero { max-width: 900px; margin: 0 auto; padding: 56px 24px 32px; }
+.hero h1 { font-size: clamp(28px, 5vw, 42px); font-weight: 900; letter-spacing: -0.8px; line-height: 1.15; color: var(--text); margin-bottom: 12px; }
+.hero-sub { font-size: 15px; color: var(--muted); margin-bottom: 24px; line-height: 1.7; }
+.search-wrap { position: relative; max-width: 440px; }
+.search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--subtle); font-size: 15px; pointer-events: none; }
+.search-input { width: 100%; font-family: 'Inter', sans-serif; font-size: 15px; padding: 12px 52px 12px 42px; border: 2px solid var(--border); border-radius: 12px; background: var(--surface); color: var(--text); outline: none; transition: border-color .15s; }
+.search-input:focus { border-color: var(--accent); }
+.search-input::placeholder { color: var(--subtle); }
+.search-kbd { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 10px; font-weight: 700; color: var(--subtle); background: var(--bg); border: 1px solid var(--border); border-radius: 5px; padding: 2px 6px; pointer-events: none; font-family: 'Inter', sans-serif; transition: opacity .15s; letter-spacing: .3px; }
+.search-input:focus ~ .search-kbd { opacity: 0; }
+.recent-strip { display: none; flex-wrap: wrap; gap: 6px; margin-top: 10px; align-items: center; }
+.recent-label { font-size: 11px; font-weight: 700; color: var(--subtle); white-space: nowrap; letter-spacing: .3px; }
+.recent-pill { font-family: 'Inter', sans-serif; font-size: 12px; color: var(--muted); background: var(--surface); border: 1px solid var(--border); border-radius: 99px; padding: 4px 12px; cursor: pointer; transition: all .15s; }
+.recent-pill:hover { color: var(--accent); border-color: var(--accent); }
+
+.filters { max-width: 900px; margin: 0 auto; padding: 20px 24px 24px; display: flex; gap: 8px; flex-wrap: wrap; }
+.pill { font-size: 13px; font-weight: 600; padding: 7px 16px; border-radius: 99px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); cursor: pointer; transition: all 0.15s; }
+.pill:hover { border-color: var(--accent); color: var(--accent); }
+.pill.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+.terms { max-width: 900px; margin: 0 auto; padding: 0 24px 80px; }
+
+.term-row { border-bottom: 1px solid var(--border); }
+.terms > .term-row:first-child { border-top: 1px solid var(--border); }
+
+.term-header { display: flex; align-items: center; gap: 16px; padding: 20px 0; cursor: pointer; user-select: none; }
+.term-name { font-size: 17px; font-weight: 800; letter-spacing: -0.3px; color: var(--text); width: 170px; flex-shrink: 0; transition: color .15s; }
+.term-row:hover .term-name { color: var(--accent); }
+.term-oneliner { font-size: 14px; color: var(--muted); flex: 1; line-height: 1.5; }
+.term-badge { font-size: 10px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; padding: 3px 9px; border-radius: 99px; flex-shrink: 0; white-space: nowrap; }
+.badge-basics      { background: #dcfce7; color: #166534; }
+.badge-intermediate { background: #fef9c3; color: #854d0e; }
+.badge-advanced    { background: #ede9fe; color: #5b21b6; }
+.term-arrow { font-size: 13px; color: var(--subtle); flex-shrink: 0; transition: transform .2s ease; }
+.term-row.open .term-arrow { transform: rotate(90deg); color: var(--accent); }
+
+.term-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .25s ease; }
+.term-row.open .term-body { grid-template-rows: 1fr; }
+.term-body-inner { overflow: hidden; }
+.term-body-text { padding: 0 0 22px 186px; font-size: 15px; color: #444; line-height: 1.85; }
+
+.no-results { padding: 56px 0; text-align: center; font-size: 15px; color: var(--muted); }
+
+footer { border-top: 1px solid var(--border); background: var(--surface); }
+.footer-inner { max-width: 900px; margin: 0 auto; padding: 32px 24px; text-align: center; font-size: 12px; color: var(--muted); }
+
+@media (max-width: 768px) {
+  .header-inner { padding: 0 16px; }
+  nav { display: none; position: absolute; top: 56px; left: 0; right: 0; flex-direction: column; gap: 0; background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 0; }
+  nav.active { display: flex; }
+  nav a { padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .nav-mobile-toggle { display: block; }
+  .hero { padding: 40px 16px 24px; }
+  .hero h1 { font-size: 24px; }
+  .search-wrap { max-width: 100%; }
+  .filters { padding: 16px 16px 12px; gap: 6px; }
+  .terms { padding: 0 16px 60px; }
+  .term-oneliner { font-size: 12px; }
+  .term-name { font-size: 16px; width: 100%; }
+  .term-body-text { padding: 0 0 16px 0; }
+  .footer-inner { padding: 24px 16px; }
+}
+
+@media (max-width: 480px) {
+  .header-inner { padding: 0 12px; }
+  .logo { font-size: 13px; }
+  .hero { padding: 32px 12px 20px; }
+  .hero h1 { font-size: 20px; }
+  .search-wrap { max-width: 100%; }
+  .filters { padding: 12px 12px 8px; gap: 4px; }
+  .terms { padding: 0 12px 40px; }
+  .term-name { font-size: 14px; }
+  .term-oneliner { font-size: 11px; }
+  .term-body-text { font-size: 13px; padding: 0 0 12px 0; }
+  .footer-inner { padding: 20px 12px; font-size: 11px; }
+}
+
+
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+.page-hero { padding: 56px 0 24px; }
+.page-hero h1 { font-size: 40px; line-height: 1.1; letter-spacing: -0.8px; margin-bottom: 14px; }
+.page-hero p { font-size: 18px; color: var(--muted); }
+.sec { padding: 36px 0; border-top: 1px solid var(--border); }
+.sec h2 { font-size: 24px; letter-spacing: -0.4px; margin-bottom: 12px; }
+.sec p { font-size: 16px; margin-bottom: 14px; }
+.sec ul, .sec ol { margin: 0 0 14px 22px; font-size: 16px; }
+.sec li { margin-bottom: 8px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px 22px; margin: 14px 0; }
+.card h3 { font-size: 16px; margin-bottom: 6px; }
+.card p { font-size: 15px; color: var(--muted); margin: 0; }
+.tag { font-size: 12px; font-weight: 600; color: var(--accent); letter-spacing: .04em; text-transform: uppercase; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 640px) { .two { grid-template-columns: 1fr; } .page-hero h1 { font-size: 32px; } }
+
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+.page-hero { padding: 56px 0 24px; }
+.page-hero h1 { font-size: 40px; line-height: 1.1; letter-spacing: -0.8px; margin-bottom: 14px; }
+.page-hero p { font-size: 18px; color: var(--muted); }
+.tag { font-size: 12px; font-weight: 600; color: var(--accent); letter-spacing: .04em; text-transform: uppercase; }
+.sec { padding: 32px 0; border-top: 1px solid var(--border); }
+.sec h2 { font-size: 24px; letter-spacing: -0.4px; margin-bottom: 12px; }
+.sec p { font-size: 16px; margin-bottom: 14px; }
+.layer { display:flex; gap:16px; background: var(--surface); border:1px solid var(--border); border-radius:10px; padding:18px 20px; margin:12px 0; }
+.layer .n { font-size:22px; font-weight:800; color:var(--accent); min-width:34px; }
+.layer h3 { font-size:17px; margin-bottom:4px; }
+.layer p { font-size:15px; color:var(--muted); margin:0; }
+.two { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.card { background: var(--surface); border:1px solid var(--border); border-radius:10px; padding:18px 20px; }
+.card h3 { font-size:16px; margin-bottom:6px; }
+.card p, .card li { font-size:15px; color:var(--muted); margin:0 0 6px; }
+.card ul { margin:6px 0 0 18px; }
+.note { font-size:13px; color:var(--muted); border-left:3px solid var(--accent); padding:4px 0 4px 14px; margin-top:28px; }
+@media (max-width:640px){ .two{grid-template-columns:1fr;} .page-hero h1{font-size:32px;} }
+
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+.page-hero { padding: 56px 0 24px; }
+.page-hero h1 { font-size: 40px; line-height: 1.1; letter-spacing: -0.8px; margin-bottom: 14px; }
+.page-hero p { font-size: 18px; color: var(--muted); }
+.tag { font-size: 12px; font-weight: 600; color: var(--accent); letter-spacing: .04em; text-transform: uppercase; }
+.sec { padding: 32px 0; border-top: 1px solid var(--border); }
+.sec h2 { font-size: 24px; letter-spacing: -0.4px; margin-bottom: 12px; }
+.sec h3 { font-size: 17px; margin: 18px 0 8px; }
+.sec p { font-size: 16px; margin-bottom: 14px; }
+.sec ul, .sec ol { margin: 0 0 14px 22px; font-size: 16px; }
+.sec li { margin-bottom: 8px; }
+.two { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.card { background: var(--surface); border:1px solid var(--border); border-radius:10px; padding:18px 20px; }
+.card h3 { font-size:16px; margin:0 0 6px; }
+.card p, .card li { font-size:15px; color:var(--muted); margin:0 0 6px; }
+.card ul { margin:6px 0 0 18px; }
+.step { display:flex; gap:14px; background: var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px 18px; margin:10px 0; }
+.step .n { font-weight:800; color:var(--accent); min-width:26px; font-size:18px; }
+.step p { margin:0; font-size:15px; color:var(--muted); }
+.callout { border-left:3px solid var(--accent); padding:4px 0 4px 16px; font-size:16px; margin:20px 0; }
+.note { font-size:13px; color:var(--muted); border-left:3px solid var(--border); padding:4px 0 4px 14px; margin-top:28px; }
+.src a { color:var(--accent); }
+@media (max-width:640px){ .two{grid-template-columns:1fr;} .page-hero h1{font-size:32px;} }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <nav id="nav">
+      <a href="/llm-explained.html">What is AI?</a>
+      <a href="/jargon.html">Jargon</a>
+      <a href="/compare.html">Tools</a>
+      <a href="/use-cases.html">Use Cases</a>
+      <a href="/setup.html">Setup</a>
+      <a href="/reading.html">Reading</a>
+      <a href="/resources.html">Resources</a>
+      <a href="/search.html" style="display: flex; align-items: center; gap: 6px; margin-left: 12px; padding-left: 12px; border-left: 1px solid var(--border);">🔍</a>
+    </nav>
+    <button class="nav-mobile-toggle" id="nav-toggle">☰</button>
+  </div>
+</header>
+<main class="wrap">
+  <section class="page-hero">
+    <div class="tag">Enterprise · Quality</div>
+    <h1>AI Evals</h1>
+    <p>How to test software whose answers are never exactly the same twice.</p>
+  </section>
+
+  <div class="callout"><strong>In one line:</strong> shortlist models with public benchmarks, then judge your product with your own evals. Build them from error analysis on real outputs, score them with code checks and binary LLM judges, check the judges against humans, and run it all as a loop.</div>
+
+  <section class="sec">
+    <h2>Why evals exist</h2>
+    <p>Evals are how you test software whose output is non-deterministic. Traditional software is deterministic: the same input gives the same output, so a unit test with a fixed expected value is enough. An LLM can give a different, equally valid answer every time, so pass or fail on an exact string breaks down.</p>
+    <div class="two">
+      <div class="card"><h3>Deterministic software</h3><ul><li>Same input, same output</li><li>Tested with unit tests and exact expected values</li><li>Correct means matching the spec exactly</li><li>Failure looks like a crash or a wrong value</li></ul></div>
+      <div class="card"><h3>Non-deterministic (AI) software</h3><ul><li>Same input, different valid output</li><li>Tested with evals: scored judgements against criteria</li><li>Correct means good enough on the dimensions that matter</li><li>Failure looks like drift, hallucination, tone or policy misses</li></ul></div>
+    </div>
+    <p style="margin-top:16px"><strong>The practical shift:</strong> quality becomes a score you track over time, not a green tick you get once.</p>
+  </section>
+
+  <section class="sec">
+    <h2>Two types of evals</h2>
+    <p>Model evals tell you which model to start with. Product evals tell you whether your product actually works for your users.</p>
+    <div class="two">
+      <div class="card"><h3>Model evals</h3><ul><li><strong>Question:</strong> which model is capable enough?</li><li><strong>Who runs them:</strong> model labs, benchmark publishers, and your team when shortlisting</li><li><strong>Examples:</strong> public benchmarks (MMLU, SWE-bench, GPQA) and leaderboards</li><li><strong>Use:</strong> a filter to narrow the field to 2 or 3 candidates</li><li><strong>Limit:</strong> generic. A high score says little about your use case</li></ul></div>
+      <div class="card"><h3>Product evals</h3><ul><li><strong>Question:</strong> does our feature do the job for our users?</li><li><strong>Who runs them:</strong> your product team, continuously</li><li><strong>Examples:</strong> tests built from your own user requests and failure modes</li><li><strong>Use:</strong> the ongoing quality gate for releases and prompt changes</li><li><strong>Limit:</strong> only as good as your dataset and rubrics</li></ul></div>
+    </div>    <p>The common mistake is stopping at model evals. A model that tops a leaderboard can still fail on your domain, your data formats and your users’ phrasing. Product evals are where the real work, and the competitive advantage, sits.</p>
+  </section>
+
+  <section class="sec">
+    <h2>Three ways to run product evals</h2>
+    <p>Use all three in layers: cheap code checks on everything, an LLM judge for quality at scale, and humans to set and recalibrate the ground truth.</p>
+    <div class="two">
+      <div class="card"><h3>1. Human evaluation</h3><ul><li><strong>What:</strong> domain experts review outputs and label them good or bad</li><li><strong>Best for:</strong> setting ground truth; nuanced, high-stakes judgements</li><li><strong>Cost:</strong> slow and expensive; does not scale</li><li><strong>Watch out:</strong> reviewer disagreement; needs clear guidelines</li></ul></div>
+      <div class="card"><h3>2. Code-based checks</h3><ul><li><strong>What:</strong> deterministic tests written in code</li><li><strong>Best for:</strong> format and hard rules: schema checks, valid JSON, required fields, length limits, banned words; overlap scores such as BLEU against a reference</li><li><strong>Cost:</strong> fast, cheap, repeatable</li><li><strong>Watch out:</strong> cannot judge meaning. BLEU only counts word overlap, so a correct paraphrase can score near zero</li></ul></div>
+      <div class="card"><h3>3. LLM as judge</h3><ul><li><strong>What:</strong> a second model scores outputs against a written rubric</li><li><strong>Best for:</strong> subjective quality at scale: helpfulness, tone, faithfulness to sources</li><li><strong>Cost:</strong> fast and cheap once built</li><li><strong>Watch out:</strong> the judge can be wrong too; validate it against human labels</li></ul></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>Writing rubrics</h2>
+    <p>The skill that makes the LLM judge work is <strong>writing rubrics</strong>. Practitioners such as Hamel Husain recommend three rules:</p>    <ol><li><strong>Binary, not scales.</strong> Pass or Fail, not “rate 1 to 5”. A binary call forces a clear definition and makes judge errors measurable.</li><li><strong>One judge per failure mode.</strong> “Does the answer use only facts in the source? Pass/Fail” beats one judge scoring “overall quality”.</li><li><strong>Show examples.</strong> Include at least one clear Pass, one clear Fail and one borderline case in the judge prompt.</li></ol>
+    <p><strong>Rule of thumb:</strong> if a check can be written in code, write it in code. Reserve the judge for what code cannot see, and reserve humans for defining what good looks like.</p>
+  </section>
+
+  <section class="sec">
+    <h2>Building evals from a small dataset</h2>
+    <p>Start small and real: a few dozen examples you have looked at closely beat thousands you have not. This is the workflow tools like Arize AI support.</p>
+    <div class="two">
+      <div class="card"><h3>User request</h3><p>The actual input a user sends. Source: production logs, support tickets, or realistic synthetic cases.</p></div>
+      <div class="card"><h3>Reference answer</h3><p>What a good answer looks like. Source: written or approved by a domain expert. This is your ground truth.</p></div>
+      <div class="card"><h3>AI answer</h3><p>What the system actually produced. Source: your current prompt, model and pipeline.</p></div>
+    </div>
+    <h3>The steps</h3>
+    <div class="step"><div class="n">1</div><div><p><strong>Build the small reference dataset.</strong> Cover common requests, edge cases and known tricky inputs.</p></div></div>
+    <div class="step"><div class="n">2</div><div><p><strong>Do error analysis.</strong> Read the AI answers side by side with the references. Note every failure in plain words, then group them. Patterns emerge fast: “ignores the date range”, “invents a policy”, “too long for mobile”.</p></div></div>
+    <div class="step"><div class="n">3</div><div><p><strong>Name the evals.</strong> Each recurring failure pattern becomes a named eval, for example <em>faithfulness</em>, <em>date handling</em>, <em>conciseness</em>. You are measuring the failures you actually saw, not generic virtues.</p></div></div>
+    <div class="step"><div class="n">4</div><div><p><strong>Write the rubric.</strong> For each named eval, write a precise pass/fail definition, ideally with a passing and a failing example.</p></div></div>
+    <div class="step"><div class="n">5</div><div><p><strong>Run the judge.</strong> Apply the rubric with an LLM judge (or code, if the check is deterministic) across the dataset. Spot-check the judge’s verdicts against your own labels before trusting it.</p></div></div>
+    <p><strong>The insight:</strong> evals come <em>out of</em> error analysis. Teams that write rubrics before reading real outputs end up measuring the wrong things.</p>
+  </section>
+
+  <section class="sec">
+    <h2>How big, and how to trust the judge</h2>
+
+    <div class="two">
+      <div class="card"><h3>Starter dataset</h3><p><strong>20 to 50 examples.</strong> Arize’s own guide starts here: enough to see patterns.</p></div>
+      <div class="card"><h3>Error analysis</h3><p><strong>About 100 traces.</strong> Hamel Husain’s rough point where new failure types stop appearing.</p></div>
+      <div class="card"><h3>Judge validation</h3><p><strong>About 50 human-labelled Pass and 50 Fail.</strong> Lets you measure how often the judge agrees with humans on each side.</p></div>
+    </div>
+    <p>Keep the reference answer column. Research on LLM judges found they struggle on questions they cannot answer themselves, and that giving the judge a good human-written reference answer closes much of that gap. Even a smaller judge with strong references agreed with humans better than a stronger judge without them.</p>
+    <p>Re-run error analysis after every big change: a new model, a prompt rewrite, a new feature or a production incident.</p>
+  </section>
+
+  <section class="sec">
+    <h2>The eval loop</h2>
+    <p>Evals are never finished. They run as a loop, and production is where the next test cases come from.</p>    <div class="step"><div class="n">1</div><div><p><strong>Simulate on cases.</strong> Run the system against the reference dataset before anything ships.</p></div></div>
+    <div class="step"><div class="n">2</div><div><p><strong>Build evals and score.</strong> Apply code checks, the LLM judge and human review to get a score per named eval.</p></div></div>
+    <div class="step"><div class="n">3</div><div><p><strong>Run in production.</strong> Ship, then sample live traffic and score it with the same evals.</p></div></div>
+    <div class="step"><div class="n">4</div><div><p><strong>Improve, fix, run again.</strong> Change the prompt, retrieval or model; add every new production failure to the reference dataset; go round again.</p></div></div>
+    <p>Each turn of the loop makes the dataset harder and the product better. Regressions get caught because yesterday’s failures are now permanent tests.</p>
+  </section>
+
+  <section class="sec">
+    <h2>What this means for a product manager</h2>
+    <ul><li><strong>Evals are the spec.</strong> For AI features, the rubric is where product intent gets written down. Owning the rubric is owning quality.</li><li><strong>Error analysis is product work, not just engineering work.</strong> Reading real outputs and naming failure modes needs domain judgement.</li><li><strong>Model choice is a filter, not a strategy.</strong> Shortlist on benchmarks, decide on your own product evals.</li><li><strong>Layer the methods.</strong> Code checks for rules, LLM judge for quality, humans for ground truth and calibration.</li><li><strong>Ship the loop, not just the feature.</strong> A team without a working eval loop cannot tell whether a prompt change made things better or worse.</li><li><strong>Questions to ask any AI team:</strong> What is in your reference dataset? Which failure modes have you named? How often do you check the judge against humans? What happens when a production failure is found?</li></ul>
+  </section>
+
+  <section class="sec">
+    <h2>Key terms</h2>
+
+    <div class="two">
+      <div class="card"><h3>Trace</h3><p>The full record of one AI interaction: input, steps, tool calls, output.</p></div>
+      <div class="card"><h3>Ground truth</h3><p>The human-agreed correct answer or label you measure against.</p></div>
+      <div class="card"><h3>Reference answer</h3><p>An expert-written good answer stored in the dataset.</p></div>
+      <div class="card"><h3>Error analysis</h3><p>Reading outputs, noting each failure, then grouping notes into failure modes.</p></div>
+      <div class="card"><h3>Failure mode</h3><p>A named, recurring way the system goes wrong.</p></div>
+      <div class="card"><h3>Rubric</h3><p>The written Pass/Fail definition a judge applies.</p></div>
+      <div class="card"><h3>LLM as judge</h3><p>Using a model to score another model’s output against a rubric.</p></div>
+      <div class="card"><h3>BLEU</h3><p>A 2002 machine translation metric counting word overlap with a reference.</p></div>
+      <div class="card"><h3>Benchmark</h3><p>A public standard test used to compare models (MMLU, SWE-bench, GPQA).</p></div>
+      <div class="card"><h3>Online eval</h3><p>An eval run continuously on live production traffic.</p></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>Sources</h2>
+    <ul class="src"><li><a href="https://arize.com/docs/ax/evaluate/evaluators/llm-as-a-judge" target="_blank" rel="noopener">Arize: LLM as a judge</a></li><li><a href="https://arize.com/docs/ax/cookbooks/evaluate/align-llm-evals-with-human-judgment.md" target="_blank" rel="noopener">Arize: Align LLM evals with human judgment</a></li><li><a href="https://www.chatprd.ai/how-i-ai/debugging-ai-writing-evals" target="_blank" rel="noopener">Hamel Husain on error analysis and evals (How I AI recap)</a></li><li><a href="https://www.lennysnewsletter.com/p/evals-error-analysis-and-better-prompts" target="_blank" rel="noopener">Hamel Husain on Lenny’s Podcast: evals, error analysis, better prompts</a></li><li><a href="https://skills.sh/hamelsmu/evals-skills/eval-audit" target="_blank" rel="noopener">Hamel Husain: eval audit checklist (evals-skills)</a></li><li><a href="https://arxiv.org/abs/2503.05061v1" target="_blank" rel="noopener">Krumdick et al.: No Free Labels, limitations of LLM as a judge without human grounding</a></li><li><a href="https://arxiv.org/pdf/2506.13023" target="_blank" rel="noopener">A Practical Guide for Evaluating LLMs (BLEU and its limits)</a></li><li><a href="https://wandb.ai/ai-team-articles/llm-evaluation/reports/LLM-evaluation-benchmarking-Beyond-BLEU-and-ROUGE--VmlldzoxNTIzMTY0NQ" target="_blank" rel="noopener">Weights &amp; Biases: Beyond BLEU and ROUGE</a></li></ul>
+  </section>
+
+
+  <p class="note">Based on a working document of the author’s, fact-checked against the sources above. For terms, see the <a href="/jargon.html" style="color:var(--accent);">Jargon Decoder</a>.</p>
+
+</main>
+<footer>
+  <div class="footer-inner">
+    <p>AI Learning Hub — No hype, no theory. Just understanding. © 2026 Human Agency</p>
+  </div>
+</footer>
+</body>
+</html>
