@@ -215,6 +215,21 @@ a { color: var(--accent); }
   .pill-article { background: #223020 !important; color: #b5d9a4 !important; }
   .pill-case { background: #3a2d18 !important; color: #f0cc8a !important; }
 }
+
+.yt-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin:8px 0 18px; }
+.yt { margin:0; }
+.yt iframe { width:100%; aspect-ratio:16/9; border:0; border-radius:12px; background:#000; display:block; }
+.yt figcaption { font-size:14px; line-height:1.4; margin-top:8px; }
+.yt figcaption a { color:var(--text); font-weight:600; text-decoration:none; }
+.yt figcaption a:hover { color:var(--accent); }
+@media (max-width:640px){ .yt-grid { grid-template-columns:1fr; } }
+
+.yt-view { display:flex; gap:6px; margin:4px 0 16px; }
+.yt-view button { font:inherit; font-size:13px; font-weight:600; padding:6px 14px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--muted); cursor:pointer; }
+.yt-view button[aria-pressed="true"] { background:var(--accent); border-color:var(--accent); color:#fff; }
+.yt-grid.is-list { grid-template-columns:1fr; }
+.yt-grid.is-scroll { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; gap:18px; padding-bottom:12px; }
+.yt-grid.is-scroll .yt { flex:0 0 min(420px, 85%); scroll-snap-align:start; }
 </style>
 </head>
 <body>
@@ -254,20 +269,67 @@ a { color: var(--accent); }
   <section class="sec">
     <h2>Talks and interviews</h2>
     <p>Long-form conversations with researchers, builders and analysts.</p>
-    <div class="item"><a href="https://youtu.be/7s-uWHNn5Xc" target="_blank" rel="noopener">AI Eats the World: Benedict Evans on What Really Matters Now</a><span class="pill pill-video">Video</span></div>
-    <div class="item"><a href="https://another-podcast.simplecast.com/episodes/the-ai-presentation-m4UyqLa5" target="_blank" rel="noopener">Benedict Evans 2025 (the AI presentation)</a><span class="pill pill-video">Video</span></div>
-    <div class="item"><a href="https://youtu.be/gF6tDdYdBJY" target="_blank" rel="noopener">World Leading Tech Analyst, Benedict Evans: Making Sense of AI</a><span class="pill pill-video">Video</span></div>
-    <div class="item"><a href="https://youtu.be/C3TqcUEFR58" target="_blank" rel="noopener">AI Snake Oil: What Artificial Intelligence Can Do, What It Can’t, and How to Tell the Difference</a><span class="pill pill-video">Video</span></div>
-    <div class="item"><a href="https://youtu.be/QQu7KioCsnQ" target="_blank" rel="noopener">AI and the Future of India’s IT Giants (Dr. Vishal Sikka)</a><span class="pill pill-video">Video</span></div>
-    <div class="item"><a href="https://youtu.be/d1iXi2FQZZE" target="_blank" rel="noopener">Why customer empathy is now the moat (Etie Hertz)</a><span class="pill pill-video">Video</span></div>
-    <div class="item"><a href="https://youtu.be/zzXyPGEtseI" target="_blank" rel="noopener">Is Human Data Enough? With David Silver (Google DeepMind)</a><span class="pill pill-video">Video</span></div>
-    <div class="item"><a href="https://youtu.be/rYXeQbTuVl0" target="_blank" rel="noopener">Mark Zuckerberg: Meta’s AGI Plan (Dwarkesh Patel)</a><span class="pill pill-video">Video</span></div>
-    <div class="item"><a href="https://youtu.be/7s9C92Pkcc0" target="_blank" rel="noopener">Rick Rubin: Vibe Coding is the Punk Rock of Software</a><span class="pill pill-video">Video</span></div>
-    <div class="item"><a href="https://youtu.be/id4YRO7G0wE" target="_blank" rel="noopener">The AI Revolution Is Underhyped (Eric Schmidt)</a><span class="pill pill-video">Video</span></div>
-    <div class="item"><a href="https://youtu.be/giT0ytynSqg" target="_blank" rel="noopener">Godfather of AI: They Keep Silencing Me But I’m Trying to Warn Them</a><span class="pill pill-video">Video</span></div>
-    <div class="item"><a href="https://youtu.be/AfYY9v0Q0X4" target="_blank" rel="noopener">Brian Eno on AI, Art and What Makes Us Human</a><span class="pill pill-video">Video</span></div>
-    <div class="item"><a href="https://youtu.be/c16gNWVbmPs" target="_blank" rel="noopener">6 Creative Skills AI Can’t Replace</a><span class="pill pill-video">Video</span></div>
-    <div class="item"><a href="https://youtu.be/g9E7iCnYOoI" target="_blank" rel="noopener">AI BS you can use</a><span class="pill pill-video">Video</span></div>
+    <div class="yt-view" role="group" aria-label="Video layout">
+      <button type="button" data-view="grid" aria-pressed="true">Grid</button>
+      <button type="button" data-view="list" aria-pressed="false">List</button>
+      <button type="button" data-view="scroll" aria-pressed="false">Scroll</button>
+    </div>
+    <div class="yt-grid" id="yt-list">
+      <figure class="yt">
+        <iframe src="https://www.youtube-nocookie.com/embed/7s-uWHNn5Xc" title="AI Eats the World: Benedict Evans on What Really Matters Now" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <figcaption><a href="https://youtu.be/7s-uWHNn5Xc" target="_blank" rel="noopener">AI Eats the World: Benedict Evans on What Really Matters Now</a> <span class="pill pill-video">Video</span></figcaption>
+      </figure>
+      <figure class="yt">
+        <iframe src="https://www.youtube-nocookie.com/embed/gF6tDdYdBJY" title="World Leading Tech Analyst, Benedict Evans: Making Sense of AI" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <figcaption><a href="https://youtu.be/gF6tDdYdBJY" target="_blank" rel="noopener">World Leading Tech Analyst, Benedict Evans: Making Sense of AI</a> <span class="pill pill-video">Video</span></figcaption>
+      </figure>
+      <figure class="yt">
+        <iframe src="https://www.youtube-nocookie.com/embed/C3TqcUEFR58" title="AI Snake Oil: What Artificial Intelligence Can Do, What It Can’t, and How to Tell the Difference" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <figcaption><a href="https://youtu.be/C3TqcUEFR58" target="_blank" rel="noopener">AI Snake Oil: What Artificial Intelligence Can Do, What It Can’t, and How to Tell the Difference</a> <span class="pill pill-video">Video</span></figcaption>
+      </figure>
+      <figure class="yt">
+        <iframe src="https://www.youtube-nocookie.com/embed/QQu7KioCsnQ" title="AI and the Future of India’s IT Giants (Dr. Vishal Sikka)" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <figcaption><a href="https://youtu.be/QQu7KioCsnQ" target="_blank" rel="noopener">AI and the Future of India’s IT Giants (Dr. Vishal Sikka)</a> <span class="pill pill-video">Video</span></figcaption>
+      </figure>
+      <figure class="yt">
+        <iframe src="https://www.youtube-nocookie.com/embed/d1iXi2FQZZE" title="Why customer empathy is now the moat (Etie Hertz)" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <figcaption><a href="https://youtu.be/d1iXi2FQZZE" target="_blank" rel="noopener">Why customer empathy is now the moat (Etie Hertz)</a> <span class="pill pill-video">Video</span></figcaption>
+      </figure>
+      <figure class="yt">
+        <iframe src="https://www.youtube-nocookie.com/embed/zzXyPGEtseI" title="Is Human Data Enough? With David Silver (Google DeepMind)" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <figcaption><a href="https://youtu.be/zzXyPGEtseI" target="_blank" rel="noopener">Is Human Data Enough? With David Silver (Google DeepMind)</a> <span class="pill pill-video">Video</span></figcaption>
+      </figure>
+      <figure class="yt">
+        <iframe src="https://www.youtube-nocookie.com/embed/rYXeQbTuVl0" title="Mark Zuckerberg: Meta’s AGI Plan (Dwarkesh Patel)" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <figcaption><a href="https://youtu.be/rYXeQbTuVl0" target="_blank" rel="noopener">Mark Zuckerberg: Meta’s AGI Plan (Dwarkesh Patel)</a> <span class="pill pill-video">Video</span></figcaption>
+      </figure>
+      <figure class="yt">
+        <iframe src="https://www.youtube-nocookie.com/embed/7s9C92Pkcc0" title="Rick Rubin: Vibe Coding is the Punk Rock of Software" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <figcaption><a href="https://youtu.be/7s9C92Pkcc0" target="_blank" rel="noopener">Rick Rubin: Vibe Coding is the Punk Rock of Software</a> <span class="pill pill-video">Video</span></figcaption>
+      </figure>
+      <figure class="yt">
+        <iframe src="https://www.youtube-nocookie.com/embed/id4YRO7G0wE" title="The AI Revolution Is Underhyped (Eric Schmidt)" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <figcaption><a href="https://youtu.be/id4YRO7G0wE" target="_blank" rel="noopener">The AI Revolution Is Underhyped (Eric Schmidt)</a> <span class="pill pill-video">Video</span></figcaption>
+      </figure>
+      <figure class="yt">
+        <iframe src="https://www.youtube-nocookie.com/embed/giT0ytynSqg" title="Godfather of AI: They Keep Silencing Me But I’m Trying to Warn Them" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <figcaption><a href="https://youtu.be/giT0ytynSqg" target="_blank" rel="noopener">Godfather of AI: They Keep Silencing Me But I’m Trying to Warn Them</a> <span class="pill pill-video">Video</span></figcaption>
+      </figure>
+      <figure class="yt">
+        <iframe src="https://www.youtube-nocookie.com/embed/AfYY9v0Q0X4" title="Brian Eno on AI, Art and What Makes Us Human" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <figcaption><a href="https://youtu.be/AfYY9v0Q0X4" target="_blank" rel="noopener">Brian Eno on AI, Art and What Makes Us Human</a> <span class="pill pill-video">Video</span></figcaption>
+      </figure>
+      <figure class="yt">
+        <iframe src="https://www.youtube-nocookie.com/embed/c16gNWVbmPs" title="6 Creative Skills AI Can’t Replace" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <figcaption><a href="https://youtu.be/c16gNWVbmPs" target="_blank" rel="noopener">6 Creative Skills AI Can’t Replace</a> <span class="pill pill-video">Video</span></figcaption>
+      </figure>
+      <figure class="yt">
+        <iframe src="https://www.youtube-nocookie.com/embed/g9E7iCnYOoI" title="AI BS you can use" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <figcaption><a href="https://youtu.be/g9E7iCnYOoI" target="_blank" rel="noopener">AI BS you can use</a> <span class="pill pill-video">Video</span></figcaption>
+      </figure>
+    </div>
+
+    <div class="item"><a href="https://another-podcast.simplecast.com/episodes/the-ai-presentation-m4UyqLa5" target="_blank" rel="noopener">Benedict Evans 2025 (the AI presentation)</a></div>
   </section>
 
   <section class="sec">
@@ -295,6 +357,21 @@ a { color: var(--accent); }
   t.addEventListener('click', function () {
     var open = n.classList.toggle('open');
     t.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+})();
+</script>
+<script>
+(function () {
+  var grid = document.getElementById('yt-list');
+  var buttons = document.querySelectorAll('.yt-view button');
+  if (!grid || !buttons.length) return;
+  buttons.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var v = b.getAttribute('data-view');
+      grid.classList.toggle('is-list', v === 'list');
+      grid.classList.toggle('is-scroll', v === 'scroll');
+      buttons.forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+    });
   });
 })();
 </script>
