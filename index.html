@@ -401,7 +401,25 @@
       .featured { padding: 16px; }
       .footer-inner { font-size: 11px; }
     }
-  </style>
+  
+/* ===== Shared site header (keep identical on every page) ===== */
+header.site-header { position: sticky; top: 0; z-index: 100; background: var(--surface, #ffffff); border-bottom: 1px solid var(--border, #ebebeb); }
+.site-header .header-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.site-header .logo { font-family: inherit; font-size: 15px; font-weight: 800; letter-spacing: -0.4px; line-height: 1; color: var(--text, #111111); text-decoration: none; white-space: nowrap; }
+.site-header .logo .dot { color: var(--accent, #4f46e5); }
+.site-header nav { display: flex; gap: 22px; align-items: center; }
+.site-header nav a { font-family: inherit; font-size: 13px; font-weight: 500; line-height: 1; color: var(--muted, #666666); text-decoration: none; white-space: nowrap; transition: color .15s; }
+.site-header nav a:hover { color: var(--text, #111111); }
+.site-header nav a.nav-search { font-size: 14px; margin-left: 6px; padding-left: 16px; border-left: 1px solid var(--border, #ebebeb); }
+.site-header .nav-mobile-toggle { display: none; background: none; border: 0; color: var(--muted, #666666); font-size: 20px; line-height: 1; cursor: pointer; padding: 4px; }
+@media (max-width: 860px) {
+  .site-header .header-inner { height: auto; min-height: 56px; padding: 14px 24px; flex-wrap: wrap; }
+  .site-header .nav-mobile-toggle { display: block; }
+  .site-header nav { display: none; width: 100%; flex-direction: column; align-items: flex-start; gap: 14px; padding: 6px 0 6px; }
+  .site-header nav.active, .site-header nav.open { display: flex; }
+  .site-header nav a.nav-search { margin-left: 0; padding-left: 0; border-left: 0; }
+}
+</style>
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-KK96LD0D50"></script>
   <script>
@@ -412,10 +430,10 @@
   </script>
 </head>
 <body>
-
-<header>
+<header class="site-header">
   <div class="header-inner">
     <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <button class="nav-mobile-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
     <nav id="nav">
       <a href="/llm-explained.html">What is AI?</a>
       <a href="/jargon.html">Jargon</a>
@@ -424,11 +442,13 @@
       <a href="/setup.html">Setup</a>
       <a href="/reading.html">Reading</a>
       <a href="/resources.html">Resources</a>
-      <a href="/search.html" style="display: flex; align-items: center; gap: 6px; margin-left: 12px; padding-left: 12px; border-left: 1px solid var(--border);">🔍</a>
+      <a href="/search.html" class="nav-search" aria-label="Search">🔍</a>
     </nav>
-    <button class="nav-mobile-toggle" id="nav-toggle">☰</button>
   </div>
 </header>
+
+
+
 
 <div class="hero">
   <h1>Understand AI. Deeply.</h1>
