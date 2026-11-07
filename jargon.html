@@ -380,7 +380,7 @@ function updateRecentStrip() {
   if (!recent.length || q.length > 0) { strip.style.display = 'none'; return; }
   strip.style.display = 'flex';
   strip.innerHTML = '<span class="recent-label">Recent:</span>' +
-    recent.map(t => `<button class="recent-pill" onclick="jumpToTerm(${JSON.stringify(t)})">${t}</button>`).join('');
+    recent.map(t => `<button class="recent-pill" data-term="${t.replace(/"/g,'&quot;')}">${t}</button>`).join('');
 }
 
 function jumpToTerm(name) {
@@ -406,6 +406,11 @@ document.addEventListener('keydown', function(e) {
     input.select();
     input.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
+});
+
+document.getElementById('recent-strip').addEventListener('click', function (e) {
+  const b = e.target.closest('.recent-pill');
+  if (b) jumpToTerm(b.getAttribute('data-term'));
 });
 
 render();
