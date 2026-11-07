@@ -166,7 +166,7 @@ footer { border-top: 1px solid var(--border); background: var(--surface); }
 .pill-video { background:#eef2ff; color:#4338ca; }
 .pill-article { background:#ecfdf5; color:#047857; }
 .pill-case { background:#fff7ed; color:#c2410c; }
-.item { display:flex; flex-direction:column; }
+.item { display:block; }
 .item a { font-size:16px; line-height:1.4; }
 
 /* ===== Shared site header (keep identical on every page) ===== */
@@ -255,6 +255,7 @@ a { color: var(--accent); }
   .yt-grid { grid-template-columns:1fr; }
   .yt-grid.is-list .yt-item { grid-template-columns:1fr; }
 }
+.src-tag { font-size:14px; color:var(--muted); font-weight:500; }
 </style>
 </head>
 <body>
@@ -287,8 +288,8 @@ a { color: var(--accent); }
   <section class="sec">
     <h2>Real-world use cases</h2>
     <p>How organisations and people are using AI today, in business.</p>
-    <div class="item"><a href="https://hbr.org/2025/04/how-people-are-really-using-gen-ai-in-2025" target="_blank" rel="noopener">How people are really using Gen AI in 2025</a><span class="pill pill-case">Harvard Business Review</span></div>
-    <div class="item"><a href="https://www.bain.com/insights/agentic-ai-in-retail-how-autonomous-shopping-redefining-customer-journey/" target="_blank" rel="noopener">Agentic AI in Retail: How Autonomous Shopping Is Redefining the Customer Journey</a><span class="pill pill-case">Bain & Company</span></div>
+    <div class="item"><a href="https://hbr.org/2025/04/how-people-are-really-using-gen-ai-in-2025" target="_blank" rel="noopener">How people are really using Gen AI in 2025</a> <span class="src-tag">(Harvard Business Review)</span></div>
+    <div class="item"><a href="https://www.bain.com/insights/agentic-ai-in-retail-how-autonomous-shopping-redefining-customer-journey/" target="_blank" rel="noopener">Agentic AI in Retail: How Autonomous Shopping Is Redefining the Customer Journey</a> <span class="src-tag">(Bain & Company)</span></div>
   </section>
 
   <section class="sec">
@@ -436,8 +437,8 @@ a { color: var(--accent); }
   <section class="sec">
     <h2>Articles and papers</h2>
     <p>Written pieces for going deeper.</p>
-    <div class="item"><a href="https://www.ben-evans.com/benedictevans/2018/06/22/ways-to-think-about-machine-learning-8nefy" target="_blank" rel="noopener">Ways to think about machine learning (Benedict Evans, 2018)</a><span class="pill pill-article">Article or paper</span></div>
-    <div class="item"><a href="https://arxiv.org/pdf/2501.09223" target="_blank" rel="noopener">Foundations of Large Language Models (arXiv paper)</a><span class="pill pill-article">Article or paper</span></div>
+    <div class="item"><a href="https://www.ben-evans.com/benedictevans/2018/06/22/ways-to-think-about-machine-learning-8nefy" target="_blank" rel="noopener">Ways to think about machine learning (Benedict Evans, 2018)</a> <span class="src-tag">(Article or paper)</span></div>
+    <div class="item"><a href="https://arxiv.org/pdf/2501.09223" target="_blank" rel="noopener">Foundations of Large Language Models (arXiv paper)</a> <span class="src-tag">(Article or paper)</span></div>
   </section>
 
   <section class="sec">
