@@ -37,13 +37,6 @@
   <p>A harness is the system the model runs inside. It decides what the model sees, what it is allowed to touch, how its steps are organised, what checks run on its work, and what happens when something goes wrong.</p>
   <p>Consider a model asked to fix a bug in a codebase. The model alone can only produce text. Add a harness and it can read the files, run the tests, see the failures, edit the code, try again and stop when the tests pass. Same model, different system, very different result.</p>
 
-  <h2>Where the term comes from</h2>
-  <p>People have been building this layer for a while, but the word became common in 2026. The sequence goes like this:</p>
-  <div class="card"><h3>Prompt engineering (2022 to 2024)</h3><p>What you say to the model. The focus is one message at a time.</p></div>
-  <div class="card"><h3>Context engineering (2025)</h3><p>What information the model is given. The focus is one session.</p></div>
-  <div class="card"><h3>Harness engineering (2026 onwards)</h3><p>The whole system around the model. The focus is reliable execution over many steps.</p></div>
-  <p>Each layer contains the one before. Your prompt sits inside the context, and the context is one part of the harness.</p>
-
   <h2>The five parts</h2>
   <p>There is no official list, but most working harnesses have these five parts. Each one answers a question the model cannot answer for itself.</p>
   <ol class="steps">
@@ -53,15 +46,6 @@
     <li><span class="n">4</span><span><strong>Control</strong><span class="d">What is the model allowed to do? Permissions, approval for risky actions, sandboxes, spending and time limits, output checks.</span></span></li>
     <li><span class="n">5</span><span><strong>Feedback</strong><span class="d">How do you know it works, and how does it get better? Evals, logs and traces, tests the agent runs on its own work, and a process for turning each failure into a fix.</span></span></li>
   </ol>
-
-  <h2>What goes wrong without each part</h2>
-  <div class="card"><ul>
-    <li><strong>No context:</strong> the model guesses facts it should have looked up.</li>
-    <li><strong>No action:</strong> it can only describe what to do, not do it.</li>
-    <li><strong>No orchestration:</strong> it loses the thread after a dozen steps, or loops.</li>
-    <li><strong>No control:</strong> it does something irreversible, leaks data or runs up a large bill.</li>
-    <li><strong>No feedback:</strong> it works in the demo and fails quietly in production.</li>
-  </ul></div>
 
   <h2>A quick test</h2>
   <p>For any AI system you use or build, ask:</p>

@@ -69,34 +69,6 @@ Run the evals, compare with last version  →  keep the change, or revert
   </ul>
   <p>If you find yourself explaining the same thing to the agent twice, it belongs in the harness.</p>
 
-  <h2>Clean up over time</h2>
-  <p>Harnesses accumulate rules. Some stop being needed when the model improves; some contradict each other. Schedule a regular review:</p>
-  <ul>
-    <li>Remove rules that no longer prevent a failure. Test first: run the evals without the rule.</li>
-    <li>Merge duplicate instructions, and shorten the instruction file. Long files get partly ignored.</li>
-    <li>Check that every tool still gets used. Unused tools add confusion.</li>
-  </ul>
-
-  <h2>Measure whether it is working</h2>
-  <div class="card"><ul>
-    <li><strong>Pass rate per failure mode:</strong> the number to watch. It should go up after each change, and stay up.</li>
-    <li><strong>Cost and time per task:</strong> a harness change that doubles the steps may fix one failure and cost more than it saves.</li>
-    <li><strong>Escalations:</strong> how often a human has to step in. Falling escalations are a sign the harness is doing its job.</li>
-    <li><strong>Repeat failures:</strong> a failure you already fixed that comes back means the fix was a correction, not a change to the harness.</li>
-  </ul></div>
-
-  <h2>Common mistakes</h2>
-  <ul>
-    <li><strong>Over-constraining.</strong> Every rule costs attention. A harness with 80 rules is harder for the agent to follow than one with 8.</li>
-    <li><strong>Fixing the model's wording instead of the system.</strong> Rewording a prompt until one example works often breaks three others.</li>
-    <li><strong>Trusting "done".</strong> Make the agent show evidence: the test output, the source it quoted.</li>
-    <li><strong>No baseline.</strong> Without the evals from before the change, you cannot tell whether it helped.</li>
-    <li><strong>Building for the demo.</strong> A harness that works on five clean examples has not been tested.</li>
-  </ul>
-
-  <h2>What's next</h2>
-  <p>Some teams are moving from agents that run when a person asks, to agents that run in loops on a schedule. Call it loop engineering: the agent keeps working, and the harness decides when to stop, escalate or hand back. It raises the stakes for the control and feedback parts, so get those right first.</p>
-
   <div class="next">
     <a href="/harness-design.html"><span class="label">Previous</span>← Designing a harness</a>
     <a href="/paths.html"><span class="label">Back to</span>Learning paths</a>
