@@ -195,6 +195,7 @@ a { color: var(--accent); }
       <a href="/setup.html">Setup</a>
       <a href="/reading.html">Reading</a>
       <a href="/resources.html">Resources</a>
+      <a href="/paths.html">Paths</a>
       <a href="/search.html" class="nav-search" aria-label="Search">🔍</a>
     </nav>
   </div>
@@ -217,6 +218,7 @@ a { color: var(--accent); }
   </div>
 </div>
 
+<div style="max-width:900px;margin:12px auto 0;padding:0 24px;font-size:13px;color:var(--muted);">Tool details checked in November 2026. AI products change quickly, so check prices, limits and data terms before you buy.</div>
 <div class="tools-section">
   <div class="tools-grid" id="tools-grid"></div>
 </div>
@@ -272,7 +274,7 @@ const TOOLS = [
       "More likely to say 'I'm not sure' than hallucinate confidently",
       "Strongest on nuanced writing — tone, voice, structure"
     ],
-    watchOut: "No real-time web access on free tier. Less image generation than ChatGPT.",
+    watchOut: "Check the current web and file features on your plan, as they change often. Less image generation than ChatGPT.",
     url: "https://claude.ai"
   },
   {
@@ -331,16 +333,16 @@ const TOOLS = [
     name: "DeepSeek",
     maker: "DeepSeek (China)",
     emoji: "🐋",
-    tagline: "The model that shocked the world — powerful and free.",
+    tagline: "Free and strong at reasoning. Check its data terms first.",
     cost: "Free",
     hasFree: true,
     bestFor: ["Coding", "Maths", "Long reasoning"],
     strengths: [
-      "Matches GPT-4 level at a fraction of the cost — free to use",
+      "Free to use, and strong at coding, maths and step-by-step reasoning",
       "Outstanding at coding, maths, and step-by-step reasoning",
       "Shows its thinking process — you can see how it reaches answers"
     ],
-    watchOut: "Chinese company — some privacy concerns. Censors topics sensitive to the Chinese government.",
+    watchOut: "Chinese company: check its data terms before using it for sensitive or client information. Some political topics may be restricted.",
     url: "https://chat.deepseek.com"
   },
   {
@@ -355,7 +357,7 @@ const TOOLS = [
     strengths: [
       "Lives inside the apps you already use — Word, Excel, Outlook, Teams",
       "Drafts emails, writes formulas, summarises meetings automatically",
-      "Powered by GPT-4 so the underlying model is strong"
+      "Works across Word, Excel, Outlook and Teams, so there is nothing new to install"
     ],
     watchOut: "Full Copilot in Microsoft 365 is expensive. Free version is limited.",
     url: "https://copilot.microsoft.com"
@@ -374,7 +376,7 @@ const TOOLS = [
       "Massive creative range: photography, illustration, concept art",
       "Large community with prompts and styles to learn from"
     ],
-    watchOut: "Text tasks are not what it's for. Runs via Discord — less beginner-friendly.",
+    watchOut: "Text tasks are not what it's for. Older guides describe Discord-only use, so check the current app.",
     url: "https://midjourney.com"
   },
   {
@@ -387,11 +389,11 @@ const TOOLS = [
     hasFree: false,
     bestFor: ["Video", "Creative content", "Storytelling"],
     strengths: [
-      "Creates realistic videos up to 20 seconds from text prompts",
+      "Creates realistic video from text prompts. Clip length depends on your plan.",
       "Understands physics, lighting and camera movement naturally",
-      "Integrated with ChatGPT — no separate app needed on Plus"
+      "Available alongside ChatGPT on some paid plans (check current access)"
     ],
-    watchOut: "Very new — can still produce strange glitches. High quality needs Pro plan.",
+    watchOut: "Can still produce glitches. Check current plan limits, which change often.",
     url: "https://sora.com"
   },
   {
