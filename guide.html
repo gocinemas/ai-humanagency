@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your AI Learning Plan — Human Agency</title>
+<meta name="description" content="Tell us your role, how familiar you are with AI and what you do. Get a personal plan that mixes business and technical steps, built for UK leaders and teams.">
+<link rel="stylesheet" href="/path.css">
+<style>
+  .guide-form { display: grid; gap: 22px; margin: 24px 0 8px; }
+  .field { display: grid; gap: 8px; }
+  .field > label, .field > .legend { font-size: 15px; font-weight: 700; }
+  .field select, .field textarea {
+    font: inherit; font-size: 15px; color: var(--text); background: var(--surface);
+    border: 1px solid var(--border); border-radius: 10px; padding: 11px 12px; width: 100%;
+  }
+  .field textarea { min-height: 88px; resize: vertical; }
+  .field select:focus, .field textarea:focus, .opt input:focus + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .opts { display: grid; gap: 8px; }
+  .opt { display: flex; gap: 10px; align-items: flex-start; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 11px 14px; cursor: pointer; }
+  .opt input { margin-top: 4px; accent-color: var(--accent); }
+  .opt span { font-size: 15px; }
+  .opt small { display: block; color: var(--muted); font-size: 13px; }
+  .hint { font-size: 13px; color: var(--subtle); margin: 0; }
+  .result { margin-top: 28px; }
+  .placeholder { border: 1px dashed var(--border); border-radius: 10px; padding: 22px; color: var(--muted); font-size: 15px; }
+  .level-badge { display: inline-block; font-size: 12px; font-weight: 700; color: var(--accent); border: 1px solid var(--accent); border-radius: 99px; padding: 3px 10px; margin-bottom: 8px; }
+  .tracks { display: grid; gap: 16px; grid-template-columns: 1fr 1fr; }
+  .track { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; }
+  .track h3 { margin-top: 0; }
+  .track.first { border-color: var(--accent); }
+  .track ul { margin-left: 18px; }
+  .track li { font-size: 15px; color: var(--muted); }
+  .track li a { color: var(--text); font-weight: 600; }
+  .weeks li { font-size: 15px; }
+  .flag { border-left: 3px solid var(--accent); padding: 4px 0 4px 14px; margin: 14px 0; font-size: 15px; }
+  @media (max-width: 640px) { .tracks { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <button class="nav-mobile-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+    <nav id="nav">
+      <a href="/llm-explained.html">What is AI?</a>
+      <a href="/jargon.html">Jargon</a>
+      <a href="/compare.html">Tools</a>
+      <a href="/use-cases.html">Use Cases</a>
+      <a href="/setup.html">Setup</a>
+      <a href="/reading.html">Reading</a>
+      <a href="/resources.html">Resources</a>
+      <a href="/paths.html">Paths</a>
+      <a href="/search.html" aria-label="Search">🔍</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="tag">Personal plan</div>
+  <h1>Where do I start with AI?</h1>
+  <p class="lede">Tell us your role, how much you already use AI, and what you do. You get a plan that mixes the business side (decisions, risk, people) with the technical side (how it works, how to test it), sized to the time you have.</p>
+
+  <div class="callout"><strong>How this works:</strong> the plan is built in your browser from the answers you give. Nothing you type is stored or sent anywhere. It is a starting point, not legal or regulatory advice.</div>
+
+  <form class="guide-form" id="guide-form" onsubmit="return false;">
+
+    <div class="field">
+      <label for="role">What is your role?</label>
+      <select id="role">
+        <option value="">Choose one</option>
+        <option value="Senior manager">Senior manager</option>
+        <option value="Director or executive">Director or executive</option>
+        <option value="Business owner or founder">Business owner or founder</option>
+        <option value="Team lead or manager">Team lead or manager</option>
+        <option value="Technical">Technical (developer, data, IT)</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+
+    <fieldset class="field" style="border:0; padding:0; margin:0;">
+      <legend class="legend">How familiar are you with AI?</legend>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="level" value="1"><span>Just heard of it<small>I know roughly what it is, but have not used it much.</small></span></label>
+        <label class="opt"><input type="radio" name="level" value="2"><span>I use a chatbot now and then<small>For emails, summaries or questions. Not part of my regular work.</small></span></label>
+        <label class="opt"><input type="radio" name="level" value="3"><span>I use it weekly for real work<small>I know what it is good and bad at, and I check its answers.</small></span></label>
+        <label class="opt"><input type="radio" name="level" value="4"><span>I have built or set up AI tools<small>APIs, automations, agents, or a product that uses a model.</small></span></label>
+      </div>
+    </fieldset>
+
+    <div class="field">
+      <label for="sector">What kind of organisation do you work in?</label>
+      <select id="sector">
+        <option value="">Choose one</option>
+        <option value="public">Public sector, NHS or education</option>
+        <option value="finance">Financial services or insurance</option>
+        <option value="legal">Legal, accounting or consulting</option>
+        <option value="retail">Retail, hospitality or logistics</option>
+        <option value="manufacturing">Manufacturing or engineering</option>
+        <option value="tech">Technology or software</option>
+        <option value="charity">Charity or not for profit</option>
+        <option value="other">Something else</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="size">How many people does your organisation have?</label>
+      <select id="size">
+        <option value="">Choose one</option>
+        <option value="small">Under 50</option>
+        <option value="medium">50 to 249</option>
+        <option value="large">250 or more</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="time">How much time can you give this each week?</label>
+      <select id="time">
+        <option value="30">About 30 minutes</option>
+        <option value="120">About 2 hours</option>
+        <option value="240">Half a day</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="what">In your own words, what do you do?</label>
+      <textarea id="what" maxlength="400" placeholder="For example: I run operations for a group of care homes. I approve budgets and manage 40 staff."></textarea>
+      <p class="hint">Optional. Used only to pick a few relevant notes. Not stored.</p>
+    </div>
+  </form>
+
+  <section class="result" id="result" aria-live="polite"></section>
+
+  <div class="next">
+    <a href="/paths.html"><span class="label">Or browse</span>All learning paths</a>
+    <a href="/llm-explained.html"><span class="label">New to AI?</span>Start with What is AI? →</a>
+  </div>
+
+  <p class="note">Plans are general guidance. For regulated decisions (health, finance, employment, legal), check with your compliance or legal team. UK data rules are set out in the ICO's guidance on AI and data protection.</p>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <p>Human Agency — No hype, no theory. Just understanding. © 2026 Human Agency</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // ---- Content (fixed text only; user input is never written into the page) ----
+  var LEVELS = {
+    1: {
+      name: "Explorer",
+      desc: "You know what AI is, but you have not used it much. The priority is understanding it and noticing where it helps.",
+      business: [
+        { t: "Read what AI is, and what it is not, in plain English", href: "/llm-explained.html" },
+        { t: "Use a chatbot for three real tasks from your week. Note what it saved and what it got wrong", href: "/use-cases.html" },
+        { t: "Find out whether your organisation has an AI policy, and who owns it", href: "/enterprise.html" }
+      ],
+      tech: [
+        { t: "Learn the words you will hear: model, prompt, hallucination, context, agent", href: "/jargon.html" },
+        { t: "Compare the main AI products before you pick one", href: "/compare.html" }
+      ]
+    },
+    2: {
+      name: "User",
+      desc: "You use AI now and then. The priority is turning that into safe, consistent habits for you and your team.",
+      business: [
+        { t: "Write three team rules: good uses, no-go uses, and what a person must check", href: "/use-cases.html" },
+        { t: "Check what data can go into an AI tool, under UK GDPR and your own policy (ICO guidance on AI)", href: "https://ico.org.uk" },
+        { t: "Ask your team what they already use AI for, without judging it", href: "/use-cases.html" }
+      ],
+      tech: [
+        { t: "Get better answers: how to ask AI for what you need", href: "/how-to-ask.html" },
+        { t: "Understand what makes an AI product work beyond the model: the harness", href: "/what-is-a-harness.html" }
+      ]
+    },
+    3: {
+      name: "Practitioner",
+      desc: "You use AI weekly and check its work. The priority is measuring whether it works, and deciding where it is allowed to go.",
+      business: [
+        { t: "Pick one process to pilot, and write down the success measure before you start", href: "/enterprise.html" },
+        { t: "Decide who signs off AI output that customers, patients or regulators will see", href: "/enterprise.html" },
+        { t: "Learn to read a test result: pass rate, what changed, and what it costs", href: "/what-is-an-eval.html" }
+      ],
+      tech: [
+        { t: "Write your first eval in a spreadsheet", href: "/write-your-first-eval.html" },
+        { t: "Write a pass/fail rubric for one failure you have seen", href: "/eval-rubrics.html" },
+        { t: "Put limits and checks around the model: the harness", href: "/harness-design.html" }
+      ]
+    },
+    4: {
+      name: "Builder",
+      desc: "You build with AI. The priority is making it reliable, measurable and governed, so it can be trusted at scale.",
+      business: [
+        { t: "Track cost per completed task, not cost per token", href: "/harness-engineering.html" },
+        { t: "Set oversight: who reviews failures, and how often the system is re-tested", href: "/harness-engineering.html" },
+        { t: "Set a team standard: the evals every AI feature must pass before release", href: "/evals.html" }
+      ],
+      tech: [
+        { t: "Check your judges against human labels", href: "/eval-rubrics.html" },
+        { t: "Turn every failure into a harness change, and measure it", href: "/harness-engineering.html" },
+        { t: "Choose eval tooling when spreadsheets stop scaling", href: "/eval-tools.html" }
+      ]
+    }
+  };
+
+  var ROLES = {
+    "Senior manager": { lead: "business", note: "You decide and oversee more than you build. Focus on the right questions, risk and results." },
+    "Director or executive": { lead: "business", note: "Your job is direction, budget and risk. Go into technical detail only where it changes a decision." },
+    "Business owner or founder": { lead: "business", note: "Every AI choice is also a cost choice. Start with one job that saves time or wins work." },
+    "Team lead or manager": { lead: "balanced", note: "You make AI usable for your team. Start with shared rules and one small pilot." },
+    "Technical": { lead: "tech", note: "You build it. Add the business view too: risk, cost and who signs off." },
+    "Other": { lead: "balanced", note: "Both sides matter. Start with whichever feels less familiar." }
+  };
+
+  var SECTORS = {
+    public: "Public sector, NHS or education: if AI touches care decisions, NHS clinical safety standards apply. If it touches children's data, the ICO Children's code applies.",
+    finance: "Financial services: FCA rules on customer outcomes, such as the Consumer Duty, apply to AI that talks to customers. Involve compliance early.",
+    legal: "Professional services: client confidentiality comes first. Check your professional body's guidance before any client data goes into a tool.",
+    retail: "Operations: start where mistakes are cheap and easy to check, such as internal drafts, rather than customer-facing decisions.",
+    manufacturing: "Operations: start where mistakes are cheap and easy to check, such as internal drafts, rather than safety-critical decisions.",
+    tech: "Technology: you may already know much of the tooling. Focus on governance, cost and how you will measure quality.",
+    charity: "Charities: donor and beneficiary data is sensitive. Name one person accountable for AI use.",
+    other: ""
+  };
+
+  // Keyword notes are matched locally. Only the fixed note text is ever shown, never the user's words.
+  var KEYWORDS = [
+    { re: /contract|legal|law|solicitor|litigation/i, note: "Legal work: confidentiality and privilege come first. Keep client material out of tools your firm has not approved." },
+    { re: /patient|clinic|nhs|care home|health|nurse|doctor/i, note: "Health and care: any AI that informs a clinical decision needs clinical safety assessment before use." },
+    { re: /hire|recruit|hr\b|staff|people team|performance review/i, note: "People decisions: AI used in hiring or performance reviews carries discrimination risk under the Equality Act 2010. Keep a person in the decision and record why." },
+    { re: /customer|sales|marketing|complaint|client/i, note: "Customer-facing use: check every output before it reaches a customer until your tests show it is reliable." },
+    { re: /pupil|student|school|teacher|child/i, note: "Children's data: keep pupil and child information out of general tools, and follow your safeguarding policy." }
+  ];
+
+  var WEEK_FOCUS = ["Week 1", "Week 2", "Week 3", "Week 4"];
+
+  var QUESTIONS = [
+    "Which three tasks take my team the most time each week?",
+    "What information would go into an AI tool, and does our policy allow it?",
+    "Who checks AI output before it is used, and how would we know it had gone wrong?",
+    "What would we need to see to say this is working?"
+  ];
+
+  // ---- Helpers ----
+  function $(id) { return document.getElementById(id); }
+  function radioValue(name) {
+    var els = document.getElementsByName(name);
+    for (var i = 0; i < els.length; i++) { if (els[i].checked) return els[i].value; }
+    return "";
+  }
+  function esc(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+  function link(item) {
+    var external = /^https?:/.test(item.href);
+    return '<a href="' + esc(item.href) + '"' + (external ? ' target="_blank" rel="noopener"' : '') + '>' + esc(item.t) + '</a>';
+  }
+  function list(items) {
+    return "<ul>" + items.map(function (i) { return "<li>" + link(i) + "</li>"; }).join("") + "</ul>";
+  }
+
+  // ---- Plan builder ----
+  function buildPlan() {
+    var role = $("role").value;
+    var level = parseInt(radioValue("level"), 10);
+    var sector = $("sector").value;
+    var size = $("size").value;
+    var minutes = parseInt($("time").value, 10) || 30;
+    var what = $("what").value || "";
+
+    if (!role || !level) {
+      return '<div class="placeholder">Choose your role and how familiar you are with AI to see your plan. Everything else is optional.</div>';
+    }
+
+    var L = LEVELS[level];
+    var R = ROLES[role];
+    var lead = R.lead;
+
+    // Order of tracks depends on role
+    var first = lead === "tech" ? "tech" : "business";
+    var second = first === "business" ? "tech" : "business";
+    var titles = { business: "Business track: decisions, risk and people", tech: "Technical track: how it works and how to test it" };
+    var items = { business: L.business, tech: L.tech };
+
+    var html = "";
+    html += '<span class="level-badge">Level ' + level + ' of 4: ' + esc(L.name) + '</span>';
+    html += '<h2 style="margin-top:4px">Your plan</h2>';
+    html += '<p>' + esc(R.note) + ' ' + esc(L.desc) + '</p>';
+
+    // Tracks
+    if (lead === "balanced") {
+      html += '<div class="tracks">';
+      html += '<div class="track first"><h3>' + titles.business + '</h3>' + list(items.business) + '</div>';
+      html += '<div class="track"><h3>' + titles.tech + '</h3>' + list(items.tech) + '</div>';
+      html += '</div>';
+    } else {
+      html += '<div class="tracks">';
+      html += '<div class="track first"><h3>' + titles[first] + '</h3>' + list(items[first]) + '</div>';
+      html += '<div class="track"><h3>' + titles[second] + '</h3>' + list(items[second]) + '</div>';
+      html += '</div>';
+    }
+
+    // Four-week plan, sized to time available
+    var perWeek = minutes <= 30 ? 1 : (minutes <= 120 ? 2 : 3);
+    var sequence = [];
+    var maxLen = Math.max(L.business.length, L.tech.length);
+    for (var i = 0; i < maxLen; i++) {
+      if (lead === "tech") { if (L.tech[i]) sequence.push(L.tech[i]); if (L.business[i]) sequence.push(L.business[i]); }
+      else { if (L.business[i]) sequence.push(L.business[i]); if (L.tech[i]) sequence.push(L.tech[i]); }
+    }
+    html += '<h3>Your next four weeks</h3>';
+    html += '<p>Based on about ' + (minutes >= 240 ? "half a day" : (minutes >= 120 ? "2 hours" : "30 minutes")) + ' a week:</p>';
+    html += '<ol class="weeks">';
+    for (var w = 0; w < 4; w++) {
+      var chunk = sequence.slice(w * perWeek, (w + 1) * perWeek);
+      if (chunk.length === 0) { chunk = [{ t: "Review what you learned, and decide what to do next", href: "/paths.html" }]; }
+      html += '<li><strong>' + WEEK_FOCUS[w] + ':</strong> ' + chunk.map(link).join("; ") + '.</li>';
+    }
+    html += '</ol>';
+
+    // Sector and free-text notes
+    var notes = [];
+    if (SECTORS[sector]) notes.push(SECTORS[sector]);
+    KEYWORDS.forEach(function (k) { if (what && k.re.test(what)) notes.push(k.note); });
+    if (size === "small") notes.push("Smaller organisations: a single pilot with one named owner is usually enough to learn from.");
+    if (size === "large") notes.push("Larger organisations: agree the policy and the approval route before several teams start their own pilots.");
+    if (notes.length) {
+      html += '<h3>Notes for your situation</h3>';
+      html += notes.map(function (n) { return '<p class="flag">' + esc(n) + '</p>'; }).join("");
+    }
+
+    // Questions
+    html += '<h3>Questions to ask this week</h3><ul>' + QUESTIONS.map(function (q) { return "<li>" + esc(q) + "</li>"; }).join("") + '</ul>';
+
+    html += '<p class="hint">Want the whole picture? <a href="/paths.html">Browse both learning paths</a>.</p>';
+    return html;
+  }
+
+  function render() {
+    $("result").innerHTML = buildPlan();
+  }
+
+  // ---- Wire up: update the plan as the user changes any answer ----
+  var form = $("guide-form");
+  form.addEventListener("change", render);
+  form.addEventListener("input", render);
+  render();
+
+  // Mobile nav toggle (same as the rest of the site)
+  var t = $("nav-toggle"), n = $("nav");
+  if (t && n) {
+    t.addEventListener("click", function () {
+      var open = n.classList.toggle("open");
+      t.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+  }
+})();
+</script>
+</body>
+</html>
