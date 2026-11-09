@@ -4,477 +4,255 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Where do I start with AI? — Human Agency</title>
-<meta name="description" content="Two taps: your role and how much you use AI. Get a plan that mixes business and tech, sized to your week.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<meta name="description" content="Pick your role and how much you use AI. Get a short plan for this week and the next four.">
+<link rel="stylesheet" href="/path.css">
 <style>
-  :root {
-    --bg: #f6f5f2;
-    --surface: rgba(255,255,255,0.72);
-    --solid: #ffffff;
-    --border: rgba(17,17,17,0.09);
-    --text: #111111;
-    --muted: #5d5d66;
-    --subtle: #8c8c96;
-    --accent: #4f46e5;
-    --accent-2: #0ea5a4;
-    --accent-soft: rgba(79,70,229,0.10);
-    --shadow: 0 10px 40px rgba(20,20,60,0.08);
+  fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+  .pick { display: grid; gap: 10px; margin: 0 0 6px; }
+  .pick legend { font-family: Georgia, 'Iowan Old Style', serif; font-size: 18px; margin-bottom: 12px; }
+  .roles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; border: 0; padding: 0; margin: 0; }
+  .opt { position: relative; display: block; cursor: pointer; }
+  .opt input { position: absolute; opacity: 0; pointer-events: none; }
+  .opt span {
+    display: block; background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 12px 14px; font-size: 15px; font-weight: 600; transition: border-color .15s, background .15s, transform .15s;
   }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --bg: #0b0b10; --surface: rgba(255,255,255,0.05); --solid: #14141c;
-      --border: rgba(255,255,255,0.10); --text: #f4f4f7; --muted: #a2a2b0; --subtle: #6f6f7c;
-      --accent: #818cf8; --accent-2: #2dd4bf; --accent-soft: rgba(129,140,248,0.14);
-      --shadow: 0 10px 40px rgba(0,0,0,0.4);
-    }
+  .opt:hover span { transform: translateY(-1px); border-color: var(--accent); }
+  .opt input:checked + span { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, var(--surface)); }
+  .opt input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .levels { display: grid; gap: 8px; }
+  .levels .opt span small { display: block; font-weight: 400; color: var(--muted); font-size: 13px; margin-top: 2px; }
+  .levels .opt span { padding: 12px 14px; }
+  .step-n { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--subtle); margin-bottom: 6px; }
+  .more { margin-top: 14px; font-size: 14px; }
+  .more summary { cursor: pointer; color: var(--accent); font-weight: 600; }
+  .more textarea { width: 100%; margin-top: 10px; font: inherit; font-size: 15px; color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; min-height: 56px; resize: vertical; }
+
+  .plan { margin-top: 36px; }
+  .plan-top { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 14px; padding: 22px 24px; }
+  .plan-top .tag { margin-bottom: 6px; }
+  .plan-top h2 { margin: 0 0 6px; font-size: 22px; }
+  .plan-top p { margin: 0; color: var(--muted); font-size: 15px; }
+  .now { margin-top: 16px; font-size: 15px; }
+  .now b { display: block; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+  .now a { font-weight: 600; font-size: 17px; color: var(--text); text-decoration: none; }
+  .now a:hover { text-decoration: underline; }
+
+  .steps { list-style: none; margin: 0; padding: 0; }
+  .steps li { display: grid; grid-template-columns: 44px 1fr; gap: 10px; align-items: baseline; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .steps li:last-child { border-bottom: 0; }
+  .steps .wk { font-family: Georgia, serif; font-size: 18px; color: var(--accent); }
+  .steps .lane { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--border); border-radius: 99px; padding: 2px 8px; margin-right: 6px; }
+  .steps a { color: var(--text); font-weight: 600; text-decoration: none; }
+  .steps a:hover { color: var(--accent); }
+
+  .flag { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; font-size: 14px; margin-top: 10px; }
+  .ask { margin-top: 18px; font-size: 15px; color: var(--muted); }
+  .placeholder { color: var(--muted); font-size: 15px; border: 1px dashed var(--border); border-radius: 14px; padding: 22px; text-align: center; margin-top: 36px; }
+  .fine { font-size: 13px; color: var(--subtle); margin-top: 40px; }
+
+  @media (max-width: 600px) {
+    .roles { grid-template-columns: repeat(2, 1fr); }
+    .steps li { grid-template-columns: 36px 1fr; }
   }
-  :root[data-theme="dark"] {
-    --bg: #0b0b10; --surface: rgba(255,255,255,0.05); --solid: #14141c;
-    --border: rgba(255,255,255,0.10); --text: #f4f4f7; --muted: #a2a2b0; --subtle: #6f6f7c;
-    --accent: #818cf8; --accent-2: #2dd4bf; --accent-soft: rgba(129,140,248,0.14);
-    --shadow: 0 10px 40px rgba(0,0,0,0.4);
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: var(--bg); color: var(--text);
-    -webkit-font-smoothing: antialiased; line-height: 1.55;
-    min-height: 100vh;
-  }
-  /* aurora backdrop */
-  body::before {
-    content: ""; position: fixed; inset: -20% -10% auto -10%; height: 70vh; z-index: -1; pointer-events: none;
-    background:
-      radial-gradient(40% 50% at 20% 20%, rgba(79,70,229,0.28), transparent 70%),
-      radial-gradient(35% 45% at 80% 10%, rgba(14,165,164,0.22), transparent 70%),
-      radial-gradient(30% 40% at 60% 40%, rgba(236,72,153,0.14), transparent 70%);
-    filter: blur(20px); opacity: .9;
-  }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) body::before { opacity: .45; } }
-  a { color: var(--accent); }
-
-  .site-header { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); background: color-mix(in srgb, var(--bg) 80%, transparent); border-bottom: 1px solid var(--border); }
-  .header-inner { max-width: 880px; margin: 0 auto; padding: 0 22px; height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-  .logo { font-weight: 800; letter-spacing: -0.4px; color: var(--text); text-decoration: none; font-size: 15px; }
-  .logo .dot { color: var(--accent); }
-  nav { display: flex; gap: 18px; align-items: center; }
-  nav a { font-size: 13px; font-weight: 500; color: var(--muted); text-decoration: none; }
-  nav a:hover { color: var(--text); }
-  .nav-mobile-toggle { display: none; background: none; border: none; color: var(--muted); font-size: 18px; cursor: pointer; }
-
-  main { max-width: 880px; margin: 0 auto; padding: 56px 22px 40px; }
-  .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
-  h1 { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: clamp(44px, 8vw, 76px); line-height: 1.02; letter-spacing: -1.5px; margin-bottom: 16px; }
-  h1 em { font-style: italic; color: var(--accent); }
-  .lede { font-size: 18px; color: var(--muted); max-width: 580px; margin-bottom: 36px; }
-
-  /* progress */
-  .progress { display: flex; gap: 8px; margin-bottom: 28px; }
-  .progress span { flex: 1; height: 4px; border-radius: 99px; background: var(--border); transition: background .3s; }
-  .progress span.on { background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
-
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 22px; padding: 26px; box-shadow: var(--shadow); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-  .step-title { font-size: 13px; font-weight: 700; color: var(--subtle); letter-spacing: .04em; margin-bottom: 4px; }
-  .step-q { font-size: 22px; font-weight: 700; letter-spacing: -0.4px; margin-bottom: 18px; }
-
-  fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
-  legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-
-  /* role chips */
-  .chips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-  .chip input, .lvl input { position: absolute; opacity: 0; pointer-events: none; }
-  .chip, .lvl { position: relative; display: block; cursor: pointer; }
-  .chip span {
-    display: flex; flex-direction: column; gap: 6px; align-items: flex-start; height: 100%;
-    background: var(--solid); border: 1.5px solid var(--border); border-radius: 16px; padding: 14px 15px;
-    font-size: 15px; font-weight: 600; transition: transform .15s, border-color .15s, box-shadow .15s, background .15s;
-  }
-  .chip span i { font-style: normal; font-size: 22px; }
-  .chip:hover span { transform: translateY(-2px); border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
-  .chip input:checked + span { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 0 0 4px var(--accent-soft); }
-  .chip input:focus-visible + span, .lvl input:focus-visible + span { outline: 3px solid var(--accent); outline-offset: 3px; }
-
-  /* level cards */
-  .levels { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-  .lvl span {
-    display: flex; flex-direction: column; gap: 10px; height: 100%;
-    background: var(--solid); border: 1.5px solid var(--border); border-radius: 16px; padding: 14px;
-    transition: border-color .15s, background .15s, box-shadow .15s, transform .15s;
-  }
-  .lvl:hover span { transform: translateY(-2px); }
-  .meter { display: flex; gap: 4px; }
-  .meter b { flex: 1; height: 6px; border-radius: 99px; background: var(--border); }
-  .lvl-name { font-size: 15px; font-weight: 700; }
-  .lvl-desc { font-size: 13px; color: var(--muted); line-height: 1.4; }
-  .lvl input:checked + span { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 0 0 4px var(--accent-soft); }
-  .lvl input:checked + span .meter b.on { background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
-  .lvl-n { font-size: 12px; font-weight: 700; color: var(--subtle); }
-
-  .say { width: 100%; font: inherit; font-size: 16px; color: var(--text); background: var(--solid); border: 1.5px solid var(--border); border-radius: 14px; padding: 14px 16px; resize: vertical; min-height: 56px; }
-  .say:focus, select:focus { outline: 3px solid var(--accent); outline-offset: 2px; border-color: transparent; }
-  .say::placeholder { color: var(--subtle); }
-  .hint { font-size: 13px; color: var(--subtle); margin-top: 8px; }
-
-  details.tune { margin-top: 18px; }
-  details.tune summary { cursor: pointer; font-size: 14px; font-weight: 600; color: var(--muted); list-style: none; }
-  details.tune summary::-webkit-details-marker { display: none; }
-  details.tune summary::after { content: " +"; color: var(--accent); }
-  details.tune[open] summary::after { content: " –"; }
-  .tune-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 14px; }
-  .tune-grid label { font-size: 12px; font-weight: 600; color: var(--subtle); display: block; margin-bottom: 4px; }
-  select { width: 100%; font: inherit; font-size: 14px; color: var(--text); background: var(--solid); border: 1.5px solid var(--border); border-radius: 12px; padding: 10px 12px; }
-
-  /* result */
-  .result { margin-top: 44px; }
-  .placeholder { text-align: center; color: var(--muted); padding: 36px 20px; border: 1.5px dashed var(--border); border-radius: 22px; font-size: 16px; }
-  .plan-hero { position: relative; overflow: hidden; border-radius: 26px; padding: 30px; color: #fff; background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 45%, #0ea5a4 100%); box-shadow: 0 20px 60px rgba(79,70,229,0.35); }
-  .plan-hero .pill { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; background: rgba(255,255,255,0.18); padding: 5px 11px; border-radius: 99px; margin-bottom: 14px; }
-  .plan-hero h2 { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: 34px; line-height: 1.1; margin-bottom: 8px; }
-  .plan-hero p { color: rgba(255,255,255,0.88); font-size: 16px; max-width: 560px; }
-  .this-week { margin-top: 22px; background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.25); border-radius: 18px; padding: 18px 20px; }
-  .this-week small { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; opacity: .85; }
-  .this-week a { display: block; color: #fff; font-size: 19px; font-weight: 700; text-decoration: none; margin-top: 6px; }
-  .this-week a::after { content: "  →"; }
-
-  .section-h { font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--subtle); margin: 36px 0 12px; }
-  .tracks { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  .track { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 20px 22px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-  .track.lead { border-color: color-mix(in srgb, var(--accent) 55%, transparent); box-shadow: var(--shadow); }
-  .track h3 { font-size: 15px; font-weight: 700; margin-bottom: 10px; }
-  .track ol { list-style: none; counter-reset: t; }
-  .track li { counter-increment: t; position: relative; padding: 10px 0 10px 34px; border-top: 1px solid var(--border); font-size: 15px; }
-  .track li::before { content: counter(t); position: absolute; left: 0; top: 10px; width: 24px; height: 24px; border-radius: 8px; background: var(--accent-soft); color: var(--accent); font-size: 12px; font-weight: 700; display: grid; place-items: center; }
-  .track li a { color: var(--text); text-decoration: none; font-weight: 600; }
-  .track li a:hover { color: var(--accent); }
-
-  .timeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-  .wk { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 16px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-  .wk b { display: block; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
-  .wk div { font-size: 14px; line-height: 1.45; }
-  .wk a { color: var(--text); text-decoration: none; font-weight: 600; }
-  .wk a:hover { color: var(--accent); }
-
-  .flags { display: grid; gap: 10px; }
-  .flag { border-radius: 16px; padding: 14px 16px; font-size: 14px; background: var(--accent-soft); }
-  .qs { display: grid; gap: 8px; }
-  .q { font-size: 15px; padding: 14px 16px; border-radius: 14px; background: var(--surface); border: 1px solid var(--border); }
-  .more { margin-top: 26px; font-size: 14px; color: var(--muted); }
-
-  .fine { font-size: 13px; color: var(--subtle); margin-top: 44px; }
-
-  @media (max-width: 720px) {
-    nav a:not(:last-child) { display: none; }
-    main { padding: 36px 16px 28px; }
-    .chips { grid-template-columns: repeat(2, 1fr); }
-    .levels { grid-template-columns: repeat(2, 1fr); }
-    .tune-grid { grid-template-columns: 1fr; }
-    .tracks { grid-template-columns: 1fr; }
-    .timeline { grid-template-columns: repeat(2, 1fr); }
-    .plan-hero h2 { font-size: 28px; }
-  }
-  @media (max-width: 420px) { .timeline { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 <header class="site-header">
   <div class="header-inner">
     <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
-    <nav>
-      <a href="/paths.html">Paths</a>
+    <button class="nav-mobile-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+    <nav id="nav">
       <a href="/llm-explained.html">What is AI?</a>
       <a href="/jargon.html">Jargon</a>
+      <a href="/compare.html">Tools</a>
+      <a href="/use-cases.html">Use Cases</a>
+      <a href="/setup.html">Setup</a>
+      <a href="/reading.html">Reading</a>
+      <a href="/resources.html">Resources</a>
+      <a href="/paths.html">Paths</a>
       <a href="/search.html" aria-label="Search">🔍</a>
     </nav>
   </div>
 </header>
 
-<main>
-  <div class="eyebrow">Your plan · 2 minutes</div>
-  <h1>Where do I <em>start</em> with AI?</h1>
-  <p class="lede">Two taps. You get one clear step for this week, then a plan that mixes the business side and the tech side.</p>
+<main class="wrap">
+  <div class="tag">Your plan</div>
+  <h1>Where do I start with AI?</h1>
+  <p class="lede">Answer two questions. Your plan appears below.</p>
 
-  <div class="progress" aria-hidden="true"><span id="p1" class="on"></span><span id="p2"></span><span id="p3"></span></div>
-
-  <form id="guide" class="card" onsubmit="return false;">
-    <div class="step-title">Step 1 of 2</div>
-    <fieldset>
-      <legend>Your role</legend>
-      <div class="step-q">What is your role?</div>
-      <div class="chips" id="roles">
-        <label class="chip"><input type="radio" name="role" value="Senior manager"><span><i>🧭</i>Senior manager</span></label>
-        <label class="chip"><input type="radio" name="role" value="Director or executive"><span><i>🏛️</i>Director or executive</span></label>
-        <label class="chip"><input type="radio" name="role" value="Business owner or founder"><span><i>🚀</i>Owner or founder</span></label>
-        <label class="chip"><input type="radio" name="role" value="Team lead or manager"><span><i>👥</i>Team lead</span></label>
-        <label class="chip"><input type="radio" name="role" value="Technical"><span><i>🛠️</i>Technical</span></label>
-        <label class="chip"><input type="radio" name="role" value="Other"><span><i>✨</i>Something else</span></label>
+  <form id="guide" onsubmit="return false;">
+    <fieldset class="pick">
+      <legend>1. What is your role?</legend>
+      <div class="roles">
+        <label class="opt"><input type="radio" name="role" value="Senior manager"><span>Senior manager</span></label>
+        <label class="opt"><input type="radio" name="role" value="Director or executive"><span>Director or executive</span></label>
+        <label class="opt"><input type="radio" name="role" value="Business owner or founder"><span>Owner or founder</span></label>
+        <label class="opt"><input type="radio" name="role" value="Team lead or manager"><span>Team lead</span></label>
+        <label class="opt"><input type="radio" name="role" value="Technical"><span>Technical</span></label>
+        <label class="opt"><input type="radio" name="role" value="Other"><span>Something else</span></label>
       </div>
     </fieldset>
 
-    <div class="step-title" style="margin-top:30px">Step 2 of 2</div>
-    <fieldset>
-      <legend>How familiar are you with AI?</legend>
-      <div class="step-q">How much do you use AI today?</div>
+    <fieldset class="pick" style="margin-top:28px">
+      <legend>2. How much do you use AI today?</legend>
       <div class="levels">
-        <label class="lvl"><input type="radio" name="level" value="1"><span>
-          <span class="lvl-n">1</span>
-          <span class="meter"><b class="on"></b><b></b><b></b><b></b></span>
-          <span class="lvl-name">Just heard of it</span>
-          <span class="lvl-desc">I know roughly what it is.</span></span></label>
-        <label class="lvl"><input type="radio" name="level" value="2"><span>
-          <span class="lvl-n">2</span>
-          <span class="meter"><b class="on"></b><b class="on"></b><b></b><b></b></span>
-          <span class="lvl-name">Now and then</span>
-          <span class="lvl-desc">A chatbot for emails or summaries.</span></span></label>
-        <label class="lvl"><input type="radio" name="level" value="3"><span>
-          <span class="lvl-n">3</span>
-          <span class="meter"><b class="on"></b><b class="on"></b><b class="on"></b><b></b></span>
-          <span class="lvl-name">Every week</span>
-          <span class="lvl-desc">Part of my real work. I check it.</span></span></label>
-        <label class="lvl"><input type="radio" name="level" value="4"><span>
-          <span class="lvl-n">4</span>
-          <span class="meter"><b class="on"></b><b class="on"></b><b class="on"></b><b class="on"></b></span>
-          <span class="lvl-name">I build with it</span>
-          <span class="lvl-desc">APIs, automations, or products.</span></span></label>
+        <label class="opt"><input type="radio" name="level" value="1"><span>Just heard of it<small>I know roughly what it is.</small></span></label>
+        <label class="opt"><input type="radio" name="level" value="2"><span>Now and then<small>A chatbot for emails or summaries.</small></span></label>
+        <label class="opt"><input type="radio" name="level" value="3"><span>Every week<small>Part of my real work, and I check it.</small></span></label>
+        <label class="opt"><input type="radio" name="level" value="4"><span>I build with it<small>APIs, automations or products.</small></span></label>
       </div>
     </fieldset>
 
-    <div style="margin-top:26px">
-      <label for="what" class="step-q" style="font-size:17px; margin-bottom:10px; display:block;">What do you do? <span style="color:var(--subtle); font-weight:500;">(optional)</span></label>
-      <textarea id="what" class="say" maxlength="300" placeholder="e.g. I run operations for a group of care homes"></textarea>
-      <p class="hint">Used only to pick relevant notes. Never stored or sent.</p>
-    </div>
-
-    <details class="tune">
-      <summary>Tune it (sector, team size, time)</summary>
-      <div class="tune-grid">
-        <div>
-          <label for="sector">Sector</label>
-          <select id="sector">
-            <option value="">Any</option>
-            <option value="public">Public sector, NHS or education</option>
-            <option value="finance">Financial services</option>
-            <option value="legal">Legal, accounting or consulting</option>
-            <option value="retail">Retail, hospitality or logistics</option>
-            <option value="manufacturing">Manufacturing</option>
-            <option value="tech">Technology</option>
-            <option value="charity">Charity</option>
-          </select>
-        </div>
-        <div>
-          <label for="size">Organisation size</label>
-          <select id="size">
-            <option value="">Any</option>
-            <option value="small">Under 50 people</option>
-            <option value="medium">50 to 249</option>
-            <option value="large">250 or more</option>
-          </select>
-        </div>
-        <div>
-          <label for="time">Time each week</label>
-          <select id="time">
-            <option value="30">30 minutes</option>
-            <option value="120">2 hours</option>
-            <option value="240">Half a day</option>
-          </select>
-        </div>
-      </div>
+    <details class="more">
+      <summary>Add what you do (optional)</summary>
+      <textarea id="what" maxlength="300" placeholder="e.g. I run operations for a group of care homes"></textarea>
     </details>
   </form>
 
-  <section class="result" id="result" aria-live="polite"></section>
+  <section id="result" aria-live="polite"></section>
 
-  <p class="fine">A starting point, not legal or regulatory advice. For regulated decisions in health, finance, employment or legal work, check with your compliance team. UK data rules: see the ICO's guidance on AI.</p>
+  <p class="fine">A starting point, not legal or regulatory advice. For regulated work in health, finance, employment or legal matters, check with your compliance team. UK data rules: see the ICO's guidance on AI.</p>
 </main>
+
+<footer>
+  <div class="footer-inner">
+    <p>Human Agency — No hype, no theory. Just understanding. © 2026 Human Agency</p>
+  </div>
+</footer>
 
 <script>
 (function () {
   var LEVELS = {
-    1: { name: "Explorer", desc: "You know what AI is. The goal now is to try it on real work and notice where it helps.",
+    1: { name: "Explorer", desc: "You know what AI is. Try it on real work and notice where it helps.",
       business: [
         { t: "Read what AI is, and what it is not, in plain English", href: "/llm-explained.html" },
-        { t: "Use a chatbot for three real tasks from your week, and note what it got wrong", href: "/use-cases.html" },
-        { t: "Find out whether your organisation has an AI policy, and who owns it", href: "/enterprise.html" }],
+        { t: "Use a chatbot for three real tasks from your week", href: "/use-cases.html" },
+        { t: "Find out whether your organisation has an AI policy", href: "/enterprise.html" }],
       tech: [
-        { t: "Learn the words you will hear: model, prompt, hallucination, context", href: "/jargon.html" },
+        { t: "Learn the words you will hear: model, prompt, hallucination", href: "/jargon.html" },
         { t: "Compare the main AI products before you pick one", href: "/compare.html" }] },
-    2: { name: "User", desc: "You use AI now and then. Turn that into safe, consistent habits for you and your team.",
+    2: { name: "User", desc: "You use AI now and then. Turn that into safe habits for you and your team.",
       business: [
         { t: "Write three team rules: good uses, no-go uses, and what a person must check", href: "/use-cases.html" },
-        { t: "Check what data can go into an AI tool, under UK GDPR and your own policy", href: "https://ico.org.uk" },
-        { t: "Ask your team what they already use AI for, without judging it", href: "/use-cases.html" }],
+        { t: "Check what data can go into an AI tool under UK GDPR", href: "https://ico.org.uk" },
+        { t: "Ask your team what they already use AI for", href: "/use-cases.html" }],
       tech: [
         { t: "Get better answers: how to ask AI for what you need", href: "/how-to-ask.html" },
-        { t: "See what makes an AI product work beyond the model: the harness", href: "/what-is-a-harness.html" }] },
-    3: { name: "Practitioner", desc: "You use AI every week. The next step is measuring whether it works, and deciding where it may go.",
+        { t: "See what makes an AI product work beyond the model", href: "/what-is-a-harness.html" }] },
+    3: { name: "Practitioner", desc: "You use AI every week. Next, measure whether it works and decide where it may go.",
       business: [
         { t: "Pick one process to pilot, and write the success measure first", href: "/enterprise.html" },
-        { t: "Decide who signs off AI output that customers or patients will see", href: "/enterprise.html" },
-        { t: "Learn to read a test result: pass rate, what changed, and what it costs", href: "/what-is-an-eval.html" }],
+        { t: "Decide who signs off AI output that customers will see", href: "/enterprise.html" },
+        { t: "Learn to read a test result: pass rate, what changed, what it costs", href: "/what-is-an-eval.html" }],
       tech: [
         { t: "Write your first eval in a spreadsheet", href: "/write-your-first-eval.html" },
-        { t: "Write a pass/fail rubric for one failure you have seen", href: "/eval-rubrics.html" },
-        { t: "Put limits and checks around the model: the harness", href: "/harness-design.html" }] },
-    4: { name: "Builder", desc: "You build with AI. The focus is reliability, measurement and governance, so it can be trusted.",
+        { t: "Write a pass/fail rubric for one failure you have seen", href: "/eval-rubrics.html" }] },
+    4: { name: "Builder", desc: "You build with AI. Focus on reliability, measurement and governance.",
       business: [
         { t: "Track cost per completed task, not cost per token", href: "/harness-engineering.html" },
-        { t: "Set who reviews failures, and how often the system is re-tested", href: "/harness-engineering.html" },
+        { t: "Agree who reviews failures, and how often the system is re-tested", href: "/harness-engineering.html" },
         { t: "Agree the evals every AI feature must pass before release", href: "/evals.html" }],
       tech: [
         { t: "Check your judges against human labels", href: "/eval-rubrics.html" },
-        { t: "Turn every failure into a harness change, and measure it", href: "/harness-engineering.html" },
-        { t: "Choose eval tools once spreadsheets stop scaling", href: "/eval-tools.html" }] }
+        { t: "Turn every failure into a harness change, and measure it", href: "/harness-engineering.html" }] }
   };
 
   var ROLES = {
-    "Senior manager": { lead: "business", note: "You decide and oversee more than you build. Focus on the right questions, risk and results." },
-    "Director or executive": { lead: "business", note: "Your job is direction, budget and risk. Go into detail only where it changes a decision." },
-    "Business owner or founder": { lead: "business", note: "Every AI choice is also a cost choice. Start with one job that saves time or wins work." },
-    "Team lead or manager": { lead: "balanced", note: "You make AI usable for your team. Start with shared rules and one small pilot." },
-    "Technical": { lead: "tech", note: "You build it. Add the business view too: risk, cost and who signs off." },
-    "Other": { lead: "balanced", note: "Both sides matter. Start with whichever feels less familiar." }
+    "Senior manager": "business",
+    "Director or executive": "business",
+    "Business owner or founder": "business",
+    "Team lead or manager": "balanced",
+    "Technical": "tech",
+    "Other": "balanced"
   };
 
-  var SECTOR_NOTE = {
-    public: "Public sector or NHS: if AI touches care decisions, NHS clinical safety standards apply. For children's data, the ICO Children's code applies.",
-    finance: "Financial services: FCA rules on customer outcomes, such as the Consumer Duty, apply to AI that talks to customers. Involve compliance early.",
-    legal: "Professional services: client confidentiality comes first. Check your professional body's guidance before client data goes into a tool.",
-    retail: "Operations: start where mistakes are cheap and easy to check, such as internal drafts, not customer decisions.",
-    manufacturing: "Operations: start where mistakes are cheap and easy to check, not on safety-critical decisions.",
-    tech: "Technology: you may know much of the tooling already. Focus on governance, cost and how you will measure quality.",
-    charity: "Charities: donor and beneficiary data is sensitive. Name one person accountable for AI use."
+  var ROLE_NOTE = {
+    "Senior manager": "You decide and oversee more than you build. Focus on the right questions, risk and results.",
+    "Director or executive": "Your job is direction, budget and risk. Go into detail only where it changes a decision.",
+    "Business owner or founder": "Every AI choice is also a cost choice. Start with one job that saves time or wins work.",
+    "Team lead or manager": "You make AI usable for your team. Start with shared rules and one small pilot.",
+    "Technical": "You build it. Add the business view too: risk, cost and who signs off.",
+    "Other": "Both sides matter. Start with whichever feels less familiar."
   };
 
-  // Keyword notes match locally. Only fixed note text is ever shown, never the user's words.
-  var KEYWORD_NOTE = [
-    { re: /contract|legal|law|solicitor|litigation/i, note: "Legal work: keep client material out of tools your firm has not approved." },
-    { re: /patient|clinic|nhs|care home|health|nurse|doctor/i, note: "Health and care: any AI that informs a clinical decision needs a clinical safety assessment first." },
-    { re: /hire|recruit|\bhr\b|staff|performance review/i, note: "People decisions: AI in hiring or performance reviews carries discrimination risk under the Equality Act 2010. Keep a person in the decision." },
+  // Keyword notes are matched locally. Only fixed text is shown, never what the user typed.
+  var NOTES = [
+    { re: /contract|legal|law|solicitor/i, note: "Legal work: keep client material out of tools your firm has not approved." },
+    { re: /patient|clinic|nhs|care home|health|nurse|doctor/i, note: "Health and care: AI that informs a clinical decision needs a clinical safety assessment first." },
+    { re: /hire|recruit|\bhr\b|staff|performance review/i, note: "People decisions: AI in hiring or reviews carries discrimination risk under the Equality Act 2010. Keep a person in the decision." },
     { re: /customer|sales|marketing|complaint|client/i, note: "Customer-facing use: check every output before it reaches a customer until your tests show it is reliable." },
     { re: /pupil|student|school|teacher|child/i, note: "Children's data: keep pupil information out of general tools, and follow your safeguarding policy." }
   ];
 
-  var WEEKS = ["This week", "Week 2", "Week 3", "Week 4"];
-
-  function $(id) { return document.getElementById(id); }
   function pick(name) {
     var els = document.getElementsByName(name);
     for (var i = 0; i < els.length; i++) if (els[i].checked) return els[i].value;
     return "";
   }
   function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
-  function linkHtml(it) {
+  function link(it) {
     var ext = /^https?:/.test(it.href);
     return '<a href="' + esc(it.href) + '"' + (ext ? ' target="_blank" rel="noopener"' : '') + '>' + esc(it.t) + '</a>';
-  }
-  function track(title, items, lead) {
-    return '<div class="track' + (lead ? ' lead' : '') + '"><h3>' + esc(title) + '</h3><ol>' +
-      items.map(function (i) { return '<li>' + linkHtml(i) + '</li>'; }).join("") + '</ol></div>';
-  }
-
-  function setProgress() {
-    var role = pick("role"), level = pick("level");
-    $("p1").className = role || level ? "on" : "";
-    $("p2").className = role && level ? "on" : "";
-    $("p3").className = role && level ? "on" : "";
   }
 
   function build() {
     var role = pick("role"), level = parseInt(pick("level"), 10);
     if (!role || !level) {
-      return '<div class="placeholder">Pick your role and how much you use AI. Your plan appears here.</div>';
+      return '<div class="placeholder">Choose your role and how much you use AI to see your plan.</div>';
     }
-    var L = LEVELS[level], R = ROLES[role];
-    var sector = $("sector").value, size = $("size").value;
-    var minutes = parseInt($("time").value, 10) || 30;
-    var what = $("what").value || "";
+    var L = LEVELS[level];
+    var lead = ROLES[role] === "tech" ? "tech" : "business";
+    var other = lead === "business" ? "tech" : "business";
+    var lanes = { business: "Business", tech: "Tech" };
 
-    var leadKey = R.lead === "tech" ? "tech" : "business";
-    var otherKey = leadKey === "business" ? "tech" : "business";
-    var titles = { business: "Business: decisions, risk, people", tech: "Tech: how it works and how to test it" };
-
-    // The single step for this week
-    var first = L[leadKey][0];
-
-    // Lead track shows 3, other shows 2, to keep it short
-    var leadItems = L[leadKey].slice(0, 3);
-    var otherItems = L[otherKey].slice(0, 2);
+    // Four steps: lead lane first, alternating, so the plan stays short
+    var seq = [];
+    var n = Math.max(L[lead].length, L[other].length);
+    for (var i = 0; i < n; i++) {
+      if (L[lead][i]) seq.push({ it: L[lead][i], lane: lanes[lead] });
+      if (L[other][i]) seq.push({ it: L[other][i], lane: lanes[other] });
+    }
+    seq = seq.slice(0, 4);
+    var first = seq[0];
+    var then = seq.slice(1);
 
     var html = "";
-    html += '<div class="plan-hero">';
-    html += '<span class="pill">Level ' + level + ' of 4 · ' + esc(L.name) + '</span>';
+    html += '<div class="plan"><div class="plan-top">';
+    html += '<div class="tag">Level ' + level + ' of 4 · ' + esc(L.name) + '</div>';
     html += '<h2>Your plan</h2>';
-    html += '<p>' + esc(R.note) + ' ' + esc(L.desc) + '</p>';
-    html += '<div class="this-week"><small>Start with this, this week</small><a href="' + esc(first.href) + '"' + (/^https?:/.test(first.href) ? ' target="_blank" rel="noopener"' : '') + '>' + esc(first.t) + '</a></div>';
+    html += '<p>' + esc(ROLE_NOTE[role]) + ' ' + esc(L.desc) + '</p>';
+    html += '<div class="now"><b>Start this week</b>' + link(first.it) + '</div>';
     html += '</div>';
 
-    html += '<div class="section-h">Your two tracks</div>';
-    html += '<div class="tracks">';
-    if (R.lead === "balanced") {
-      html += track(titles.business, L.business.slice(0, 3), true);
-      html += track(titles.tech, L.tech.slice(0, 3), false);
-    } else {
-      html += track(titles[leadKey], leadItems, true);
-      html += track(titles[otherKey], otherItems, false);
-    }
-    html += '</div>';
+    html += '<h3 style="margin-top:28px">Then, over the next three weeks</h3>';
+    html += '<ol class="steps">';
+    then.forEach(function (s, idx) {
+      html += '<li><span class="wk">' + (idx + 2) + '</span><span><span class="lane">' + esc(s.lane) + '</span>' + link(s.it) + '</span></li>';
+    });
+    html += '</ol>';
 
-    // Four-week timeline, sized to time
-    var per = minutes <= 30 ? 1 : (minutes <= 120 ? 2 : 3);
-    var seq = [];
-    var n = Math.max(L.business.length, L.tech.length);
-    for (var i = 0; i < n; i++) {
-      var a = leadKey === "tech" ? L.tech[i] : L.business[i];
-      var b = leadKey === "tech" ? L.business[i] : L.tech[i];
-      if (a) seq.push(a); if (b) seq.push(b);
-    }
-    html += '<div class="section-h">Your next four weeks · about ' +
-      (minutes >= 240 ? 'half a day' : (minutes >= 120 ? '2 hours' : '30 minutes')) + ' a week</div>';
-    html += '<div class="timeline">';
-    for (var w = 0; w < 4; w++) {
-      var chunk = seq.slice(w * per, (w + 1) * per);
-      if (!chunk.length) chunk = [{ t: "Review what you have learned and choose the next step", href: "/paths.html" }];
-      html += '<div class="wk"><b>' + WEEKS[w] + '</b><div>' + chunk.map(linkHtml).join("<br>") + '</div></div>';
-    }
-    html += '</div>';
-
-    // Notes for sector, size and free text (fixed text only)
+    var what = document.getElementById("what").value || "";
     var notes = [];
-    if (SECTOR_NOTE[sector]) notes.push(SECTOR_NOTE[sector]);
-    KEYWORD_NOTE.forEach(function (k) { if (what && k.re.test(what)) notes.push(k.note); });
-    if (size === "small") notes.push("Smaller organisations: one pilot with one named owner is usually enough to learn from.");
-    if (size === "large") notes.push("Larger organisations: agree the policy and approval route before several teams start their own pilots.");
-    if (notes.length) {
-      html += '<div class="section-h">Notes for you</div><div class="flags">' +
-        notes.map(function (x) { return '<div class="flag">' + esc(x) + '</div>'; }).join("") + '</div>';
-    }
+    NOTES.forEach(function (k) { if (what && k.re.test(what)) notes.push(k.note); });
+    notes.forEach(function (x) { html += '<div class="flag">' + esc(x) + '</div>'; });
 
-    // Two questions only
-    html += '<div class="section-h">Ask this week</div><div class="qs">' +
-      '<div class="q">Which three tasks take my team the most time each week?</div>' +
-      '<div class="q">What would we need to see to say this is working?</div></div>';
-
-    html += '<p class="more">Want the full picture? <a href="/paths.html">Browse both learning paths</a>.</p>';
+    html += '<p class="ask"><strong>Ask your team this week:</strong> which three tasks take the most time, and what would show this is working?</p>';
+    html += '<p class="ask"><a href="/paths.html" style="color:var(--accent)">Browse the full learning paths →</a></p>';
+    html += '</div>';
     return html;
   }
 
-  function render() {
-    setProgress();
-    $("result").innerHTML = build();
-  }
+  function render() { document.getElementById("result").innerHTML = build(); }
 
-  var form = $("guide");
+  var form = document.getElementById("guide");
   form.addEventListener("change", render);
   form.addEventListener("input", render);
   render();
 
-  // The page is single-screen friendly: a quick path to the result after step 2
-  form.addEventListener("change", function (e) {
-    if (e.target.name === "level" && pick("role")) {
-      var r = $("result"); if (r) r.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+  var t = document.getElementById("nav-toggle"), nav = document.getElementById("nav");
+  if (t && nav) t.addEventListener("click", function () {
+    var open = nav.classList.toggle("open"); t.setAttribute("aria-expanded", open ? "true" : "false");
   });
 })();
 </script>
