@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Writing Evals and Rubrics — Human Agency</title>
+<meta name="description" content="How to write an AI eval with a rubric: one failure mode per judge, binary pass/fail, worked examples, and checking the judge against human labels.">
+<link rel="stylesheet" href="/path.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <button class="nav-mobile-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+    <nav id="nav">
+      <a href="/llm-explained.html">What is AI?</a>
+      <a href="/jargon.html">Jargon</a>
+      <a href="/compare.html">Tools</a>
+      <a href="/use-cases.html">Use Cases</a>
+      <a href="/setup.html">Setup</a>
+      <a href="/reading.html">Reading</a>
+      <a href="/resources.html">Resources</a>
+      <a href="/search.html" aria-label="Search">🔍</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="crumbs"><a href="/paths.html">Learning paths</a> · Evals · Step 2 of 3</div>
+  <div class="tag">Evals · Rubrics</div>
+  <h1>Writing evals and rubrics</h1>
+  <p class="lede">A rubric is the written standard a judge uses to decide pass or fail. This article shows how to write one that people agree on, and how to check that it works.</p>
+
+  <div class="callout"><strong>The rule:</strong> one eval per failure mode, a yes/no answer, and a clear definition of what counts as a fail. If two people can read the rubric and disagree, it is not finished.</div>
+
+  <h2>Step 1: Pick one failure mode</h2>
+  <p>Take a named failure from your error analysis, such as "quotes a price that is not in the source". Do not write one judge for "good answer" or "helpful". Those mean different things to different people, and the judge will guess.</p>
+  <p>Narrow is better. "Mentions a refund period not in the policy document" is an eval you can run. "Accurate" is not.</p>
+
+  <h2>Step 2: Decide what can be checked by code</h2>
+  <p>Before you reach for a model judge, ask whether plain code can do the check. It is cheaper, faster and always consistent.</p>
+  <ul>
+    <li>Output is valid JSON, or has the required fields → code.</li>
+    <li>Reply is under 100 words, or contains no email address → code (regular expressions are fine).</li>
+    <li>Answer uses the right product name or currency symbol → code.</li>
+    <li>Answer is kind in tone, or explains a policy correctly → judge.</li>
+  </ul>
+  <p>Use a model judge only for the checks that need reading comprehension.</p>
+
+  <h2>Step 3: Write the rubric</h2>
+  <p>A good rubric has four parts. Keep them short.</p>
+  <ol>
+    <li><strong>The question.</strong> One sentence, asked about one thing.</li>
+    <li><strong>The definition of a fail.</strong> Concrete, observable, with an example.</li>
+    <li><strong>The definition of a pass.</strong> The same, for the good case.</li>
+    <li><strong>Edge cases.</strong> What to do when the answer is partly right, or the input is unclear.</li>
+  </ol>
+
+  <h3>Worked example</h3>
+  <pre><code>Failure mode: invents a refund policy
+
+Question: Does the response state a refund period, deadline or
+condition that does NOT appear in the policy text provided?
+
+FAIL if the response states any refund rule (time limit, conditions,
+exceptions) that is not supported by the policy text.
+  e.g. policy says 30 days; response says "60 days".
+
+PASS if every refund rule in the response appears in the policy text,
+or the response says it cannot find the policy.
+
+EDGE CASES
+- Response paraphrases the policy correctly → PASS.
+- Response says "please contact support" with no rule stated → PASS.
+- Response refers to a refund rule that is ambiguous in the policy → FAIL
+  unless it says it is unsure.
+
+Answer with exactly one word: PASS or FAIL.</code></pre>
+
+  <p>Notice what the rubric does not do. It does not ask for a score out of 10. It does not ask the judge to rate "overall quality". It asks one question and gives the judge the evidence it needs.</p>
+
+  <h2>Why binary, not a score</h2>
+  <p>Numeric scores drift. Is a 4 today the same as a 4 last week? Does a 4 from one judge equal a 4 from another? Pass/fail is easier to agree on and easier to count. When you need more detail, add a second binary eval for a second failure mode rather than making the scale finer.</p>
+
+  <h2>Step 4: Check the judge against a human</h2>
+  <p>A judge is itself a model, and it can be wrong. Before you trust its scores:</p>
+  <ol class="steps">
+    <li><span class="n">1</span><span><strong>Hand-label about 50 examples.</strong><span class="d">Read each output and mark it PASS or FAIL yourself, using only the rubric.</span></span></li>
+    <li><span class="n">2</span><span><strong>Run the judge on the same 50.</strong><span class="d">Do not show it your labels.</span></span></li>
+    <li><span class="n">3</span><span><strong>Compare the two in a confusion table.</strong><span class="d">Count the cases where you both said PASS, both said FAIL, and where you disagree in each direction.</span></span></li>
+    <li><span class="n">4</span><span><strong>Read the disagreements.</strong><span class="d">Most of the time the rubric is unclear, not the judge. Fix the rubric, then test again.</span></span></li>
+  </ol>
+  <p>Look at both kinds of error. A judge that misses real failures gives false confidence. A judge that flags good answers wastes your time and hides the real problems.</p>
+
+  <h2>Common mistakes</h2>
+  <div class="card"><ul>
+    <li><strong>Several criteria in one judge.</strong> "Accurate, polite and concise?" Split it into three evals.</li>
+    <li><strong>Vague words.</strong> "Appropriate", "good", "relevant" need a definition or they mean nothing.</li>
+    <li><strong>No examples.</strong> Give at least one clear PASS and one clear FAIL.</li>
+    <li><strong>Never checking the judge.</strong> An unvalidated judge is an opinion, not a test.</li>
+    <li><strong>Changing the rubric and the product at once.</strong> You will not know which one moved the score.</li>
+  </ul></div>
+
+  <div class="next">
+    <a href="/eval-basics.html"><span class="label">Previous</span>← Evals basics</a>
+    <a href="/eval-tools.html"><span class="label">Next</span>Using tools to build evals →</a>
+  </div>
+
+  <h2 style="font-size:17px; margin-top:36px;">Sources</h2>
+  <ul class="sources">
+    <li><a href="https://hamel.dev" target="_blank" rel="noopener">Hamel Husain on LLM-as-a-judge and error analysis (hamel.dev)</a></li>
+    <li><a href="https://arxiv.org/abs/2503.05061v1" target="_blank" rel="noopener">Krumdick et al., "No Free Labels": limits of LLM-as-a-judge without human grounding</a></li>
+  </ul>
+
+  <p class="note">Based on the author's working notes. Method summarised from the sources above. For terms, see the <a href="/jargon.html">Jargon Decoder</a>.</p>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <p>Human Agency — No hype, no theory. Just understanding. © 2026 Human Agency</p>
+  </div>
+</footer>
+<script>
+(function () {
+  var t = document.getElementById('nav-toggle'), n = document.getElementById('nav');
+  if (!t || !n) return;
+  t.addEventListener('click', function () {
+    var open = n.classList.toggle('open');
+    t.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evals Basics — Human Agency</title>
+<meta name="description" content="Evals basics: why AI output needs testing, model evals versus product evals, and why you start with error analysis on real outputs.">
+<link rel="stylesheet" href="/path.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <button class="nav-mobile-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+    <nav id="nav">
+      <a href="/llm-explained.html">What is AI?</a>
+      <a href="/jargon.html">Jargon</a>
+      <a href="/compare.html">Tools</a>
+      <a href="/use-cases.html">Use Cases</a>
+      <a href="/setup.html">Setup</a>
+      <a href="/reading.html">Reading</a>
+      <a href="/resources.html">Resources</a>
+      <a href="/search.html" aria-label="Search">🔍</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="crumbs"><a href="/paths.html">Learning paths</a> · Evals · Step 1 of 3</div>
+  <div class="tag">Evals · Basics</div>
+  <h1>Evals basics</h1>
+  <p class="lede">An eval is a repeatable test for software whose answers change every time. This article explains what that means, the two kinds of eval, and the habit that makes the rest work.</p>
+
+  <div class="callout"><strong>In one line:</strong> you cannot test AI output with a fixed expected answer. Instead, look at real outputs, name the ways they go wrong, and score each failure with a check you can repeat.</div>
+
+  <h2>Why normal tests don't work here</h2>
+  <p>Ordinary software is deterministic. Give a function the same input and you get the same output, so a unit test that compares against an exact value is enough.</p>
+  <p>An LLM is different. Ask the same question twice and you may get two different answers, and both can be fine. An exact-string check fails good answers and passes bad ones that happen to match. What you need is a judgement against criteria, repeated across many examples.</p>
+
+  <h2>What an eval is made of</h2>
+  <p>Every eval has the same three parts, whatever tool you use:</p>
+  <ol>
+    <li><strong>A dataset of inputs.</strong> Real or realistic things users will ask. Start with 20 to 50, not 5,000.</li>
+    <li><strong>The output under test.</strong> What your product, prompt or model produced for each input. Keep the full trace if you can: the prompt, retrieved documents, tool calls and the final answer.</li>
+    <li><strong>A scorer.</strong> Something that returns a verdict for each output. It can be code (does the JSON parse?), a model acting as a judge (does the answer invent a policy?), or a person.</li>
+  </ol>
+
+  <h2>Two kinds of eval</h2>
+  <div class="card"><h3>Model evals</h3><p>Compare models with a shared, public test set, such as a published benchmark. They help you shortlist which model to try first. They say little about your product.</p></div>
+  <div class="card"><h3>Product evals</h3><p>Test your own product on your own inputs, with criteria that match your users. This is the one that tells you whether the thing works, and the one this path is about.</p></div>
+
+  <h2>Start with error analysis, not with a metric</h2>
+  <p>The most common mistake is to pick a score (helpfulness out of 5, say) before you know what goes wrong. Scores like that hide the problems and drift over time.</p>
+  <p>The method that works, as taught by Hamel Husain and Shreya Shankar, goes like this:</p>
+  <ol class="steps">
+    <li><span class="n">1</span><span><strong>Collect real traces.</strong><span class="d">Use real or realistic inputs and record what the system did, not only the final answer.</span></span></li>
+    <li><span class="n">2</span><span><strong>Read them and note the first thing that went wrong.</strong><span class="d">One short note per trace, such as "invented a refund policy" or "ignored the user's postcode".</span></span></li>
+    <li><span class="n">3</span><span><strong>Group the notes into failure modes.</strong><span class="d">Cluster similar notes into named categories. Count them. The biggest category is where to start.</span></span></li>
+    <li><span class="n">4</span><span><strong>Write one eval per failure mode you care about.</strong><span class="d">Next article: how to do that well with rubrics.</span></span></li>
+  </ol>
+  <p>Reading 30 real outputs by hand usually teaches you more than a week of picking metrics. Do this before you buy any tool.</p>
+
+  <h2>The eval loop</h2>
+  <p>Evals are not a one-off. They run as a cycle:</p>
+  <pre><code>Look at real outputs → name the failures → write an eval for each
+      ↑                                              ↓
+Change the prompt, tools or context  ←  Run evals, see what breaks</code></pre>
+  <p>Each time you change the product, run the same evals again. A score that goes down is the signal to look at the traces, not to argue with the score.</p>
+
+  <h2>Key terms</h2>
+  <div class="card"><ul>
+    <li><strong>Trace:</strong> the full record of one run: inputs, prompts, retrieved context, tool calls and output.</li>
+    <li><strong>Failure mode:</strong> a named, repeatable way the output goes wrong.</li>
+    <li><strong>Ground truth / reference answer:</strong> an answer a human has agreed is correct, used to check a scorer.</li>
+    <li><strong>Online eval:</strong> scoring real production traffic, not a fixed test set.</li>
+  </ul></div>
+
+  <div class="next">
+    <a href="/paths.html"><span class="label">Back</span>Learning paths</a>
+    <a href="/eval-rubrics.html"><span class="label">Next</span>Writing evals and rubrics →</a>
+  </div>
+
+  <h2 style="font-size:17px; margin-top:36px;">Sources</h2>
+  <ul class="sources">
+    <li><a href="https://www.lennysnewsletter.com/p/evals-error-analysis-and-better-prompts" target="_blank" rel="noopener">Hamel Husain and Shreya Shankar on evals, error analysis and better prompts (Lenny's Newsletter)</a></li>
+    <li><a href="https://hamel.dev" target="_blank" rel="noopener">Hamel Husain's writing on evals and AI products</a></li>
+  </ul>
+
+  <p class="note">Based on the author's working notes. For terms, see the <a href="/jargon.html">Jargon Decoder</a>. Overview: <a href="/evals.html">AI Evals</a>.</p>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <p>Human Agency — No hype, no theory. Just understanding. © 2026 Human Agency</p>
+  </div>
+</footer>
+<script>
+(function () {
+  var t = document.getElementById('nav-toggle'), n = document.getElementById('nav');
+  if (!t || !n) return;
+  t.addEventListener('click', function () {
+    var open = n.classList.toggle('open');
+    t.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+})();
+</script>
+</body>
+</html>

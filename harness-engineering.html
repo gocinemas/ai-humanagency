@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harness Engineering in Practice — Human Agency</title>
+<meta name="description" content="Harness engineering as an ongoing practice: turn every agent mistake into a fix in the harness, keep the environment legible, and measure whether it is improving.">
+<link rel="stylesheet" href="/path.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <button class="nav-mobile-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+    <nav id="nav">
+      <a href="/llm-explained.html">What is AI?</a>
+      <a href="/jargon.html">Jargon</a>
+      <a href="/compare.html">Tools</a>
+      <a href="/use-cases.html">Use Cases</a>
+      <a href="/setup.html">Setup</a>
+      <a href="/reading.html">Reading</a>
+      <a href="/resources.html">Resources</a>
+      <a href="/search.html" aria-label="Search">🔍</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="crumbs"><a href="/paths.html">Learning paths</a> · Harness · Step 3 of 3</div>
+  <div class="tag">Harness · Engineering</div>
+  <h1>Harness engineering in practice</h1>
+  <p class="lede">Designing a harness is the first version. Engineering it is the ongoing work: each failure becomes a change to the system, and you check that the change helped.</p>
+
+  <div class="callout"><strong>The core habit:</strong> when the agent gets something wrong, do not just correct the output. Ask what in the harness let that happen, and change the harness so it cannot happen again.</div>
+
+  <h2>What the discipline looks like</h2>
+  <p>Harness engineering treats the agent's mistakes as information about the system. The question shifts from "how do I get a better answer?" to "what does this environment make easy, hard or impossible?"</p>
+  <p>OpenAI's account of building with Codex in 2026 is the best-known example. Their team used agents to write a large codebase, and reported that the hard part was not the coding but building the environment around the agent: what it could read, how its work was checked, and how mistakes were fed back. The lessons they described are sensible for any team, even at a smaller scale.</p>
+
+  <h2>The improvement loop</h2>
+  <pre><code>Agent makes a mistake
+        ↓
+Trace it: what did the agent see, and what could it do?
+        ↓
+Pick the smallest harness change that prevents it
+  (a clearer instruction, a better tool description, a new check,
+   a permission, a limit)
+        ↓
+Add a binary eval for the failure
+        ↓
+Run the evals, compare with last version  →  keep the change, or revert
+        ↓
+(back to the start)</code></pre>
+  <p>The important step is the third one. The fix should go into the harness, not into a one-off correction. A correction helps once. A harness change helps every time.</p>
+
+  <h2>Four kinds of harness change</h2>
+  <div class="card"><h3>1. Say it more clearly</h3><p>Add a rule to the standing instructions, or make an existing one specific. Example: "Dates are always written as DD Month YYYY" in place of "use a sensible format".</p></div>
+  <div class="card"><h3>2. Make the right tool obvious</h3><p>Rewrite a tool description so the agent picks the right one first time. Often the failure was not the tool but a confusing name.</p></div>
+  <div class="card"><h3>3. Add a check</h3><p>Put a code check or a self-check step before the output is used. Example: run the test suite before the agent says "done"; reject any reply missing a required field.</p></div>
+  <div class="card"><h3>4. Restrict or limit</h3><p>Remove a tool, add an approval step, or set a cap on steps or spend. Use this when the mistake is costly and the other three fixes are not enough.</p></div>
+
+  <h2>Keep the environment legible</h2>
+  <p>An agent can only use what it can read. Things a human knows but never wrote down are invisible to it:</p>
+  <ul>
+    <li>Team conventions and naming rules, written in the instruction file.</li>
+    <li>Dashboards and logs, made readable through a tool, not only through a screen.</li>
+    <li>Decisions made in meetings or chat, copied into a document the agent can search.</li>
+    <li>Architecture rules, stated as checks the agent can run (a linter, a test) rather than only as prose.</li>
+  </ul>
+  <p>If you find yourself explaining the same thing to the agent twice, it belongs in the harness.</p>
+
+  <h2>Clean up over time</h2>
+  <p>Harnesses accumulate rules. Some stop being needed when the model improves; some contradict each other. Schedule a regular review:</p>
+  <ul>
+    <li>Remove rules that no longer prevent a failure. Test first: run the evals without the rule.</li>
+    <li>Merge duplicate instructions, and shorten the instruction file. Long files get partly ignored.</li>
+    <li>Check that every tool still gets used. Unused tools add confusion.</li>
+  </ul>
+
+  <h2>Measure whether it is working</h2>
+  <div class="card"><ul>
+    <li><strong>Pass rate per failure mode:</strong> the number to watch. It should go up after each change, and stay up.</li>
+    <li><strong>Cost and time per task:</strong> a harness change that doubles the steps may fix one failure and cost more than it saves.</li>
+    <li><strong>Escalations:</strong> how often a human has to step in. Falling escalations are a sign the harness is doing its job.</li>
+    <li><strong>Repeat failures:</strong> a failure you already fixed that comes back means the fix was a correction, not a change to the harness.</li>
+  </ul></div>
+
+  <h2>Common mistakes</h2>
+  <ul>
+    <li><strong>Over-constraining.</strong> Every rule costs attention. A harness with 80 rules is harder for the agent to follow than one with 8.</li>
+    <li><strong>Fixing the model's wording instead of the system.</strong> Rewording a prompt until one example works often breaks three others.</li>
+    <li><strong>Trusting "done".</strong> Make the agent show evidence: the test output, the source it quoted.</li>
+    <li><strong>No baseline.</strong> Without the evals from before the change, you cannot tell whether it helped.</li>
+    <li><strong>Building for the demo.</strong> A harness that works on five clean examples has not been tested.</li>
+  </ul>
+
+  <h2>What's next</h2>
+  <p>Some teams are moving from agents that run when a person asks, to agents that run in loops on a schedule. Call it loop engineering: the agent keeps working, and the harness decides when to stop, escalate or hand back. It raises the stakes for the control and feedback parts, so get those right first.</p>
+
+  <div class="next">
+    <a href="/harness-design.html"><span class="label">Previous</span>← Designing a harness</a>
+    <a href="/paths.html"><span class="label">Back to</span>Learning paths</a>
+  </div>
+
+  <h2 style="font-size:17px; margin-top:36px;">Sources</h2>
+  <ul class="sources">
+    <li><a href="https://openai.com/index/harness-engineering" target="_blank" rel="noopener">OpenAI: Harness engineering, leveraging Codex in an agent-first world (February 2026)</a></li>
+    <li><a href="https://www.theneuron.ai/explainer-articles/openais-harness-engineering-playbook-how-to-ship-1m-lines-of-code-without-writing-any/" target="_blank" rel="noopener">The Neuron: OpenAI's harness engineering playbook (secondary summary)</a></li>
+    <li><a href="https://www.atlan.com" target="_blank" rel="noopener">Atlan: Harness vs prompt vs context engineering</a></li>
+  </ul>
+
+  <p class="note">The practices are the author's synthesis of the sources above. The OpenAI account is summarised from secondary coverage; read the original for exact details. For the overview, see <a href="/harness.html">Harness Engineering</a>.</p>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <p>Human Agency — No hype, no theory. Just understanding. © 2026 Human Agency</p>
+  </div>
+</footer>
+<script>
+(function () {
+  var t = document.getElementById('nav-toggle'), n = document.getElementById('nav');
+  if (!t || !n) return;
+  t.addEventListener('click', function () {
+    var open = n.classList.toggle('open');
+    t.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+})();
+</script>
+</body>
+</html>

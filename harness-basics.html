@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harness Basics — Human Agency</title>
+<meta name="description" content="Harness basics: what a harness is, why agent = model + harness, and the five parts every working AI system needs.">
+<link rel="stylesheet" href="/path.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <button class="nav-mobile-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+    <nav id="nav">
+      <a href="/llm-explained.html">What is AI?</a>
+      <a href="/jargon.html">Jargon</a>
+      <a href="/compare.html">Tools</a>
+      <a href="/use-cases.html">Use Cases</a>
+      <a href="/setup.html">Setup</a>
+      <a href="/reading.html">Reading</a>
+      <a href="/resources.html">Resources</a>
+      <a href="/search.html" aria-label="Search">🔍</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="crumbs"><a href="/paths.html">Learning paths</a> · Harness · Step 1 of 3</div>
+  <div class="tag">Harness · Basics</div>
+  <h1>Harness basics</h1>
+  <p class="lede">The model is the part everyone talks about. The harness is everything else, and it is often the reason one AI product works and another, using the same model, does not.</p>
+
+  <div class="callout"><strong>In one line:</strong> Agent = Model + Harness. The model is the engine. The harness is the car: steering, brakes, fuel line, dashboard and the road rules.</div>
+
+  <h2>What a harness is</h2>
+  <p>A harness is the system the model runs inside. It decides what the model sees, what it is allowed to touch, how its steps are organised, what checks run on its work, and what happens when something goes wrong.</p>
+  <p>Consider a model asked to fix a bug in a codebase. The model alone can only produce text. Add a harness and it can read the files, run the tests, see the failures, edit the code, try again and stop when the tests pass. Same model, different system, very different result.</p>
+
+  <h2>Where the term comes from</h2>
+  <p>People have been building this layer for a while, but the word became common in 2026. The sequence goes like this:</p>
+  <div class="card"><h3>Prompt engineering (2022 to 2024)</h3><p>What you say to the model. The focus is one message at a time.</p></div>
+  <div class="card"><h3>Context engineering (2025)</h3><p>What information the model is given. The focus is one session.</p></div>
+  <div class="card"><h3>Harness engineering (2026 onwards)</h3><p>The whole system around the model. The focus is reliable execution over many steps.</p></div>
+  <p>Each layer contains the one before. Your prompt sits inside the context, and the context is one part of the harness.</p>
+
+  <h2>The five parts</h2>
+  <p>There is no official list, but most working harnesses have these five parts. Each one answers a question the model cannot answer for itself.</p>
+  <ol class="steps">
+    <li><span class="n">1</span><span><strong>Context</strong><span class="d">What does the model know right now? Instructions, documents it can search, memory from earlier steps, and summaries that keep long tasks from overflowing.</span></span></li>
+    <li><span class="n">2</span><span><strong>Action</strong><span class="d">How does the model affect the world? Tools, APIs, file access, a browser, code execution. The tool descriptions matter as much as the tools.</span></span></li>
+    <li><span class="n">3</span><span><strong>Orchestration</strong><span class="d">How is the work sequenced? Planning, keeping track of state, breaking a task into steps, handing parts to sub-agents, retrying.</span></span></li>
+    <li><span class="n">4</span><span><strong>Control</strong><span class="d">What is the model allowed to do? Permissions, approval for risky actions, sandboxes, spending and time limits, output checks.</span></span></li>
+    <li><span class="n">5</span><span><strong>Feedback</strong><span class="d">How do you know it works, and how does it get better? Evals, logs and traces, tests the agent runs on its own work, and a process for turning each failure into a fix.</span></span></li>
+  </ol>
+
+  <h2>What goes wrong without each part</h2>
+  <div class="card"><ul>
+    <li><strong>No context:</strong> the model guesses facts it should have looked up.</li>
+    <li><strong>No action:</strong> it can only describe what to do, not do it.</li>
+    <li><strong>No orchestration:</strong> it loses the thread after a dozen steps, or loops.</li>
+    <li><strong>No control:</strong> it does something irreversible, leaks data or runs up a large bill.</li>
+    <li><strong>No feedback:</strong> it works in the demo and fails quietly in production.</li>
+  </ul></div>
+
+  <h2>A quick test</h2>
+  <p>For any AI system you use or build, ask:</p>
+  <div class="callout">Does it know enough? Can it act? Does it stay on track? Is it safe? Can we show that it works, and that it is getting better?</div>
+  <p>If you cannot answer one of these, that is the part of the harness to look at first.</p>
+
+  <h2>What's next</h2>
+  <p>The next article covers how to design a harness for a specific job, step by step: <a href="/harness-design.html">Designing a harness</a>.</p>
+
+  <div class="next">
+    <a href="/eval-tools.html"><span class="label">Previous path</span>← Using tools to build evals</a>
+    <a href="/harness-design.html"><span class="label">Next</span>Designing a harness →</a>
+  </div>
+
+  <h2 style="font-size:17px; margin-top:36px;">Sources</h2>
+  <ul class="sources">
+    <li><a href="https://openai.com/index/harness-engineering" target="_blank" rel="noopener">OpenAI: Harness engineering, leveraging Codex in an agent-first world</a></li>
+    <li><a href="https://www.infoq.com/news/2026/02/openai-harness-engineering-codex" target="_blank" rel="noopener">InfoQ: OpenAI on harness engineering (February 2026)</a></li>
+    <li><a href="https://addyosmani.com" target="_blank" rel="noopener">Addy Osmani on agent harness engineering</a></li>
+  </ul>
+
+  <p class="note">Based on the author's working notes. The five-part breakdown is a synthesis, not an official standard. For the wider overview, see <a href="/harness.html">Harness Engineering</a>.</p>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <p>Human Agency — No hype, no theory. Just understanding. © 2026 Human Agency</p>
+  </div>
+</footer>
+<script>
+(function () {
+  var t = document.getElementById('nav-toggle'), n = document.getElementById('nav');
+  if (!t || !n) return;
+  t.addEventListener('click', function () {
+    var open = n.classList.toggle('open');
+    t.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+})();
+</script>
+</body>
+</html>

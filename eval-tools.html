@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Using Tools to Build Evals — Human Agency</title>
+<meta name="description" content="How to use AI assistants and eval platforms such as Promptfoo, Braintrust and Langfuse to build evals faster, while keeping the judgement yourself.">
+<link rel="stylesheet" href="/path.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <button class="nav-mobile-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+    <nav id="nav">
+      <a href="/llm-explained.html">What is AI?</a>
+      <a href="/jargon.html">Jargon</a>
+      <a href="/compare.html">Tools</a>
+      <a href="/use-cases.html">Use Cases</a>
+      <a href="/setup.html">Setup</a>
+      <a href="/reading.html">Reading</a>
+      <a href="/resources.html">Resources</a>
+      <a href="/search.html" aria-label="Search">🔍</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="crumbs"><a href="/paths.html">Learning paths</a> · Evals · Step 3 of 3</div>
+  <div class="tag">Evals · Tools</div>
+  <h1>Using tools to build evals</h1>
+  <p class="lede">AI assistants and eval platforms can do the slow parts for you: drafting datasets, writing scorer code, running the suite and showing the results. They cannot decide what failure means for your product. That part stays with you.</p>
+
+  <div class="callout"><strong>The split:</strong> let the tools do the typing, counting and running. You do the reading, naming and deciding. If a tool writes a rubric, you still have to read it, test it against examples and sign it off.</div>
+
+  <h2>Three jobs the tools can do</h2>
+  <div class="card"><h3>1. Draft</h3><p>Ask an AI assistant to turn your notes into a first draft: a rubric, a set of test inputs, a scorer function. Give it your failure-mode list and two or three real examples, then review every line.</p></div>
+  <div class="card"><h3>2. Run</h3><p>Eval tools run the same dataset against each prompt or model version, record every result and keep history, so you can see whether a change helped or broke something.</p></div>
+  <div class="card"><h3>3. Inspect</h3><p>A good tool links each score back to the trace behind it, so you can open the failing case and read what the model actually did.</p></div>
+
+  <h2>Using an AI assistant to help</h2>
+  <p>Coding assistants such as Claude Code or OpenAI Codex can write eval scaffolding inside your project: the dataset file, the runner script, the code-based checks. Useful prompts look like this:</p>
+  <pre><code>Here are 3 real outputs that failed, and my note on each failure.
+Write a binary judge rubric for the failure "invents a refund rule".
+Give one PASS and one FAIL example. Do not add other criteria.</code></pre>
+  <p>Three checks before you trust the output:</p>
+  <ul>
+    <li><strong>Read the rubric as a stranger would.</strong> Would they know what to do with an edge case?</li>
+    <li><strong>Run it on your hand-labelled examples.</strong> If the judge disagrees with you, the rubric is wrong or the judge is.</li>
+    <li><strong>Watch for the assistant grading its own work.</strong> Do not use the same model to write the rubric and to decide whether the output passes, without checking against human labels.</li>
+  </ul>
+
+  <h2>Eval platforms</h2>
+  <p>Three commonly used tools, with different centres of gravity. Check each vendor's current features and pricing before you commit. These change often.</p>
+  <div class="card"><h3>Promptfoo</h3><p>Open-source, command-line first, with the test cases in config files. Good for running evals in a continuous integration pipeline, so a failing test blocks a release. It also includes red-team tests for prompt injection and unsafe outputs.</p></div>
+  <div class="card"><h3>Braintrust</h3><p>A hosted platform built around experiments: run a dataset against two versions, compare the results side by side, and add human review in a web interface. Good for teams where product managers and engineers share the review work.</p></div>
+  <div class="card"><h3>Langfuse</h3><p>Open source and self-hostable, centred on tracing: record every model call, then build datasets and evals from real traces. Useful when you need data to stay on your own infrastructure.</p></div>
+  <p>Other options include Inspect, an open-source Python framework from the UK AI Security Institute, which is popular for research-style evals. The right choice depends on where your team works, not on which name you have heard most.</p>
+
+  <h2>How to choose</h2>
+  <ol>
+    <li><strong>Start with no tool.</strong> A spreadsheet with 30 labelled outputs is enough for your first round of error analysis.</li>
+    <li><strong>Pick a tool when the suite runs often.</strong> If you run evals on every change, put them in a tool that runs in your pipeline (Promptfoo is a common start).</li>
+    <li><strong>Pick a platform when people other than engineers review outputs.</strong> A shared review interface (Braintrust, or Langfuse with annotation) saves arguments about who scored what.</li>
+    <li><strong>Pick self-hosted when data cannot leave your systems.</strong> Langfuse and Promptfoo both run locally.</li>
+  </ol>
+
+  <h2>What the tools will not do for you</h2>
+  <ul>
+    <li>They will not find your failure modes. Error analysis is manual.</li>
+    <li>They will not tell you whether a judge is accurate. You still need human labels.</li>
+    <li>They will not stop a judge from being confidently wrong. Keep reading the disagreements.</li>
+  </ul>
+
+  <div class="next">
+    <a href="/eval-rubrics.html"><span class="label">Previous</span>← Writing evals and rubrics</a>
+    <a href="/harness-basics.html"><span class="label">Next path</span>Harness basics →</a>
+  </div>
+
+  <h2 style="font-size:17px; margin-top:36px;">Sources</h2>
+  <ul class="sources">
+    <li><a href="https://www.promptfoo.dev" target="_blank" rel="noopener">Promptfoo documentation</a></li>
+    <li><a href="https://www.braintrust.dev" target="_blank" rel="noopener">Braintrust</a></li>
+    <li><a href="https://langfuse.com" target="_blank" rel="noopener">Langfuse documentation</a></li>
+    <li><a href="https://inspect.aisi.org.uk" target="_blank" rel="noopener">Inspect (UK AI Security Institute)</a></li>
+  </ul>
+
+  <p class="note">Tool descriptions are summaries from vendor material and third-party comparisons, which can be out of date. Check current features before you choose.</p>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <p>Human Agency — No hype, no theory. Just understanding. © 2026 Human Agency</p>
+  </div>
+</footer>
+<script>
+(function () {
+  var t = document.getElementById('nav-toggle'), n = document.getElementById('nav');
+  if (!t || !n) return;
+  t.addEventListener('click', function () {
+    var open = n.classList.toggle('open');
+    t.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+})();
+</script>
+</body>
+</html>

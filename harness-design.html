@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Designing a Harness — Human Agency</title>
+<meta name="description" content="How to design an AI harness for a specific job: start from the task and its failures, then decide context, tools, permissions, checks and feedback.">
+<link rel="stylesheet" href="/path.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <button class="nav-mobile-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+    <nav id="nav">
+      <a href="/llm-explained.html">What is AI?</a>
+      <a href="/jargon.html">Jargon</a>
+      <a href="/compare.html">Tools</a>
+      <a href="/use-cases.html">Use Cases</a>
+      <a href="/setup.html">Setup</a>
+      <a href="/reading.html">Reading</a>
+      <a href="/resources.html">Resources</a>
+      <a href="/search.html" aria-label="Search">🔍</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="crumbs"><a href="/paths.html">Learning paths</a> · Harness · Step 2 of 3</div>
+  <div class="tag">Harness · Design</div>
+  <h1>Designing a harness</h1>
+  <p class="lede">Start from the job, not from the tools. A harness designed around a specific task is simpler, cheaper and easier to test than one built to do everything.</p>
+
+  <div class="callout"><strong>Rule of thumb:</strong> give the model only what this task needs, let it touch only what it needs to touch, and check its work in the same place every time.</div>
+
+  <h2>Start with the task and its failures</h2>
+  <p>Before you design anything, write down:</p>
+  <ul>
+    <li><strong>The job:</strong> one sentence. "Answer questions about our refund policy." "Draft a weekly stock report from these three sources."</li>
+    <li><strong>What done looks like:</strong> the output or action that counts as success.</li>
+    <li><strong>How it fails today:</strong> if there is a prototype, collect five or ten failures. These become the requirements.</li>
+    <li><strong>What must never happen:</strong> the irreversible or expensive mistakes.</li>
+  </ul>
+  <p>Those failures are your error analysis from the evals path. They tell you which of the five parts needs work.</p>
+
+  <h2>Walk through the five parts</h2>
+
+  <h3>1. Context: what does the model see?</h3>
+  <ul>
+    <li>Write the standing instructions as short, specific rules. Put them in one file the system loads every time (many teams use <code>AGENTS.md</code> or <code>CLAUDE.md</code>).</li>
+    <li>Give documents as search results or on request, not all at once. A model with 200 pages in front of it is easily distracted.</li>
+    <li>Decide what carries over between steps, and what gets summarised when a long task fills the context.</li>
+  </ul>
+
+  <h3>2. Action: what can it touch?</h3>
+  <ul>
+    <li>Give it the fewest tools that do the job. Each extra tool is another way to go wrong.</li>
+    <li>Write each tool description as if for a new colleague: what it does, when to use it, what it returns, and what it must not be used for.</li>
+    <li>Prefer tools that return clear, structured results. A tool that returns a page of text is harder for the model to use than one that returns the three fields it needs.</li>
+  </ul>
+
+  <h3>3. Orchestration: how is the work split?</h3>
+  <ul>
+    <li>Decide whether one step is enough, or whether the task needs a plan. Simple jobs do not need planning.</li>
+    <li>Keep a visible state (a checklist, a file, a short log) that the agent updates. This is what stops it drifting on long tasks.</li>
+    <li>Give sub-agents one narrow job each, with its own context, and only the result comes back.</li>
+    <li>Set a limit on retries. Without one, a stuck agent can loop for a long time.</li>
+  </ul>
+
+  <h3>4. Control: what is it allowed to do?</h3>
+  <ul>
+    <li><strong>Permissions:</strong> read-only by default. Writes, sends and purchases need explicit approval.</li>
+    <li><strong>Sandbox:</strong> run code and untrusted content in an isolated environment that cannot reach your real data.</li>
+    <li><strong>Limits:</strong> a maximum number of steps, time and spend per task.</li>
+    <li><strong>Output checks:</strong> validate structure (valid JSON, required fields) in code before anything downstream uses the output.</li>
+  </ul>
+
+  <h3>5. Feedback: how will you know?</h3>
+  <ul>
+    <li>Log every step, tool call and result, so a failure can be traced.</li>
+    <li>Give the agent a way to check its own work: run the tests, re-read the source, compare against the requirement. "Done" should mean "the check passed", not "I think it's done".</li>
+    <li>Connect the failures from your list to evals (see <a href="/eval-rubrics.html">writing rubrics</a>), so you can measure the next version.</li>
+  </ul>
+
+  <h2>A worked example</h2>
+  <p>Suppose you want an agent to answer staff questions about a company's expenses policy.</p>
+  <div class="card"><ul>
+    <li><strong>Job:</strong> answer policy questions, quoting the policy section.</li>
+    <li><strong>Failures seen in a prototype:</strong> invents limits (3 times in 20 questions); answers from memory of an old policy.</li>
+    <li><strong>Context:</strong> one instruction file saying "only answer from the policy; quote the section; say so if the policy does not cover it". Policy searched on request, current version only.</li>
+    <li><strong>Action:</strong> one tool, <code>search_policy(query)</code>, returning the matching section with its date. No write tools.</li>
+    <li><strong>Orchestration:</strong> one step, no planning. No sub-agents.</li>
+    <li><strong>Control:</strong> read-only; a fixed answer ("I can't find that in the policy") if the search returns nothing.</li>
+    <li><strong>Feedback:</strong> every question and retrieved section logged. The invented-limit failure becomes a binary eval, run before each change.</li>
+  </ul></div>
+  <p>Notice that the fix for the invented limits was mostly in the harness (the instruction and the search tool), not in changing the model.</p>
+
+  <h2>Design checklist</h2>
+  <div class="card"><ul>
+    <li>Is the job written in one sentence, with a definition of done?</li>
+    <li>Does every tool have a description that says when not to use it?</li>
+    <li>Is there a read-only default, with approval for anything irreversible?</li>
+    <li>Are there limits on steps, time and spend?</li>
+    <li>Does the output pass a code check before anything else uses it?</li>
+    <li>Is every step logged?</li>
+    <li>Is there at least one eval for each known failure?</li>
+  </ul></div>
+
+  <div class="next">
+    <a href="/harness-basics.html"><span class="label">Previous</span>← Harness basics</a>
+    <a href="/harness-engineering.html"><span class="label">Next</span>Harness engineering →</a>
+  </div>
+
+  <h2 style="font-size:17px; margin-top:36px;">Sources</h2>
+  <ul class="sources">
+    <li><a href="https://openai.com/index/harness-engineering" target="_blank" rel="noopener">OpenAI: Harness engineering, leveraging Codex in an agent-first world</a></li>
+    <li><a href="https://www.anthropic.com" target="_blank" rel="noopener">Anthropic: documentation on building effective agents and tool use</a></li>
+  </ul>
+
+  <p class="note">The worked example is illustrative, not from a real project. The checklist is the author's synthesis.</p>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <p>Human Agency — No hype, no theory. Just understanding. © 2026 Human Agency</p>
+  </div>
+</footer>
+<script>
+(function () {
+  var t = document.getElementById('nav-toggle'), n = document.getElementById('nav');
+  if (!t || !n) return;
+  t.addEventListener('click', function () {
+    var open = n.classList.toggle('open');
+    t.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+})();
+</script>
+</body>
+</html>

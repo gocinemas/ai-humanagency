@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learning Paths — Human Agency</title>
+<meta name="description" content="Two clear paths for people building with AI: how to test AI output with evals, and how to design the harness that makes an AI agent reliable.">
+<link rel="stylesheet" href="/path.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <button class="nav-mobile-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+    <nav id="nav">
+      <a href="/llm-explained.html">What is AI?</a>
+      <a href="/jargon.html">Jargon</a>
+      <a href="/compare.html">Tools</a>
+      <a href="/use-cases.html">Use Cases</a>
+      <a href="/setup.html">Setup</a>
+      <a href="/reading.html">Reading</a>
+      <a href="/resources.html">Resources</a>
+      <a href="/search.html" aria-label="Search">🔍</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="tag">Learning paths</div>
+  <h1>Evals and harnesses, in order</h1>
+  <p class="lede">Two short paths for anyone building with AI. Each one starts with the basics and ends with something you can do on Monday. Read them in order, or jump to the step you need.</p>
+
+  <div class="callout"><strong>Start here if you are new:</strong> an <em>eval</em> tells you whether the AI's output is good enough. A <em>harness</em> is everything around the model that makes it do real work reliably. Evals check the harness; the harness is what you improve.</div>
+
+  <h2>Path 1: Evals (how to test AI output)</h2>
+  <p>Work through these in order. Each step builds on the one before.</p>
+  <ol class="steps">
+    <li><span class="n">1</span><span><a href="/eval-basics.html">Evals basics</a><span class="d">Why AI output needs testing, the two kinds of eval, and the error-analysis-first habit.</span></span></li>
+    <li><span class="n">2</span><span><a href="/eval-rubrics.html">Writing evals and rubrics</a><span class="d">How to turn a failure you saw into a pass/fail judge, and how to check that judge against a human.</span></span></li>
+    <li><span class="n">3</span><span><a href="/eval-tools.html">Using tools to build evals</a><span class="d">Using AI assistants and eval platforms (Promptfoo, Braintrust, Langfuse) to speed up the work, without handing over the judgement.</span></span></li>
+  </ol>
+  <p>Overview page: <a href="/evals.html">AI Evals</a>.</p>
+
+  <h2>Path 2: Harness (how to build the system around the model)</h2>
+  <p>The model is only one part of a working AI product. These three articles cover the rest.</p>
+  <ol class="steps">
+    <li><span class="n">1</span><span><a href="/harness-basics.html">Harness basics</a><span class="d">What a harness is, the five parts it is made of, and why the same model can perform very differently.</span></span></li>
+    <li><span class="n">2</span><span><a href="/harness-design.html">Designing a harness</a><span class="d">A step-by-step way to decide what context, tools, permissions and checks an agent needs.</span></span></li>
+    <li><span class="n">3</span><span><a href="/harness-engineering.html">Harness engineering</a><span class="d">The ongoing practice: turn every mistake into a fix in the harness, and keep the system improving.</span></span></li>
+  </ol>
+  <p>Overview page: <a href="/harness.html">Harness Engineering</a>.</p>
+
+  <h2>How the two paths connect</h2>
+  <p>Evals are how you know the harness works. Without evals, you are guessing. Without a harness, there is nothing consistent to evaluate. If you only have time for one path, do Evals step 1 and Harness step 1, then pick up the rest.</p>
+
+  <p class="note">Based on the author's working notes, checked against the sources listed in each article.</p>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <p>Human Agency — No hype, no theory. Just understanding. © 2026 Human Agency</p>
+  </div>
+</footer>
+<script>
+(function () {
+  var t = document.getElementById('nav-toggle'), n = document.getElementById('nav');
+  if (!t || !n) return;
+  t.addEventListener('click', function () {
+    var open = n.classList.toggle('open');
+    t.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+})();
+</script>
+</body>
+</html>
