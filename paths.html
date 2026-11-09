@@ -30,25 +30,40 @@
   <h1>Evals and harnesses, in order</h1>
   <p class="lede">Two short paths for anyone building with AI. Each one starts with the basics and ends with something you can do on Monday. Read them in order, or jump to the step you need.</p>
 
-  <div class="callout"><strong>Start here if you are new:</strong> an <em>eval</em> tells you whether the AI's output is good enough. A <em>harness</em> is everything around the model that makes it do real work reliably. Evals check the harness; the harness is what you improve.</div>
+  <h2>Start here: the two ideas in plain words</h2>
+  <ol class="steps">
+    <li><span class="n">→</span><span><a href="/what-is-an-eval.html">What is an eval?</a><span class="d">A repeatable test for AI answers: questions, a pass/fail rule, and a score you track over time.</span></span></li>
+    <li><span class="n">→</span><span><a href="/what-is-a-harness.html">What is a harness?</a><span class="d">Everything around the model that lets it do a real job: what it can see, what it can touch, and how you check it.</span></span></li>
+  </ol>
 
   <h2>Path 1: Evals (how to test AI output)</h2>
   <p>Work through these in order. Each step builds on the one before.</p>
   <ol class="steps">
-    <li><span class="n">1</span><span><a href="/eval-basics.html">Evals basics</a><span class="d">Why AI output needs testing, the two kinds of eval, and the error-analysis-first habit.</span></span></li>
-    <li><span class="n">2</span><span><a href="/eval-rubrics.html">Writing evals and rubrics</a><span class="d">How to turn a failure you saw into a pass/fail judge, and how to check that judge against a human.</span></span></li>
-    <li><span class="n">3</span><span><a href="/eval-tools.html">Using tools to build evals</a><span class="d">Using AI assistants and eval platforms (Promptfoo, Braintrust, Langfuse) to speed up the work, without handing over the judgement.</span></span></li>
+    <li><span class="n">1</span><span><a href="/what-is-an-eval.html">What is an eval?</a><span class="d">The idea in plain words, with an everyday example.</span></span></li>
+    <li><span class="n">2</span><span><a href="/write-your-first-eval.html">Write your first eval</a><span class="d">Hands-on, in a spreadsheet: pick a job, collect examples, write a pass/fail rule, score it.</span></span></li>
+    <li><span class="n">3</span><span><a href="/eval-basics.html">Evals basics</a><span class="d">The two kinds of eval, and why you start with error analysis on real outputs.</span></span></li>
+    <li><span class="n">4</span><span><a href="/eval-rubrics.html">Writing evals and rubrics</a><span class="d">Turning a failure into a pass/fail judge, and checking that judge against a human.</span></span></li>
+    <li><span class="n">5</span><span><a href="/eval-tools.html">Using tools to build evals</a><span class="d">AI assistants and platforms (Promptfoo, Braintrust, Langfuse) to speed up the work, without handing over the judgement.</span></span></li>
   </ol>
   <p>Overview page: <a href="/evals.html">AI Evals</a>.</p>
 
   <h2>Path 2: Harness (how to build the system around the model)</h2>
   <p>The model is only one part of a working AI product. These three articles cover the rest.</p>
   <ol class="steps">
-    <li><span class="n">1</span><span><a href="/harness-basics.html">Harness basics</a><span class="d">What a harness is, the five parts it is made of, and why the same model can perform very differently.</span></span></li>
-    <li><span class="n">2</span><span><a href="/harness-design.html">Designing a harness</a><span class="d">A step-by-step way to decide what context, tools, permissions and checks an agent needs.</span></span></li>
-    <li><span class="n">3</span><span><a href="/harness-engineering.html">Harness engineering</a><span class="d">The ongoing practice: turn every mistake into a fix in the harness, and keep the system improving.</span></span></li>
+    <li><span class="n">1</span><span><a href="/what-is-a-harness.html">What is a harness?</a><span class="d">The idea in plain words, with a simple analogy.</span></span></li>
+    <li><span class="n">2</span><span><a href="/harness-basics.html">Harness basics</a><span class="d">What a harness is, the five parts it is made of, and why the same model can perform very differently.</span></span></li>
+    <li><span class="n">3</span><span><a href="/harness-design.html">Designing a harness</a><span class="d">A step-by-step way to decide what context, tools, permissions and checks an agent needs.</span></span></li>
+    <li><span class="n">4</span><span><a href="/harness-engineering.html">Harness engineering</a><span class="d">The ongoing practice: turn every mistake into a fix in the harness, and keep the system improving.</span></span></li>
   </ol>
   <p>Overview page: <a href="/harness.html">Harness Engineering</a>.</p>
+
+  <h2>What's next</h2>
+  <p>Once both paths make sense, these are the natural next steps on the site:</p>
+  <ul>
+    <li><a href="/jargon.html">Jargon Decoder</a>: look up any term you meet along the way.</li>
+    <li><a href="/compare.html">Tools compared</a>: which AI product suits which job, before you build anything.</li>
+    <li><a href="/reading.html">Reading list</a>: talks and papers from the people who wrote the methods above.</li>
+  </ul>
 
   <h2>How the two paths connect</h2>
   <p>Evals are how you know the harness works. Without evals, you are guessing. Without a harness, there is nothing consistent to evaluate. If you only have time for one path, do Evals step 1 and Harness step 1, then pick up the rest.</p>

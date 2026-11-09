@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What is a Harness? — Human Agency</title>
+<meta name="description" content="A harness is everything around an AI model that makes it useful and safe. A plain-language explanation with a simple analogy.">
+<link rel="stylesheet" href="/path.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <button class="nav-mobile-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+    <nav id="nav">
+      <a href="/llm-explained.html">What is AI?</a>
+      <a href="/jargon.html">Jargon</a>
+      <a href="/compare.html">Tools</a>
+      <a href="/use-cases.html">Use Cases</a>
+      <a href="/setup.html">Setup</a>
+      <a href="/reading.html">Reading</a>
+      <a href="/resources.html">Resources</a>
+      <a href="/paths.html">Paths</a>
+      <a href="/search.html" aria-label="Search">🔍</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="crumbs"><a href="/paths.html">Learning paths</a> · Harness · Start here</div>
+  <div class="tag">Harness · Explained</div>
+  <h1>What is a harness?</h1>
+  <p class="lede">The harness is everything around an AI model that turns it from a chatbot into something that can do a job. The model is the brain. The harness is the rest of the body: eyes, hands, a rulebook, and a way to check its own work.</p>
+
+  <div class="callout"><strong>In one line:</strong> the AI model is the engine. The harness is the car around it: steering, brakes, dashboard and road rules.</div>
+
+  <h2>A model on its own can only talk</h2>
+  <p>Ask a model on its own, "Check whether my order has shipped", and it can only guess, because it cannot look at your orders. Give it a harness with a tool that can read your order system, a rule that says "only report what the system says", and a check that the answer quotes a real order number, and it can actually do the job.</p>
+  <p>Same model. Different harness. Very different results.</p>
+
+  <h2>The five parts, in plain words</h2>
+  <ol class="steps">
+    <li><span class="n">1</span><span><strong>What it knows</strong><span class="d">The information it can see right now: instructions, documents, notes from earlier steps.</span></span></li>
+    <li><span class="n">2</span><span><strong>What it can touch</strong><span class="d">The tools it can use, such as looking up an order, sending an email, or running a calculation.</span></span></li>
+    <li><span class="n">3</span><span><strong>How it plans</strong><span class="d">The steps it takes, in what order, and what it does when one fails.</span></span></li>
+    <li><span class="n">4</span><span><strong>What it is allowed to do</strong><span class="d">Permissions, limits, and a person who must approve anything risky, such as a refund.</span></span></li>
+    <li><span class="n">5</span><span><strong>How you know it works</strong><span class="d">Logs of what it did, checks it runs on its own answers, and evals to measure quality over time.</span></span></li>
+  </ol>
+
+  <h2>Why it matters</h2>
+  <p>Most AI problems that people blame on the model are harness problems. The model invented a refund policy because nothing told it to look the policy up. It looped for an hour because nothing set a limit. It worked in a demo because nothing checked it on real cases.</p>
+  <p>When something goes wrong with an AI product, ask: is it the model, or is it the harness around it? The fix is often in the harness.</p>
+
+  <div class="next">
+    <a href="/what-is-an-eval.html"><span class="label">Previous</span>← What is an eval?</a>
+    <a href="/harness-basics.html"><span class="label">Next</span>Harness basics →</a>
+  </div>
+
+  <p class="note">Going deeper: <a href="/harness-basics.html">Harness basics</a>, <a href="/harness-design.html">Designing a harness</a>, <a href="/harness-engineering.html">Harness engineering in practice</a>. For terms, see the <a href="/jargon.html">Jargon Decoder</a>.</p>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <p>Human Agency — No hype, no theory. Just understanding. © 2026 Human Agency</p>
+  </div>
+</footer>
+<script>
+(function () {
+  var t = document.getElementById('nav-toggle'), n = document.getElementById('nav');
+  if (!t || !n) return;
+  t.addEventListener('click', function () {
+    var open = n.classList.toggle('open');
+    t.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+})();
+</script>
+</body>
+</html>

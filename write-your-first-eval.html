@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Write Your First Eval — Human Agency</title>
+<meta name="description" content="Write your first AI eval in six steps, using only a spreadsheet: pick a job, collect real examples, write a pass/fail rule, score it, and repeat after every change.">
+<link rel="stylesheet" href="/path.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <button class="nav-mobile-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+    <nav id="nav">
+      <a href="/llm-explained.html">What is AI?</a>
+      <a href="/jargon.html">Jargon</a>
+      <a href="/compare.html">Tools</a>
+      <a href="/use-cases.html">Use Cases</a>
+      <a href="/setup.html">Setup</a>
+      <a href="/reading.html">Reading</a>
+      <a href="/resources.html">Resources</a>
+      <a href="/paths.html">Paths</a>
+      <a href="/search.html" aria-label="Search">🔍</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="crumbs"><a href="/paths.html">Learning paths</a> · Evals · Hands-on</div>
+  <div class="tag">Evals · Hands-on</div>
+  <h1>Write your first eval</h1>
+  <p class="lede">You need a spreadsheet, about an hour, and one AI tool you already use. No code, no platform.</p>
+
+  <div class="callout"><strong>The goal:</strong> a score you can recalculate every time you change something. A score you can trust is worth more than a clever one.</div>
+
+  <h2>Step 1: Pick one job</h2>
+  <p>Choose one task the AI does, not the whole product. Good examples:</p>
+  <ul>
+    <li>Answering questions about delivery times</li>
+    <li>Summarising a meeting into action points</li>
+    <li>Turning a customer complaint into a ticket with the right category</li>
+  </ul>
+  <p>Write the job in one sentence: "The bot answers delivery questions using our delivery policy."</p>
+
+  <h2>Step 2: Collect 20 real examples</h2>
+  <p>Take real inputs from your past work: real emails, real meeting notes, real complaints. Remove names and personal details. Put each input in a row of the spreadsheet.</p>
+  <p>If you do not have real examples yet, write 20 realistic ones yourself. They are less useful, but enough to start.</p>
+
+  <h2>Step 3: Get the AI's answers</h2>
+  <p>Run each input through the AI and paste the answer into the next column. Do this once per version you want to compare. Keep the date and the version in the header, so you know which answers came from which setup.</p>
+
+  <h2>Step 4: Write the pass/fail rule</h2>
+  <p>This is the most important step. For the job, write down what a good answer must have, and what makes it a fail. Keep it to one or two rules.</p>
+  <div class="card"><h3>Example rule for the delivery bot</h3><p><strong>PASS</strong> if the reply gives the delivery time that matches the policy, and does not promise a refund or a delivery date the policy does not allow.<br><strong>FAIL</strong> otherwise.</p></div>
+  <p>Write it so a stranger could apply it the same way you would. If you disagree with yourself on two examples, the rule is not clear enough yet.</p>
+
+  <h2>Step 5: Mark each answer</h2>
+  <p>Go down the column and write PASS or FAIL next to each answer. Be strict and consistent. It takes about 10 minutes for 20 examples.</p>
+  <p>Look at the fails. Group them. Are most of them the same kind of mistake? That is the thing to fix first.</p>
+
+  <h2>Step 6: Count, change, repeat</h2>
+  <p>Work out the score: passes divided by total, as a percentage. Write it down with the version name.</p>
+  <pre><code>Version      Date        Passed    Score
+v1 original  1 Nov         12 / 20   60%
+v2 new prompt 8 Nov        17 / 20   85%</code></pre>
+  <p>Now change one thing, run the same 20 inputs again, mark them, and compare. Changing several things at once makes it impossible to know what helped.</p>
+
+  <h2>Common first-timer mistakes</h2>
+  <div class="card"><ul>
+    <li><strong>Judging by feel.</strong> Write the rule before you look at the answers, or at least stick to it.</li>
+    <li><strong>A rule that needs judgement on every line.</strong> Split it into two simpler rules.</li>
+    <li><strong>Only easy examples.</strong> Include awkward and unclear inputs. They are where the failures hide.</li>
+    <li><strong>Changing the test when the score is bad.</strong> Fix the product, not the examples.</li>
+  </ul></div>
+
+  <h2>Once this works, what's next</h2>
+  <p>When the spreadsheet gets too big or you need to run it every time you change something, you are ready for the next steps:</p>
+  <ul>
+    <li><a href="/eval-rubrics.html">Writing rubrics properly</a>: sharper rules, and checking an AI judge against your own marking.</li>
+    <li><a href="/eval-tools.html">Eval tools</a>: when a spreadsheet is no longer enough.</li>
+  </ul>
+
+  <div class="next">
+    <a href="/what-is-an-eval.html"><span class="label">Previous</span>← What is an eval?</a>
+    <a href="/eval-rubrics.html"><span class="label">Next</span>Writing rubrics →</a>
+  </div>
+
+  <p class="note">Example figures are illustrative. For terms, see the <a href="/jargon.html">Jargon Decoder</a>.</p>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <p>Human Agency — No hype, no theory. Just understanding. © 2026 Human Agency</p>
+  </div>
+</footer>
+<script>
+(function () {
+  var t = document.getElementById('nav-toggle'), n = document.getElementById('nav');
+  if (!t || !n) return;
+  t.addEventListener('click', function () {
+    var open = n.classList.toggle('open');
+    t.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+})();
+</script>
+</body>
+</html>

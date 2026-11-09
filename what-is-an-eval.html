@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What is an Eval? — Human Agency</title>
+<meta name="description" content="An eval is a repeatable test for AI. A plain-language explanation with an everyday example.">
+<link rel="stylesheet" href="/path.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <button class="nav-mobile-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+    <nav id="nav">
+      <a href="/llm-explained.html">What is AI?</a>
+      <a href="/jargon.html">Jargon</a>
+      <a href="/compare.html">Tools</a>
+      <a href="/use-cases.html">Use Cases</a>
+      <a href="/setup.html">Setup</a>
+      <a href="/reading.html">Reading</a>
+      <a href="/resources.html">Resources</a>
+      <a href="/paths.html">Paths</a>
+      <a href="/search.html" aria-label="Search">🔍</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="crumbs"><a href="/paths.html">Learning paths</a> · Evals · Start here</div>
+  <div class="tag">Evals · Explained</div>
+  <h1>What is an eval?</h1>
+  <p class="lede">An eval is a test you run on an AI system to check whether its answers are good enough. It is the AI version of a school exam: the same questions, marked the same way, so you can see whether things are getting better or worse.</p>
+
+  <div class="callout"><strong>In one line:</strong> an eval = a set of realistic questions + a way to mark each answer as pass or fail + a score you track over time.</div>
+
+  <h2>Why AI needs evals</h2>
+  <p>A normal calculator gives the same answer to 2 + 2 every time, so you can check it once and trust it. An AI can answer the same question in different words each time, and some of those answers are wrong in subtle ways. You cannot check it once and forget it.</p>
+  <p>Evals are how you keep checking, in a consistent way, as you change the prompt, the model, or the product.</p>
+
+  <h2>An everyday example</h2>
+  <p>Suppose you run a small online shop and use AI to answer customer emails about delivery.</p>
+  <div class="card"><ul>
+    <li><strong>The questions:</strong> 30 real emails from the past month, such as "Where is my parcel?" and "Can I change my address after ordering?"</li>
+    <li><strong>The marking rule:</strong> each reply passes only if it gives the correct delivery time from the policy, and does not promise a refund that the policy does not allow.</li>
+    <li><strong>The score:</strong> 24 of 30 pass, so 80%.</li>
+  </ul></div>
+  <p>Next month you change the prompt. You run the same 30 emails again. If the score goes to 90%, the change helped. If it drops to 60%, you know to undo it, and you know why.</p>
+
+  <h2>The three parts of every eval</h2>
+  <ol class="steps">
+    <li><span class="n">1</span><span><strong>Questions</strong><span class="d">Realistic inputs. Start with 20 to 50.</span></span></li>
+    <li><span class="n">2</span><span><strong>Marking</strong><span class="d">A rule that says pass or fail for each answer. It can be a simple code check, or a rule that another AI or a person applies.</span></span></li>
+    <li><span class="n">3</span><span><strong>Score</strong><span class="d">The percentage that passed. Track it over time.</span></span></li>
+  </ol>
+
+  <h2>What an eval is not</h2>
+  <ul>
+    <li><strong>Not a one-off check.</strong> You run it again after every change.</li>
+    <li><strong>Not a vibe.</strong> "It seems better" is not an eval. A written pass/fail rule is.</li>
+    <li><strong>Not a public leaderboard.</strong> Public benchmarks help choose a model. Your own evals tell you whether your product works.</li>
+  </ul>
+
+  <div class="next">
+    <a href="/paths.html"><span class="label">Back</span>Learning paths</a>
+    <a href="/what-is-a-harness.html"><span class="label">Next</span>What is a harness? →</a>
+  </div>
+
+  <p class="note">Want to try one yourself? <a href="/write-your-first-eval.html">Write your first eval in six steps</a>. For terms, see the <a href="/jargon.html">Jargon Decoder</a>.</p>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <p>Human Agency — No hype, no theory. Just understanding. © 2026 Human Agency</p>
+  </div>
+</footer>
+<script>
+(function () {
+  var t = document.getElementById('nav-toggle'), n = document.getElementById('nav');
+  if (!t || !n) return;
+  t.addEventListener('click', function () {
+    var open = n.classList.toggle('open');
+    t.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+})();
+</script>
+</body>
+</html>
