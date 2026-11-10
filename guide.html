@@ -39,10 +39,11 @@
   .now a:hover { text-decoration: underline; }
 
   .steps { list-style: none; margin: 0; padding: 0; }
-  .steps li { display: grid; grid-template-columns: 44px 1fr; gap: 10px; align-items: baseline; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .steps li { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
   .steps li:last-child { border-bottom: 0; }
-  .steps .wk { font-family: Georgia, serif; font-size: 18px; color: var(--accent); }
-  .steps .lane { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--border); border-radius: 99px; padding: 2px 8px; margin-right: 6px; }
+  .steps .wk { flex: 0 0 28px; font-family: Georgia, serif; font-size: 18px; line-height: 1; color: var(--accent); text-align: center; }
+  .steps .body { flex: 1; min-width: 0; }
+  .steps .lane { display: inline-block; vertical-align: middle; font-size: 11px; line-height: 1; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--border); border-radius: 99px; padding: 4px 8px; margin: 0 8px 0 0; }
   .steps a { color: var(--text); font-weight: 600; text-decoration: none; }
   .steps a:hover { color: var(--accent); }
 
@@ -53,7 +54,6 @@
 
   @media (max-width: 600px) {
     .roles { grid-template-columns: repeat(2, 1fr); }
-    .steps li { grid-template-columns: 36px 1fr; }
   }
 </style>
 </head>
@@ -228,7 +228,7 @@
     html += '<h3 style="margin-top:28px">Then, over the next three weeks</h3>';
     html += '<ol class="steps">';
     then.forEach(function (s, idx) {
-      html += '<li><span class="wk">' + (idx + 2) + '</span><span><span class="lane">' + esc(s.lane) + '</span>' + link(s.it) + '</span></li>';
+      html += '<li><span class="wk">' + (idx + 2) + '</span><span class="body"><span class="lane">' + esc(s.lane) + '</span>' + link(s.it) + '</span></li>';
     });
     html += '</ol>';
 
