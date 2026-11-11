@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learn AI: Human Agency</title>
+  <meta name="description" content="Learn how AI actually works. No hype. Real use cases for individuals, small businesses and enterprises.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f9f8f6;
+      --surface: #ffffff;
+      --border: #ebebeb;
+      --text: #111111;
+      --muted: #666666;
+      --accent: #4f46e5;
+      --good: #10b981;
+      --warn: #f59e0b;
+      --critical: #ef4444;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f0f0f;
+        --surface: #1a1a1a;
+        --border: #2a2a2a;
+        --text: #f5f5f5;
+        --muted: #999999;
+      }
+    }
+
+    :root[data-theme="light"] {
+      --bg: #f9f8f6;
+      --surface: #ffffff;
+      --border: #ebebeb;
+      --text: #111111;
+      --muted: #666666;
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #0f0f0f;
+      --surface: #1a1a1a;
+      --border: #2a2a2a;
+      --text: #f5f5f5;
+      --muted: #999999;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* Header */
+    header {
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .logo .dot { color: var(--accent); }
+
+    nav {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    nav a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      transition: color 0.15s;
+    }
+
+    nav a:hover { color: var(--text); }
+
+    /* Setup Guides Section */
+    .setup-section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+    }
+
+    .setup-title {
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .setup-subtitle {
+      font-size: 16px;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 40px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .setup-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .setup-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .setup-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .setup-card a {
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      height: 100%;
+    }
+
+    .setup-icon {
+      font-size: 28px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+    }
+
+    .setup-name {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+      text-align: left;
+    }
+
+    .setup-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+      flex: 1;
+      text-align: left;
+    }
+
+    .setup-cta {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .nav-mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    /* Hero */
+    .hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 72px 24px 48px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(32px, 6vw, 48px);
+      font-weight: 900;
+      letter-spacing: -1px;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* Hub Grid */
+    .hub {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    .hub-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      margin-bottom: 60px;
+    }
+
+    /* Hub Card */
+    .hub-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .hub-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .hub-icon {
+      font-size: 28px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+    }
+
+    .hub-title {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+      text-align: left;
+    }
+
+    .hub-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+      flex: 1;
+      text-align: left;
+    }
+
+    .hub-cta {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .hub-card a {
+      display: block;
+      height: 100%;
+      text-decoration: none;
+    }
+
+    /* Featured Section */
+    .featured {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 36px;
+      margin-bottom: 60px;
+    }
+
+    .featured h2 {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .featured p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .featured-list {
+      list-style: none;
+    }
+
+    .featured-list li {
+      font-size: 14px;
+      color: var(--text);
+      padding: 10px 0;
+      padding-left: 24px;
+      position: relative;
+      line-height: 1.6;
+    }
+
+    .featured-list li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .footer-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 32px 24px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .header-inner { padding: 0 16px; }
+
+      nav {
+        display: none;
+        position: absolute;
+        top: 56px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        gap: 0;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        padding: 12px 0;
+      }
+
+      nav.active { display: flex; }
+
+      nav a {
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border);
+        font-size: 14px;
+      }
+
+      .nav-mobile-toggle { display: block; }
+
+      .hero { padding: 56px 16px 40px; }
+      .hero h1 { font-size: 28px; }
+      .hero p { font-size: 15px; }
+
+      .hub { padding: 0 16px 60px; }
+      .hub-grid { gap: 16px; }
+      .hub-card { padding: 20px; }
+
+      .featured { padding: 24px; }
+      .featured h2 { font-size: 18px; }
+    }
+
+    @media (max-width: 480px) {
+      .header-inner { padding: 0 12px; }
+      .logo { font-size: 13px; }
+      .hero { padding: 40px 12px 32px; }
+      .hero h1 { font-size: 24px; }
+      .hero p { font-size: 14px; }
+      .hub { padding: 0 12px 40px; }
+      .hub-grid { grid-template-columns: 1fr; }
+      .featured { padding: 16px; }
+      .footer-inner { font-size: 11px; }
+    }
+  
+/* ===== Shared site header (keep identical on every page) ===== */
+header.site-header { position: sticky; top: 0; z-index: 100; background: var(--surface, #ffffff); border-bottom: 1px solid var(--border, #ebebeb); }
+.site-header .header-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.site-header .logo { font-family: inherit; font-size: 15px; font-weight: 800; letter-spacing: -0.4px; line-height: 1; color: var(--text, #111111); text-decoration: none; white-space: nowrap; }
+.site-header .logo .dot { color: var(--accent, #4f46e5); }
+.site-header nav { display: flex; gap: 22px; align-items: center; }
+.site-header nav a { font-family: inherit; font-size: 13px; font-weight: 500; line-height: 1; color: var(--muted, #666666); text-decoration: none; white-space: nowrap; transition: color .15s; }
+.site-header nav a:hover { color: var(--text, #111111); }
+.site-header nav a.nav-search { font-size: 14px; margin-left: 6px; padding-left: 16px; border-left: 1px solid var(--border, #ebebeb); }
+.site-header .nav-mobile-toggle { display: none; background: none; border: 0; color: var(--muted, #666666); font-size: 20px; line-height: 1; cursor: pointer; padding: 4px; }
+@media (max-width: 860px) {
+  .site-header .header-inner { height: auto; min-height: 56px; padding: 14px 24px; flex-wrap: wrap; }
+  .site-header .nav-mobile-toggle { display: block; }
+  .site-header nav { display: none; width: 100%; flex-direction: column; align-items: flex-start; gap: 14px; padding: 6px 0 6px; }
+  .site-header nav.active, .site-header nav.open { display: flex; }
+  .site-header nav a.nav-search { margin-left: 0; padding-left: 0; border-left: 0; }
+}
+
+/* ===== Style refresh: warm editorial (shared across the site) ===== */
+:root { --bg:#f7f2e8; --surface:#fffdf8; --border:#e4d9c6; --text:#1f1b16; --muted:#6b6154; --subtle:#a39a8a; --accent:#b4532a; }
+@media (prefers-color-scheme: dark) {
+  :root { --bg:#1a1612; --surface:#241f19; --border:#3a3229; --text:#f3ece0; --muted:#a79c8a; --subtle:#6f6557; --accent:#e08a5f; }
+}
+body { background: var(--bg) !important; color: var(--text); }
+h1, h2, h3 { font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif; font-weight: 500; letter-spacing: -0.01em; }
+h1 { line-height: 1.08; }
+h2 { line-height: 1.2; }
+a { color: var(--accent); }
+.logo, .site-header .logo { font-family: Georgia, 'Iowan Old Style', serif !important; font-weight: 500 !important; font-size: 18px !important; letter-spacing: 0 !important; }
+.site-header { background: color-mix(in srgb, var(--surface) 92%, transparent) !important; backdrop-filter: saturate(1.2) blur(8px); }
+.tag, .label, .hub-cta, .setup-cta, .guide-cta, .resource-tag { letter-spacing: .12em; }
+.hub-card, .setup-card, .guide-card, .card, .layer, .step, .featured, .note-card, .resource-card {
+  border-radius: 14px !important;
+  box-shadow: 0 1px 0 rgba(60,40,20,.04), 0 10px 24px -16px rgba(60,40,20,.28);
+}
+.hub-card:hover, .setup-card:hover, .guide-card:hover, .card:hover, .resource-card:hover { transform: translateY(-2px); transition: transform .2s ease, box-shadow .2s ease; box-shadow: 0 1px 0 rgba(60,40,20,.04), 0 16px 32px -18px rgba(60,40,20,.35); }
+.callout, .note { font-family: Georgia, 'Iowan Old Style', serif; font-size: 17px; }
+.item { border-bottom-color: var(--border) !important; }
+.pill-video { background: #f3e3d4 !important; color: #8a3b17 !important; }
+.pill-article { background: #e6efe0 !important; color: #3d6b2e !important; }
+.pill-case { background: #f6e6cf !important; color: #8a5a12 !important; }
+@media (prefers-color-scheme: dark) {
+  .pill-video { background: #3a2a20 !important; color: #f0b58f !important; }
+  .pill-article { background: #223020 !important; color: #b5d9a4 !important; }
+  .pill-case { background: #3a2d18 !important; color: #f0cc8a !important; }
+}
+</style>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KK96LD0D50"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-KK96LD0D50');
+  </script>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="logo" href="/">Human<span class="dot">.</span>Agency</a>
+    <button class="nav-mobile-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+    <nav id="nav">
+      <a href="/llm-explained.html">What is AI?</a>
+      <a href="/jargon.html">Jargon</a>
+      <a href="/compare.html">Tools</a>
+      <a href="/use-cases.html">Use Cases</a>
+      <a href="/setup.html">Setup</a>
+      <a href="/reading.html">Reading</a>
+      <a href="/resources.html">Resources</a>
+      <a href="/paths.html">Paths</a>
+      <a href="/learn.html">Learn</a>
+      <a href="/#consultancy" style="color:var(--accent);font-weight:700">Work with us</a>
+      <a href="/search.html" class="nav-search" aria-label="Search">🔍</a>
+    </nav>
+  </div>
+</header>
+
+
+
+
+<div class="hero">
+  <h1>Understand AI. Deeply.</h1>
+  <p>Not hype. How AI actually works, what it’s good at, and where it fails. Practical examples for individuals, small businesses and enterprises.</p>
+</div>
+
+<div class="hub" style="padding-top:0">
+  <a href="/guide.html" style="display:block; text-decoration:none; margin-bottom:24px; border-radius:22px; padding:28px 30px; color:var(--surface); background:var(--accent); box-shadow:0 1px 0 rgba(60,40,20,.04), 0 16px 32px -18px rgba(90,40,10,.55);">
+    <div style="font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; opacity:.85;">Not sure where to start?</div>
+    <div style="font-family:Georgia, 'Iowan Old Style', serif; font-weight:500; font-size:clamp(28px,4.5vw,40px); line-height:1.1; margin:8px 0 6px;">Get your AI plan in two taps</div>
+    <div style="font-size:15px; opacity:.9; max-width:560px;">Tell us your role and how much you use AI. You get one step for this week, then a plan for business and tech.</div>
+    <div style="margin-top:16px; font-weight:700;">Start my plan →</div>
+  </a>
+  <p style="text-align:center; margin:0 0 24px;"><a href="llm-explained.html" style="color:var(--accent); font-weight:600; text-decoration:none;">New to AI? Read the plain-English intro →</a></p>
+
+  <div class="hub-grid">
+    <div class="hub-card">
+      <a href="jargon.html">
+        <div class="hub-icon">📚</div>
+        <div class="hub-title">AI Jargon</div>
+        <div class="hub-desc">58 terms in plain English. Search them, or read them in order.</div>
+        <div class="hub-cta">Look up →</div>
+      </a>
+    </div>
+    <div class="hub-card">
+      <a href="compare.html">
+        <div class="hub-icon">⚖️</div>
+        <div class="hub-title">Which AI Tool?</div>
+        <div class="hub-desc">ChatGPT, Claude and Gemini side by side. Which one for what.</div>
+        <div class="hub-cta">Compare →</div>
+      </a>
+    </div>
+    <div class="hub-card">
+      <a href="use-cases.html">
+        <div class="hub-icon">🎯</div>
+        <div class="hub-title">When to Use AI</div>
+        <div class="hub-desc">Where AI helps, and where it doesn’t. Examples for small businesses and enterprises.</div>
+        <div class="hub-cta">Learn →</div>
+      </a>
+    </div>
+    <div class="hub-card">
+      <a href="paths.html">
+        <div class="hub-icon">🧭</div>
+        <div class="hub-title">Learning Paths</div>
+        <div class="hub-desc">Step by step: how to check AI’s answers, and how to build AI that works reliably.</div>
+        <div class="hub-cta">Start →</div>
+      </a>
+    </div>
+    <div class="hub-card">
+      <a href="reading.html">
+        <div class="hub-icon">📖</div>
+        <div class="hub-title">Reading and Resources</div>
+        <div class="hub-desc">Articles, talks, free courses and official guides worth your time.</div>
+        <div class="hub-cta">Read →</div>
+      </a>
+    </div>
+    <div class="hub-card">
+      <a href="setup.html">
+        <div class="hub-icon">🚀</div>
+        <div class="hub-title">Setup</div>
+        <div class="hub-desc">Get started with Claude, step by step.</div>
+        <div class="hub-cta">Set up →</div>
+      </a>
+    </div>
+
+  </div>
+
+  <a href="/#consultancy" style="display:flex; flex-wrap:wrap; gap:8px 24px; align-items:center; justify-content:space-between; text-decoration:none; color:var(--text); background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:24px 28px;">
+    <div>
+      <div style="font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent);">Want hands-on help?</div>
+      <div style="font-family:Georgia, 'Iowan Old Style', serif; font-size:22px; margin-top:4px;">AI products, use cases, training, research and AI setup for your business</div>
+    </div>
+    <div style="font-weight:700; color:var(--accent); white-space:nowrap;">Work with us →</div>
+  </a>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <p>Human Agency — No hype, no theory. Just understanding. © 2026 Human Agency</p>
+  </div>
+</footer>
+
+<script>
+const navToggle = document.getElementById('nav-toggle');
+const nav = document.getElementById('nav');
+
+navToggle.addEventListener('click', () => {
+  nav.classList.toggle('active');
+});
+
+nav.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    nav.classList.remove('active');
+  });
+});
+
+document.addEventListener('keydown', (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    e.preventDefault();
+    window.location.href = '/search.html';
+  }
+});
+</script>
+
+</body>
+<script>
+document.addEventListener("keydown", (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+    e.preventDefault();
+    window.location.href = "/search.html";
+  }
+});
+</script>
+</html>
