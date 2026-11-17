@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Compare AI Tools — Human Agency</title>
-<meta name="description" content="ChatGPT vs Claude vs Gemini — compare up to 3 AI tools side-by-side in plain English. No benchmarks, just what each is actually best for.">
+<title>Compare AI Tools | Human Agency</title>
+<meta name="description" content="ChatGPT vs Claude vs Gemini: compare up to 3 AI tools side-by-side in plain English. No benchmarks, just what each is actually best for.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <style>
@@ -208,7 +208,7 @@ a { color: var(--accent); }
 <div class="hero">
   <div class="hero-tag">AI Tool Comparison</div>
   <h1>Pick up to 3. See the difference.</h1>
-  <p class="hero-sub">ChatGPT, Claude, Gemini and more — in plain English. No benchmarks, no jargon. Just what each is actually best for.</p>
+  <p class="hero-sub">ChatGPT, Claude, Gemini and more, in plain English. No benchmarks, no jargon. Just what each is actually best for.</p>
   <p class="hero-sub" style="font-size:13px;margin-top:8px;">Prices change often and differ by country, so this page doesn’t list them. Check each provider’s pricing page before you subscribe.</p>
 </div>
 
@@ -254,7 +254,7 @@ const TOOLS = [
     hasFree: true,
     bestFor: ["Writing", "Coding", "Everyday tasks"],
     strengths: [
-      "Widest range of tasks — emails, code, analysis, images in one place",
+      "Widest range of tasks: emails, code, analysis and images in one place",
       "Browse the web, run code, generate images on Plus plan",
       "Most supported by third-party apps and integrations"
     ],
@@ -271,11 +271,11 @@ const TOOLS = [
     hasFree: true,
     bestFor: ["Long docs", "Analysis", "Writing"],
     strengths: [
-      "Reads and summarises very long documents — books, contracts, reports",
+      "Reads and summarises very long documents: books, contracts, reports",
       "More likely to say 'I'm not sure' than hallucinate confidently",
-      "Strongest on nuanced writing — tone, voice, structure"
+      "Strong on nuanced writing: tone, voice and structure"
     ],
-    watchOut: "Check the current web and file features on your plan, as they change often. Less image generation than ChatGPT.",
+    watchOut: "Check the current web and file features on your plan, as they change often. It doesn't create images.",
     url: "https://claude.ai"
   },
   {
@@ -288,8 +288,8 @@ const TOOLS = [
     hasFree: true,
     bestFor: ["Google Workspace", "Research", "Search"],
     strengths: [
-      "Native in Gmail, Docs, Sheets — no app switching",
-      "Real-time web access by default — always current",
+      "Built into Gmail, Docs and Sheets, so no app switching",
+      "Real-time web access by default",
       "Handles images, audio and text together naturally"
     ],
     watchOut: "Writing quality not quite at Claude or ChatGPT level. Can feel generic.",
@@ -305,8 +305,8 @@ const TOOLS = [
     hasFree: true,
     bestFor: ["Research", "Fact-checking", "Current events"],
     strengths: [
-      "Every answer includes cited sources — you can verify everything",
-      "Searches the live web — no knowledge cutoff",
+      "Every answer includes cited sources you can check",
+      "Searches the live web, so answers are current",
       "Best for 'explain this topic with evidence' questions"
     ],
     watchOut: "Not a writing tool. Answers are research briefs, not polished prose.",
@@ -326,7 +326,7 @@ const TOOLS = [
       "Real-time internet access included on free tier",
       "More willing to tackle edgy or controversial questions"
     ],
-    watchOut: "Heavily biased by X/Twitter's worldview. Less nuanced than Claude or ChatGPT.",
+    watchOut: "Answers can lean on whatever is trending on X. Check the sources before you rely on it.",
     url: "https://grok.com"
   },
   {
@@ -340,8 +340,8 @@ const TOOLS = [
     bestFor: ["Coding", "Maths", "Long reasoning"],
     strengths: [
       "Free to use, and strong at coding, maths and step-by-step reasoning",
-      "Outstanding at coding, maths, and step-by-step reasoning",
-      "Shows its thinking process — you can see how it reaches answers"
+      "Open model weights, so companies can run it on their own servers",
+      "Shows its thinking, so you can see how it reaches an answer"
     ],
     watchOut: "Chinese company: check its data terms before using it for sensitive or client information. Some political topics may be restricted.",
     url: "https://chat.deepseek.com"
@@ -356,7 +356,7 @@ const TOOLS = [
     hasFree: true,
     bestFor: ["Office", "Word", "Excel"],
     strengths: [
-      "Lives inside the apps you already use — Word, Excel, Outlook, Teams",
+      "Lives inside the apps you already use: Word, Excel, Outlook, Teams",
       "Drafts emails, writes formulas, summarises meetings automatically",
       "Works across Word, Excel, Outlook and Teams, so there is nothing new to install"
     ],
@@ -373,29 +373,12 @@ const TOOLS = [
     hasFree: false,
     bestFor: ["Images", "Design", "Visuals"],
     strengths: [
-      "Highest quality AI images — photorealistic and artistic",
+      "Very high quality images, photorealistic and artistic",
       "Massive creative range: photography, illustration, concept art",
       "Large community with prompts and styles to learn from"
     ],
     watchOut: "Text tasks are not what it's for. Older guides describe Discord-only use, so check the current app.",
     url: "https://midjourney.com"
-  },
-  {
-    id: "sora",
-    name: "Sora",
-    maker: "OpenAI",
-    emoji: "🎬",
-    tagline: "Type a prompt, get a video. OpenAI's video generator.",
-    cost: "Paid plans",
-    hasFree: false,
-    bestFor: ["Video", "Creative content", "Storytelling"],
-    strengths: [
-      "Creates realistic video from text prompts. Clip length depends on your plan.",
-      "Understands physics, lighting and camera movement naturally",
-      "Available alongside ChatGPT on some paid plans (check current access)"
-    ],
-    watchOut: "Can still produce glitches. Check current plan limits, which change often.",
-    url: "https://sora.com"
   },
   {
     id: "runway",
@@ -407,9 +390,9 @@ const TOOLS = [
     hasFree: true,
     bestFor: ["Video", "Film", "Motion"],
     strengths: [
-      "Used by professional filmmakers and studios — serious quality",
+      "Used by professional filmmakers and studios",
       "Expand videos, remove backgrounds, stylise footage",
-      "More creative control than Sora — frame-by-frame editing"
+      "Fine control over each shot, including frame-by-frame editing"
     ],
     watchOut: "Steeper learning curve than other tools. Credits run out quickly on free tier.",
     url: "https://runwayml.com"
@@ -489,9 +472,9 @@ function updateUI() {
   if (selected.length === 0) hint.textContent = 'Select 2 or 3 tools to compare';
   else if (selected.length === 1) {
     const t = TOOLS.find(x => x.id === selected[0]);
-    hint.textContent = `${t.name} selected — pick 1 or 2 more`;
+    hint.textContent = `${t.name} selected. Pick 1 or 2 more`;
   } else if (selected.length === 2) {
-    hint.textContent = '↓ Comparison below — or pick a 3rd to add it';
+    hint.textContent = '↓ Comparison below, or pick a 3rd to add it';
     showComparison(selected);
   } else {
     hint.textContent = '↓ 3-way comparison below';

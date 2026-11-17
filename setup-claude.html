@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Claude CLI Setup — Interactive Guide</title>
+    <title>Claude Code Setup: Interactive Guide</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -522,7 +522,7 @@ a { color: var(--accent); }
 
         <!-- Guide Header (shown after choice) -->
         <div class="guide-header" id="guideHeader">
-            <div class="guide-name" id="guideName">Claude CLI Setup</div>
+            <div class="guide-name" id="guideName">Claude Code in the terminal</div>
             <div class="guide-timer">⏱️ ~5 minutes to complete</div>
         </div>
 
@@ -540,39 +540,39 @@ a { color: var(--accent); }
                 <div class="choice-grid">
                     <div class="choice-card" onclick="selectChoice(this, 'cli')">
                         <div class="choice-icon">💻</div>
-                        <div class="choice-name">Claude CLI</div>
+                        <div class="choice-name">Claude Code in the terminal</div>
                         <div class="choice-details">
-                            <strong>Command Line</strong>
-                            Run Claude from your terminal
+                            <strong>Command line</strong>
+                            Run Claude Code from your terminal
                         </div>
                         <ul class="choice-pros">
-                            <li>✓ Fastest to set up (5 min)</li>
-                            <li>✓ Perfect for scripts</li>
-                            <li>✓ Automation workflows</li>
-                            <li>✓ Lightweight</li>
+                            <li>✓ One command to install</li>
+                            <li>✓ Works in any project folder</li>
+                            <li>✓ Good for scripts and automation</li>
+                            <li>✓ Updates itself</li>
                         </ul>
-                        <button class="choice-start-btn" onclick="startSetup('cli', event)">Start CLI Setup →</button>
+                        <button class="choice-start-btn" onclick="startSetup('cli', event)">Start terminal setup →</button>
                     </div>
 
                     <div class="choice-card" onclick="selectChoice(this, 'desktop')">
                         <div class="choice-icon">🖥️</div>
-                        <div class="choice-name">Claude Code Desktop</div>
+                        <div class="choice-name">Claude desktop app</div>
                         <div class="choice-details">
-                            <strong>Native App</strong>
-                            Full IDE in a native application
+                            <strong>Native app</strong>
+                            Claude Code inside the Claude app
                         </div>
                         <ul class="choice-pros">
-                            <li>✓ Native Mac/Windows app</li>
-                            <li>✓ Full IDE experience</li>
-                            <li>✓ Code with AI assistance</li>
-                            <li>✓ Fast & responsive</li>
+                            <li>✓ Mac and Windows app</li>
+                            <li>✓ No terminal needed</li>
+                            <li>✓ Point it at a folder and ask</li>
+                            <li>✓ Same sign-in as claude.ai</li>
                         </ul>
                         <button class="choice-start-btn" onclick="startSetup('desktop', event)">Start Desktop Setup →</button>
                     </div>
                 </div>
 
                 <p style="color: #94a3b8; font-size: 12px; margin-top: 20px;">
-                    Not sure? The <strong>Desktop app</strong> is best for coding. The <strong>CLI</strong> is best for automation.
+                    Not sure? The <strong>desktop app</strong> is easiest if you've never used a terminal. The <strong>terminal</strong> is best for developers and automation.
                 </p>
             </div>
         </div>
@@ -587,192 +587,160 @@ a { color: var(--accent); }
 
         <!-- STEP 1: Requirements -->
         <div class="step-container active" id="step1">
-            <div class="step-title">📋 Step 1: Check Requirements</div>
-            <div class="step-description">Before installing Claude CLI, make sure you have the basics installed.</div>
+            <div class="step-title">📋 Step 1: Check what you need</div>
+            <div class="step-description">Claude Code runs in your terminal. You don't need Node.js or anything else installed first.</div>
 
             <div class="screenshot">
                 <div style="text-align: left; display: flex; flex-direction: column; gap: 10px;">
-                    ✅ Node.js v18+ — <a href="https://nodejs.org/en/download/" target="_blank" style="color: #14b8a6; text-decoration: underline; font-weight: 600;">Download</a><br>
-                    ✅ npm or yarn (comes with Node.js)<br>
-                    ✅ Text editor: VS Code, Cursor, etc<br>
-                    ✅ Git — <a href="https://git-scm.com/downloads" target="_blank" style="color: #14b8a6; text-decoration: underline; font-weight: 600;">Download</a>
+                    ✅ A Mac, Linux, or Windows computer<br>
+                    ✅ A paid Claude plan (Pro, Max, Team or Enterprise) or an Anthropic Console account. The free Claude plan doesn't include Claude Code.<br>
+                    ✅ A project folder to work in (a new empty folder is fine)
                 </div>
-            </div>
-
-            <p style="margin-bottom: 16px; color: #cbd5e1;">Check if you have Node.js installed:</p>
-            <div class="code-block">
-                <span>node --version</span>
-                <button class="copy-btn" onclick="copyToClipboard('node --version')">Copy</button>
-            </div>
-
-            <p style="margin-bottom: 16px; color: #cbd5e1;">Check if you have npm installed:</p>
-            <div class="code-block">
-                <span>npm --version</span>
-                <button class="copy-btn" onclick="copyToClipboard('npm --version')">Copy</button>
             </div>
 
             <div class="checklist">
                 <h4>✓ Ready to Continue?</h4>
                 <div class="checklist-item">
                     <div class="checkbox" onclick="toggleCheck(this)"></div>
-                    <span>Node.js v18+ installed</span>
+                    <span>I have a paid Claude plan or a Console account</span>
                 </div>
                 <div class="checklist-item">
                     <div class="checkbox" onclick="toggleCheck(this)"></div>
-                    <span>npm installed</span>
-                </div>
-                <div class="checklist-item">
-                    <div class="checkbox" onclick="toggleCheck(this)"></div>
-                    <span>Text editor ready</span>
+                    <span>I know where my terminal is (Terminal on Mac, PowerShell on Windows)</span>
                 </div>
             </div>
 
             <div class="troubleshooting">
                 <h4>❌ Troubleshooting</h4>
                 <div class="troubleshooting-item">
-                    <strong>Q: Command not found (node/npm)</strong><br>
-                    A: Restart your terminal after installation, or add Node to PATH
-                </div>
-                <div class="troubleshooting-item">
-                    <strong>Q: Old Node version?</strong><br>
-                    A: Download latest from nodejs.org or run: brew install node (Mac)
+                    <strong>Q: Which plan do I need?</strong><br>
+                    A: See <a href="https://claude.com/pricing" target="_blank" style="color: #14b8a6; text-decoration: underline; font-weight: 600;">claude.com/pricing</a>. Prices and limits change, so check there before you subscribe.
                 </div>
             </div>
         </div>
 
-        <!-- STEP 2: Install Claude CLI -->
+        <!-- STEP 2: Install -->
         <div class="step-container" id="step2">
-            <div class="step-title">⚙️ Step 2: Install Claude CLI</div>
-            <div class="step-description">Install the Claude CLI tool globally on your system.</div>
+            <div class="step-title">⚙️ Step 2: Install Claude Code</div>
+            <div class="step-description">Run one command for your system. The installer keeps Claude Code up to date by itself.</div>
 
-            <p style="margin-bottom: 16px; color: #cbd5e1;">Run this command in your terminal:</p>
+            <p style="margin-bottom: 16px; color: #cbd5e1;"><strong>Mac, Linux or WSL:</strong></p>
             <div class="code-block">
-                <span>npm install -g @anthropic-ai/claude-code</span>
-                <button class="copy-btn" onclick="copyToClipboard('npm install -g @anthropic-ai/claude-code')">Copy</button>
+                <span>curl -fsSL https://claude.ai/install.sh | bash</span>
+                <button class="copy-btn" onclick="copyToClipboard('curl -fsSL https://claude.ai/install.sh | bash')">Copy</button>
             </div>
 
-            <div class="screenshot">
-                <div>
-                    installing packages...<br>
-                    ✓ @anthropic-ai/claude-code@latest<br>
-                    ✓ added 45 packages
-                </div>
+            <p style="margin-bottom: 16px; color: #cbd5e1;"><strong>Windows (PowerShell):</strong></p>
+            <div class="code-block">
+                <span>irm https://claude.ai/install.ps1 | iex</span>
+                <button class="copy-btn" onclick="copyToClipboard('irm https://claude.ai/install.ps1 | iex')">Copy</button>
             </div>
 
-            <p style="margin-bottom: 16px; color: #cbd5e1;">Wait 1-2 minutes for installation to complete.</p>
+            <p style="margin-bottom: 16px; color: #cbd5e1;">Prefer Homebrew on a Mac? <code>brew install --cask claude-code</code> also works.</p>
 
             <div class="troubleshooting">
                 <h4>❌ Troubleshooting</h4>
                 <div class="troubleshooting-item">
-                    <strong>Q: Permission denied?</strong><br>
-                    A: Add sudo: sudo npm install -g @anthropic-ai/claude-code
+                    <strong>Q: The command fails or shows an error</strong><br>
+                    A: Check the official <a href="https://code.claude.com/docs/en/troubleshoot-install" target="_blank" style="color: #14b8a6; text-decoration: underline; font-weight: 600;">install troubleshooting page</a>, which matches common errors to fixes.
                 </div>
                 <div class="troubleshooting-item">
-                    <strong>Q: Installation stuck?</strong><br>
-                    A: Press Ctrl+C and try: npm cache clean --force
+                    <strong>Q: I installed it with npm before</strong><br>
+                    A: npm installs are being phased out. Run <code>claude install</code> to switch to the native version. Never use sudo with npm.
                 </div>
             </div>
         </div>
 
         <!-- STEP 3: Verify Installation -->
         <div class="step-container" id="step3">
-            <div class="step-title">✅ Step 3: Verify Installation</div>
-            <div class="step-description">Check that Claude CLI installed correctly.</div>
+            <div class="step-title">✅ Step 3: Check it installed</div>
+            <div class="step-description">Open a new terminal window, then run:</div>
 
-            <p style="margin-bottom: 16px; color: #cbd5e1;">Run this command:</p>
             <div class="code-block">
                 <span>claude --version</span>
                 <button class="copy-btn" onclick="copyToClipboard('claude --version')">Copy</button>
             </div>
 
-            <div class="screenshot">
-                <div>
-                    claude/2.1.0 (darwin-arm64)<br>
-                    ✓ Successfully installed
-                </div>
-            </div>
-
-            <p style="margin-bottom: 16px; color: #cbd5e1;">You should see a version number. If you do, installation is complete!</p>
+            <p style="margin-bottom: 16px; color: #cbd5e1;">You should see a version number. If you do, it's installed.</p>
 
             <div class="checklist">
                 <h4>✓ Installation Verified</h4>
                 <div class="checklist-item">
                     <div class="checkbox" onclick="toggleCheck(this)"></div>
-                    <span>Version command returns a number</span>
+                    <span>The command shows a version number</span>
                 </div>
             </div>
 
             <div class="troubleshooting">
                 <h4>❌ Troubleshooting</h4>
                 <div class="troubleshooting-item">
-                    <strong>Q: Command not found</strong><br>
-                    A: Restart terminal or check npm: npm list -g @anthropic-ai/claude-code
+                    <strong>Q: command not found: claude</strong><br>
+                    A: Close the terminal and open a new one so it picks up the new path. If it still fails, run <code>claude doctor</code> or see the troubleshooting page from step 2.
                 </div>
             </div>
         </div>
 
-        <!-- STEP 4: Create API Key -->
+        <!-- STEP 4: Sign in -->
         <div class="step-container" id="step4">
-            <div class="step-title">🔑 Step 4: Get Your API Key</div>
-            <div class="step-description">Set up authentication with Claude.</div>
-
-            <p style="margin-bottom: 16px; color: #cbd5e1;">1. Go to: <a href="https://console.anthropic.com/keys" target="_blank" style="color: #14b8a6; text-decoration: underline; font-weight: 600;">console.anthropic.com/keys</a></p>
-            <p style="margin-bottom: 16px; color: #cbd5e1;">2. Click "Create API Key"</p>
-            <p style="margin-bottom: 16px; color: #cbd5e1;">3. Copy your key (looks like: sk-ant-...)</p>
-            <p style="margin-bottom: 16px; color: #cbd5e1;">4. Run this command and paste your key:</p>
+            <div class="step-title">🔑 Step 4: Sign in</div>
+            <div class="step-description">Go to your project folder and start Claude Code. The first time, it opens your browser so you can sign in.</div>
 
             <div class="code-block">
-                <span>claude auth login</span>
-                <button class="copy-btn" onclick="copyToClipboard('claude auth login')">Copy</button>
+                <span>cd your-project-folder</span>
+                <button class="copy-btn" onclick="copyToClipboard('cd your-project-folder')">Copy</button>
             </div>
 
-            <div class="screenshot">
-                <div>
-                    Enter your Claude API key:<br>
-                    sk-ant-...<br>
-                    ✓ Authentication successful
-                </div>
+            <div class="code-block">
+                <span>claude</span>
+                <button class="copy-btn" onclick="copyToClipboard('claude')">Copy</button>
             </div>
+
+            <p style="margin-bottom: 16px; color: #cbd5e1;">Choose your Claude account (Pro, Max, Team or Enterprise) or your Anthropic Console account, and approve the sign-in in the browser. You only do this once.</p>
+            <p style="margin-bottom: 16px; color: #cbd5e1;">To switch accounts later, type <code>/login</code> inside Claude Code.</p>
 
             <div class="troubleshooting">
                 <h4>❌ Troubleshooting</h4>
                 <div class="troubleshooting-item">
-                    <strong>Q: Invalid API key</strong><br>
-                    A: Make sure you copied the full key from console.anthropic.com
+                    <strong>Q: The browser didn't open</strong><br>
+                    A: Copy the link Claude Code shows in the terminal and open it yourself.
+                </div>
+                <div class="troubleshooting-item">
+                    <strong>Q: It says my plan doesn't include Claude Code</strong><br>
+                    A: Claude Code needs a paid plan or a Console account with credit. The free plan doesn't include it.
                 </div>
             </div>
         </div>
 
-        <!-- STEP 5: Your First Command -->
+        <!-- STEP 5: Your First Task -->
         <div class="step-container" id="step5">
-            <div class="step-title">🎉 Step 5: Your First Command</div>
-            <div class="step-description">Test Claude CLI with your first query!</div>
-
-            <p style="margin-bottom: 16px; color: #cbd5e1;">Run a simple test:</p>
-            <div class="code-block">
-                <span>claude "What is AI?"</span>
-                <button class="copy-btn" onclick="copyToClipboard('claude \"What is AI?\"')">Copy</button>
-            </div>
+            <div class="step-title">🎉 Step 5: Your first task</div>
+            <div class="step-description">With Claude Code running in your project folder, type a request in plain English and press Enter.</div>
 
             <div class="screenshot">
                 <div>
-                    $ claude "What is AI?"<br>
-                    AI (Artificial Intelligence) is...<br>
-                    [Claude responds here]
+                    &gt; Create a hello world script in Python<br>
+                    [Claude Code shows the file it wants to create and asks before saving]
                 </div>
             </div>
 
-            <p style="margin-bottom: 16px; color: #cbd5e1; margin-top: 20px;"><strong>🎊 You're done!</strong> Claude CLI is ready to use.</p>
+            <p style="margin-bottom: 16px; color: #cbd5e1;">Claude Code asks before it changes files or runs commands, so you stay in control. Type <code>/help</code> to see what else it can do.</p>
+            <p style="margin-bottom: 16px; color: #cbd5e1;">For a quick one-off question without starting a session:</p>
+            <div class="code-block">
+                <span>claude -p "What is an LLM?"</span>
+                <button class="copy-btn" onclick="copyToClipboard('claude -p &quot;What is an LLM?&quot;')">Copy</button>
+            </div>
+
+            <p style="margin-bottom: 16px; color: #cbd5e1; margin-top: 20px;"><strong>🎊 You're done!</strong> Claude Code is ready to use.</p>
 
             <div class="checklist">
                 <h4>✓ Next Steps</h4>
                 <div class="checklist-item">
                     <div class="checkbox" onclick="toggleCheck(this)"></div>
-                    <span>Explore: claude --help</span>
+                    <span>Asked Claude Code to make a small change</span>
                 </div>
                 <div class="checklist-item">
                     <div class="checkbox" onclick="toggleCheck(this)"></div>
-                    <span>Try: claude "write hello world in Python"</span>
+                    <span>Tried /help</span>
                 </div>
                 <div class="checklist-item">
                     <div class="checkbox" onclick="toggleCheck(this)"></div>
@@ -806,7 +774,7 @@ a { color: var(--accent); }
                 currentStepNum++;
                 showStep(currentStepNum);
             } else {
-                alert('🎉 You have completed the Claude CLI setup!');
+                document.getElementById('nextBtn').textContent = 'All done 🎉';
             }
         }
 
@@ -819,7 +787,8 @@ a { color: var(--accent); }
 
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text);
-            alert('✓ Copied to clipboard!');
+            const b = event && event.target;
+            if (b) { const t = b.textContent; b.textContent = 'Copied ✓'; setTimeout(() => { b.textContent = t; }, 1500); }
         }
 
         function toggleCheck(el) {
@@ -841,9 +810,9 @@ a { color: var(--accent); }
 
             if (type === 'desktop') {
                 // Update page for Desktop
-                document.getElementById('mainTitle').textContent = '🖥️ Claude Code Desktop Setup';
-                document.getElementById('mainSubtitle').textContent = 'Install Claude on your Mac or Windows';
-                document.getElementById('guideName').textContent = 'Claude Code Desktop Setup';
+                document.getElementById('mainTitle').textContent = '🖥️ Claude desktop app';
+                document.getElementById('mainSubtitle').textContent = 'Opening the download page for Mac or Windows…';
+                document.getElementById('guideName').textContent = 'Claude desktop app';
                 document.getElementById('downloadBanner').classList.add('active');
                 document.getElementById('guideHeader').classList.add('active');
                 document.getElementById('backToChoice').classList.add('active');
@@ -851,18 +820,18 @@ a { color: var(--accent); }
                 // Hide choice, show desktop guide
                 document.getElementById('choice').style.display = 'none';
                 setTimeout(() => {
-                    window.location.href = '/setup-claude-desktop.html';
+                    window.location.href = 'https://claude.com/download';
                 }, 500);
             } else {
-                // Update page for CLI
-                document.getElementById('mainTitle').textContent = '💻 Claude CLI Setup';
+                // Update page for the terminal guide
+                document.getElementById('mainTitle').textContent = '💻 Claude Code in the terminal';
                 document.getElementById('mainSubtitle').textContent = 'Run Claude from your terminal';
-                document.getElementById('guideName').textContent = 'Claude CLI Setup';
+                document.getElementById('guideName').textContent = 'Claude Code in the terminal';
                 document.getElementById('downloadBanner').classList.remove('active');
                 document.getElementById('guideHeader').classList.add('active');
                 document.getElementById('backToChoice').classList.add('active');
 
-                // Show CLI steps
+                // Show terminal steps
                 document.getElementById('choice').style.display = 'none';
                 document.getElementById('step1').classList.add('active');
                 currentStepNum = 1;
