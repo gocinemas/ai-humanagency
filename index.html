@@ -128,7 +128,7 @@
 
     .setup-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
       gap: 20px;
     }
 
@@ -232,7 +232,7 @@
 
     .hub-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
       gap: 20px;
       margin-bottom: 60px;
     }
@@ -457,6 +457,12 @@ a { color: var(--accent); }
     gtag('js', new Date());
     gtag('config', 'G-KK96LD0D50');
   </script>
+<style id="mobile-fixes">
+/* Phones: let form controls shrink inside rows, stop media spilling over, and avoid iOS zoom on focus */
+input, textarea, select, button { min-width: 0; max-width: 100%; }
+img, video, iframe { max-width: 100%; }
+@media (max-width: 640px) { input, textarea, select { font-size: 16px !important; } }
+</style>
 </head>
 <body>
 <header class="site-header">

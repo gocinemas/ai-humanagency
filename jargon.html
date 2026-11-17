@@ -115,7 +115,9 @@ footer { border-top: 1px solid var(--border); background: var(--surface); }
   .filters { padding: 16px 16px 12px; gap: 6px; }
   .terms { padding: 0 16px 60px; }
   .term-oneliner { font-size: 12px; }
-  .term-name { font-size: 16px; width: 100%; }
+  .term-header { flex-wrap: wrap; gap: 6px 12px; padding: 16px 0; }
+  .term-name { font-size: 16px; width: auto; flex: 1 1 auto; }
+  .term-oneliner { flex-basis: 100%; order: 3; }
   .term-body-text { padding: 0 0 16px 0; }
   .footer-inner { padding: 24px 16px; }
 }
@@ -190,6 +192,12 @@ a { color: var(--accent); }
     gtag('js', new Date());
     gtag('config', 'G-KK96LD0D50');
   </script>
+<style id="mobile-fixes">
+/* Phones: let form controls shrink inside rows, stop media spilling over, and avoid iOS zoom on focus */
+input, textarea, select, button { min-width: 0; max-width: 100%; }
+img, video, iframe { max-width: 100%; }
+@media (max-width: 640px) { input, textarea, select { font-size: 16px !important; } }
+</style>
 </head>
 <body>
 <header class="site-header">

@@ -6,6 +6,12 @@
 <title>Harness Engineering in Practice | Human Agency</title>
 <meta name="description" content="Harness engineering as an ongoing practice: turn every agent mistake into a fix in the harness, keep the environment legible, and measure whether it is improving.">
 <link rel="stylesheet" href="/path.css">
+<style id="mobile-fixes">
+/* Phones: let form controls shrink inside rows, stop media spilling over, and avoid iOS zoom on focus */
+input, textarea, select, button { min-width: 0; max-width: 100%; }
+img, video, iframe { max-width: 100%; }
+@media (max-width: 640px) { input, textarea, select { font-size: 16px !important; } }
+</style>
 </head>
 <body>
 <header class="site-header">

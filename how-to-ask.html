@@ -236,6 +236,12 @@ a { color: var(--accent); }
 .note { font-size: 13px; color: var(--muted); border-left: 3px solid var(--border); padding: 4px 0 4px 14px; margin-top: 28px; }
 @media (max-width: 640px) { .compare { grid-template-columns: 1fr; } .page-hero h1 { font-size: 32px; } }
 </style>
+<style id="mobile-fixes">
+/* Phones: let form controls shrink inside rows, stop media spilling over, and avoid iOS zoom on focus */
+input, textarea, select, button { min-width: 0; max-width: 100%; }
+img, video, iframe { max-width: 100%; }
+@media (max-width: 640px) { input, textarea, select { font-size: 16px !important; } }
+</style>
 </head>
 <body>
 <header class="site-header">

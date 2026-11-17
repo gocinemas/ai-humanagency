@@ -134,7 +134,7 @@
     /* Guide Grid */
     .guides-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
       gap: 24px;
       margin-bottom: 60px;
     }
@@ -228,7 +228,7 @@
 
     .paths {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
       gap: 24px;
     }
 
@@ -376,6 +376,12 @@ a { color: var(--accent); }
   .pill-article { background: #223020 !important; color: #b5d9a4 !important; }
   .pill-case { background: #3a2d18 !important; color: #f0cc8a !important; }
 }
+</style>
+<style id="mobile-fixes">
+/* Phones: let form controls shrink inside rows, stop media spilling over, and avoid iOS zoom on focus */
+input, textarea, select, button { min-width: 0; max-width: 100%; }
+img, video, iframe { max-width: 100%; }
+@media (max-width: 640px) { input, textarea, select { font-size: 16px !important; } }
 </style>
 </head>
 <body>
